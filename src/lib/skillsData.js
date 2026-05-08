@@ -1,0 +1,66 @@
+export const skills = [
+  {
+    id: 'handstand',
+    name: 'Handstand',
+    thumbnail: 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=400&h=400&fit=crop',
+    locked: false,
+    roadmap: [
+      { name: 'Wall Drills', unlocked: true },
+      { name: 'Kick-Up Control', unlocked: true },
+      { name: 'Balance Drills', unlocked: false },
+      { name: 'Freestanding Hold', unlocked: false },
+      { name: 'Walking Handstand', unlocked: false },
+    ],
+  },
+  {
+    id: 'hspu',
+    name: 'Handstand Push-Up',
+    thumbnail: 'https://images.unsplash.com/photo-1598971457999-ca4ef48a9a71?w=400&h=400&fit=crop',
+    locked: true,
+    roadmap: [
+      { name: 'Pike Pushups' },
+      { name: 'Elevated Pike Pushups' },
+      { name: 'Bent Arm Press' },
+      { name: 'L-Sit to Handstand' },
+      { name: 'Wall HSPU' },
+      { name: 'Handstand Pushups' },
+    ],
+  },
+  {
+    id: 'planche',
+    name: 'Planche',
+    thumbnail: 'https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=400&h=400&fit=crop',
+    locked: true,
+    roadmap: [
+      { name: 'Tuck Planche' },
+      { name: 'Advanced Tuck' },
+      { name: 'Straddle Planche' },
+      { name: 'Full Planche' },
+    ],
+  },
+  {
+    id: 'frontlever',
+    name: 'Front Lever',
+    thumbnail: 'https://images.unsplash.com/photo-1526506118085-60ce8714f8c5?w=400&h=400&fit=crop',
+    locked: true,
+    roadmap: [
+      { name: 'Tuck Front Lever' },
+      { name: 'Advanced Tuck' },
+      { name: 'Band-Assisted Full FL' },
+      { name: 'Full Front Lever' },
+    ],
+  },
+  {
+    id: 'muscleup',
+    name: 'Muscle-Up',
+    thumbnail: 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=400&h=400&fit=crop',
+    locked: true,
+    roadmap: [
+      { name: 'High Pullups' },
+      { name: 'Transition Negatives' },
+      { name: 'Band-Assisted MU' },
+      { name: 'Kipping Muscle-Up' },
+      { name: 'Strict Muscle-Up' },
+    ],
+  },
+];

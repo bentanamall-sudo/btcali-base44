@@ -1,0 +1,51 @@
+{
+  "name": "Payment",
+  "type": "object",
+  "properties": {
+    "student_name": {
+      "type": "string"
+    },
+    "student_email": {
+      "type": "string"
+    },
+    "amount": {
+      "type": "number"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "paid",
+        "due",
+        "overdue",
+        "partial"
+      ],
+      "default": "due"
+    },
+    "due_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "paid_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "plan": {
+      "type": "string",
+      "enum": [
+        "monthly_coaching",
+        "quarterly_coaching",
+        "annual_coaching",
+        "one_time"
+      ],
+      "default": "monthly_coaching"
+    },
+    "notes": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "student_name",
+    "amount",
+    "status"
+  ]
+}

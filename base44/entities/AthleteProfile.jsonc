@@ -1,0 +1,89 @@
+{
+  "name": "AthleteProfile",
+  "type": "object",
+  "properties": {
+    "user_email": {
+      "type": "string",
+      "description": "User email link"
+    },
+    "display_name": {
+      "type": "string"
+    },
+    "xp": {
+      "type": "number",
+      "default": 0
+    },
+    "rank": {
+      "type": "string",
+      "enum": [
+        "Recruit",
+        "Initiate",
+        "Warrior",
+        "Elite",
+        "Legend"
+      ],
+      "default": "Recruit"
+    },
+    "streak_days": {
+      "type": "number",
+      "default": 0
+    },
+    "last_active_date": {
+      "type": "string"
+    },
+    "bodyweight": {
+      "type": "number"
+    },
+    "theme": {
+      "type": "string",
+      "enum": [
+        "carbon",
+        "neon",
+        "gold",
+        "ice"
+      ],
+      "default": "carbon"
+    },
+    "quiz_completed": {
+      "type": "boolean",
+      "default": false
+    },
+    "quiz_results": {
+      "type": "object"
+    },
+    "tutorial_progress": {
+      "type": "object",
+      "description": "Map of tutorial ID to completion data"
+    },
+    "skill_progress": {
+      "type": "object",
+      "description": "Map of skill ID to progress data"
+    },
+    "achievements": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "daily_missions_completed": {
+      "type": "number",
+      "default": 0
+    },
+    "total_workouts": {
+      "type": "number",
+      "default": 0
+    },
+    "role": {
+      "type": "string",
+      "enum": [
+        "student",
+        "coach",
+        "admin"
+      ],
+      "default": "student"
+    }
+  },
+  "required": [
+    "user_email"
+  ]
+}

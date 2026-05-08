@@ -5,7 +5,18 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import PageNotFound from './lib/PageNotFound';
 import { AuthProvider, useAuth } from '@/lib/AuthContext';
 import UserNotRegisteredError from '@/components/UserNotRegisteredError';
-// Add page imports here
+import Layout from './components/Layout';
+import Home from './pages/Home';
+import AthleteScan from './pages/AthleteScan';
+import Tutorials from './pages/Tutorials';
+import TutorialDetail from './pages/TutorialDetail';
+import SkillLibrary from './pages/SkillLibrary';
+import Dashboard from './pages/Dashboard';
+import ProvenResults from './pages/ProvenResults';
+import Pricing from './pages/Pricing';
+import AICoach from './pages/AICoach';
+import CoachDashboard from './pages/CoachDashboard';
+import AdminPayments from './pages/AdminPayments';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -33,8 +44,20 @@ const AuthenticatedApp = () => {
   // Render the main app
   return (
     <Routes>
-      {/* Add your page Route elements here */}
-      <Route path="*" element={<PageNotFound />} />
+      <Route element={<Layout />}>
+        <Route path="/" element={<Home />} />
+        <Route path="/scan" element={<AthleteScan />} />
+        <Route path="/tutorials" element={<Tutorials />} />
+        <Route path="/tutorials/:tutorialId" element={<TutorialDetail />} />
+        <Route path="/skills" element={<SkillLibrary />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/results" element={<ProvenResults />} />
+        <Route path="/pricing" element={<Pricing />} />
+        <Route path="/ai-coach" element={<AICoach />} />
+        <Route path="/coach" element={<CoachDashboard />} />
+        <Route path="/admin/payments" element={<AdminPayments />} />
+        <Route path="*" element={<PageNotFound />} />
+      </Route>
     </Routes>
   );
 };
