@@ -17,6 +17,7 @@ import Pricing from './pages/Pricing';
 import AICoach from './pages/AICoach';
 import CoachDashboard from './pages/CoachDashboard';
 import AdminPayments from './pages/AdminPayments';
+import ProgramBuilder from './pages/ProgramBuilder';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -56,6 +57,7 @@ const AuthenticatedApp = () => {
         <Route path="/ai-coach" element={<AICoach />} />
         <Route path="/coach" element={<CoachDashboard />} />
         <Route path="/admin/payments" element={<AdminPayments />} />
+        <Route path="/coach/programs" element={<ProgramBuilder />} />
         <Route path="*" element={<PageNotFound />} />
       </Route>
     </Routes>

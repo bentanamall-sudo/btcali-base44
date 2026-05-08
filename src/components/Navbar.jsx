@@ -9,11 +9,11 @@ import { cn } from '@/lib/utils';
 const navLinks = [
   { to: '/', label: 'Home', icon: Zap },
   { to: '/scan', label: 'Athlete Scan', icon: BarChart3 },
-  { to: '/tutorials', label: 'Tutorials', icon: BookOpen },
+  { to: '/tutorials', label: 'Free Tutorials', icon: BookOpen },
   { to: '/skills', label: 'Skills', icon: Map },
   { to: '/dashboard', label: 'Dashboard', icon: User },
   { to: '/results', label: 'Results', icon: Trophy },
-  { to: '/pricing', label: 'Pricing', icon: DollarSign },
+  { to: '/pricing', label: 'Coaching', icon: DollarSign },
 ];
 
 export default function Navbar({ theme, setTheme }) {

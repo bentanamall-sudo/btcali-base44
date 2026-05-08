@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Users, BarChart3, Video, MessageSquare, FileText, Bell } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { Users, BarChart3, Video, MessageSquare, FileText, Bell, Layers } from 'lucide-react';
 import GlassCard from '../components/GlassCard';
 import GlowButton from '../components/GlowButton';
 import ProgressBar from '../components/ProgressBar';
@@ -17,6 +18,7 @@ const tabs = [
   { id: 'analytics', label: 'Analytics', icon: BarChart3 },
   { id: 'videos', label: 'Video Review', icon: Video },
   { id: 'notes', label: 'Notes', icon: FileText },
+  { id: 'programs', label: 'Program Builder', icon: Layers },
 ];
 
 export default function CoachDashboard() {
@@ -98,8 +100,17 @@ export default function CoachDashboard() {
         </div>
       )}
 
-      {/* Placeholder for other tabs */}
-      {activeTab !== 'students' && (
+      {activeTab === 'programs' && (
+        <div className="text-center py-8">
+          <Link to="/coach/programs">
+            <GlowButton size="lg">
+              <Layers className="w-5 h-5" /> Open Program Builder
+            </GlowButton>
+          </Link>
+        </div>
+      )}
+
+      {activeTab !== 'students' && activeTab !== 'programs' && (
         <GlassCard glow hover={false} className="text-center py-16">
           <h3 className="font-heading font-semibold text-xl text-foreground mb-2">
             {tabs.find(t => t.id === activeTab)?.label}

@@ -31,7 +31,7 @@ export default function SkillLibrary() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: i * 0.1 }}
           >
-            <SkillCard skill={skill} progress={skill.locked ? 0 : 15} />
+            <SkillCard skill={skill} progress={0} />
           </motion.div>
         ))}
       </div>

@@ -17,12 +17,21 @@ export default function Logo({ size = 'default', compact = false, className }) {
   }
 
   return (
-    <div className={cn('flex items-center gap-1', className)}>
-      <span className={cn('font-heading font-bold gradient-text tracking-tight', sizes[size])}>
-        BTC
+    <div className={cn('flex items-center gap-0', className)}>
+      <span className={cn('font-heading font-bold text-foreground/90 tracking-tight', sizes[size])}>
+        BT
       </span>
-      <span className={cn('font-heading font-light text-foreground/80 tracking-tight', sizes[size])}>
-        ALI
+      <span
+        className={cn('font-heading font-bold tracking-tight', sizes[size])}
+        style={{
+          background: 'linear-gradient(135deg, hsl(var(--gradient-start)), hsl(var(--gradient-end)))',
+          WebkitBackgroundClip: 'text',
+          WebkitTextFillColor: 'transparent',
+          backgroundClip: 'text',
+          filter: 'drop-shadow(0 0 8px hsl(var(--glow-primary) / 0.6))',
+        }}
+      >
+        CALI
       </span>
     </div>
   );

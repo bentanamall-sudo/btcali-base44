@@ -1,6 +1,8 @@
 import { motion } from 'framer-motion';
-import { Trophy, Star, TrendingUp } from 'lucide-react';
+import { Trophy, Star, TrendingUp, ArrowRight, Users } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import GlassCard from '../components/GlassCard';
+import GlowButton from '../components/GlowButton';
 
 const transformations = [
   { name: 'Alex M.', before: 'Zero pullups', after: '15+ strict pullups', timeframe: '6 months', skill: 'Pull Foundation' },
@@ -54,12 +56,13 @@ export default function ProvenResults() {
       </motion.div>
 
       {/* Transformation cards */}
-      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
         {transformations.map((t, i) => (
           <motion.div
             key={t.name}
             initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
             transition={{ delay: i * 0.1 }}
           >
             <GlassCard glow hover={false} className="h-full">
@@ -74,7 +77,6 @@ export default function ProvenResults() {
                   <div className="text-xs text-muted-foreground font-body">{t.timeframe}</div>
                 </div>
               </div>
-
               <div className="space-y-3">
                 <div className="glass rounded-lg p-3">
                   <div className="text-xs text-red-400 font-body mb-1">Before</div>
@@ -85,7 +87,6 @@ export default function ProvenResults() {
                   <div className="text-sm font-body text-foreground">{t.after}</div>
                 </div>
               </div>
-
               <div className="mt-3 flex items-center gap-1">
                 <Star className="w-3 h-3 fill-primary text-primary" />
                 <span className="text-xs text-primary font-body">{t.skill}</span>
@@ -94,6 +95,34 @@ export default function ProvenResults() {
           </motion.div>
         ))}
       </div>
+
+      {/* Coaching CTA */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        className="rounded-2xl glass text-center py-12 px-6 glow-border"
+      >
+        <Users className="w-10 h-10 text-primary mx-auto mb-4" />
+        <h2 className="font-heading font-bold text-2xl sm:text-3xl text-foreground mb-3">
+          Your Transformation <span className="gradient-text">Starts Now</span>
+        </h2>
+        <p className="text-muted-foreground font-body max-w-md mx-auto mb-6">
+          Join hundreds of athletes who have transformed their bodies with BTCALI coaching. Apply for your spot today.
+        </p>
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+          <Link to="/pricing">
+            <GlowButton size="lg">
+              Apply for Coaching <ArrowRight className="w-4 h-4" />
+            </GlowButton>
+          </Link>
+          <Link to="/tutorials">
+            <GlowButton variant="secondary" size="lg">
+              Start Free Tutorials
+            </GlowButton>
+          </Link>
+        </div>
+      </motion.div>
     </div>
   );
 }

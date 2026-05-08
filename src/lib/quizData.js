@@ -23,7 +23,10 @@ export const quizQuestions = [
     id: 'pullups',
     question: 'How many clean pullups can you do?',
     options: [
-      { label: '0–10', value: '0-10' },
+      { label: '0–1', value: '0-1' },
+      { label: '1–3', value: '1-3' },
+      { label: '3–5', value: '3-5' },
+      { label: '5–10', value: '5-10' },
       { label: '10–15', value: '10-15' },
       { label: '15+', value: '15+' },
     ],
@@ -155,8 +158,11 @@ export function analyzeResults(answers) {
     const m = answers.muscleup;
     let score = 0;
     if (p === '15+') score += 5;
-    else if (p === '10-15') score += 3;
-    else score += 1;
+    else if (p === '10-15') score += 4;
+    else if (p === '5-10') score += 3;
+    else if (p === '3-5') score += 2;
+    else if (p === '1-3') score += 1;
+    else score += 0;
     if (m === 'strict_multiple') score += 5;
     else if (m === 'clean') score += 4;
     else if (m === 'kipping') score += 3;
