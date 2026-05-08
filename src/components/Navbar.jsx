@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, Zap, User, BarChart3, BookOpen, Map, Trophy, DollarSign, Bot } from 'lucide-react';
+import { Menu, X, Zap, User, BarChart3, BookOpen, Layers, Trophy, DollarSign, Bot } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Logo from './Logo';
 import ThemeSwitcher from './ThemeSwitcher';
@@ -10,7 +10,7 @@ const navLinks = [
   { to: '/', label: 'Home', icon: Zap },
   { to: '/scan', label: 'Athlete Scan', icon: BarChart3 },
   { to: '/tutorials', label: 'Free Tutorials', icon: BookOpen },
-  { to: '/skills', label: 'Skills', icon: Map },
+  { to: '/programs', label: 'Programs', icon: Layers },
   { to: '/dashboard', label: 'Dashboard', icon: User },
   { to: '/results', label: 'Results', icon: Trophy },
   { to: '/pricing', label: 'Coaching', icon: DollarSign },

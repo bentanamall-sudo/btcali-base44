@@ -11,6 +11,9 @@ import AthleteScan from './pages/AthleteScan';
 import Tutorials from './pages/Tutorials';
 import TutorialDetail from './pages/TutorialDetail';
 import SkillLibrary from './pages/SkillLibrary';
+import Programs from './pages/Programs';
+import CoachingApply from './pages/CoachingApply';
+import AdminAnalytics from './pages/AdminAnalytics';
 import Dashboard from './pages/Dashboard';
 import ProvenResults from './pages/ProvenResults';
 import Pricing from './pages/Pricing';
@@ -51,6 +54,9 @@ const AuthenticatedApp = () => {
         <Route path="/tutorials" element={<Tutorials />} />
         <Route path="/tutorials/:tutorialId" element={<TutorialDetail />} />
         <Route path="/skills" element={<SkillLibrary />} />
+        <Route path="/programs" element={<Programs />} />
+        <Route path="/apply" element={<CoachingApply />} />
+        <Route path="/admin/analytics" element={<AdminAnalytics />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/results" element={<ProvenResults />} />
         <Route path="/pricing" element={<Pricing />} />

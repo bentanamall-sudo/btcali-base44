@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { DollarSign, Plus, Search } from 'lucide-react';
+import { DollarSign, Plus, Search, Shield } from 'lucide-react';
 import { base44 } from '@/api/base44Client';
 import GlassCard from '../components/GlassCard';
 import GlowButton from '../components/GlowButton';
@@ -9,16 +9,29 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
+const ADMIN_EMAIL = 'ben.tanamall@gmail.com';
+
 export default function AdminPayments() {
   const [payments, setPayments] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [authorized, setAuthorized] = useState(false);
+  const [checking, setChecking] = useState(true);
   const [search, setSearch] = useState('');
   const [dialogOpen, setDialogOpen] = useState(false);
   const [form, setForm] = useState({ student_name: '', amount: '', status: 'due', plan: 'monthly_coaching', notes: '' });
 
   useEffect(() => {
-    loadPayments();
+    checkAuth();
   }, []);
+
+  const checkAuth = async () => {
+    const me = await base44.auth.me();
+    if (me?.email === ADMIN_EMAIL) {
+      setAuthorized(true);
+      loadPayments();
+    }
+    setChecking(false);
+  };
 
   const loadPayments = async () => {
     const data = await base44.entities.Payment.list('-created_date', 100);
@@ -27,10 +40,7 @@ export default function AdminPayments() {
   };
 
   const handleCreate = async () => {
-    await base44.entities.Payment.create({
-      ...form,
-      amount: parseFloat(form.amount),
-    });
+    await base44.entities.Payment.create({ ...form, amount: parseFloat(form.amount) });
     setDialogOpen(false);
     setForm({ student_name: '', amount: '', status: 'due', plan: 'monthly_coaching', notes: '' });
     loadPayments();
@@ -43,6 +53,22 @@ export default function AdminPayments() {
     });
     loadPayments();
   };
+
+  if (checking) return (
+    <div className="min-h-screen flex items-center justify-center">
+      <div className="w-8 h-8 border-4 border-muted border-t-primary rounded-full animate-spin" />
+    </div>
+  );
+
+  if (!authorized) return (
+    <div className="min-h-screen flex items-center justify-center px-4">
+      <GlassCard glow hover={false} className="text-center max-w-sm">
+        <Shield className="w-12 h-12 text-destructive mx-auto mb-4" />
+        <h2 className="font-heading font-bold text-xl text-foreground mb-2">Access Denied</h2>
+        <p className="text-muted-foreground font-body text-sm">This section is restricted to BTCALI admins only.</p>
+      </GlassCard>
+    </div>
+  );
 
   const filtered = payments.filter((p) =>
     p.student_name?.toLowerCase().includes(search.toLowerCase())
@@ -150,7 +176,7 @@ export default function AdminPayments() {
               <GlassCard hover={false} className="flex flex-col sm:flex-row sm:items-center gap-4">
                 <div className="flex-1">
                   <div className="font-heading font-semibold text-foreground">{payment.student_name}</div>
-                  <div className="text-xs text-muted-foreground font-body">{payment.plan?.replace('_', ' ')}</div>
+                  <div className="text-xs text-muted-foreground font-body">{payment.plan?.replace(/_/g, ' ')}</div>
                   {payment.notes && <div className="text-xs text-muted-foreground font-body mt-1">{payment.notes}</div>}
                 </div>
                 <div className="font-heading font-bold text-lg gradient-text">${payment.amount}</div>

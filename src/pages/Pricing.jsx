@@ -38,7 +38,7 @@ const plans = [
       'Community Access',
     ],
     cta: 'Apply Now',
-    to: '/scan',
+    to: '/apply',
   },
   {
     name: 'Elite 1-on-1',
@@ -56,7 +56,7 @@ const plans = [
       'Monthly Strategy Calls',
     ],
     cta: 'Apply for Elite',
-    to: '/scan',
+    to: '/apply',
   },
 ];
 

@@ -10,37 +10,37 @@
     --font-body: 'Inter', sans-serif;
 
     /* Carbon Black Theme (default) */
-    --background: 220 15% 5%;
+    --background: 225 20% 4%;
     --foreground: 0 0% 95%;
-    --card: 220 15% 8%;
-    --card-foreground: 0 0% 95%;
-    --popover: 220 15% 8%;
+    --card: 225 20% 6%;
+    --card-foreground: 0 0% 97%;
+    --popover: 225 20% 6%;
     --popover-foreground: 0 0% 95%;
-    --primary: 265 80% 60%;
+    --primary: 262 90% 65%;
     --primary-foreground: 0 0% 100%;
-    --secondary: 220 15% 12%;
+    --secondary: 225 20% 9%;
     --secondary-foreground: 0 0% 90%;
-    --muted: 220 15% 15%;
+    --muted: 225 20% 12%;
     --muted-foreground: 220 10% 55%;
     --accent: 265 80% 60%;
     --accent-foreground: 0 0% 100%;
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 98%;
-    --border: 220 15% 15%;
-    --input: 220 15% 15%;
+    --border: 225 20% 14%;
+    --input: 225 20% 12%;
     --ring: 265 80% 60%;
     --radius: 0.75rem;
 
     /* BTCALI custom tokens */
-    --glow-primary: 265 80% 60%;
+    --glow-primary: 262 90% 65%;
     --glow-secondary: 200 90% 50%;
-    --gradient-start: 265 80% 60%;
-    --gradient-end: 200 90% 50%;
-    --glass-bg: 220 15% 10%;
-    --glass-border: 220 15% 20%;
-    --surface-1: 220 15% 7%;
-    --surface-2: 220 15% 10%;
-    --surface-3: 220 15% 13%;
+    --gradient-start: 262 90% 65%;
+    --gradient-end: 195 95% 55%;
+    --glass-bg: 225 20% 7%;
+    --glass-border: 225 20% 18%;
+    --surface-1: 225 20% 5%;
+    --surface-2: 225 20% 8%;
+    --surface-3: 225 20% 11%;
 
     --chart-1: 265 80% 60%;
     --chart-2: 200 90% 50%;
@@ -171,7 +171,7 @@
 
 /* Glassmorphism utilities */
 .glass {
-  background: hsl(var(--glass-bg) / 0.6);
+  background: hsl(var(--glass-bg) / 0.65);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border: 1px solid hsl(var(--glass-border) / 0.3);
@@ -186,19 +186,22 @@
 
 /* Glow effects */
 .glow-primary {
-  box-shadow: 0 0 20px hsl(var(--glow-primary) / 0.3),
-              0 0 40px hsl(var(--glow-primary) / 0.1);
+  box-shadow: 0 0 25px hsl(var(--glow-primary) / 0.45),
+              0 0 60px hsl(var(--glow-primary) / 0.15),
+              0 0 100px hsl(var(--glow-primary) / 0.05);
 }
 
 .glow-primary-strong {
-  box-shadow: 0 0 30px hsl(var(--glow-primary) / 0.4),
-              0 0 60px hsl(var(--glow-primary) / 0.2);
+  box-shadow: 0 0 40px hsl(var(--glow-primary) / 0.6),
+              0 0 80px hsl(var(--glow-primary) / 0.25),
+              0 0 120px hsl(var(--glow-primary) / 0.1);
 }
 
 .glow-border {
-  border: 1px solid hsl(var(--glow-primary) / 0.4);
-  box-shadow: inset 0 0 20px hsl(var(--glow-primary) / 0.05),
-              0 0 15px hsl(var(--glow-primary) / 0.1);
+  border: 1px solid hsl(var(--glow-primary) / 0.5);
+  box-shadow: inset 0 0 30px hsl(var(--glow-primary) / 0.07),
+              0 0 25px hsl(var(--glow-primary) / 0.2),
+              0 0 60px hsl(var(--glow-primary) / 0.08);
 }
 
 /* Gradient text */
@@ -246,8 +249,17 @@
 }
 
 @keyframes pulse-glow {
-  0%, 100% { box-shadow: 0 0 20px hsl(var(--glow-primary) / 0.3); }
-  50% { box-shadow: 0 0 40px hsl(var(--glow-primary) / 0.6); }
+  0%, 100% { box-shadow: 0 0 25px hsl(var(--glow-primary) / 0.4), 0 0 60px hsl(var(--glow-primary) / 0.1); }
+  50% { box-shadow: 0 0 50px hsl(var(--glow-primary) / 0.7), 0 0 100px hsl(var(--glow-primary) / 0.25); }
+}
+
+@keyframes electric-border {
+  0%, 100% { border-color: hsl(var(--glow-primary) / 0.3); }
+  50% { border-color: hsl(var(--glow-primary) / 0.8); }
+}
+
+.animate-electric {
+  animation: electric-border 2s ease-in-out infinite;
 }
 
 @keyframes scan-line {
