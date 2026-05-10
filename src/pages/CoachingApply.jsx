@@ -92,9 +92,9 @@ export default function CoachingApply() {
                   </div>
                 ))}
               </div>
-              <Link to="/pricing">
+              <Link to="/purchase?type=coaching">
                 <GlowButton variant="primary" className="w-full">
-                  View Plans
+                  Apply for Coaching
                   <ArrowRight className="w-4 h-4" />
                 </GlowButton>
               </Link>
