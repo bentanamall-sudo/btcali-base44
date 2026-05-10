@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { ArrowLeft, CheckCircle, Circle, RotateCcw, ArrowRight } from 'lucide-react';
+import { ArrowLeft, CheckCircle, Circle, RotateCcw, ArrowRight, Lock, Crown } from 'lucide-react';
+import { Link as RouterLink } from 'react-router-dom';
 import GlassCard from '../components/GlassCard';
 import GlowButton from '../components/GlowButton';
 import ProgressBar from '../components/ProgressBar';
@@ -157,6 +158,60 @@ export default function TutorialDetail() {
           );
         })}
       </div>
+
+      {/* Locked Premium Program Section */}
+      {tutorialId === 'handstand' && (
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="mt-10"
+        >
+          <div className="rounded-2xl overflow-hidden relative">
+            <div className="absolute inset-0 bg-gradient-to-br from-background via-background/95 to-primary/5" />
+            <div className="relative p-6 sm:p-8 border border-primary/20 rounded-2xl" style={{ boxShadow: '0 0 40px hsl(var(--glow-primary) / 0.1)' }}>
+              <div className="flex items-start gap-4 mb-6">
+                <div className="w-12 h-12 rounded-xl glass flex items-center justify-center flex-shrink-0">
+                  <Lock className="w-6 h-6 text-primary" />
+                </div>
+                <div>
+                  <div className="flex items-center gap-2 mb-1">
+                    <span className="text-xs font-heading font-bold px-2 py-0.5 rounded-full bg-amber-400/15 text-amber-400">COMING SOON</span>
+                  </div>
+                  <h3 className="font-heading font-bold text-xl text-foreground">Full Handstand Program</h3>
+                  <p className="text-sm text-muted-foreground font-body mt-1">Full structured handstand program — currently locked.</p>
+                </div>
+              </div>
+              <div className="grid sm:grid-cols-2 gap-3 mb-6">
+                {['12-week structured progression', 'Freestanding hold to walking HS', 'HSPU foundation pathway', 'Periodized volume & intensity', 'Video breakdowns per phase', 'One-arm handstand prep'].map(item => (
+                  <div key={item} className="flex items-center gap-2 text-sm font-body text-foreground/60">
+                    <div className="w-1.5 h-1.5 rounded-full bg-muted-foreground flex-shrink-0" />
+                    {item}
+                  </div>
+                ))}
+              </div>
+              <div className="flex flex-col sm:flex-row gap-3">
+                <RouterLink to="/purchase?type=handstand" className="flex-1">
+                  <motion.button
+                    whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}
+                    className="w-full flex items-center justify-center gap-2 py-3 px-5 rounded-xl gradient-bg-strong text-primary-foreground font-heading font-semibold text-sm glow-primary"
+                  >
+                    <Crown className="w-4 h-4" /> Apply for 1-on-1 Coaching
+                  </motion.button>
+                </RouterLink>
+                <RouterLink to="/purchase?type=handstand">
+                  <motion.button
+                    whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}
+                    className="w-full sm:w-auto flex items-center justify-center gap-2 py-3 px-5 rounded-xl glass border border-primary/30 text-foreground font-heading font-semibold text-sm"
+                  >
+                    Unlock Program Soon
+                  </motion.button>
+                </RouterLink>
+              </div>
+            </div>
+          </div>
+        </motion.div>
+      )}
 
       {/* Bottom CTA */}
       <motion.div

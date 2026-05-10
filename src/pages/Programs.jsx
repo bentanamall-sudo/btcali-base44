@@ -1,12 +1,14 @@
 import { motion } from 'framer-motion';
+import { useAccessCodes } from '@/lib/useAccessCodes';
 import { Link } from 'react-router-dom';
 import { Layers, Lock, ArrowRight, Crown, CheckCircle, Clock, Users } from 'lucide-react';
 import GlassCard from '../components/GlassCard';
 import GlowButton from '../components/GlowButton';
 import { programs } from '@/lib/programsData';
 
-function ProgramCard({ program, index }) {
-  const isLocked = !program.available;
+function ProgramCard({ program, index, isProgramUnlocked }) {
+  const unlocked = isProgramUnlocked(program.id);
+  const isLocked = !program.available && !unlocked;
 
   return (
     <motion.div
@@ -82,10 +84,10 @@ function ProgramCard({ program, index }) {
                   <span className="text-xs font-heading font-semibold text-amber-400">Coming Soon</span>
                 </div>
                 <p className="text-xs text-muted-foreground font-body">
-                  Full programs are being built. For now, get custom programming through 1-on-1 coaching.
+                  Full programs are being built. Get custom programming through 1-on-1 coaching now.
                 </p>
               </div>
-              <Link to="/apply">
+              <Link to={`/purchase?type=${program.skill?.toLowerCase().replace(/[^a-z]/g,'') || 'coaching'}`}>
                 <motion.button
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
@@ -96,6 +98,13 @@ function ProgramCard({ program, index }) {
                 </motion.button>
               </Link>
             </div>
+          ) : program.tag === 'PREMIUM' ? (
+            <Link to={program.to}>
+              <GlowButton className="w-full" variant="primary">
+                <Crown className="w-4 h-4" /> {program.cta}
+                <ArrowRight className="w-4 h-4" />
+              </GlowButton>
+            </Link>
           ) : (
             <Link to={program.to}>
               <GlowButton className="w-full" variant={program.featured ? 'primary' : 'secondary'}>
@@ -118,8 +127,10 @@ function ProgramCard({ program, index }) {
 }
 
 export default function Programs() {
+  const { isProgramUnlocked } = useAccessCodes();
   const freePrograms = programs.filter(p => p.tag === 'FREE');
   const availableNow = programs.filter(p => p.tag === 'AVAILABLE NOW');
+  const premiumPrograms = programs.filter(p => p.tag === 'PREMIUM');
   const comingSoon = programs.filter(p => p.tag === 'COMING SOON');
 
   return (
@@ -164,7 +175,7 @@ export default function Programs() {
           </h2>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {freePrograms.map((program, i) => (
-              <ProgramCard key={program.id} program={program} index={i} />
+              <ProgramCard key={program.id} program={program} index={i} isProgramUnlocked={isProgramUnlocked} />
             ))}
           </div>
         </div>
@@ -179,7 +190,22 @@ export default function Programs() {
           </h2>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {availableNow.map((program, i) => (
-              <ProgramCard key={program.id} program={program} index={i} />
+              <ProgramCard key={program.id} program={program} index={i} isProgramUnlocked={isProgramUnlocked} />
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Premium Programs */}
+      {premiumPrograms.length > 0 && (
+        <div className="mb-12">
+          <h2 className="font-heading font-bold text-xl mb-6 text-foreground flex items-center gap-2">
+            <Crown className="w-4 h-4 text-primary" />
+            <span>Premium Programs</span>
+          </h2>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {premiumPrograms.map((program, i) => (
+              <ProgramCard key={program.id} program={program} index={i} isProgramUnlocked={isProgramUnlocked} />
             ))}
           </div>
         </div>
@@ -194,7 +220,7 @@ export default function Programs() {
           </h2>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {comingSoon.map((program, i) => (
-              <ProgramCard key={program.id} program={program} index={i} />
+              <ProgramCard key={program.id} program={program} index={i} isProgramUnlocked={isProgramUnlocked} />
             ))}
           </div>
         </div>

@@ -3,6 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { Menu, X, Zap, User, BarChart3, BookOpen, Layers, Trophy, DollarSign, Bot } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Logo from './Logo';
+import CodeUnlock from './CodeUnlock';
 import ThemeSwitcher from './ThemeSwitcher';
 import { cn } from '@/lib/utils';
 
@@ -52,6 +53,7 @@ export default function Navbar({ theme, setTheme }) {
           </div>
 
           <div className="hidden lg:flex items-center gap-4">
+            <CodeUnlock />
             <ThemeSwitcher theme={theme} setTheme={setTheme} />
             <Link to="/ai-coach" className="text-muted-foreground hover:text-foreground transition-colors">
               <Bot className="w-5 h-5" />
