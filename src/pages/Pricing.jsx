@@ -40,7 +40,7 @@ const plans = [
   },
   {
     name: 'Elite 1-on-1',
-    price: '$120',
+    price: '$150',
     period: '/month',
     description: 'Or $40/week — direct elite coaching',
     features: [
@@ -112,6 +112,12 @@ export default function Pricing() {
                   {plan.price}
                   <span className="text-sm text-muted-foreground font-body font-normal">{plan.period}</span>
                 </div>
+                {plan.name === 'Elite 1-on-1' && (
+                  <div className="mt-2 inline-flex items-center gap-1.5 glass glow-border rounded-full px-4 py-1.5">
+                    <Zap className="w-3.5 h-3.5 text-primary" />
+                    <span className="font-heading font-bold text-base gradient-text">or $40/week</span>
+                  </div>
+                )}
               </div>
               <ul className="space-y-3 mb-6 flex-1">
                 {plan.features.map((f) => (

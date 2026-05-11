@@ -6,7 +6,8 @@ const INQUIRY_URL = 'https://ig.me/j/AbaAth3FA0NMTibx/';
 
 const benefits = [
   'Send training videos directly for form analysis',
-  'Receive technique corrections and weakness identification',
+  'Receive form analysis and technique corrections',
+  'Identify weaknesses with expert eyes',
   'Get adjusted programming every session',
   'Progress faster and more efficiently with direct feedback',
 ];
@@ -29,8 +30,24 @@ export default function CoachingCTA() {
       <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-accent/5 pointer-events-none" />
 
       <div className="relative p-6 sm:p-8">
-        {/* Header */}
-        <div className="mb-6 text-center">
+      {/* Pricing highlight */}
+      <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mb-6">
+        <div className="glass rounded-2xl px-6 py-3 text-center border border-primary/30">
+          <div className="text-xs font-heading text-muted-foreground uppercase tracking-widest mb-0.5">Monthly</div>
+          <div className="font-heading font-bold text-3xl gradient-text">$150<span className="text-base font-body text-muted-foreground font-normal">/month</span></div>
+        </div>
+        <div className="font-heading text-muted-foreground text-sm">or</div>
+        <div className="glass rounded-2xl px-6 py-3 text-center glow-border border border-primary/50 relative overflow-hidden">
+          <div className="absolute inset-0 gradient-bg pointer-events-none" />
+          <div className="relative">
+            <div className="text-xs font-heading text-primary uppercase tracking-widest mb-0.5 font-bold">Weekly</div>
+            <div className="font-heading font-bold text-3xl gradient-text">$40<span className="text-base font-body text-muted-foreground font-normal">/week</span></div>
+          </div>
+        </div>
+      </div>
+
+      {/* Header */}
+      <div className="mb-6 text-center">
           <div className="inline-flex items-center gap-2 glass px-4 py-2 rounded-full mb-4">
             <Zap className="w-4 h-4 text-primary" />
             <span className="text-xs font-heading font-bold text-primary uppercase tracking-widest">Want Faster and More Personalised Progress?</span>

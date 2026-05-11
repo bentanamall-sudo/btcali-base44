@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 import { useAccessCodes } from '@/lib/useAccessCodes';
 import { Link } from 'react-router-dom';
-import { Layers, Lock, ArrowRight, Crown, CheckCircle, Clock, Users } from 'lucide-react';
+import { Layers, Lock, ArrowRight, Crown, CheckCircle, Clock, Users, Target, AlertCircle, Gift, Zap } from 'lucide-react';
 import GlassCard from '../components/GlassCard';
 import GlowButton from '../components/GlowButton';
 import { programs } from '@/lib/programsData';
@@ -66,11 +66,68 @@ function ProgramCard({ program, index, isProgramUnlocked }) {
           </p>
           <p className="text-sm text-foreground/80 font-body mb-4 leading-relaxed">{program.description}</p>
 
+          {/* Requirements */}
+          {program.requirements?.length > 0 && (
+            <div className="glass rounded-xl p-3 mb-3 border border-amber-400/20">
+              <div className="flex items-center gap-1.5 mb-2">
+                <AlertCircle className="w-3.5 h-3.5 text-amber-400 flex-shrink-0" />
+                <span className="text-xs font-heading font-bold text-amber-400 uppercase tracking-wider">Requirements</span>
+              </div>
+              <div className="space-y-1">
+                {program.requirements.map((req) => (
+                  <div key={req} className="flex items-start gap-2 text-xs font-body text-foreground/75">
+                    <div className="w-1 h-1 rounded-full bg-amber-400/70 flex-shrink-0 mt-1.5" />
+                    {req}
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Goals */}
+          {program.goals?.length > 0 && (
+            <div className="glass rounded-xl p-3 mb-3 border border-primary/25">
+              <div className="flex items-center gap-1.5 mb-2">
+                <Target className="w-3.5 h-3.5 text-primary flex-shrink-0" />
+                <span className="text-xs font-heading font-bold text-primary uppercase tracking-wider">Goals</span>
+              </div>
+              <div className="space-y-1">
+                {program.goals.map((goal) => (
+                  <div key={goal} className="flex items-start gap-2 text-xs font-body text-foreground/80">
+                    <CheckCircle className="w-3 h-3 text-primary/70 flex-shrink-0 mt-0.5" />
+                    {goal}
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Bundle Note */}
+          {program.bundleNote && (
+            <div className="flex items-center gap-2 glass rounded-lg px-3 py-2 mb-3 border border-green-400/20">
+              <Gift className="w-3.5 h-3.5 text-green-400 flex-shrink-0" />
+              <span className="text-xs font-body text-green-400 font-medium">{program.bundleNote}</span>
+            </div>
+          )}
+
+          {/* Recommended */}
+          {program.recommended?.length > 0 && (
+            <div className="glass rounded-lg px-3 py-2 mb-3 border border-primary/15">
+              <div className="flex items-center gap-1.5 mb-1">
+                <Zap className="w-3 h-3 text-primary/70" />
+                <span className="text-xs font-heading font-semibold text-primary/80">Recommended Also</span>
+              </div>
+              {program.recommended.map((r) => (
+                <p key={r} className="text-xs text-muted-foreground font-body">{r}</p>
+              ))}
+            </div>
+          )}
+
           {/* Includes */}
           <div className="space-y-1.5 mb-5">
             {program.includes.map((item) => (
-              <div key={item} className="flex items-center gap-2 text-xs font-body text-foreground/70">
-                <CheckCircle className="w-3.5 h-3.5 text-primary flex-shrink-0" />
+              <div key={item} className="flex items-center gap-2 text-xs font-body text-foreground/60">
+                <CheckCircle className="w-3 h-3 text-muted-foreground flex-shrink-0" />
                 {item}
               </div>
             ))}
@@ -143,7 +200,9 @@ export default function Programs() {
   const { isProgramUnlocked } = useAccessCodes();
   const freePrograms = programs.filter(p => p.tag === 'FREE');
   const availableNow = programs.filter(p => p.tag === 'AVAILABLE NOW');
-  const premiumPrograms = programs.filter(p => p.tag === 'PREMIUM');
+  const planchePrograms = programs.filter(p => p.tag === 'PREMIUM' && p.skill === 'Planche');
+  const frontLeverPrograms = programs.filter(p => p.tag === 'PREMIUM' && p.skill === 'Front Lever');
+  const otherPremium = programs.filter(p => p.tag === 'PREMIUM' && p.skill !== 'Planche' && p.skill !== 'Front Lever');
   const comingSoon = programs.filter(p => p.tag === 'COMING SOON');
 
   return (
@@ -209,15 +268,47 @@ export default function Programs() {
         </div>
       )}
 
-      {/* Premium Programs */}
-      {premiumPrograms.length > 0 && (
+      {/* Planche Programs */}
+      {planchePrograms.length > 0 && (
+        <div className="mb-12">
+          <h2 className="font-heading font-bold text-xl mb-2 text-foreground flex items-center gap-2">
+            <Crown className="w-4 h-4 text-primary" />
+            <span>Planche Programs</span>
+          </h2>
+          <p className="text-sm text-muted-foreground font-body mb-6">V1 → V4 structured progression pathway</p>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {planchePrograms.map((program, i) => (
+              <ProgramCard key={program.id} program={program} index={i} isProgramUnlocked={isProgramUnlocked} />
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Front Lever Programs */}
+      {frontLeverPrograms.length > 0 && (
+        <div className="mb-12">
+          <h2 className="font-heading font-bold text-xl mb-2 text-foreground flex items-center gap-2">
+            <Crown className="w-4 h-4 text-cyan-400" />
+            <span className="text-foreground">Front Lever Programs</span>
+          </h2>
+          <p className="text-sm text-muted-foreground font-body mb-6">V1 → Advanced V6 structured progression pathway</p>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {frontLeverPrograms.map((program, i) => (
+              <ProgramCard key={program.id} program={program} index={i} isProgramUnlocked={isProgramUnlocked} />
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Other Premium */}
+      {otherPremium.length > 0 && (
         <div className="mb-12">
           <h2 className="font-heading font-bold text-xl mb-6 text-foreground flex items-center gap-2">
             <Crown className="w-4 h-4 text-primary" />
             <span>Premium Programs</span>
           </h2>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {premiumPrograms.map((program, i) => (
+            {otherPremium.map((program, i) => (
               <ProgramCard key={program.id} program={program} index={i} isProgramUnlocked={isProgramUnlocked} />
             ))}
           </div>
