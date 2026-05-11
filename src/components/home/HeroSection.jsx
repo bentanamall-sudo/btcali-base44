@@ -28,19 +28,18 @@ export default function HeroSection() {
             className="inline-flex items-center gap-2 glass px-4 py-2 rounded-full mb-8"
           >
             <Zap className="w-4 h-4 text-primary" />
-            <span className="text-sm font-body text-muted-foreground">Elite Calisthenics Operating System</span>
+            <span className="text-sm font-body text-muted-foreground">Elite Calisthenics Coaching For Proven High-Level Progress</span>
           </motion.div>
 
           {/* Main heading */}
           <h1 className="font-heading font-bold text-4xl sm:text-5xl md:text-7xl lg:text-8xl leading-tight mb-6">
-            <span className="text-foreground">Master Your</span>
+            <span className="text-foreground">Unlock Elite</span>
             <br />
-            <span className="gradient-text">Bodyweight</span>
+            <span className="gradient-text">Bodyweight Strength</span>
           </h1>
 
           <p className="font-body text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto mb-10 leading-relaxed">
-            The premium calisthenics coaching platform. AI-powered diagnostics, 
-            elite skill roadmaps, and world-class coaching — all in one system.
+            The ultimate premium calisthenics coaching platform — combining elite coaching, athlete diagnostics, proven transformation systems, and structured programs designed to help athletes at every level unlock serious bodyweight strength and elite-level progress.
           </p>
 
           {/* CTA Buttons */}

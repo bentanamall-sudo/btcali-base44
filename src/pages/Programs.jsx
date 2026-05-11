@@ -5,6 +5,7 @@ import { Layers, Lock, ArrowRight, Crown, CheckCircle, Clock, Users } from 'luci
 import GlassCard from '../components/GlassCard';
 import GlowButton from '../components/GlowButton';
 import { programs } from '@/lib/programsData';
+import CoachingCTA from '../components/programs/CoachingCTA';
 
 function ProgramCard({ program, index, isProgramUnlocked }) {
   const unlocked = isProgramUnlocked(program.id);
@@ -78,15 +79,27 @@ function ProgramCard({ program, index, isProgramUnlocked }) {
           {/* CTA */}
           {isLocked ? (
             <div className="space-y-3">
-              <div className="glass rounded-xl p-3 text-center">
-                <div className="flex items-center justify-center gap-2 mb-1">
-                  <Clock className="w-4 h-4 text-amber-400" />
-                  <span className="text-xs font-heading font-semibold text-amber-400">Coming Soon</span>
+              {program.tag === 'COMING SOON' ? (
+                <div className="glass rounded-xl p-3 text-center">
+                  <div className="flex items-center justify-center gap-2 mb-1">
+                    <Clock className="w-4 h-4 text-amber-400" />
+                    <span className="text-xs font-heading font-semibold text-amber-400">Coming Soon</span>
+                  </div>
+                  <p className="text-xs text-muted-foreground font-body">
+                    Get custom programming through 1-on-1 coaching while this launches.
+                  </p>
                 </div>
-                <p className="text-xs text-muted-foreground font-body">
-                  Full programs are being built. Get custom programming through 1-on-1 coaching now.
-                </p>
-              </div>
+              ) : (
+                <div className="glass rounded-xl p-3 text-center">
+                  <div className="flex items-center justify-center gap-2 mb-1">
+                    <Lock className="w-4 h-4 text-primary" />
+                    <span className="text-xs font-heading font-semibold text-primary">Access Required</span>
+                  </div>
+                  <p className="text-xs text-muted-foreground font-body">
+                    Contact BTCALI to receive your personal access code.
+                  </p>
+                </div>
+              )}
               <Link to={`/purchase?type=${program.skill?.toLowerCase().replace(/[^a-z]/g,'') || 'coaching'}`}>
                 <motion.button
                   whileHover={{ scale: 1.02 }}
@@ -98,7 +111,7 @@ function ProgramCard({ program, index, isProgramUnlocked }) {
                 </motion.button>
               </Link>
             </div>
-          ) : program.tag === 'PREMIUM' ? (
+          ) : program.tag === 'AVAILABLE NOW' || program.tag === 'PREMIUM' ? (
             <Link to={program.to}>
               <GlowButton className="w-full" variant="primary">
                 <Crown className="w-4 h-4" /> {program.cta}
@@ -225,6 +238,8 @@ export default function Programs() {
           </div>
         </div>
       )}
+
+      <CoachingCTA />
     </div>
   );
 }

@@ -54,7 +54,6 @@ export default function Navbar({ theme, setTheme }) {
 
           <div className="hidden lg:flex items-center gap-4">
             <CodeUnlock />
-            <ThemeSwitcher theme={theme} setTheme={setTheme} />
             <Link to="/ai-coach" className="text-muted-foreground hover:text-foreground transition-colors">
               <Bot className="w-5 h-5" />
             </Link>
@@ -108,9 +107,7 @@ export default function Navbar({ theme, setTheme }) {
                 <Bot className="w-5 h-5" />
                 AI Coach
               </Link>
-              <div className="pt-3 px-4">
-                <ThemeSwitcher theme={theme} setTheme={setTheme} />
-              </div>
+
             </div>
           </motion.div>
         )}

@@ -119,6 +119,21 @@ export const quizQuestions = [
       { label: '20+ sec', value: '20+s' },
     ],
   },
+  {
+    id: 'target_skills',
+    question: 'What skills do you want to unlock?',
+    multiSelect: true,
+    options: [
+      { label: 'Planche', value: 'planche' },
+      { label: 'Front Lever', value: 'frontlever' },
+      { label: 'Handstand', value: 'handstand' },
+      { label: 'Handstand Pushup', value: 'hspu' },
+      { label: 'L-Sit to Handstand', value: 'lsit_hs' },
+      { label: 'Improving Foundations', value: 'foundations' },
+      { label: 'Weighted Calisthenics', value: 'weighted' },
+      { label: 'Muscle-Up', value: 'muscleup' },
+    ],
+  },
 ];
 
 export function analyzeResults(answers) {

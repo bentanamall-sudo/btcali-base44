@@ -58,6 +58,7 @@ export default function AthleteScan() {
               onSelect={handleSelect}
               currentIndex={currentIndex}
               totalQuestions={activeQuestions.length}
+              multiSelect={currentQuestion.multiSelect || false}
             />
           )}
         </AnimatePresence>
