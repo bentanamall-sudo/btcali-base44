@@ -1,11 +1,25 @@
+function parseRange(val) {
+  if (!val) return 0;
+  const s = String(val);
+  if (s === '0' || s === '0 seconds') return 0;
+  // e.g. "11–20" or "11-20" -> take upper bound
+  const rangeMatch = s.match(/(\d+)[–\-](\d+)/);
+  if (rangeMatch) return parseInt(rangeMatch[2]);
+  // e.g. "50+" or "30+ sec" -> take the number
+  const plusMatch = s.match(/(\d+)\+/);
+  if (plusMatch) return parseInt(plusMatch[1]) + 1;
+  // e.g. "1–5 sec" handled above; plain number
+  return parseInt(s) || 0;
+}
+
 export function generateReport(data) {
-  const pushups = parseInt(data.pushup_max) || 0;
-  const pullups = parseInt(data.pullup_max) || 0;
-  const dips = parseInt(data.dip_max) || 0;
-  const pikepu = parseInt(data.pike_pushup_max) || 0;
-  const hsHold = parseInt(data.handstand_hold) || 0;
-  const lsit = parseInt(data.lsit_hold) || 0;
-  const tuckPlanche = parseInt(data.tuck_planche_hold) || 0;
+  const pushups = parseRange(data.pushup_max);
+  const pullups = parseRange(data.pullup_max);
+  const dips = parseRange(data.dip_max);
+  const pikepu = parseRange(data.pike_pushup_max);
+  const hsHold = parseRange(data.handstand_hold);
+  const lsit = parseRange(data.lsit_hold);
+  const tuckPlanche = parseRange(data.tuck_planche_hold);
   const flLevel = data.front_lever_level || 'None';
 
   const flScore = { 'None': 0, 'Tuck FL': 1, 'Advanced Tuck FL': 2, 'One Leg FL': 3, 'Straddle FL': 4, 'Full FL': 5 }[flLevel] || 0;

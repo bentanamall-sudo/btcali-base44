@@ -39,16 +39,44 @@ function OptionBtn({ label, selected, onClick, multi }) {
   );
 }
 
-function NumberInput({ value, onChange, placeholder, min = 0 }) {
+function RepRangeSelect({ options, value, onChange }) {
+  const [custom, setCustom] = useState(false);
+  const [customVal, setCustomVal] = useState('');
   return (
-    <input
-      type="number"
-      value={value}
-      onChange={e => onChange(e.target.value)}
-      placeholder={placeholder}
-      min={min}
-      className="w-full glass rounded-xl px-4 py-3 text-foreground font-body text-base border border-border/40 focus:border-primary/60 focus:outline-none focus:ring-1 focus:ring-primary/40 bg-transparent"
-    />
+    <div>
+      <div className="grid grid-cols-3 sm:grid-cols-4 gap-2 mb-2">
+        {options.map(opt => (
+          <motion.button
+            key={opt}
+            whileTap={{ scale: 0.95 }}
+            onClick={() => { setCustom(false); onChange(opt); }}
+            className={`py-2.5 px-2 rounded-xl text-sm font-heading font-bold border transition-all duration-200 text-center
+              ${value === opt && !custom
+                ? 'gradient-bg-strong text-primary-foreground glow-primary border-primary/60'
+                : 'glass border-border/40 text-foreground/80 hover:border-primary/40 hover:text-foreground'
+              }`}
+          >{opt}</motion.button>
+        ))}
+        <motion.button
+          whileTap={{ scale: 0.95 }}
+          onClick={() => { setCustom(true); onChange(customVal); }}
+          className={`py-2.5 px-2 rounded-xl text-xs font-heading font-semibold border transition-all duration-200 text-center
+            ${custom
+              ? 'gradient-bg-strong text-primary-foreground glow-primary border-primary/60'
+              : 'glass border-border/40 text-muted-foreground hover:border-primary/40'
+            }`}
+        >Other</motion.button>
+      </div>
+      {custom && (
+        <input
+          type="number"
+          value={customVal}
+          onChange={e => { setCustomVal(e.target.value); onChange(e.target.value); }}
+          placeholder="Enter exact number"
+          className="w-full glass rounded-xl px-4 py-2.5 text-foreground font-body text-sm border border-primary/40 focus:border-primary/60 focus:outline-none focus:ring-1 focus:ring-primary/40 bg-transparent mt-1"
+        />
+      )}
+    </div>
   );
 }
 
@@ -132,7 +160,7 @@ export default function AthleteDiagnostic() {
     <div key="s0" className="space-y-0">
       <Field><Label>Full Name</Label><TextInput value={data.full_name} onChange={v => set('full_name', v)} placeholder="Your full name" /></Field>
       <Field><Label>Email</Label><TextInput value={data.email} onChange={v => set('email', v)} placeholder="your@email.com" type="email" /></Field>
-      <Field><Label>Age</Label><NumberInput value={data.age} onChange={v => set('age', v)} placeholder="e.g. 24" min={10} /></Field>
+      <Field><Label>Age</Label><TextInput value={data.age} onChange={v => set('age', v)} placeholder="e.g. 24" type="number" /></Field>
       <Field><Label>Country</Label><TextInput value={data.country} onChange={v => set('country', v)} placeholder="e.g. Australia" /></Field>
       <Field><Label>Instagram Username</Label><TextInput value={data.instagram} onChange={v => set('instagram', v)} placeholder="@handle" /></Field>
     </div>,
@@ -163,15 +191,34 @@ export default function AthleteDiagnostic() {
 
     // 2 — Current Strength
     <div key="s2" className="space-y-0">
-      <div className="grid grid-cols-2 gap-4">
-        <Field><Label>Push-up max reps</Label><NumberInput value={data.pushup_max} onChange={v => set('pushup_max', v)} placeholder="e.g. 20" /></Field>
-        <Field><Label>Pull-up max reps</Label><NumberInput value={data.pullup_max} onChange={v => set('pullup_max', v)} placeholder="e.g. 10" /></Field>
-        <Field><Label>Dip max reps</Label><NumberInput value={data.dip_max} onChange={v => set('dip_max', v)} placeholder="e.g. 15" /></Field>
-        <Field><Label>Pike push-up max</Label><NumberInput value={data.pike_pushup_max} onChange={v => set('pike_pushup_max', v)} placeholder="e.g. 8" /></Field>
-        <Field><Label>Handstand hold (secs)</Label><NumberInput value={data.handstand_hold} onChange={v => set('handstand_hold', v)} placeholder="e.g. 10" /></Field>
-        <Field><Label>L-sit hold (secs)</Label><NumberInput value={data.lsit_hold} onChange={v => set('lsit_hold', v)} placeholder="e.g. 15" /></Field>
-        <Field><Label>Tuck planche hold (secs)</Label><NumberInput value={data.tuck_planche_hold} onChange={v => set('tuck_planche_hold', v)} placeholder="e.g. 5" /></Field>
-      </div>
+      <Field>
+        <Label>Push-up max reps</Label>
+        <RepRangeSelect options={['0–5','6–10','11–20','21–30','31–40','41–50','50+']} value={data.pushup_max} onChange={v => set('pushup_max', v)} />
+      </Field>
+      <Field>
+        <Label>Pull-up max reps</Label>
+        <RepRangeSelect options={['0','1–3','4–6','7–10','11–15','16–20','20+']} value={data.pullup_max} onChange={v => set('pullup_max', v)} />
+      </Field>
+      <Field>
+        <Label>Dip max reps</Label>
+        <RepRangeSelect options={['0','1–5','6–10','11–15','16–20','21–30','30+']} value={data.dip_max} onChange={v => set('dip_max', v)} />
+      </Field>
+      <Field>
+        <Label>Pike push-up max</Label>
+        <RepRangeSelect options={['0','1–3','4–6','7–10','11–15','16–20','20+']} value={data.pike_pushup_max} onChange={v => set('pike_pushup_max', v)} />
+      </Field>
+      <Field>
+        <Label>Handstand hold time</Label>
+        <RepRangeSelect options={['0 seconds','1–5 sec','6–10 sec','11–20 sec','21–30 sec','30+ sec']} value={data.handstand_hold} onChange={v => set('handstand_hold', v)} />
+      </Field>
+      <Field>
+        <Label>L-sit hold time</Label>
+        <RepRangeSelect options={['0 seconds','1–5 sec','6–10 sec','11–20 sec','21–30 sec','30+ sec']} value={data.lsit_hold} onChange={v => set('lsit_hold', v)} />
+      </Field>
+      <Field>
+        <Label>Tuck planche hold time</Label>
+        <RepRangeSelect options={['0 seconds','1–3 sec','4–6 sec','7–10 sec','11–15 sec','15+ sec']} value={data.tuck_planche_hold} onChange={v => set('tuck_planche_hold', v)} />
+      </Field>
       <Field>
         <Label>Front lever progression level</Label>
         {optionRow('front_lever_level', FL_LEVELS)}
@@ -288,23 +335,20 @@ export default function AthleteDiagnostic() {
     setSending(true);
     setSendError(null);
     const emailBody = buildEmailBody(data, report);
+    const subject = encodeURIComponent(`New BTCALI Athlete Diagnostic Report — ${data.full_name}`);
+    const body = encodeURIComponent(emailBody);
+    // Save to DB
     try {
-      await base44.integrations.Core.SendEmail({
-        to: 'btcalisw@gmail.com',
-        subject: `New BTCALI Athlete Diagnostic Report — ${data.full_name}`,
-        body: emailBody,
-      });
-      // Mark submission as emailed in DB
       if (reportId) {
-        try { await base44.entities.AthleteReport.update(reportId, { status: 'pending' }); } catch(_) {}
+        await base44.entities.AthleteReport.update(reportId, { status: 'pending' });
       }
-      setSending(false);
-      setSent(true);
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    } catch(e) {
-      setSending(false);
-      setSendError('Submission failed. Please try again.');
-    }
+    } catch(_) {}
+    // Open Gmail compose
+    const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=btcalisw%40gmail.com&su=${subject}&body=${body}`;
+    window.open(gmailUrl, '_blank');
+    setSending(false);
+    setSent(true);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   if (sent) {
@@ -314,8 +358,8 @@ export default function AthleteDiagnostic() {
           <div className="w-20 h-20 rounded-full gradient-bg-strong glow-primary flex items-center justify-center mx-auto mb-6">
             <Trophy className="w-10 h-10 text-primary-foreground" />
           </div>
-          <h1 className="font-heading font-bold text-3xl sm:text-4xl mb-3 gradient-text">Report Sent!</h1>
-          <p className="text-muted-foreground font-body text-lg mb-10">Your report has been successfully sent to BTCALI. We'll review your diagnostic and contact you soon.</p>
+          <h1 className="font-heading font-bold text-3xl sm:text-4xl mb-3 gradient-text">Email Prepared!</h1>
+          <p className="text-muted-foreground font-body text-lg mb-10">Your email has been prepared. Please press <strong className="text-foreground">Send</strong> in Gmail to submit your report to BTCALI.</p>
           <DiagnosticReport data={data} report={report} compact />
         </motion.div>
       </div>
