@@ -26,7 +26,7 @@ const plans = [
     price: '$30',
     period: '/program',
     description: 'Per skill program — structured & proven',
-    featured: true,
+    featured: false,
     features: [
       'Full structured program access',
       'Phase-by-phase progressions',
@@ -43,6 +43,8 @@ const plans = [
     price: '$150',
     period: '/month',
     description: 'Or $40/week — direct elite coaching',
+    featured: true,
+    bestOffer: true,
     features: [
       'Everything in Program Access',
       'Direct Coach Access',
@@ -96,12 +98,16 @@ export default function Pricing() {
             <GlassCard
               glow={plan.featured}
               hover={false}
-              className={`h-full flex flex-col ${plan.featured ? 'ring-1 ring-primary/50 relative' : ''}`}
+              className={`h-full flex flex-col ${plan.bestOffer ? 'ring-2 ring-primary/70 relative' : plan.featured ? 'ring-1 ring-primary/50 relative' : ''}`}
+              style={plan.bestOffer ? { boxShadow: '0 0 50px hsl(var(--glow-primary) / 0.3), 0 0 100px hsl(var(--glow-primary) / 0.1)' } : {}}
             >
-              {plan.featured && (
-                <div className="absolute -top-3 left-1/2 -translate-x-1/2">
+              {plan.bestOffer && (
+                <div className="absolute -top-4 left-1/2 -translate-x-1/2 flex gap-2">
                   <div className="flex items-center gap-1 gradient-bg-strong text-primary-foreground px-3 py-1 rounded-full text-xs font-heading font-semibold">
-                    <Crown className="w-3 h-3" /> Most Popular
+                    <Crown className="w-3 h-3" /> Best Offer
+                  </div>
+                  <div className="flex items-center gap-1 bg-amber-400/20 text-amber-400 border border-amber-400/40 px-3 py-1 rounded-full text-xs font-heading font-semibold">
+                    <Zap className="w-3 h-3" /> Fastest Progress
                   </div>
                 </div>
               )}

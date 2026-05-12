@@ -9,10 +9,8 @@ import { cn } from '@/lib/utils';
 
 const navLinks = [
   { to: '/', label: 'Home', icon: Zap },
-  { to: '/scan', label: 'Athlete Scan', icon: BarChart3 },
   { to: '/tutorials', label: 'Free Tutorials', icon: BookOpen },
   { to: '/programs', label: 'Programs', icon: Layers },
-  { to: '/dashboard', label: 'Dashboard', icon: User },
   { to: '/results', label: 'Results', icon: Trophy },
   { to: '/pricing', label: 'Coaching', icon: DollarSign },
   { to: '/diagnostic', label: 'Athlete Scan', icon: ScanLine },
