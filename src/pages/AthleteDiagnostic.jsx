@@ -102,8 +102,10 @@ export default function AthleteDiagnostic() {
     media_consent: false, serious_applicant: false,
   });
   const [report, setReport] = useState(null);
+  const [reportId, setReportId] = useState(null);
   const [sent, setSent] = useState(false);
   const [sending, setSending] = useState(false);
+  const [sendError, setSendError] = useState(null);
   const [submitting, setSubmitting] = useState(false);
 
   const set = (key, val) => setData(prev => ({ ...prev, [key]: val }));
@@ -271,9 +273,12 @@ export default function AthleteDiagnostic() {
     setSubmitting(true);
     const r = generateReport(data);
     const fullData = { ...data, ...r };
+    let savedId = null;
     try {
-      await base44.entities.AthleteReport.create(fullData);
-    } catch(e) { /* continue even if save fails */ }
+      const saved = await base44.entities.AthleteReport.create(fullData);
+      savedId = saved?.id || null;
+    } catch(e) { /* db save best-effort, don't block */ }
+    setReportId(savedId);
     setReport(r);
     setSubmitting(false);
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -281,6 +286,7 @@ export default function AthleteDiagnostic() {
 
   const handleSend = async () => {
     setSending(true);
+    setSendError(null);
     const emailBody = buildEmailBody(data, report);
     try {
       await base44.integrations.Core.SendEmail({
@@ -288,10 +294,17 @@ export default function AthleteDiagnostic() {
         subject: `New BTCALI Athlete Diagnostic Report — ${data.full_name}`,
         body: emailBody,
       });
-    } catch(e) { /* best effort */ }
-    setSending(false);
-    setSent(true);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+      // Mark submission as emailed in DB
+      if (reportId) {
+        try { await base44.entities.AthleteReport.update(reportId, { status: 'pending' }); } catch(_) {}
+      }
+      setSending(false);
+      setSent(true);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } catch(e) {
+      setSending(false);
+      setSendError('Submission failed. Please try again.');
+    }
   };
 
   if (sent) {
@@ -302,7 +315,7 @@ export default function AthleteDiagnostic() {
             <Trophy className="w-10 h-10 text-primary-foreground" />
           </div>
           <h1 className="font-heading font-bold text-3xl sm:text-4xl mb-3 gradient-text">Report Sent!</h1>
-          <p className="text-muted-foreground font-body text-lg mb-10">Your report has been sent to BTCALI. We'll review your diagnostic and contact you soon.</p>
+          <p className="text-muted-foreground font-body text-lg mb-10">Your report has been successfully sent to BTCALI. We'll review your diagnostic and contact you soon.</p>
           <DiagnosticReport data={data} report={report} compact />
         </motion.div>
       </div>
@@ -313,15 +326,20 @@ export default function AthleteDiagnostic() {
     return (
       <div className="min-h-screen py-12 px-4 sm:px-6 max-w-4xl mx-auto">
         <DiagnosticReport data={data} report={report} />
+        {sendError && (
+          <div className="mt-6 p-4 rounded-xl border border-destructive/50 bg-destructive/10 text-destructive font-body text-sm text-center">
+            {sendError}
+          </div>
+        )}
         <motion.button
           whileHover={{ scale: 1.03 }}
           whileTap={{ scale: 0.97 }}
           onClick={handleSend}
           disabled={sending}
-          className="w-full mt-8 py-5 rounded-2xl gradient-bg-strong glow-primary-strong text-primary-foreground font-heading font-bold text-xl flex items-center justify-center gap-3 disabled:opacity-60"
+          className="w-full mt-6 py-5 rounded-2xl gradient-bg-strong glow-primary-strong text-primary-foreground font-heading font-bold text-xl flex items-center justify-center gap-3 disabled:opacity-60"
         >
           {sending ? (
-            <span className="flex items-center gap-2"><div className="w-5 h-5 border-2 border-primary-foreground/30 border-t-primary-foreground rounded-full animate-spin" /> Sending...</span>
+            <span className="flex items-center gap-2"><div className="w-5 h-5 border-2 border-primary-foreground/30 border-t-primary-foreground rounded-full animate-spin" /> Sending to BTCALI...</span>
           ) : (
             <span className="flex items-center gap-2"><Zap className="w-6 h-6" /> SEND TO BTCALI</span>
           )}
