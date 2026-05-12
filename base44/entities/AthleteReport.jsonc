@@ -1,0 +1,171 @@
+{
+  "name": "AthleteReport",
+  "type": "object",
+  "properties": {
+    "full_name": {
+      "type": "string"
+    },
+    "email": {
+      "type": "string"
+    },
+    "age": {
+      "type": "string"
+    },
+    "country": {
+      "type": "string"
+    },
+    "instagram": {
+      "type": "string"
+    },
+    "training_experience": {
+      "type": "string"
+    },
+    "training_days": {
+      "type": "string"
+    },
+    "training_location": {
+      "type": "string"
+    },
+    "followed_program": {
+      "type": "string"
+    },
+    "has_coach": {
+      "type": "string"
+    },
+    "pushup_max": {
+      "type": "string"
+    },
+    "pullup_max": {
+      "type": "string"
+    },
+    "dip_max": {
+      "type": "string"
+    },
+    "pike_pushup_max": {
+      "type": "string"
+    },
+    "handstand_hold": {
+      "type": "string"
+    },
+    "lsit_hold": {
+      "type": "string"
+    },
+    "tuck_planche_hold": {
+      "type": "string"
+    },
+    "front_lever_level": {
+      "type": "string"
+    },
+    "can_muscle_up": {
+      "type": "string"
+    },
+    "can_hspu": {
+      "type": "string"
+    },
+    "can_bent_arm_press": {
+      "type": "string"
+    },
+    "can_lsit_to_hs": {
+      "type": "string"
+    },
+    "goals": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "wrist_mobility": {
+      "type": "string"
+    },
+    "shoulder_mobility": {
+      "type": "string"
+    },
+    "hamstring_mobility": {
+      "type": "string"
+    },
+    "injuries": {
+      "type": "string"
+    },
+    "pain_areas": {
+      "type": "string"
+    },
+    "sleep_quality": {
+      "type": "string"
+    },
+    "recovery_quality": {
+      "type": "string"
+    },
+    "coaching_investment": {
+      "type": "string"
+    },
+    "payment_option": {
+      "type": "string"
+    },
+    "consistency_answer": {
+      "type": "string"
+    },
+    "seriousness": {
+      "type": "string"
+    },
+    "why_btcali": {
+      "type": "string"
+    },
+    "media_consent": {
+      "type": "boolean",
+      "default": false
+    },
+    "serious_applicant": {
+      "type": "boolean",
+      "default": false
+    },
+    "athlete_level": {
+      "type": "string"
+    },
+    "strengths": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "weaknesses": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "recommended_focus": {
+      "type": "string"
+    },
+    "recommended_programs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "athlete_summary": {
+      "type": "string"
+    },
+    "next_steps": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "pending",
+        "contacted",
+        "enrolled"
+      ],
+      "default": "pending"
+    },
+    "coach_notes": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "full_name",
+    "email"
+  ]
+}

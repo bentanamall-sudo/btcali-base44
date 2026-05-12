@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, Zap, User, BarChart3, BookOpen, Layers, Trophy, DollarSign, Bot } from 'lucide-react';
+import { Menu, X, Zap, User, BarChart3, BookOpen, Layers, Trophy, DollarSign, Bot, ScanLine } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Logo from './Logo';
 import CodeUnlock from './CodeUnlock';
@@ -15,6 +15,7 @@ const navLinks = [
   { to: '/dashboard', label: 'Dashboard', icon: User },
   { to: '/results', label: 'Results', icon: Trophy },
   { to: '/pricing', label: 'Coaching', icon: DollarSign },
+  { to: '/diagnostic', label: 'Athlete Scan', icon: ScanLine },
 ];
 
 export default function Navbar({ theme, setTheme }) {
