@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { Trophy, Play, Users, ArrowRight } from 'lucide-react';
@@ -44,8 +43,8 @@ const testimonials = [
 ];
 
 function VideoCard({ video, index }) {
-  const [playing, setPlaying] = useState(false);
   const thumbUrl = `https://img.youtube.com/vi/${video.id}/maxresdefault.jpg`;
+  const youtubeUrl = `https://www.youtube.com/shorts/${video.id}`;
 
   return (
     <motion.div
@@ -56,50 +55,42 @@ function VideoCard({ video, index }) {
       className="group rounded-2xl overflow-hidden glass glow-border hover:ring-1 hover:ring-primary/40 transition-all duration-300"
       style={{ aspectRatio: '9/16' }}
     >
-      {playing ? (
-        <iframe
-          className="w-full h-full"
-          src={`https://www.youtube.com/embed/${video.id}?autoplay=1&rel=0`}
-          title={video.title}
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowFullScreen
+      <a
+        href={youtubeUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="relative w-full h-full cursor-pointer block"
+      >
+        <img
+          src={thumbUrl}
+          alt={video.title}
+          className="w-full h-full object-cover brightness-75 group-hover:brightness-90 transition-all duration-300"
         />
-      ) : (
-        <div
-          className="relative w-full h-full cursor-pointer"
-          onClick={() => setPlaying(true)}
-        >
-          <img
-            src={thumbUrl}
-            alt={video.title}
-            className="w-full h-full object-cover brightness-75 group-hover:brightness-90 transition-all duration-300"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
 
-          {/* Play button */}
-          <div className="absolute inset-0 flex items-center justify-center">
-            <motion.div
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.95 }}
-              className="w-16 h-16 rounded-full gradient-bg-strong glow-primary flex items-center justify-center"
-            >
-              <Play className="w-7 h-7 text-primary-foreground fill-primary-foreground ml-1" />
-            </motion.div>
-          </div>
-
-          {/* Labels */}
-          <div className="absolute top-3 left-3">
-            <span className={`text-xs font-heading font-bold px-3 py-1 rounded-full backdrop-blur-sm ${video.labelColor}`}>
-              {video.label}
-            </span>
-          </div>
-
-          {/* Title */}
-          <div className="absolute bottom-0 left-0 right-0 p-4">
-            <p className="font-heading font-semibold text-white text-sm leading-snug">{video.title}</p>
-          </div>
+        {/* Play button */}
+        <div className="absolute inset-0 flex items-center justify-center">
+          <motion.div
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.95 }}
+            className="w-16 h-16 rounded-full gradient-bg-strong glow-primary flex items-center justify-center"
+          >
+            <Play className="w-7 h-7 text-primary-foreground fill-primary-foreground ml-1" />
+          </motion.div>
         </div>
-      )}
+
+        {/* Labels */}
+        <div className="absolute top-3 left-3">
+          <span className={`text-xs font-heading font-bold px-3 py-1 rounded-full backdrop-blur-sm ${video.labelColor}`}>
+            {video.label}
+          </span>
+        </div>
+
+        {/* Title */}
+        <div className="absolute bottom-0 left-0 right-0 p-4">
+          <p className="font-heading font-semibold text-white text-sm leading-snug">{video.title}</p>
+        </div>
+      </a>
     </motion.div>
   );
 }
