@@ -131,9 +131,8 @@ export default function AthleteDiagnostic() {
   });
   const [report, setReport] = useState(null);
   const [reportId, setReportId] = useState(null);
-  const [sent, setSent] = useState(false);
   const [sending, setSending] = useState(false);
-  const [sendError, setSendError] = useState(null);
+  const [copied, setCopied] = useState(false);
   const [submitting, setSubmitting] = useState(false);
 
   const set = (key, val) => setData(prev => ({ ...prev, [key]: val }));
@@ -331,102 +330,77 @@ export default function AthleteDiagnostic() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const isMobile = () => /iPhone|iPad|iPod|Android|webOS|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+  const buildReportText = (d, r) => buildEmailBody(d, r);
 
-  const buildMobileSummary = (d, r) => {
-    return `NEW BTCALI ATHLETE DIAGNOSTIC REPORT
-=====================================
-Athlete: ${d.full_name}
-Email: ${d.email}
-Age: ${d.age} | Country: ${d.country} | Instagram: @${d.instagram}
-
-ATHLETE LEVEL: ${r.athlete_level}
-
-STRENGTH RESULTS:
-Push-ups: ${d.pushup_max} | Pull-ups: ${d.pullup_max} | Dips: ${d.dip_max}
-Handstand: ${d.handstand_hold} | L-sit: ${d.lsit_hold} | Tuck Planche: ${d.tuck_planche_hold}
-Front Lever: ${d.front_lever_level}
-Muscle-Up: ${d.can_muscle_up} | HSPU: ${d.can_hspu}
-
-GOALS: ${(d.goals || []).join(', ')}
-
-STRENGTHS: ${r.strengths.join(', ')}
-WEAKNESSES: ${r.weaknesses.join(', ')}
-RECOMMENDED FOCUS: ${r.recommended_focus}
-RECOMMENDED PROGRAMS: ${r.recommended_programs.join(', ')}
-NEXT STEPS: ${r.next_steps.join(' | ')}
-
-SUMMARY: ${r.athlete_summary}
-
-COACHING:
-Payment interest: ${d.payment_option} | Seriousness: ${d.seriousness}
-Why BTCALI: ${d.why_btcali}
-Media consent: ${d.media_consent ? 'YES' : 'NO'}`.trim();
-  };
-
-  const handleSend = async () => {
+  const handleSend = () => {
     setSending(true);
-    setSendError(null);
     const subject = encodeURIComponent(`New BTCALI Athlete Diagnostic Report — ${data.full_name}`);
-    // Save to DB
-    try {
-      if (reportId) {
-        await base44.entities.AthleteReport.update(reportId, { status: 'pending' });
-      }
-    } catch(_) {}
-
-    if (isMobile()) {
-      // Mobile: use mailto so native email app opens
-      const mobileBody = encodeURIComponent(buildMobileSummary(data, report));
-      window.location.href = `mailto:btcalisw@gmail.com?subject=${subject}&body=${mobileBody}`;
-    } else {
-      // Desktop: open Gmail compose in new tab
-      const fullBody = encodeURIComponent(buildEmailBody(data, report));
-      window.open(`https://mail.google.com/mail/?view=cm&fs=1&to=btcalisw%40gmail.com&su=${subject}&body=${fullBody}`, '_blank');
-    }
-
+    const body = encodeURIComponent(buildReportText(data, report));
+    window.location.href = `mailto:btcalisw@gmail.com?subject=${subject}&body=${body}`;
     setSending(false);
-    setSent(true);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  if (sent) {
-    return (
-      <div className="min-h-screen py-16 px-4 sm:px-6 max-w-3xl mx-auto">
-        <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="text-center">
-          <div className="w-20 h-20 rounded-full gradient-bg-strong glow-primary flex items-center justify-center mx-auto mb-6">
-            <Trophy className="w-10 h-10 text-primary-foreground" />
-          </div>
-          <h1 className="font-heading font-bold text-3xl sm:text-4xl mb-3 gradient-text">Email Prepared!</h1>
-          <p className="text-muted-foreground font-body text-lg mb-10">Your email has been prepared. Please press <strong className="text-foreground">Send</strong> in your email app to submit your report to BTCALI.</p>
-          <DiagnosticReport data={data} report={report} compact />
-        </motion.div>
-      </div>
-    );
-  }
+  const handleCopy = async () => {
+    const text = buildReportText(data, report);
+    try {
+      await navigator.clipboard.writeText(text);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 3000);
+    } catch (_) {
+      // Fallback for older browsers
+      const el = document.createElement('textarea');
+      el.value = text;
+      document.body.appendChild(el);
+      el.select();
+      document.execCommand('copy');
+      document.body.removeChild(el);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 3000);
+    }
+  };
 
   if (report) {
     return (
       <div className="min-h-screen py-12 px-4 sm:px-6 max-w-4xl mx-auto">
         <DiagnosticReport data={data} report={report} />
-        {sendError && (
-          <div className="mt-6 p-4 rounded-xl border border-destructive/50 bg-destructive/10 text-destructive font-body text-sm text-center">
-            {sendError}
-          </div>
-        )}
-        <motion.button
-          whileHover={{ scale: 1.03 }}
-          whileTap={{ scale: 0.97 }}
-          onClick={handleSend}
-          disabled={sending}
-          className="w-full mt-6 py-5 rounded-2xl gradient-bg-strong glow-primary-strong text-primary-foreground font-heading font-bold text-xl flex items-center justify-center gap-3 disabled:opacity-60"
-        >
-          {sending ? (
-            <span className="flex items-center gap-2"><div className="w-5 h-5 border-2 border-primary-foreground/30 border-t-primary-foreground rounded-full animate-spin" /> Sending to BTCALI...</span>
-          ) : (
-            <span className="flex items-center gap-2"><Zap className="w-6 h-6" /> SEND TO BTCALI</span>
+
+        <div className="mt-8 space-y-3">
+          {/* Primary send button */}
+          <motion.button
+            whileHover={{ scale: 1.03 }}
+            whileTap={{ scale: 0.97 }}
+            onClick={handleSend}
+            disabled={sending}
+            className="w-full py-5 rounded-2xl gradient-bg-strong glow-primary-strong text-primary-foreground font-heading font-bold text-xl flex items-center justify-center gap-3 disabled:opacity-60"
+          >
+            <Zap className="w-6 h-6" /> SEND TO BTCALI
+          </motion.button>
+
+          {/* Instruction under send */}
+          <p className="text-center text-sm font-body text-muted-foreground px-2">
+            After your email app opens, press <strong className="text-foreground">Send</strong> to submit your BTCALI application.
+          </p>
+
+          {/* Copy report button */}
+          <motion.button
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.97 }}
+            onClick={handleCopy}
+            className="w-full py-4 rounded-2xl glass border border-border/40 text-foreground font-heading font-semibold text-base flex items-center justify-center gap-2 hover:border-primary/40 transition-all"
+          >
+            {copied ? (
+              <><CheckCircle className="w-5 h-5 text-green-400" /> Report Copied!</>
+            ) : (
+              <><Trophy className="w-5 h-5" /> COPY REPORT</>
+            )}
+          </motion.button>
+
+          {copied && (
+            <p className="text-center text-sm font-body text-muted-foreground px-2">
+              Report copied. Paste into Gmail if your email app does not open automatically.
+            </p>
           )}
-        </motion.button>
+        </div>
       </div>
     );
   }
