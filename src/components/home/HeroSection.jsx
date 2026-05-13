@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { ArrowRight, Zap, Target, Trophy } from 'lucide-react';
+import { ArrowRight, Zap, Target, Trophy, Play } from 'lucide-react';
 import GlowButton from '../GlowButton';
 
 export default function HeroSection() {
@@ -63,18 +63,25 @@ export default function HeroSection() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.6 }}
-            className="grid grid-cols-3 gap-6 max-w-lg mx-auto"
+            className="flex items-center justify-center gap-10 max-w-lg mx-auto"
           >
-            {[
-              { value: '500+', label: 'Athletes' },
-              { value: '50+', label: 'Skills' },
-              { value: '98%', label: 'Results' },
-            ].map((stat) => (
-              <div key={stat.label} className="text-center">
-                <div className="font-heading font-bold text-2xl sm:text-3xl gradient-text">{stat.value}</div>
-                <div className="text-xs sm:text-sm text-muted-foreground font-body mt-1">{stat.label}</div>
-              </div>
-            ))}
+            <div className="text-center">
+              <div className="font-heading font-bold text-2xl sm:text-3xl gradient-text">20+</div>
+              <div className="text-xs sm:text-sm text-muted-foreground font-body mt-1">Athletes Transformed</div>
+            </div>
+            <Link to="/results">
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.97 }}
+                className="text-center glass glow-border rounded-xl px-5 py-3 cursor-pointer"
+              >
+                <div className="font-heading font-bold text-2xl sm:text-3xl gradient-text flex items-center gap-1.5 justify-center">
+                  <Play className="w-5 h-5 text-primary" />
+                  Insane Student Results
+                </div>
+                <div className="text-xs sm:text-sm text-primary font-body mt-1">Watch the proof →</div>
+              </motion.div>
+            </Link>
           </motion.div>
         </motion.div>
       </div>

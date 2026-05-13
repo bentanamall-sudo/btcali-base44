@@ -331,21 +331,60 @@ export default function AthleteDiagnostic() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  const isMobile = () => /iPhone|iPad|iPod|Android|webOS|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+
+  const buildMobileSummary = (d, r) => {
+    return `NEW BTCALI ATHLETE DIAGNOSTIC REPORT
+=====================================
+Athlete: ${d.full_name}
+Email: ${d.email}
+Age: ${d.age} | Country: ${d.country} | Instagram: @${d.instagram}
+
+ATHLETE LEVEL: ${r.athlete_level}
+
+STRENGTH RESULTS:
+Push-ups: ${d.pushup_max} | Pull-ups: ${d.pullup_max} | Dips: ${d.dip_max}
+Handstand: ${d.handstand_hold} | L-sit: ${d.lsit_hold} | Tuck Planche: ${d.tuck_planche_hold}
+Front Lever: ${d.front_lever_level}
+Muscle-Up: ${d.can_muscle_up} | HSPU: ${d.can_hspu}
+
+GOALS: ${(d.goals || []).join(', ')}
+
+STRENGTHS: ${r.strengths.join(', ')}
+WEAKNESSES: ${r.weaknesses.join(', ')}
+RECOMMENDED FOCUS: ${r.recommended_focus}
+RECOMMENDED PROGRAMS: ${r.recommended_programs.join(', ')}
+NEXT STEPS: ${r.next_steps.join(' | ')}
+
+SUMMARY: ${r.athlete_summary}
+
+COACHING:
+Payment interest: ${d.payment_option} | Seriousness: ${d.seriousness}
+Why BTCALI: ${d.why_btcali}
+Media consent: ${d.media_consent ? 'YES' : 'NO'}`.trim();
+  };
+
   const handleSend = async () => {
     setSending(true);
     setSendError(null);
-    const emailBody = buildEmailBody(data, report);
     const subject = encodeURIComponent(`New BTCALI Athlete Diagnostic Report — ${data.full_name}`);
-    const body = encodeURIComponent(emailBody);
     // Save to DB
     try {
       if (reportId) {
         await base44.entities.AthleteReport.update(reportId, { status: 'pending' });
       }
     } catch(_) {}
-    // Open Gmail compose
-    const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=btcalisw%40gmail.com&su=${subject}&body=${body}`;
-    window.open(gmailUrl, '_blank');
+
+    if (isMobile()) {
+      // Mobile: use mailto so native email app opens
+      const mobileBody = encodeURIComponent(buildMobileSummary(data, report));
+      window.location.href = `mailto:btcalisw@gmail.com?subject=${subject}&body=${mobileBody}`;
+    } else {
+      // Desktop: open Gmail compose in new tab
+      const fullBody = encodeURIComponent(buildEmailBody(data, report));
+      window.open(`https://mail.google.com/mail/?view=cm&fs=1&to=btcalisw%40gmail.com&su=${subject}&body=${fullBody}`, '_blank');
+    }
+
     setSending(false);
     setSent(true);
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -359,7 +398,7 @@ export default function AthleteDiagnostic() {
             <Trophy className="w-10 h-10 text-primary-foreground" />
           </div>
           <h1 className="font-heading font-bold text-3xl sm:text-4xl mb-3 gradient-text">Email Prepared!</h1>
-          <p className="text-muted-foreground font-body text-lg mb-10">Your email has been prepared. Please press <strong className="text-foreground">Send</strong> in Gmail to submit your report to BTCALI.</p>
+          <p className="text-muted-foreground font-body text-lg mb-10">Your email has been prepared. Please press <strong className="text-foreground">Send</strong> in your email app to submit your report to BTCALI.</p>
           <DiagnosticReport data={data} report={report} compact />
         </motion.div>
       </div>

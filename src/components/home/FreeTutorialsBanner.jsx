@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { BookOpen, ArrowRight, Gift, Users } from 'lucide-react';
 import GlowButton from '../GlowButton';
 
+
 export default function FreeTutorialsBanner() {
   return (
     <section className="py-16 px-4 sm:px-6 max-w-7xl mx-auto">
@@ -50,58 +51,6 @@ export default function FreeTutorialsBanner() {
           </div>
         </div>
       </motion.div>
-
-      {/* Two tutorial cards */}
-      <div className="grid sm:grid-cols-2 gap-6">
-        {[
-          {
-            title: 'Free Handstand Guide',
-            subtitle: 'Beginner → Freestanding',
-            desc: 'Master wrist prep, wall drills, kick-up mechanics, and your first freestanding hold. Completely free.',
-            badge: 'Handstand',
-            to: '/tutorials/handstand',
-            color: 'from-purple-500/20 to-blue-500/20',
-          },
-          {
-            title: 'Free Planche Conditioning',
-            subtitle: 'Foundation → Tuck Planche',
-            desc: 'Straight arm conditioning, scapula prep, planche leans, and your first tuck hold. Start today.',
-            badge: 'Planche',
-            to: '/tutorials/planche',
-            color: 'from-orange-500/20 to-pink-500/20',
-          },
-        ].map((card) => (
-          <motion.div
-            key={card.title}
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-          >
-            <Link to={card.to}>
-              <motion.div
-                whileHover={{ y: -4, scale: 1.01 }}
-                className={`relative rounded-2xl p-6 cursor-pointer overflow-hidden`}
-                style={{
-                  background: 'hsl(var(--glass-bg) / 0.6)',
-                  backdropFilter: 'blur(20px)',
-                  border: '1px solid hsl(var(--glass-border) / 0.3)',
-                }}
-              >
-                <div className={`absolute inset-0 bg-gradient-to-br ${card.color} opacity-30`} />
-                <div className="relative z-10">
-                  <span className="text-xs font-heading font-semibold gradient-text uppercase tracking-widest">{card.badge}</span>
-                  <h3 className="font-heading font-bold text-xl text-foreground mt-1 mb-1">{card.title}</h3>
-                  <p className="text-xs text-primary font-body mb-3">{card.subtitle}</p>
-                  <p className="text-sm text-muted-foreground font-body mb-4">{card.desc}</p>
-                  <div className="flex items-center gap-2 text-primary text-sm font-heading font-semibold">
-                    Start Free <ArrowRight className="w-4 h-4" />
-                  </div>
-                </div>
-              </motion.div>
-            </Link>
-          </motion.div>
-        ))}
-      </div>
 
       {/* Coaching CTA */}
       <motion.div
