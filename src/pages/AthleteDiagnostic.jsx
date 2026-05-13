@@ -333,11 +333,14 @@ export default function AthleteDiagnostic() {
   const buildReportText = (d, r) => buildEmailBody(d, r);
 
   const handleSend = () => {
-    setSending(true);
     const subject = encodeURIComponent(`New BTCALI Athlete Diagnostic Report — ${data.full_name}`);
     const body = encodeURIComponent(buildReportText(data, report));
-    window.location.href = `mailto:btcalisw@gmail.com?subject=${subject}&body=${body}`;
-    setSending(false);
+    const a = document.createElement('a');
+    a.href = `mailto:btcalisw@gmail.com?subject=${subject}&body=${body}`;
+    a.rel = 'noopener';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
   };
 
   const handleCopy = async () => {
@@ -370,15 +373,19 @@ export default function AthleteDiagnostic() {
             whileHover={{ scale: 1.03 }}
             whileTap={{ scale: 0.97 }}
             onClick={handleSend}
-            disabled={sending}
-            className="w-full py-5 rounded-2xl gradient-bg-strong glow-primary-strong text-primary-foreground font-heading font-bold text-xl flex items-center justify-center gap-3 disabled:opacity-60"
+            className="w-full py-5 rounded-2xl gradient-bg-strong glow-primary-strong text-primary-foreground font-heading font-bold text-xl flex items-center justify-center gap-3"
           >
             <Zap className="w-6 h-6" /> SEND TO BTCALI
           </motion.button>
 
           {/* Instruction under send */}
           <p className="text-center text-sm font-body text-muted-foreground px-2">
-            After your email app opens, press <strong className="text-foreground">Send</strong> to submit your BTCALI application.
+            After your email app opens, press <strong className="text-foreground">Send</strong> to complete your BTCALI application.
+          </p>
+
+          {/* Fallback instruction */}
+          <p className="text-center text-xs font-body text-muted-foreground/70 px-2">
+            If SEND TO BTCALI does not open your email app, press <strong className="text-foreground">COPY REPORT TO SEND MANUALLY</strong>, paste the report into Gmail, and send it to <strong className="text-foreground">btcalisw@gmail.com</strong>.
           </p>
 
           {/* Copy report button */}
@@ -391,13 +398,13 @@ export default function AthleteDiagnostic() {
             {copied ? (
               <><CheckCircle className="w-5 h-5 text-green-400" /> Report Copied!</>
             ) : (
-              <><Trophy className="w-5 h-5" /> COPY REPORT</>
+              <><Trophy className="w-5 h-5" /> COPY REPORT TO SEND MANUALLY</>
             )}
           </motion.button>
 
           {copied && (
             <p className="text-center text-sm font-body text-muted-foreground px-2">
-              Report copied. Paste into Gmail if your email app does not open automatically.
+              Report copied. If the email did not open or the report has not sent, paste this report into Gmail and send it to <strong className="text-foreground">btcalisw@gmail.com</strong>.
             </p>
           )}
         </div>
