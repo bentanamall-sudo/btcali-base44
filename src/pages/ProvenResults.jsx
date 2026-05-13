@@ -1,6 +1,7 @@
-import { motion } from 'framer-motion';
+import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { Trophy, Play, Users, ArrowRight } from 'lucide-react';
+import { Trophy, Play, Users, ArrowRight, X } from 'lucide-react';
 import GlowButton from '../components/GlowButton';
 
 const testimonials = [
@@ -42,9 +43,8 @@ const testimonials = [
   },
 ];
 
-function VideoCard({ video, index }) {
+function VideoCard({ video, index, onPlay }) {
   const thumbUrl = `https://img.youtube.com/vi/${video.id}/maxresdefault.jpg`;
-  const youtubeUrl = `https://www.youtube.com/shorts/${video.id}`;
 
   return (
     <motion.div
@@ -52,15 +52,11 @@ function VideoCard({ video, index }) {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ delay: index * 0.08 }}
-      className="group rounded-2xl overflow-hidden glass glow-border hover:ring-1 hover:ring-primary/40 transition-all duration-300"
+      className="group rounded-2xl overflow-hidden glass glow-border hover:ring-1 hover:ring-primary/40 transition-all duration-300 cursor-pointer"
       style={{ aspectRatio: '9/16' }}
+      onClick={() => onPlay(video)}
     >
-      <a
-        href={youtubeUrl}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="relative w-full h-full cursor-pointer block"
-      >
+      <div className="relative w-full h-full">
         <img
           src={thumbUrl}
           alt={video.title}
@@ -90,12 +86,84 @@ function VideoCard({ video, index }) {
         <div className="absolute bottom-0 left-0 right-0 p-4">
           <p className="font-heading font-semibold text-white text-sm leading-snug">{video.title}</p>
         </div>
-      </a>
+      </div>
     </motion.div>
   );
 }
 
+function VideoModal({ video, onClose }) {
+  // Embed params: autoplay, no related videos, no branding, no info overlays, minimal controls
+  const embedSrc = `https://www.youtube.com/embed/${video.id}?autoplay=1&rel=0&modestbranding=1&iv_load_policy=3&showinfo=0&controls=1&disablekb=0&fs=0&playsinline=1&color=white`;
+
+  return (
+    <AnimatePresence>
+      <motion.div
+        key="modal-backdrop"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.25 }}
+        className="fixed inset-0 z-[100] flex items-center justify-center px-4"
+        onClick={onClose}
+      >
+        {/* Cinematic backdrop */}
+        <div className="absolute inset-0 bg-black/85 backdrop-blur-xl" />
+
+        {/* Modal content */}
+        <motion.div
+          key="modal-content"
+          initial={{ opacity: 0, scale: 0.92, y: 24 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          exit={{ opacity: 0, scale: 0.92, y: 24 }}
+          transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+          className="relative z-10 w-full max-w-sm mx-auto"
+          onClick={e => e.stopPropagation()}
+        >
+          {/* Close button */}
+          <div className="flex items-center justify-between mb-3 px-1">
+            <div>
+              <p className="font-heading font-bold text-white text-base leading-tight">{video.title}</p>
+              <span className={`text-xs font-heading font-bold px-2.5 py-0.5 rounded-full mt-1 inline-block ${video.labelColor}`}>
+                {video.label}
+              </span>
+            </div>
+            <button
+              onClick={onClose}
+              className="w-9 h-9 rounded-full glass border border-white/10 flex items-center justify-center text-white/70 hover:text-white hover:border-white/30 transition-all ml-3 flex-shrink-0"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          </div>
+
+          {/* Video container — 9:16 portrait */}
+          <div
+            className="rounded-2xl overflow-hidden glow-border"
+            style={{ aspectRatio: '9/16', background: '#000' }}
+          >
+            <iframe
+              src={embedSrc}
+              title={video.title}
+              className="w-full h-full border-0"
+              allow="autoplay; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen={false}
+            />
+          </div>
+
+          {/* Subtle BTCALI branding strip */}
+          <div className="mt-3 flex items-center justify-center gap-2">
+            <div className="w-1.5 h-1.5 rounded-full gradient-bg-strong" />
+            <span className="text-xs font-heading text-muted-foreground tracking-widest uppercase">BTCALI Athlete Progress</span>
+            <div className="w-1.5 h-1.5 rounded-full gradient-bg-strong" />
+          </div>
+        </motion.div>
+      </motion.div>
+    </AnimatePresence>
+  );
+}
+
 export default function ProvenResults() {
+  const [activeVideo, setActiveVideo] = useState(null);
+
   return (
     <div className="min-h-screen py-12 px-4 sm:px-6 max-w-7xl mx-auto">
       {/* Header */}
@@ -115,7 +183,7 @@ export default function ProvenResults() {
       {/* Video grid */}
       <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 sm:gap-5 mb-16">
         {testimonials.map((video, i) => (
-          <VideoCard key={video.id} video={video} index={i} />
+          <VideoCard key={video.id} video={video} index={i} onPlay={setActiveVideo} />
         ))}
       </div>
 
@@ -143,6 +211,11 @@ export default function ProvenResults() {
           </Link>
         </div>
       </motion.div>
+
+      {/* Premium video modal */}
+      {activeVideo && (
+        <VideoModal video={activeVideo} onClose={() => setActiveVideo(null)} />
+      )}
     </div>
   );
 }
