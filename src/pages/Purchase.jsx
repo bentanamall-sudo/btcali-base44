@@ -1,232 +1,194 @@
 import { motion } from 'framer-motion';
 import { useLocation, Link } from 'react-router-dom';
-import { Mail, Users, CheckCircle, Crown, Zap, ArrowRight, Lock, ShieldCheck } from 'lucide-react';
+import { Mail, CheckCircle, Crown, Zap, ArrowRight, Target } from 'lucide-react';
 import GlassCard from '../components/GlassCard';
 
-const INQUIRY_GROUP_URL = 'https://ig.me/j/AbaAth3FA0NMTibx/';
-const EMAIL = 'ben.tanamall@gmail.com';
-
-const offeringDetails = {
-  coaching: {
-    title: '1-on-1 Elite Coaching',
-    emoji: '👁️',
-    tag: 'EXCLUSIVE ACCESS',
-    tagColor: 'text-primary bg-primary/20',
-    description: 'Direct athlete-to-coach programming. Built around your body, your goals, your timeline.',
-    includes: [
-      'Custom periodized training program',
-      'Weekly video feedback on your form',
-      'Direct coach messaging (Mon–Fri)',
-      'Monthly strategy & review calls',
-      'Adaptive programming as you evolve',
-      'Full skill roadmap access',
-    ],
-    note: 'Spots are strictly limited. Serious athletes only.',
-  },
-  handstand: {
-    title: 'Handstand Program',
-    emoji: '🤸',
-    tag: 'PREMIUM PROGRAM',
-    tagColor: 'text-purple-400 bg-purple-400/20',
-    description: 'A complete, structured handstand system built to take you from instability to freestanding mastery.',
-    includes: [
-      '12-week periodized handstand progression',
-      'Wall drills → kick-up → balance → freestanding hold',
-      'Phase-by-phase video breakdown',
-      'HSPU preparation pathway included',
-      'One-arm handstand conditioning prep',
-      'Weekly structure & milestone tracking',
-    ],
-    note: 'Designed for athletes who are serious about handstand mastery.',
-  },
-  planche: {
-    title: 'Planche Program',
-    emoji: '💪',
-    tag: 'PREMIUM PROGRAM',
-    tagColor: 'text-amber-400 bg-amber-400/20',
-    description: 'A systematic planche development program built on strength science and progressive overload.',
-    includes: [
-      'Tuck → Advanced Tuck → Straddle → Full Planche',
-      'Wrist and scapula preparation protocols',
-      'Straight-arm strength periodization',
-      'Planche lean progression system',
-      '12-week structured plan',
-      'Conditioning benchmarks per phase',
-    ],
-    note: 'Requires planche foundation or free conditioning guide completion.',
-  },
-  frontlever: {
-    title: 'Front Lever Program',
-    emoji: '🔱',
-    tag: 'PREMIUM PROGRAM',
-    tagColor: 'text-cyan-400 bg-cyan-400/20',
-    description: 'Elite pulling strength. Structured progressions to unlock the full front lever.',
-    includes: [
-      'Tuck → Advanced Tuck → Straddle → Full Front Lever',
-      'Lat and core activation protocols',
-      'Scapular retraction strength work',
-      'Periodized volume & intensity cycles',
-      '12-week structured roadmap',
-    ],
-    note: 'Requires solid pulling base (10+ pull-ups recommended).',
-  },
-  default: {
-    title: 'BTCALI Access',
-    emoji: '⚡',
-    tag: 'ATHLETE ONBOARDING',
-    tagColor: 'text-primary bg-primary/20',
-    description: 'Message BTCALI to receive athlete onboarding details, program recommendations, and your personal access instructions.',
-    includes: [
-      'Personalized program recommendation',
-      'Skill-specific roadmap assignment',
-      'Custom unlock code for platform access',
-      'Onboarding walkthrough from your coach',
-      'Progress tracking from day one',
-    ],
-    note: 'Each athlete receives a unique code tied to their specific program.',
-  },
-};
-
-const steps = [
-  {
-    num: '01',
-    title: 'Reach Out',
-    desc: 'Email BTCALI or join the inquiry group below.',
-  },
-  {
-    num: '02',
-    title: 'Get Assessed',
-    desc: 'BTCALI responds with onboarding instructions, coaching details, and your recommended pathway.',
-  },
-  {
-    num: '03',
-    title: 'Receive Your Code',
-    desc: 'You\'ll receive a personal unlock code — e.g. JaydenBTCALI — tied to your specific program.',
-  },
-  {
-    num: '04',
-    title: 'Unlock & Train',
-    desc: 'Enter your code on the BTCALI platform. Your program unlocks instantly. Begin training.',
-  },
+const COACHING_INCLUDED = [
+  'In-depth 1-1 coaching',
+  'Personalized training routine',
+  'Full technique and form analysis',
+  'Video feedback and movement breakdowns',
+  'Routine adjustments based on progress',
+  'Direct messaging support',
+  'Help before the next workout whenever possible',
+  'In-depth video explanations on how to improve and perform movements',
+  'One-time onboarding call whenever the athlete is ready',
+  'Goal-specific programming',
+  'Progress tracking support',
 ];
+
+const DIAGNOSTIC_REASONS = [
+  'your current level',
+  'strengths',
+  'weaknesses',
+  'goals',
+  'technique level',
+  'training background',
+];
+
+function CoachingPage() {
+  const handleEmail = () => {
+    window.location.href = 'mailto:btcalisw@gmail.com?subject=BTCALI%201-1%20Coaching%20Application&body=I%20completed%20the%20BTCALI%20Athlete%20Diagnostic%20and%20want%20to%20apply%20for%201-1%20coaching.%0D%0A';
+  };
+
+  return (
+    <div className="min-h-screen py-12 px-4 sm:px-6 max-w-3xl mx-auto">
+
+      {/* Header */}
+      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-12">
+        <div className="inline-flex items-center gap-2 glass px-4 py-2 rounded-full mb-4">
+          <Crown className="w-4 h-4 text-primary" />
+          <span className="text-sm font-body text-muted-foreground">Elite Coaching</span>
+        </div>
+        <h1 className="font-heading font-bold text-3xl sm:text-5xl mb-5 leading-tight">
+          BTCALI <span className="gradient-text">1-1 Coaching</span>
+        </h1>
+      </motion.div>
+
+      {/* Pricing */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
+        className="glass rounded-2xl p-8 glow-border mb-10 text-center relative overflow-hidden"
+      >
+        <div className="absolute inset-0 gradient-bg pointer-events-none" />
+        <div className="relative">
+          <p className="text-xs font-heading text-primary uppercase tracking-widest font-bold mb-5">Pricing</p>
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
+            <div>
+              <div className="flex items-center gap-1.5 justify-center mb-1">
+                <Zap className="w-4 h-4 text-primary" />
+                <span className="text-xs font-heading text-primary uppercase tracking-wider font-semibold">Most Popular</span>
+              </div>
+              <div className="font-heading font-bold text-5xl gradient-text">
+                $40<span className="text-xl text-muted-foreground font-body font-normal">/week</span>
+              </div>
+            </div>
+            <div className="text-muted-foreground font-body text-sm font-semibold uppercase tracking-wider">or</div>
+            <div>
+              <div className="text-xs font-heading text-muted-foreground uppercase tracking-wider mb-1">Monthly</div>
+              <div className="font-heading font-bold text-5xl gradient-text">
+                $150<span className="text-xl text-muted-foreground font-body font-normal">/month</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </motion.div>
+
+      {/* About */}
+      <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="mb-10">
+        <GlassCard hover={false} glow>
+          <p className="font-body text-foreground/85 leading-relaxed text-base">
+            BTCALI 1-1 Coaching includes in-depth personal coaching where athletes can message me whenever they need help. I will respond in time before their next workout whenever possible, so they can apply the tips, corrections, and advice straight away.
+          </p>
+          <div className="mt-4 pt-4 border-t border-border/30">
+            <p className="font-body text-foreground/85 leading-relaxed text-base">
+              This is not just a random program. I look at the athlete's current level, goals, weaknesses, form, and technique, then constantly adapt their routine specifically to help them progress as fast as possible.
+            </p>
+          </div>
+        </GlassCard>
+      </motion.div>
+
+      {/* What's Included */}
+      <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="mb-12">
+        <h2 className="font-heading font-bold text-2xl text-foreground mb-5">
+          {"What's "}<span className="gradient-text">Included</span>
+        </h2>
+        <GlassCard hover={false}>
+          <div className="space-y-3">
+            {COACHING_INCLUDED.map(item => (
+              <div key={item} className="flex items-start gap-3">
+                <CheckCircle className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />
+                <span className="text-sm font-body text-foreground/85">{item}</span>
+              </div>
+            ))}
+          </div>
+        </GlassCard>
+      </motion.div>
+
+      {/* Application CTA */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
+        className="glass rounded-2xl p-8 glow-border relative overflow-hidden"
+      >
+        <div className="absolute inset-0 gradient-bg pointer-events-none" />
+        <div className="relative text-center">
+          <div className="inline-flex items-center gap-2 glass px-4 py-2 rounded-full mb-5">
+            <Target className="w-4 h-4 text-primary" />
+            <span className="text-sm font-body text-muted-foreground">Application</span>
+          </div>
+
+          <p className="font-heading font-extrabold text-2xl sm:text-3xl gradient-text mb-6 tracking-wide uppercase">
+            SERIOUS ATHLETES ONLY
+          </p>
+
+          <div className="glass rounded-xl p-5 mb-6 text-left">
+            <p className="font-body text-foreground/85 text-sm mb-4">
+              Complete the BTCALI Athlete Diagnostic first so I can properly analyze:
+            </p>
+            <div className="space-y-2 mb-4">
+              {DIAGNOSTIC_REASONS.map(r => (
+                <div key={r} className="flex items-center gap-2">
+                  <div className="w-1.5 h-1.5 rounded-full bg-primary flex-shrink-0" />
+                  <span className="text-sm font-body text-foreground/80">{r}</span>
+                </div>
+              ))}
+            </div>
+            <p className="font-body text-foreground/70 text-sm leading-relaxed">
+              The Athlete Diagnostic helps me understand exactly how to structure your coaching for the fastest progress possible.
+            </p>
+          </div>
+
+          <div className="flex flex-col sm:flex-row gap-3 justify-center">
+            <Link to="/scan" className="flex-1">
+              <motion.button
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.97 }}
+                className="w-full flex items-center justify-center gap-2 px-6 py-4 rounded-xl gradient-bg-strong text-primary-foreground font-heading font-bold text-base glow-primary"
+              >
+                <ArrowRight className="w-5 h-5" />
+                Start Athlete Diagnostic
+              </motion.button>
+            </Link>
+            <motion.button
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.97 }}
+              onClick={handleEmail}
+              className="flex-1 flex items-center justify-center gap-2 px-6 py-4 rounded-xl glass border border-primary/40 text-foreground font-heading font-bold text-base hover:border-primary/70 transition-all"
+            >
+              <Mail className="w-5 h-5 text-primary" />
+              Email BTCALI
+            </motion.button>
+          </div>
+        </div>
+      </motion.div>
+
+    </div>
+  );
+}
 
 export default function Purchase() {
   const location = useLocation();
   const params = new URLSearchParams(location.search);
   const type = params.get('type') || 'default';
-  const offering = offeringDetails[type] || offeringDetails.default;
 
+  if (type === 'coaching') {
+    return <CoachingPage />;
+  }
+
+  // Fallback for other types (handstand, planche, etc.)
   return (
-    <div className="min-h-screen py-16 px-4 sm:px-6">
-      {/* Background glows */}
-      <div className="fixed inset-0 pointer-events-none">
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/6 rounded-full blur-3xl" />
-        <div className="absolute bottom-1/4 right-1/4 w-72 h-72 bg-accent/6 rounded-full blur-3xl" />
-      </div>
-
-      <div className="relative z-10 max-w-2xl mx-auto w-full">
-
-        {/* Hero */}
-        <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-12">
-          <div className="text-6xl mb-5">{offering.emoji}</div>
-          <div className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-heading font-bold mb-4 ${offering.tagColor}`}>
-            <Crown className="w-3 h-3" />
-            {offering.tag}
-          </div>
-          <h1 className="font-heading font-bold text-3xl sm:text-4xl mb-4">
-            <span className="gradient-text">{offering.title}</span>
-          </h1>
-          <p className="text-muted-foreground font-body text-base max-w-lg mx-auto leading-relaxed">
-            {offering.description}
-          </p>
-        </motion.div>
-
-        {/* What's Included */}
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>
-          <GlassCard glow hover={false} className="mb-6">
-            <h2 className="font-heading font-semibold text-base mb-4 text-foreground flex items-center gap-2">
-              <Zap className="w-4 h-4 text-primary" /> What's Included
-            </h2>
-            <div className="space-y-3">
-              {offering.includes.map((item) => (
-                <div key={item} className="flex items-start gap-3">
-                  <CheckCircle className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />
-                  <span className="text-sm font-body text-foreground/85">{item}</span>
-                </div>
-              ))}
-            </div>
-            {offering.note && (
-              <div className="mt-5 pt-4 border-t border-border/30 flex items-start gap-2">
-                <ShieldCheck className="w-4 h-4 text-muted-foreground flex-shrink-0 mt-0.5" />
-                <p className="text-xs text-muted-foreground font-body">{offering.note}</p>
-              </div>
-            )}
-          </GlassCard>
-        </motion.div>
-
-        {/* How it works */}
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}>
-          <GlassCard hover={false} className="mb-8">
-            <h2 className="font-heading font-semibold text-base mb-5 text-foreground flex items-center gap-2">
-              <Lock className="w-4 h-4 text-primary" /> How Access Works
-            </h2>
-            <div className="space-y-5">
-              {steps.map(({ num, title, desc }) => (
-                <div key={num} className="flex items-start gap-4">
-                  <div className="w-8 h-8 rounded-full gradient-bg-strong flex items-center justify-center flex-shrink-0 text-xs font-heading font-bold text-primary-foreground">
-                    {num}
-                  </div>
-                  <div>
-                    <p className="text-sm font-heading font-semibold text-foreground">{title}</p>
-                    <p className="text-xs font-body text-muted-foreground mt-0.5 leading-relaxed">{desc}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </GlassCard>
-        </motion.div>
-
-        {/* CTAs */}
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="space-y-4">
-
-          {/* Email */}
-          <motion.a
-            href={`mailto:${EMAIL}?subject=BTCALI%20Access%20%E2%80%94%20${encodeURIComponent(offering.title)}&body=Hi%20BTCALI%2C%0A%0AI%27m%20interested%20in%20the%20${encodeURIComponent(offering.title)}.%20Please%20send%20me%20onboarding%20details.%0A%0AThanks`}
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-            className="w-full flex items-center justify-center gap-3 py-4 px-6 rounded-2xl gradient-bg-strong text-primary-foreground font-heading font-bold text-base glow-primary cursor-pointer"
-          >
-            <Mail className="w-5 h-5" />
-            Email BTCALI
-            <ArrowRight className="w-4 h-4 ml-auto" />
-          </motion.a>
-
-          {/* Inquiry Group */}
-          <motion.a
-            href={INQUIRY_GROUP_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-            className="w-full flex items-center justify-center gap-3 py-4 px-6 rounded-2xl glass glow-border text-foreground font-heading font-semibold text-base cursor-pointer"
-          >
-            <Users className="w-5 h-5 text-primary" />
-            Join BTCALI Inquiry Group
-            <ArrowRight className="w-4 h-4 ml-auto text-muted-foreground" />
-          </motion.a>
-
-          <p className="text-center text-xs text-muted-foreground font-body pt-1">
-            Reach out via either channel — BTCALI responds with your onboarding details and personal access code.
-          </p>
-
-          <div className="text-center pt-2">
-            <Link to="/programs" className="text-sm text-muted-foreground hover:text-foreground transition-colors font-body">
-              ← Back to Programs
-            </Link>
-          </div>
-        </motion.div>
-
-      </div>
+    <div className="min-h-screen py-16 px-4 sm:px-6 max-w-2xl mx-auto text-center">
+      <Crown className="w-12 h-12 text-primary mx-auto mb-4" />
+      <h1 className="font-heading font-bold text-3xl gradient-text mb-4">Coming Soon</h1>
+      <p className="text-muted-foreground font-body mb-6">This program will be available soon at $30. Apply for the waiting list.</p>
+      <motion.a
+        href={`mailto:btcalisw@gmail.com?subject=BTCALI%20$30%20Program%20Waiting%20List&body=Program%20type%3A%20${encodeURIComponent(type)}`}
+        whileHover={{ scale: 1.02 }}
+        whileTap={{ scale: 0.98 }}
+        className="inline-flex items-center gap-2 px-6 py-4 rounded-xl gradient-bg-strong text-primary-foreground font-heading font-bold glow-primary"
+      >
+        <Mail className="w-5 h-5" /> Apply for Waiting List
+      </motion.a>
     </div>
   );
 }
