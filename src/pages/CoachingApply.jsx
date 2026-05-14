@@ -1,51 +1,44 @@
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { Zap, CheckCircle, ArrowRight, Trophy, Users, Star, Crown, Gift } from 'lucide-react';
+import { Zap, CheckCircle, Crown, Mail, Phone, Target, Shield, ArrowRight } from 'lucide-react';
 import GlassCard from '../components/GlassCard';
-import GlowButton from '../components/GlowButton';
-
-const SKILLS = [
-  'Handstand','Handstand Push-Up','Pike Push-Up','Bent Arm Press','L-Sit',
-  'L-Sit To Handstand','Muscle-Up','Front Lever','Front Lever Progressions',
-  'Front Lever Pull-Ups','Planche','Planche Progressions','Push-Up Strength',
-  'Pull-Up Strength','Dip Strength','Mobility','Body Control',
-  'Strength Endurance','Building Muscle','Improving Technique','Skill Mastery',
-];
 
 const INCLUDED = [
-  '24/7 text access for support, questions, and coaching guidance',
-  'Responses generally within a few hours — before your next workout',
-  'In-depth form analysis and technique breakdowns',
-  'Personalized feedback to improve faster and avoid mistakes',
-  'Fully personalized program tailored to your goals, weaknesses, schedule, and level',
-  'Programs designed for maximum speed, safety, and efficiency',
-  'One-time 10-minute coaching call at the start to align goals',
-  'Ongoing support throughout your calisthenics journey',
-  'Skill-specific progression systems and advanced movement breakdowns',
-  'Video analysis and correction feedback',
-  'Detailed explanations behind exercises and programming',
-  'Progress tracking and technique correction support',
-  'Mobility, recovery, and injury prevention guidance',
-  'Access to BTCALI coaching resources and tutorials',
-  'Unlimited access to materials related to your goals',
+  'In-depth 1-1 coaching',
+  'Personalized training routine',
+  'Full technique and form analysis',
+  'Video feedback and movement breakdowns',
+  'Routine adjustments based on progress',
+  'Direct messaging support',
+  'Help before the next workout whenever possible',
+  'In-depth video explanations on how to improve and perform movements',
+  'One-time onboarding call whenever the athlete is ready',
+  'Goal-specific programming',
+  'Progress tracking support',
 ];
 
-const WHO_FOR = [
-  'Serious athletes', 'Motivated beginners', 'Intermediate athletes',
-  'Advanced calisthenics athletes', 'Athletes who want fast structured progress',
-  'Athletes who want detailed coaching support',
-  'Athletes willing to stay consistent over multiple months',
+const SKILLS = [
+  'Planche','Front Lever','Handstand','Handstand Push-Up','Muscle-Up',
+  'L-Sit','L-Sit to Handstand','Bent Arm Press','Strength','Hypertrophy',
+  'Mobility','Weighted Calisthenics','Body Control',
 ];
 
-const COACHING_STYLE = [
-  'Fast but sustainable progress', 'Proper technique and movement quality',
-  'Body control and skill mastery', 'Injury prevention',
-  'Personalized progression', 'Elite athlete development', 'Long-term mastery',
+const DIAGNOSTIC_REASONS = [
+  'your current level',
+  'strengths',
+  'weaknesses',
+  'goals',
+  'technique level',
+  'training background',
 ];
 
 export default function CoachingApply() {
+  const handleEmail = () => {
+    window.location.href = 'mailto:btcalisw@gmail.com?subject=BTCALI%201-1%20Coaching%20Application&body=I%20completed%20the%20BTCALI%20Athlete%20Diagnostic%20and%20want%20to%20apply%20for%201-1%20coaching.%0D%0A';
+  };
+
   return (
-    <div className="min-h-screen py-12 px-4 sm:px-6 max-w-4xl mx-auto">
+    <div className="min-h-screen py-12 px-4 sm:px-6 max-w-3xl mx-auto">
 
       {/* Header */}
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-12">
@@ -53,144 +46,177 @@ export default function CoachingApply() {
           <Crown className="w-4 h-4 text-primary" />
           <span className="text-sm font-body text-muted-foreground">Elite Coaching</span>
         </div>
-        <h1 className="font-heading font-bold text-3xl sm:text-4xl md:text-5xl mb-4">
-          BTCALI <span className="gradient-text">1-on-1 Coaching</span>
+        <h1 className="font-heading font-bold text-3xl sm:text-5xl mb-5 leading-tight">
+          BTCALI <span className="gradient-text">1-1 Coaching</span>
         </h1>
-        <p className="text-muted-foreground font-body text-lg max-w-2xl mx-auto leading-relaxed">
-          A premium elite calisthenics coaching system designed to help serious athletes rapidly improve strength, body control, advanced skills, mobility, and overall performance through personalized guidance and in-depth coaching support.
-        </p>
       </motion.div>
 
       {/* Pricing */}
-      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="glass rounded-2xl p-6 glow-border mb-10 text-center relative overflow-hidden">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
+        className="glass rounded-2xl p-8 glow-border mb-10 text-center relative overflow-hidden"
+      >
         <div className="absolute inset-0 gradient-bg pointer-events-none" />
         <div className="relative">
-          <p className="text-xs font-heading text-primary uppercase tracking-widest font-bold mb-3">Payment Options</p>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <div className="glass rounded-2xl px-8 py-4 border border-primary/50 glow-primary">
+          <p className="text-xs font-heading text-primary uppercase tracking-widest font-bold mb-5">Pricing</p>
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
+            <div>
               <div className="flex items-center gap-1.5 justify-center mb-1">
                 <Zap className="w-4 h-4 text-primary" />
-                <span className="text-xs font-heading text-primary uppercase tracking-wider font-bold">Most Popular</span>
+                <span className="text-xs font-heading text-primary uppercase tracking-wider font-semibold">Most Popular</span>
               </div>
-              <div className="font-heading font-bold text-4xl gradient-text">$40<span className="text-lg text-muted-foreground font-body font-normal">/week</span></div>
+              <div className="font-heading font-bold text-5xl gradient-text">
+                $40<span className="text-xl text-muted-foreground font-body font-normal">/week</span>
+              </div>
             </div>
-            <div className="text-muted-foreground font-body text-sm">or</div>
-            <div className="glass rounded-2xl px-8 py-4 border border-border/40">
-              <div className="text-xs font-heading text-muted-foreground uppercase tracking-wider mb-1">Monthly — Save $10</div>
-              <div className="font-heading font-bold text-4xl gradient-text">$150<span className="text-lg text-muted-foreground font-body font-normal">/month</span></div>
+            <div className="text-muted-foreground font-body text-sm font-semibold uppercase tracking-wider">or</div>
+            <div>
+              <div className="text-xs font-heading text-muted-foreground uppercase tracking-wider mb-1">Monthly</div>
+              <div className="font-heading font-bold text-5xl gradient-text">
+                $150<span className="text-xl text-muted-foreground font-body font-normal">/month</span>
+              </div>
             </div>
-          </div>
-          <div className="flex items-center justify-center gap-2 mt-4">
-            <Gift className="w-4 h-4 text-green-400" />
-            <span className="text-sm font-body text-green-400 font-medium">Referral: Earn $5 credit every time a friend joins BTCALI coaching</span>
           </div>
         </div>
       </motion.div>
 
-      {/* What BTCALI Helps With */}
+      {/* About */}
       <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="mb-10">
-        <h2 className="font-heading font-bold text-2xl text-foreground mb-2">
-          What BTCALI Coaching <span className="gradient-text">Helps With</span>
-        </h2>
-        <p className="text-muted-foreground font-body text-sm mb-5">Skills &amp; Goals</p>
-        <div className="flex flex-wrap gap-2">
-          {SKILLS.map(s => (
-            <span key={s} className="text-sm font-body glass px-3 py-1.5 rounded-full border border-primary/20 text-foreground/80 hover:border-primary/50 hover:text-primary transition-all">{s}</span>
-          ))}
-        </div>
+        <GlassCard hover={false} glow>
+          <p className="font-body text-foreground/85 leading-relaxed text-base">
+            BTCALI 1-1 Coaching includes in-depth personal coaching where athletes can message me whenever they need help. I will respond in time before their next workout whenever possible, so they can apply the tips, corrections, and advice straight away.
+          </p>
+          <div className="mt-4 pt-4 border-t border-border/30">
+            <p className="font-body text-foreground/85 leading-relaxed text-base">
+              This is not just a random program. I look at the athlete's current level, goals, weaknesses, form, and technique, then constantly adapt their routine specifically to help them progress as fast as possible.
+            </p>
+          </div>
+        </GlassCard>
       </motion.div>
 
       {/* What's Included */}
       <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="mb-10">
         <h2 className="font-heading font-bold text-2xl text-foreground mb-5">
-          {"What's "}
-          <span className="gradient-text">Included</span>
+          {"What's "}<span className="gradient-text">Included</span>
         </h2>
-        <GlassCard glow hover={false}>
-          <div className="grid sm:grid-cols-2 gap-2">
+        <GlassCard hover={false}>
+          <div className="space-y-3">
             {INCLUDED.map(item => (
-              <div key={item} className="flex items-start gap-2">
+              <div key={item} className="flex items-start gap-3">
                 <CheckCircle className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />
-                <span className="text-sm font-body text-foreground/80">{item}</span>
+                <span className="text-sm font-body text-foreground/85">{item}</span>
               </div>
             ))}
           </div>
         </GlassCard>
       </motion.div>
 
-      {/* Who It's For + Style */}
-      <div className="grid sm:grid-cols-2 gap-6 mb-10">
-        <motion.div initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }}>
-          <GlassCard hover={false} className="h-full">
-            <div className="flex items-center gap-2 mb-4">
-              <Users className="w-5 h-5 text-primary" />
-              <h3 className="font-heading font-bold text-lg text-foreground">Who It's For</h3>
-            </div>
-            <ul className="space-y-2">
-              {WHO_FOR.map(w => (
-                <li key={w} className="flex items-start gap-2 text-sm font-body text-foreground/80">
-                  <div className="w-1.5 h-1.5 rounded-full bg-primary flex-shrink-0 mt-2" />
-                  {w}
-                </li>
-              ))}
-            </ul>
-          </GlassCard>
-        </motion.div>
-        <motion.div initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }}>
-          <GlassCard hover={false} className="h-full">
-            <div className="flex items-center gap-2 mb-4">
-              <Star className="w-5 h-5 text-primary" />
-              <h3 className="font-heading font-bold text-lg text-foreground">Coaching Style</h3>
-            </div>
-            <ul className="space-y-2">
-              {COACHING_STYLE.map(c => (
-                <li key={c} className="flex items-start gap-2 text-sm font-body text-foreground/80">
-                  <div className="w-1.5 h-1.5 rounded-full bg-primary flex-shrink-0 mt-2" />
-                  {c}
-                </li>
-              ))}
-            </ul>
-          </GlassCard>
-        </motion.div>
-      </div>
+      {/* Call / Connection */}
+      <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="mb-10">
+        <h2 className="font-heading font-bold text-2xl text-foreground mb-5">
+          Call / <span className="gradient-text">Connection</span>
+        </h2>
+        <GlassCard hover={false} glow>
+          <div className="flex items-start gap-3">
+            <Phone className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
+            <p className="font-body text-foreground/85 leading-relaxed text-base">
+              The coaching also includes a one-time onboarding call whenever you like, so we can get to know each other properly. As a coach, I want to not only guide you, but also support and motivate you like a friend so you keep improving 💪
+            </p>
+          </div>
+        </GlassCard>
+      </motion.div>
 
-      {/* Goal */}
-      <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="glass rounded-2xl p-6 glow-border mb-10 text-center relative overflow-hidden">
+      {/* Why BTCALI Coaching */}
+      <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="mb-10">
+        <h2 className="font-heading font-bold text-2xl text-foreground mb-5">
+          Why <span className="gradient-text">BTCALI Coaching</span>
+        </h2>
+        <GlassCard hover={false}>
+          <div className="flex items-start gap-3">
+            <Shield className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
+            <p className="font-body text-foreground/85 leading-relaxed text-base">
+              BTCALI coaching is built for athletes who want real guidance instead of guessing. I help with your form, technique, programming, progressions, weaknesses, and mindset so your training becomes clearer, smarter, and more effective.
+            </p>
+          </div>
+        </GlassCard>
+      </motion.div>
+
+      {/* Skills */}
+      <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="mb-12">
+        <h2 className="font-heading font-bold text-2xl text-foreground mb-2">
+          Skills BTCALI <span className="gradient-text">Helps With</span>
+        </h2>
+        <p className="text-muted-foreground font-body text-sm mb-5">Skills &amp; goals I specialize in</p>
+        <div className="flex flex-wrap gap-2">
+          {SKILLS.map(s => (
+            <span key={s} className="text-sm font-body glass px-3 py-1.5 rounded-full border border-primary/20 text-foreground/80 hover:border-primary/50 hover:text-primary transition-all cursor-default">
+              {s}
+            </span>
+          ))}
+        </div>
+      </motion.div>
+
+      {/* Application CTA */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
+        className="glass rounded-2xl p-8 glow-border relative overflow-hidden"
+      >
         <div className="absolute inset-0 gradient-bg pointer-events-none" />
-        <div className="relative">
-          <Trophy className="w-8 h-8 text-primary mx-auto mb-3" />
-          <h3 className="font-heading font-bold text-xl text-foreground mb-2">The Goal of BTCALI</h3>
-          <p className="text-foreground/80 font-body text-sm max-w-2xl mx-auto leading-relaxed">
-            To help athletes unlock elite bodyweight strength, master advanced calisthenics skills, and achieve insane proven progress through high-level personalized coaching and support.
+        <div className="relative text-center">
+          <div className="inline-flex items-center gap-2 glass px-4 py-2 rounded-full mb-5">
+            <Target className="w-4 h-4 text-primary" />
+            <span className="text-sm font-body text-muted-foreground">Application</span>
+          </div>
+
+          <h2 className="font-heading font-bold text-2xl sm:text-3xl text-foreground mb-3">
+            Ready to apply for BTCALI 1-1 Coaching?
+          </h2>
+
+          <p className="font-heading font-extrabold text-xl sm:text-2xl gradient-text mb-6 tracking-wide uppercase">
+            SERIOUS ATHLETES ONLY
           </p>
+
+          <div className="glass rounded-xl p-5 mb-6 text-left">
+            <p className="font-body text-foreground/85 text-sm mb-4">
+              Complete the BTCALI Athlete Diagnostic first so I can properly analyze:
+            </p>
+            <div className="space-y-2">
+              {DIAGNOSTIC_REASONS.map(r => (
+                <div key={r} className="flex items-center gap-2">
+                  <div className="w-1.5 h-1.5 rounded-full bg-primary flex-shrink-0" />
+                  <span className="text-sm font-body text-foreground/80">{r}</span>
+                </div>
+              ))}
+            </div>
+            <p className="font-body text-foreground/70 text-sm mt-4 leading-relaxed">
+              The Athlete Diagnostic helps me understand exactly how to structure your coaching for the fastest progress possible.
+            </p>
+          </div>
+
+          <div className="flex flex-col sm:flex-row gap-3 justify-center">
+            <motion.button
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.97 }}
+              onClick={handleEmail}
+              className="flex items-center justify-center gap-2 px-6 py-4 rounded-xl gradient-bg-strong text-primary-foreground font-heading font-bold text-base glow-primary"
+            >
+              <Mail className="w-5 h-5" />
+              Email BTCALI
+            </motion.button>
+            <Link to="/scan">
+              <motion.button
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.97 }}
+                className="flex items-center justify-center gap-2 px-6 py-4 rounded-xl glass border border-primary/40 text-foreground font-heading font-bold text-base hover:border-primary/70 transition-all w-full"
+              >
+                <ArrowRight className="w-5 h-5 text-primary" />
+                Start Athlete Diagnostic
+              </motion.button>
+            </Link>
+          </div>
         </div>
       </motion.div>
 
-      {/* Results CTA */}
-      <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="glass rounded-2xl p-5 mb-10 border border-primary/20 text-center">
-        <p className="font-heading font-semibold text-foreground mb-3">See real BTCALI student progress</p>
-        <Link to="/results">
-          <GlowButton variant="secondary">
-            <Trophy className="w-4 h-4" /> View Athlete Results <ArrowRight className="w-4 h-4" />
-          </GlowButton>
-        </Link>
-      </motion.div>
-
-      {/* Apply CTA */}
-      <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center">
-        <h2 className="font-heading font-bold text-2xl text-foreground mb-3">Ready to Start?</h2>
-        <p className="text-muted-foreground font-body mb-6">Apply now and BTCALI will review your diagnostic and reach out personally.</p>
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-          <Link to="/diagnostic">
-            <GlowButton size="lg">
-              <Zap className="w-5 h-5" /> Take Athlete Diagnostic <ArrowRight className="w-4 h-4" />
-            </GlowButton>
-          </Link>
-          <Link to="/purchase?type=coaching">
-            <GlowButton variant="secondary" size="lg">Apply Directly</GlowButton>
-          </Link>
-        </div>
-      </motion.div>
     </div>
   );
 }
