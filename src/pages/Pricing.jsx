@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { Check, Crown, Zap, ArrowRight, Shield } from 'lucide-react';
+import { Check, Crown, Zap, ArrowRight, Shield, Lock, Clock } from 'lucide-react';
 import GlassCard from '../components/GlassCard';
 import GlowButton from '../components/GlowButton';
 
@@ -19,7 +19,7 @@ const plans = [
       'AI Coach (limited)',
     ],
     cta: 'Start Free',
-    to: '/scan',
+    to: '/tutorials',
   },
   {
     name: 'Program Access',
@@ -27,6 +27,7 @@ const plans = [
     period: '/program',
     description: 'Per skill program — structured & proven',
     featured: false,
+    comingSoon: true,
     features: [
       'Full structured program access',
       'Phase-by-phase progressions',
@@ -35,8 +36,8 @@ const plans = [
       'Milestone tracking',
       'Program-specific roadmap',
     ],
-    cta: 'Get a Program',
-    to: '/purchase?type=coaching',
+    cta: null,
+    to: null,
   },
   {
     name: 'Elite 1-on-1',
@@ -133,14 +134,24 @@ export default function Pricing() {
                   </li>
                 ))}
               </ul>
-              <Link to={plan.to}>
-                <GlowButton
-                  variant={plan.featured ? 'primary' : 'secondary'}
-                  className="w-full"
-                >
-                  {plan.cta} <ArrowRight className="w-4 h-4" />
-                </GlowButton>
-              </Link>
+              {plan.comingSoon ? (
+                <div className="glass rounded-xl p-4 text-center border border-amber-400/30">
+                  <div className="flex items-center justify-center gap-2 mb-1">
+                    <Lock className="w-4 h-4 text-amber-400" />
+                    <span className="font-heading font-semibold text-amber-400 text-sm">Coming Soon</span>
+                  </div>
+                  <p className="text-xs text-muted-foreground font-body">Paid programs are not yet available. Use 1-on-1 coaching for custom programming now.</p>
+                </div>
+              ) : (
+                <Link to={plan.to}>
+                  <GlowButton
+                    variant={plan.featured ? 'primary' : 'secondary'}
+                    className="w-full"
+                  >
+                    {plan.cta} <ArrowRight className="w-4 h-4" />
+                  </GlowButton>
+                </Link>
+              )}
             </GlassCard>
           </motion.div>
         ))}

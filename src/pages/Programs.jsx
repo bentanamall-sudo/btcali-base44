@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 import { useAccessCodes } from '@/lib/useAccessCodes';
 import { Link } from 'react-router-dom';
-import { Layers, Lock, ArrowRight, Crown, CheckCircle, Clock, Users, Target, AlertCircle, Gift, Zap } from 'lucide-react';
+import { Layers, Lock, ArrowRight, Crown, CheckCircle, Clock, Users, Target, AlertCircle, Gift, Zap, Mail } from 'lucide-react';
 import GlassCard from '../components/GlassCard';
 import GlowButton from '../components/GlowButton';
 import { programs } from '@/lib/programsData';
@@ -136,37 +136,33 @@ function ProgramCard({ program, index, isProgramUnlocked }) {
           {/* CTA */}
           {isLocked ? (
             <div className="space-y-3">
-              {program.tag === 'COMING SOON' ? (
-                <div className="glass rounded-xl p-3 text-center">
-                  <div className="flex items-center justify-center gap-2 mb-1">
-                    <Clock className="w-4 h-4 text-amber-400" />
-                    <span className="text-xs font-heading font-semibold text-amber-400">Coming Soon</span>
-                  </div>
-                  <p className="text-xs text-muted-foreground font-body">
-                    Get custom programming through 1-on-1 coaching while this launches.
-                  </p>
+              <div className="glass rounded-xl p-3 text-center">
+                <div className="flex items-center justify-center gap-2 mb-1">
+                  <Clock className="w-4 h-4 text-amber-400" />
+                  <span className="text-xs font-heading font-semibold text-amber-400">Coming Soon — $30</span>
                 </div>
-              ) : (
-                <div className="glass rounded-xl p-3 text-center">
-                  <div className="flex items-center justify-center gap-2 mb-1">
-                    <Lock className="w-4 h-4 text-primary" />
-                    <span className="text-xs font-heading font-semibold text-primary">Access Required</span>
-                  </div>
-                  <p className="text-xs text-muted-foreground font-body">
-                    Contact BTCALI to receive your personal access code.
-                  </p>
-                </div>
-              )}
-              <Link to={`/purchase?type=${program.skill?.toLowerCase().replace(/[^a-z]/g,'') || 'coaching'}`}>
-                <motion.button
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  className="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl gradient-bg-strong text-primary-foreground text-sm font-heading font-semibold glow-primary"
-                >
-                  <Users className="w-4 h-4" />
-                  {program.cta}
-                </motion.button>
-              </Link>
+                <p className="text-xs text-muted-foreground font-body">
+                  Apply for the waiting list to be notified when this program launches.
+                </p>
+              </div>
+              <motion.button
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                onClick={() => {
+                  const subject = encodeURIComponent('BTCALI $30 Program Waiting List Application');
+                  const body = encodeURIComponent(`I want to apply for the waiting list for this BTCALI $30 program:\n\nProgram:\n${program.name}\n\nMy goal/skill:\n${program.skill}\n\nName:\n[Your name]\n\nEmail:\n[Your email]`);
+                  const a = document.createElement('a');
+                  a.href = `mailto:btcalisw@gmail.com?subject=${subject}&body=${body}`;
+                  a.rel = 'noopener';
+                  document.body.appendChild(a);
+                  a.click();
+                  document.body.removeChild(a);
+                }}
+                className="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl gradient-bg-strong text-primary-foreground text-sm font-heading font-semibold glow-primary"
+              >
+                <Mail className="w-4 h-4" />
+                Apply for {program.name} Waiting List
+              </motion.button>
             </div>
           ) : program.tag === 'AVAILABLE NOW' || program.tag === 'PREMIUM' ? (
             <Link to={program.to}>

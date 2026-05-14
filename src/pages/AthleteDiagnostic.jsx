@@ -115,7 +115,7 @@ function Field({ children }) {
 export default function AthleteDiagnostic() {
   const [step, setStep] = useState(0);
   const [data, setData] = useState({
-    full_name: '', email: '', age: '', country: '', instagram: '',
+    full_name: '', email: '', age: '', height: '', weight: '', country: '', instagram: '',
     training_experience: '', training_days: '', training_location: '',
     followed_program: '', has_coach: '',
     pushup_max: '', pullup_max: '', dip_max: '', pike_pushup_max: '',
@@ -160,6 +160,8 @@ export default function AthleteDiagnostic() {
       <Field><Label>Full Name</Label><TextInput value={data.full_name} onChange={v => set('full_name', v)} placeholder="Your full name" /></Field>
       <Field><Label>Email</Label><TextInput value={data.email} onChange={v => set('email', v)} placeholder="your@email.com" type="email" /></Field>
       <Field><Label>Age</Label><TextInput value={data.age} onChange={v => set('age', v)} placeholder="e.g. 24" type="number" /></Field>
+      <Field><Label>Height (cm or ft)</Label><TextInput value={data.height} onChange={v => set('height', v)} placeholder="e.g. 178cm or 5'10" /></Field>
+      <Field><Label>Weight (kg or lbs)</Label><TextInput value={data.weight} onChange={v => set('weight', v)} placeholder="e.g. 75kg or 165lbs" /></Field>
       <Field><Label>Country</Label><TextInput value={data.country} onChange={v => set('country', v)} placeholder="e.g. Australia" /></Field>
       <Field><Label>Instagram Username</Label><TextInput value={data.instagram} onChange={v => set('instagram', v)} placeholder="@handle" /></Field>
     </div>,
@@ -332,6 +334,38 @@ export default function AthleteDiagnostic() {
 
   const buildReportText = (d, r) => buildEmailBody(d, r);
 
+  const handleWaitingList = (programName) => {
+    const subject = encodeURIComponent('BTCALI $30 Program Waiting List Application');
+    const body = encodeURIComponent(
+`I want to apply for the waiting list for this BTCALI $30 program:
+
+Program:
+${programName}
+
+My goal/skill:
+${(report?.goals || data.goals || []).join(', ') || 'N/A'}
+
+Name:
+${data.full_name || 'N/A'}
+
+Email:
+${data.email || 'N/A'}
+
+Quiz results:
+Athlete Level: ${report?.athlete_level || 'N/A'}
+Push-ups: ${data.pushup_max} | Pull-ups: ${data.pullup_max} | Dips: ${data.dip_max}
+Front Lever: ${data.front_lever_level}
+Strengths: ${(report?.strengths || []).join(', ')}
+Weaknesses: ${(report?.weaknesses || []).join(', ')}`
+    );
+    const a = document.createElement('a');
+    a.href = `mailto:btcalisw@gmail.com?subject=${subject}&body=${body}`;
+    a.rel = 'noopener';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+  };
+
   const handleSend = () => {
     const subject = encodeURIComponent(`New BTCALI Athlete Diagnostic Report — ${data.full_name}`);
     const body = encodeURIComponent(buildReportText(data, report));
@@ -367,7 +401,42 @@ export default function AthleteDiagnostic() {
       <div className="min-h-screen py-12 px-4 sm:px-6 max-w-4xl mx-auto">
         <DiagnosticReport data={data} report={report} />
 
-        <div className="mt-8 space-y-3">
+        {/* Recommended Program Waiting List */}
+        {report.recommended_programs?.length > 0 && (
+          <div className="mt-8 glass rounded-2xl p-6 glow-border space-y-3">
+            <h3 className="font-heading font-bold text-foreground text-base">Recommended Programs</h3>
+            <p className="text-sm text-muted-foreground font-body">These programs are coming soon ($30 each). Apply for the waiting list below.</p>
+            <div className="space-y-2">
+              {report.recommended_programs.map((prog) => (
+                <motion.button
+                  key={prog}
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.97 }}
+                  onClick={() => handleWaitingList(prog)}
+                  className="w-full py-3 px-4 rounded-xl glass border border-primary/40 text-foreground font-heading font-semibold text-sm flex items-center justify-center gap-2 hover:border-primary/60 transition-all"
+                >
+                  <Zap className="w-4 h-4 text-primary" />
+                  Apply for {prog} Waiting List
+                </motion.button>
+              ))}
+            </div>
+            {/* 1-on-1 Coaching CTA */}
+            <div className="pt-3 border-t border-border/30">
+              <p className="text-sm text-muted-foreground font-body mb-2">Want faster progress while waiting? BTCALI 1-1 Coaching is available now.</p>
+              <a href="/pricing">
+                <motion.button
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.97 }}
+                  className="w-full py-3 rounded-xl gradient-bg-strong text-primary-foreground font-heading font-semibold text-sm flex items-center justify-center gap-2 glow-primary"
+                >
+                  <Trophy className="w-4 h-4" /> View 1-1 Coaching
+                </motion.button>
+              </a>
+            </div>
+          </div>
+        )}
+
+        <div className="mt-6 space-y-3">
           {/* Primary send button */}
           <motion.button
             whileHover={{ scale: 1.03 }}

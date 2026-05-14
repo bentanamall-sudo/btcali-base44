@@ -108,7 +108,7 @@ NEW BTCALI ATHLETE DIAGNOSTIC REPORT
 =====================================
 Athlete: ${data.full_name}
 Email: ${data.email}
-Age: ${data.age} | Country: ${data.country} | Instagram: @${data.instagram}
+Age: ${data.age} | Height: ${data.height || 'N/A'} | Weight: ${data.weight || 'N/A'} | Country: ${data.country} | Instagram: @${data.instagram}
 
 ATHLETE LEVEL: ${report.athlete_level}
 

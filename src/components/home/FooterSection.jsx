@@ -18,8 +18,7 @@ export default function FooterSection() {
               {[
                 { to: '/scan', label: 'Athlete Scan' },
                 { to: '/tutorials', label: 'Free Tutorials' },
-                { to: '/skills', label: 'Skill Library' },
-                { to: '/dashboard', label: 'Dashboard' },
+                { to: '/programs', label: 'Programs' },
               ].map((link) => (
                 <li key={link.to}>
                   <Link to={link.to} className="text-sm text-muted-foreground hover:text-foreground transition-colors font-body">
@@ -48,13 +47,21 @@ export default function FooterSection() {
           <div>
             <h4 className="font-heading font-semibold text-foreground mb-3">Connect</h4>
             <ul className="space-y-2">
-              {['Instagram', 'YouTube', 'TikTok', 'Discord'].map((s) => (
-                <li key={s}>
-                  <span className="text-sm text-muted-foreground hover:text-foreground transition-colors font-body cursor-pointer">
-                    {s}
-                  </span>
-                </li>
-              ))}
+              <li>
+                <a href="https://www.instagram.com/btcali_sw?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener noreferrer" className="text-sm text-muted-foreground hover:text-foreground transition-colors font-body">
+                  @btcali_sw (Instagram)
+                </a>
+              </li>
+              <li>
+                <a href="https://youtube.com/@btcali_sw?si=vCNZ0my-iFFsr1-0" target="_blank" rel="noopener noreferrer" className="text-sm text-muted-foreground hover:text-foreground transition-colors font-body">
+                  BTCALI (YouTube)
+                </a>
+              </li>
+              <li>
+                <a href="https://www.tiktok.com/@btcali_sw?is_from_webapp=1&sender_device=pc" target="_blank" rel="noopener noreferrer" className="text-sm text-muted-foreground hover:text-foreground transition-colors font-body">
+                  @btcali_sw (TikTok)
+                </a>
+              </li>
             </ul>
           </div>
         </div>
