@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { Trophy, Play, Users, ArrowRight, X } from 'lucide-react';
+import { Trophy, Play, Users, ArrowRight, X, ExternalLink } from 'lucide-react';
 import GlowButton from '../components/GlowButton';
 
 const testimonials = [
@@ -40,6 +40,12 @@ const testimonials = [
     title: "Andreas' 1 Week L-Sit to Handstand",
     label: '1 Week',
     labelColor: 'text-purple-400 bg-purple-400/15',
+  },
+  {
+    id: 'ep1uFxV0o50',
+    title: "Andreas 1 Week L-Sit To Handstand",
+    label: '1 Week Progress',
+    labelColor: 'text-cyan-400 bg-cyan-400/15',
   },
 ];
 
@@ -92,68 +98,58 @@ function VideoCard({ video, index, onPlay }) {
 }
 
 function VideoModal({ video, onClose }) {
-  // Embed params: autoplay, no related videos, no branding, no info overlays, minimal controls
-  const embedSrc = `https://www.youtube.com/embed/${video.id}?autoplay=1&rel=0&modestbranding=1&iv_load_policy=3&showinfo=0&controls=1&disablekb=0&fs=0&playsinline=1&color=white`;
+  const embedSrc = `https://www.youtube.com/embed/${video.id}?autoplay=1&rel=0`;
 
   return (
     <AnimatePresence>
       <motion.div
-        key="modal-backdrop"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
-        transition={{ duration: 0.25 }}
-        className="fixed inset-0 z-[100] flex items-center justify-center px-4"
+        className="fixed inset-0 z-[100] flex items-center justify-center p-4"
+        style={{ background: 'rgba(0,0,0,0.85)', backdropFilter: 'blur(8px)' }}
         onClick={onClose}
       >
-        {/* Cinematic backdrop */}
-        <div className="absolute inset-0 bg-black/85 backdrop-blur-xl" />
-
-        {/* Modal content */}
         <motion.div
-          key="modal-content"
-          initial={{ opacity: 0, scale: 0.92, y: 24 }}
-          animate={{ opacity: 1, scale: 1, y: 0 }}
-          exit={{ opacity: 0, scale: 0.92, y: 24 }}
-          transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-          className="relative z-10 w-full max-w-sm mx-auto"
+          initial={{ scale: 0.9, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          exit={{ scale: 0.9, opacity: 0 }}
+          transition={{ duration: 0.25 }}
+          className="w-full max-w-sm glass rounded-2xl overflow-hidden border border-primary/30"
           onClick={e => e.stopPropagation()}
         >
-          {/* Close button */}
-          <div className="flex items-center justify-between mb-3 px-1">
-            <div>
-              <p className="font-heading font-bold text-white text-base leading-tight">{video.title}</p>
-              <span className={`text-xs font-heading font-bold px-2.5 py-0.5 rounded-full mt-1 inline-block ${video.labelColor}`}>
+          {/* Header bar */}
+          <div className="flex items-center justify-between px-5 py-3 border-b border-border/30">
+            <div className="flex-1 min-w-0 mr-3">
+              <p className="font-heading font-bold text-sm text-foreground truncate">{video.title}</p>
+              <span className={`text-xs font-heading font-bold px-2 py-0.5 rounded-full mt-1 inline-block ${video.labelColor}`}>
                 {video.label}
               </span>
             </div>
-            <button
-              onClick={onClose}
-              className="w-9 h-9 rounded-full glass border border-white/10 flex items-center justify-center text-white/70 hover:text-white hover:border-white/30 transition-all ml-3 flex-shrink-0"
-            >
-              <X className="w-4 h-4" />
-            </button>
+            <div className="flex items-center gap-2 flex-shrink-0">
+              <a
+                href={`https://youtube.com/shorts/${video.id}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-xs font-body text-muted-foreground hover:text-foreground flex items-center gap-1 transition-colors"
+              >
+                <ExternalLink className="w-3.5 h-3.5" /> YouTube
+              </a>
+              <button onClick={onClose} className="p-1 rounded-lg hover:bg-muted/40 transition-colors">
+                <X className="w-4 h-4 text-muted-foreground" />
+              </button>
+            </div>
           </div>
 
-          {/* Video container — 9:16 portrait */}
-          <div
-            className="rounded-2xl overflow-hidden glow-border"
-            style={{ aspectRatio: '9/16', background: '#000' }}
-          >
+          {/* Video — 9:16 portrait */}
+          <div className="relative w-full" style={{ paddingBottom: '177.78%' }}>
             <iframe
               src={embedSrc}
               title={video.title}
-              className="w-full h-full border-0"
-              allow="autoplay; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen={false}
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+              className="absolute inset-0 w-full h-full border-0"
             />
-          </div>
-
-          {/* Subtle BTCALI branding strip */}
-          <div className="mt-3 flex items-center justify-center gap-2">
-            <div className="w-1.5 h-1.5 rounded-full gradient-bg-strong" />
-            <span className="text-xs font-heading text-muted-foreground tracking-widest uppercase">BTCALI Athlete Progress</span>
-            <div className="w-1.5 h-1.5 rounded-full gradient-bg-strong" />
           </div>
         </motion.div>
       </motion.div>
