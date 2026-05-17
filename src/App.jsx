@@ -24,6 +24,11 @@ import ProgramBuilder from './pages/ProgramBuilder';
 import Purchase from './pages/Purchase';
 import AthleteDiagnostic from './pages/AthleteDiagnostic';
 import AdminDiagnostics from './pages/AdminDiagnostics';
+import HandstandGuide from './pages/tutorials/HandstandGuide';
+import LSitHandstandGuide from './pages/tutorials/LSitHandstandGuide';
+import PlancheGuide from './pages/tutorials/PlancheGuide';
+import PlanchePrograms from './pages/programs/PlanchePrograms';
+import FrontLeverPrograms from './pages/programs/FrontLeverPrograms';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -48,6 +53,11 @@ const AuthenticatedApp = () => {
         <Route path="/scan" element={<AthleteDiagnostic />} />
         <Route path="/tutorials" element={<Tutorials />} />
         <Route path="/tutorials/:tutorialId" element={<TutorialDetail />} />
+        <Route path="/tutorials/handstand-beginner-guide" element={<HandstandGuide />} />
+        <Route path="/tutorials/l-sit-to-handstand-guide" element={<LSitHandstandGuide />} />
+        <Route path="/tutorials/planche-conditioning-guide" element={<PlancheGuide />} />
+        <Route path="/programs/planche-programs" element={<PlanchePrograms />} />
+        <Route path="/programs/front-lever-programs" element={<FrontLeverPrograms />} />
         <Route path="/skills" element={<SkillLibrary />} />
         <Route path="/programs" element={<Programs />} />
         <Route path="/apply" element={<CoachingApply />} />
