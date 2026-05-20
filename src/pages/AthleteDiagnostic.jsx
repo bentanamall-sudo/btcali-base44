@@ -296,12 +296,17 @@ export default function AthleteDiagnostic() {
       </p>
       <Field>
         <Label>Equipment Available</Label>
-        <p className="text-xs text-muted-foreground font-body mb-2">List everything you have access to — be as specific as possible.</p>
+        <p className="text-xs text-muted-foreground font-body mb-2 leading-relaxed">
+          Type out <strong className="text-foreground">everything</strong> you have access to. Be specific — this directly affects how BTCALI programs your training.
+        </p>
+        <p className="text-xs text-muted-foreground/70 font-body mb-3 leading-relaxed">
+          Examples: pull-up bar, rings, dip bars, parallettes, resistance bands, gym access, cables, barbells, dumbbells, weighted vest, machines, gymnastics mat, floor only, etc.
+        </p>
         <TextArea
-          rows={4}
+          rows={5}
           value={data.equipment_available}
           onChange={v => set('equipment_available', v)}
-          placeholder={`e.g. Pull-up bar (doorframe), dip bars, parallettes, resistance bands (light/medium/heavy), rings, gym access (machines, cables, barbells), weighted vest, dumbbells up to 30kg, gymnastics mat...`}
+          placeholder={"Type all equipment you have access to...\n\ne.g. Pull-up bar, dip bars, parallettes, resistance bands (light/medium/heavy), rings, gym access with cables and barbells, weighted vest, dumbbells up to 30kg..."}
         />
       </Field>
       <Field>

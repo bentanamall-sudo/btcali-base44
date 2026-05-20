@@ -152,6 +152,15 @@ Consistency commitment: ${data.consistency_answer}
 Seriousness: ${data.seriousness}
 Why BTCALI: ${data.why_btcali}
 
+--- EQUIPMENT AVAILABLE ---
+${data.equipment_available || 'Not provided'}
+
+--- CURRENT SKILLS / SKILL LEVEL ---
+${data.exact_current_skills || 'Not provided'}
+
+--- ADDITIONAL NOTES ---
+${data.additional_notes || 'Not provided'}
+
 --- CONSENT ---
 Media consent: ${data.media_consent ? 'YES' : 'NO'}
 Serious applicant: ${data.serious_applicant ? 'YES' : 'NO'}
