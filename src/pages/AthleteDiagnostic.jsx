@@ -16,7 +16,7 @@ const FL_LEVELS = ['None','Tuck FL','Advanced Tuck FL','One Leg FL','Straddle FL
 const MOBILITY = ['Poor','Average','Good','Excellent'];
 const SLEEP = ['Poor (< 6hrs)','Okay (6-7hrs)','Good (7-8hrs)','Excellent (8+hrs)'];
 
-const SECTIONS = ['Personal Info','Training Background','Current Strength','Goals','Mobility & Recovery','Coaching Fit','Consent'];
+const SECTIONS = ['Personal Info','Training Background','Current Strength','Goals','Mobility & Recovery','Coaching Fit','Extra Details','Consent'];
 
 function OptionBtn({ label, selected, onClick, multi }) {
   return (
@@ -92,13 +92,13 @@ function TextInput({ value, onChange, placeholder, type = 'text' }) {
   );
 }
 
-function TextArea({ value, onChange, placeholder }) {
+function TextArea({ value, onChange, placeholder, rows = 3 }) {
   return (
     <textarea
       value={value}
       onChange={e => onChange(e.target.value)}
       placeholder={placeholder}
-      rows={3}
+      rows={rows}
       className="w-full glass rounded-xl px-4 py-3 text-foreground font-body text-sm border border-border/40 focus:border-primary/60 focus:outline-none focus:ring-1 focus:ring-primary/40 bg-transparent resize-none"
     />
   );
@@ -182,10 +182,6 @@ export default function AthleteDiagnostic() {
         {optionRow('training_location', ['Gym','Home','Both'])}
       </Field>
       <Field>
-        <Label>Equipment available (describe what you have access to)</Label>
-        <TextArea value={data.equipment_available} onChange={v => set('equipment_available', v)} placeholder="e.g. Pull-up bar, dip bars, parallettes, rings, resistance bands, gym machines..." />
-      </Field>
-      <Field>
         <Label>Have you followed a calisthenics program before?</Label>
         {yesNo('followed_program')}
       </Field>
@@ -233,10 +229,6 @@ export default function AthleteDiagnostic() {
       <Field><Label>Can you do a handstand push-up?</Label>{yesNo('can_hspu')}</Field>
       <Field><Label>Can you do a bent arm press?</Label>{yesNo('can_bent_arm_press')}</Field>
       <Field><Label>Can you do an L-sit to handstand?</Label>{yesNo('can_lsit_to_hs')}</Field>
-      <Field>
-        <Label>Exact current skills (describe in detail — what can you hold/do and for how long)</Label>
-        <TextArea value={data.exact_current_skills} onChange={v => set('exact_current_skills', v)} placeholder="e.g. 3 sec tuck planche, 5 sec tuck front lever, freestanding handstand 8 sec, can do 1 muscle-up, no planche lean yet..." />
-      </Field>
     </div>,
 
     // 3 — Goals
@@ -295,13 +287,62 @@ export default function AthleteDiagnostic() {
         <Label>Why do you want BTCALI coaching?</Label>
         <TextArea value={data.why_btcali} onChange={v => set('why_btcali', v)} placeholder="Tell BTCALI why you want to work together..." />
       </Field>
+    </div>,
+
+    // 6 — Extra Details
+    <div key="s6" className="space-y-0">
+      <p className="text-sm text-muted-foreground font-body mb-5 leading-relaxed">
+        These fields help BTCALI understand your situation in detail. The more you share, the more personalised your coaching will be.
+      </p>
       <Field>
-        <Label>Additional notes (anything else BTCALI should know)</Label>
-        <TextArea value={data.additional_notes} onChange={v => set('additional_notes', v)} placeholder="Any other context, goals, constraints, or information that would help BTCALI understand you better..." />
+        <Label>Equipment Available</Label>
+        <p className="text-xs text-muted-foreground font-body mb-2">List everything you have access to — be as specific as possible.</p>
+        <TextArea
+          rows={4}
+          value={data.equipment_available}
+          onChange={v => set('equipment_available', v)}
+          placeholder={`e.g. Pull-up bar (doorframe), dip bars, parallettes, resistance bands (light/medium/heavy), rings, gym access (machines, cables, barbells), weighted vest, dumbbells up to 30kg, gymnastics mat...`}
+        />
+      </Field>
+      <Field>
+        <Label>Current Skills / Skill Level</Label>
+        <p className="text-xs text-muted-foreground font-body mb-2">Describe what you can already do — include hold times, reps, current progressions, strengths, and weaknesses.</p>
+        <TextArea
+          rows={6}
+          value={data.exact_current_skills}
+          onChange={v => set('exact_current_skills', v)}
+          placeholder={`e.g.
+• Tuck planche hold: ~3 seconds
+• Tuck front lever: ~5 seconds
+• Freestanding handstand: ~8 seconds sometimes
+• Can do 1 muscle-up but form is messy
+• Pull-ups: 12 reps clean
+• Push-ups: 30 reps
+• No planche lean yet
+• Wrist pain when loading planche
+• Strong in pulling, weak in pushing overhead...`}
+        />
+      </Field>
+      <Field>
+        <Label>Additional Notes</Label>
+        <p className="text-xs text-muted-foreground font-body mb-2">Anything else BTCALI should know — injuries, schedule, goals, limitations, training preferences, or extra context.</p>
+        <TextArea
+          rows={6}
+          value={data.additional_notes}
+          onChange={v => set('additional_notes', v)}
+          placeholder={`e.g.
+• I can only train on Tuesday, Thursday, Saturday
+• Lower back issue — can't load spine heavily
+• Main goal is planche within 6 months
+• Poor hip flexor mobility affecting L-sit
+• Prefer bodyweight-only, no gym
+• I've tried programs before but always get injured
+• Looking for long-term consistent coaching...`}
+        />
       </Field>
     </div>,
 
-    // 6 — Consent
+    // 7 — Consent
     <div key="s6" className="space-y-4">
       <div
         onClick={() => set('media_consent', !data.media_consent)}
@@ -327,7 +368,7 @@ export default function AthleteDiagnostic() {
   const canNext = () => {
     if (step === 0) return data.full_name && data.email;
     if (step === 3) return data.goals.length > 0;
-    if (step === 6) return data.serious_applicant;
+    if (step === 7) return data.serious_applicant;
     return true;
   };
 
@@ -573,14 +614,21 @@ Weaknesses: ${(report?.weaknesses || []).join(', ')}`
             Continue <ChevronRight className="w-4 h-4" />
           </motion.button>
         ) : (
-          <motion.button
-            whileTap={{ scale: 0.97 }}
-            onClick={handleSubmit}
-            disabled={!canNext() || submitting}
-            className="flex-1 flex items-center justify-center gap-2 py-3 rounded-xl gradient-bg-strong text-primary-foreground font-heading font-bold text-base glow-primary disabled:opacity-40"
-          >
-            {submitting ? <><div className="w-4 h-4 border-2 border-primary-foreground/30 border-t-primary-foreground rounded-full animate-spin" /> Generating...</> : <><Trophy className="w-5 h-5" /> Submit Report</>}
-          </motion.button>
+          <div className="flex-1 space-y-2">
+            <p className="text-center text-xs font-body text-primary font-semibold uppercase tracking-wide">Final Step — Generate Your Report</p>
+            <motion.button
+              whileTap={{ scale: 0.97 }}
+              onClick={handleSubmit}
+              disabled={!canNext() || submitting}
+              className="w-full flex items-center justify-center gap-2 py-4 rounded-xl gradient-bg-strong text-primary-foreground font-heading font-bold text-base glow-primary disabled:opacity-40"
+            >
+              {submitting
+                ? <><div className="w-4 h-4 border-2 border-primary-foreground/30 border-t-primary-foreground rounded-full animate-spin" /> Generating Report...</>
+                : <><Trophy className="w-5 h-5" /> Generate & Submit Report to BTCALI</>
+              }
+            </motion.button>
+            <p className="text-center text-xs font-body text-muted-foreground">Your report will be generated, then you'll submit it directly to BTCALI via email.</p>
+          </div>
         )}
       </div>
     </div>
