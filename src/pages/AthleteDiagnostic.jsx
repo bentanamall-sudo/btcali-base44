@@ -131,6 +131,7 @@ export default function AthleteDiagnostic() {
     media_consent: false, serious_applicant: false,
   });
   const [report, setReport] = useState(null);
+  const [submittedData, setSubmittedData] = useState(null);
   const [reportId, setReportId] = useState(null);
   const [sending, setSending] = useState(false);
   const [copied, setCopied] = useState(false);
@@ -379,20 +380,23 @@ export default function AthleteDiagnostic() {
 
   const handleSubmit = async () => {
     setSubmitting(true);
-    const r = generateReport(data);
-    const fullData = { ...data, ...r };
+    const snapshot = { ...data }; // capture full data snapshot before any state changes
+    const r = generateReport(snapshot);
+    const fullData = { ...snapshot, ...r };
     let savedId = null;
     try {
       const saved = await base44.entities.AthleteReport.create(fullData);
       savedId = saved?.id || null;
     } catch(e) { /* db save best-effort, don't block */ }
     setReportId(savedId);
+    setSubmittedData(snapshot); // save exact snapshot for send/copy
     setReport(r);
     setSubmitting(false);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const buildReportText = (d, r) => buildEmailBody(d, r);
+  // Always use submittedData snapshot so send/copy always reflects exactly what was submitted
+  const buildReportText = () => buildEmailBody(submittedData || data, report);
 
   const handleWaitingList = (programName) => {
     const subject = encodeURIComponent('BTCALI Custom Program Enquiry — AUD $50');
@@ -427,8 +431,9 @@ Weaknesses: ${(report?.weaknesses || []).join(', ')}`
   };
 
   const handleSend = () => {
-    const subject = encodeURIComponent(`New BTCALI Athlete Diagnostic Report — ${data.full_name}`);
-    const body = encodeURIComponent(buildReportText(data, report));
+    const d = submittedData || data;
+    const subject = encodeURIComponent(`New BTCALI Athlete Diagnostic Report — ${d.full_name}`);
+    const body = encodeURIComponent(buildReportText());
     const a = document.createElement('a');
     a.href = `mailto:btcalisw@gmail.com?subject=${subject}&body=${body}`;
     a.rel = 'noopener';
@@ -438,7 +443,7 @@ Weaknesses: ${(report?.weaknesses || []).join(', ')}`
   };
 
   const handleCopy = async () => {
-    const text = buildReportText(data, report);
+    const text = buildReportText();
     try {
       await navigator.clipboard.writeText(text);
       setCopied(true);
