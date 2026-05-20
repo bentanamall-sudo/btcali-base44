@@ -74,7 +74,7 @@ function VideoModal({ tutorial, onClose }) {
             <h3 className="font-heading font-bold text-sm text-foreground truncate">{tutorial.title}</h3>
             <div className="flex items-center gap-2 flex-shrink-0">
               <a
-                href={`https://youtube.com/shorts/${tutorial.videoId}`}
+                href={`https://www.youtube.com/watch?v=${tutorial.videoId}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-xs font-body text-muted-foreground hover:text-foreground flex items-center gap-1 transition-colors"
@@ -86,13 +86,13 @@ function VideoModal({ tutorial, onClose }) {
               </button>
             </div>
           </div>
-          <div className="relative w-full" style={{ paddingBottom: '177.78%' }}>
+          <div className="relative w-full" style={{ paddingBottom: '56.25%' }}>
             <iframe
               src={`https://www.youtube.com/embed/${tutorial.videoId}?autoplay=1&rel=0`}
               title={tutorial.title}
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowFullScreen
-              className="absolute inset-0 w-full h-full"
+              className="absolute inset-0 w-full h-full border-0"
             />
           </div>
         </motion.div>

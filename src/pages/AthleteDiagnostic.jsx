@@ -127,6 +127,7 @@ export default function AthleteDiagnostic() {
     injuries: '', pain_areas: '', sleep_quality: '', recovery_quality: '',
     coaching_investment: '', payment_option: '',
     consistency_answer: '', seriousness: '', why_btcali: '',
+    equipment_available: '', exact_current_skills: '', additional_notes: '',
     media_consent: false, serious_applicant: false,
   });
   const [report, setReport] = useState(null);
@@ -181,6 +182,10 @@ export default function AthleteDiagnostic() {
         {optionRow('training_location', ['Gym','Home','Both'])}
       </Field>
       <Field>
+        <Label>Equipment available (describe what you have access to)</Label>
+        <TextArea value={data.equipment_available} onChange={v => set('equipment_available', v)} placeholder="e.g. Pull-up bar, dip bars, parallettes, rings, resistance bands, gym machines..." />
+      </Field>
+      <Field>
         <Label>Have you followed a calisthenics program before?</Label>
         {yesNo('followed_program')}
       </Field>
@@ -228,6 +233,10 @@ export default function AthleteDiagnostic() {
       <Field><Label>Can you do a handstand push-up?</Label>{yesNo('can_hspu')}</Field>
       <Field><Label>Can you do a bent arm press?</Label>{yesNo('can_bent_arm_press')}</Field>
       <Field><Label>Can you do an L-sit to handstand?</Label>{yesNo('can_lsit_to_hs')}</Field>
+      <Field>
+        <Label>Exact current skills (describe in detail — what can you hold/do and for how long)</Label>
+        <TextArea value={data.exact_current_skills} onChange={v => set('exact_current_skills', v)} placeholder="e.g. 3 sec tuck planche, 5 sec tuck front lever, freestanding handstand 8 sec, can do 1 muscle-up, no planche lean yet..." />
+      </Field>
     </div>,
 
     // 3 — Goals
@@ -260,7 +269,7 @@ export default function AthleteDiagnostic() {
       <Field>
         <Label>Which payment option interests you most?</Label>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          {['$40/week','$150/month'].map(v => (
+          {['AUD $39.99/week (special offer)','AUD $150/month'].map(v => (
             <motion.button
               key={v}
               whileTap={{ scale: 0.97 }}
@@ -268,7 +277,8 @@ export default function AthleteDiagnostic() {
               className={`p-4 rounded-xl border text-center transition-all ${data.payment_option === v ? 'gradient-bg-strong glow-primary border-primary/60 text-primary-foreground' : 'glass border-border/40 text-foreground hover:border-primary/40'}`}
             >
               <div className="font-heading font-bold text-xl">{v}</div>
-              {v === '$40/week' && <div className="text-xs mt-1 font-body opacity-80">⚡ Most Popular</div>}
+              {v === 'AUD $39.99/week (special offer)' && <div className="text-xs mt-1 font-body opacity-80">Normally AUD $49.99/week</div>}
+              {v === 'AUD $150/month' && <div className="text-xs mt-1 font-body opacity-80">Normally AUD $200/month</div>}
             </motion.button>
           ))}
         </div>
@@ -284,6 +294,10 @@ export default function AthleteDiagnostic() {
       <Field>
         <Label>Why do you want BTCALI coaching?</Label>
         <TextArea value={data.why_btcali} onChange={v => set('why_btcali', v)} placeholder="Tell BTCALI why you want to work together..." />
+      </Field>
+      <Field>
+        <Label>Additional notes (anything else BTCALI should know)</Label>
+        <TextArea value={data.additional_notes} onChange={v => set('additional_notes', v)} placeholder="Any other context, goals, constraints, or information that would help BTCALI understand you better..." />
       </Field>
     </div>,
 
@@ -335,9 +349,9 @@ export default function AthleteDiagnostic() {
   const buildReportText = (d, r) => buildEmailBody(d, r);
 
   const handleWaitingList = (programName) => {
-    const subject = encodeURIComponent('BTCALI $30 Program Waiting List Application');
+    const subject = encodeURIComponent('BTCALI Custom Program Enquiry — AUD $50');
     const body = encodeURIComponent(
-`I want to apply for the waiting list for this BTCALI $30 program:
+`I want to enquire about this BTCALI custom program (AUD $50):
 
 Program:
 ${programName}
@@ -405,7 +419,7 @@ Weaknesses: ${(report?.weaknesses || []).join(', ')}`
         {report.recommended_programs?.length > 0 && (
           <div className="mt-8 glass rounded-2xl p-6 glow-border space-y-3">
             <h3 className="font-heading font-bold text-foreground text-base">Recommended Programs</h3>
-            <p className="text-sm text-muted-foreground font-body">These programs are coming soon ($30 each). Apply for the waiting list below.</p>
+            <p className="text-sm text-muted-foreground font-body">Custom programs available for AUD $50 each. Enquire with BTCALI to get started.</p>
             <div className="space-y-2">
               {report.recommended_programs.map((prog) => (
                 <motion.button
@@ -438,23 +452,28 @@ Weaknesses: ${(report?.weaknesses || []).join(', ')}`
 
         <div className="mt-6 space-y-3">
           {/* Primary send button */}
+          <div className="glass rounded-2xl p-5 border border-primary/30 text-center mb-2">
+            <p className="font-heading font-bold text-foreground text-base mb-1">This is the final step</p>
+            <p className="text-sm font-body text-muted-foreground">Click the button below to submit your report to BTCALI. Your email app will open — press Send to complete your submission.</p>
+          </div>
+
           <motion.button
             whileHover={{ scale: 1.03 }}
             whileTap={{ scale: 0.97 }}
             onClick={handleSend}
             className="w-full py-5 rounded-2xl gradient-bg-strong glow-primary-strong text-primary-foreground font-heading font-bold text-xl flex items-center justify-center gap-3"
           >
-            <Zap className="w-6 h-6" /> SEND TO BTCALI
+            <Zap className="w-6 h-6" /> Submit Your Report to BTCALI
           </motion.button>
 
           {/* Instruction under send */}
           <p className="text-center text-sm font-body text-muted-foreground px-2">
-            After your email app opens, press <strong className="text-foreground">Send</strong> to complete your BTCALI application.
+            After your email app opens, press <strong className="text-foreground">Send</strong> to complete your submission.
           </p>
 
           {/* Fallback instruction */}
           <p className="text-center text-xs font-body text-muted-foreground/70 px-2">
-            If SEND TO BTCALI does not open your email app, press <strong className="text-foreground">COPY REPORT TO SEND MANUALLY</strong>, paste the report into Gmail, and send it to <strong className="text-foreground">btcalisw@gmail.com</strong>.
+            If the button does not open your email app, press <strong className="text-foreground">COPY REPORT TO SEND MANUALLY</strong>, paste the report into Gmail, and send it to <strong className="text-foreground">btcalisw@gmail.com</strong>.
           </p>
 
           {/* Copy report button */}

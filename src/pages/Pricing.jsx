@@ -22,28 +22,30 @@ const plans = [
     to: '/tutorials',
   },
   {
-    name: 'Program Access',
-    price: '$30',
+    name: 'Custom Program',
+    price: 'AUD $50',
     period: '/program',
-    description: 'Per skill program — structured & proven',
+    description: 'Custom ~4-week program with session analysis',
     featured: false,
-    comingSoon: true,
+    comingSoon: false,
     features: [
-      'Full structured program access',
-      'Phase-by-phase progressions',
-      'Video breakdowns per level',
-      'Periodized volume & intensity',
-      'Milestone tracking',
-      'Program-specific roadmap',
+      'Custom program built for your level & goals',
+      'One in-depth session analysis included',
+      'Form & technique breakdown',
+      'Weakness identification',
+      'Program adjustments after analysis',
+      'Clear 4-week goal set for you',
+      'In-depth tutorials on every exercise',
+      'AUD $10 extra per additional analysis',
     ],
-    cta: null,
-    to: null,
+    cta: 'View Programs',
+    to: '/programs',
   },
   {
     name: 'Elite 1-on-1',
-    price: '$150',
+    price: 'AUD $150',
     period: '/month',
-    description: 'Or $40/week — direct elite coaching',
+    description: 'Special offer AUD $39.99/week this month',
     featured: true,
     bestOffer: true,
     features: [
@@ -120,9 +122,12 @@ export default function Pricing() {
                   <span className="text-sm text-muted-foreground font-body font-normal">{plan.period}</span>
                 </div>
                 {plan.name === 'Elite 1-on-1' && (
-                  <div className="mt-2 inline-flex items-center gap-1.5 glass glow-border rounded-full px-4 py-1.5">
-                    <Zap className="w-3.5 h-3.5 text-primary" />
-                    <span className="font-heading font-bold text-base gradient-text">or $40/week</span>
+                  <div className="mt-2 space-y-1">
+                    <div className="inline-flex items-center gap-1.5 glass glow-border rounded-full px-4 py-1.5">
+                      <Zap className="w-3.5 h-3.5 text-primary" />
+                      <span className="font-heading font-bold text-sm gradient-text">AUD $39.99/week (special offer)</span>
+                    </div>
+                    <div className="text-xs text-muted-foreground font-body">normally AUD $49.99/week · min 1 month</div>
                   </div>
                 )}
               </div>
@@ -142,7 +147,7 @@ export default function Pricing() {
                   </div>
                   <p className="text-xs text-muted-foreground font-body">Paid programs are not yet available. Use 1-on-1 coaching for custom programming now.</p>
                 </div>
-              ) : (
+              ) : plan.cta ? (
                 <Link to={plan.to}>
                   <GlowButton
                     variant={plan.featured ? 'primary' : 'secondary'}
@@ -151,7 +156,7 @@ export default function Pricing() {
                     {plan.cta} <ArrowRight className="w-4 h-4" />
                   </GlowButton>
                 </Link>
-              )}
+              ) : null}
             </GlassCard>
           </motion.div>
         ))}

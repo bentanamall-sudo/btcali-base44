@@ -8,9 +8,9 @@ const CATEGORIES = [
     id: 'planche-programs',
     icon: '💪',
     title: 'Planche Programs',
-    description: 'Structured V1–V4 planche progression pathway. Build from tuck planche all the way to full planche with periodized, science-backed programming.',
-    count: '4 programs',
-    progression: 'V1 → V2 → V3 → V4',
+    description: 'A fully custom planche program built around your current level, weaknesses, and goals. Includes a real session analysis and program adjustment.',
+    count: 'AUD $50 · ~4 weeks',
+    progression: 'Custom · Personalized · Analysed',
     accent: 'from-violet-500/20 to-purple-500/10',
     border: 'border-violet-500/30',
     glow: '0 0 35px hsl(262 90% 65% / 0.2)',
@@ -20,9 +20,9 @@ const CATEGORIES = [
     id: 'front-lever-programs',
     icon: '🔱',
     title: 'Front Lever Programs',
-    description: 'Complete V1–V6 front lever pathway from tuck FL to full front lever mastery. The most structured pulling strength system available.',
-    count: '7 programs',
-    progression: 'V1 → V2 → V3 → V4 → V5 → V6 → Advanced',
+    description: 'A fully custom front lever program built around your current level, weaknesses, and goals. Includes a real session analysis and program adjustment.',
+    count: 'AUD $50 · ~4 weeks',
+    progression: 'Custom · Personalized · Analysed',
     accent: 'from-cyan-500/15 to-blue-500/10',
     border: 'border-cyan-500/30',
     glow: '0 0 35px hsl(200 90% 50% / 0.18)',
@@ -60,8 +60,9 @@ export default function Programs() {
           <span className="font-heading font-semibold text-foreground">Full Programs Are Being Built</span>
         </div>
         <p className="text-sm text-muted-foreground font-body">
-          Full BTCALI skill programs are currently in development. In the meantime,{' '}
-          <strong className="text-foreground">1-on-1 coaching</strong> is available now for athletes who want custom programming, video feedback, and direct guidance.
+          Custom programs are available now for <strong className="text-foreground">AUD $50</strong> — built specifically for your level and goals, with a session analysis included. Click a category below to learn more.
+          <br /><br />
+          <strong className="text-foreground">1-on-1 coaching</strong> is also available for athletes who want ongoing direct guidance, video feedback, and fully adapted programming.
         </p>
       </motion.div>
 

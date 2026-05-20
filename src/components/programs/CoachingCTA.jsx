@@ -31,20 +31,25 @@ export default function CoachingCTA() {
 
       <div className="relative p-6 sm:p-8">
       {/* Pricing highlight */}
-      <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mb-6">
+      <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mb-4">
         <div className="glass rounded-2xl px-6 py-3 text-center border border-primary/30">
           <div className="text-xs font-heading text-muted-foreground uppercase tracking-widest mb-0.5">Monthly</div>
-          <div className="font-heading font-bold text-3xl gradient-text">$150<span className="text-base font-body text-muted-foreground font-normal">/month</span></div>
+          <div className="font-heading font-bold text-3xl gradient-text">AUD $150<span className="text-base font-body text-muted-foreground font-normal">/month</span></div>
+          <div className="text-xs font-body text-muted-foreground mt-0.5 line-through">normally AUD $200/month</div>
         </div>
         <div className="font-heading text-muted-foreground text-sm">or</div>
         <div className="glass rounded-2xl px-6 py-3 text-center glow-border border border-primary/50 relative overflow-hidden">
           <div className="absolute inset-0 gradient-bg pointer-events-none" />
           <div className="relative">
-            <div className="text-xs font-heading text-primary uppercase tracking-widest mb-0.5 font-bold">Weekly</div>
-            <div className="font-heading font-bold text-3xl gradient-text">$40<span className="text-base font-body text-muted-foreground font-normal">/week</span></div>
+            <div className="text-xs font-heading text-primary uppercase tracking-widest mb-0.5 font-bold">Special Offer — This Month</div>
+            <div className="font-heading font-bold text-3xl gradient-text">AUD $39.99<span className="text-base font-body text-muted-foreground font-normal">/week</span></div>
+            <div className="text-xs font-body text-muted-foreground mt-0.5 line-through">normally AUD $49.99/week</div>
           </div>
         </div>
       </div>
+      <p className="text-center text-xs font-body text-muted-foreground mb-6 max-w-lg mx-auto">
+        Secure your spot this month and the discounted weekly rate stays locked in for the year. To qualify for the weekly price, a minimum 1-month commitment is required. One-off single week without committing: AUD $50.
+      </p>
 
       {/* Header */}
       <div className="mb-6 text-center">
@@ -117,7 +122,7 @@ export default function CoachingCTA() {
           </motion.a>
         </div>
         <p className="text-center text-xs text-muted-foreground font-body mt-3">
-          Include your Instagram profile, goals and current level when emailing.
+          Please read everything in depth before applying or enquiring. Include your Instagram profile, goals, and current level when emailing.
         </p>
       </div>
     </motion.div>

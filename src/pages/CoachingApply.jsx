@@ -59,24 +59,29 @@ export default function CoachingApply() {
         <div className="absolute inset-0 gradient-bg pointer-events-none" />
         <div className="relative">
           <p className="text-xs font-heading text-primary uppercase tracking-widest font-bold mb-5">Pricing</p>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
-            <div>
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-6 flex-wrap">
+            <div className="text-center">
               <div className="flex items-center gap-1.5 justify-center mb-1">
                 <Zap className="w-4 h-4 text-primary" />
-                <span className="text-xs font-heading text-primary uppercase tracking-wider font-semibold">Most Popular</span>
+                <span className="text-xs font-heading text-primary uppercase tracking-wider font-semibold">Special Offer — This Month</span>
               </div>
               <div className="font-heading font-bold text-5xl gradient-text">
-                $40<span className="text-xl text-muted-foreground font-body font-normal">/week</span>
+                AUD $39.99<span className="text-xl text-muted-foreground font-body font-normal">/week</span>
               </div>
+              <div className="text-xs text-muted-foreground font-body mt-1 line-through">normally AUD $49.99/week</div>
             </div>
             <div className="text-muted-foreground font-body text-sm font-semibold uppercase tracking-wider">or</div>
-            <div>
+            <div className="text-center">
               <div className="text-xs font-heading text-muted-foreground uppercase tracking-wider mb-1">Monthly</div>
               <div className="font-heading font-bold text-5xl gradient-text">
-                $150<span className="text-xl text-muted-foreground font-body font-normal">/month</span>
+                AUD $150<span className="text-xl text-muted-foreground font-body font-normal">/month</span>
               </div>
+              <div className="text-xs text-muted-foreground font-body mt-1 line-through">normally AUD $200/month</div>
             </div>
           </div>
+          <p className="text-xs font-body text-muted-foreground mt-4 max-w-md mx-auto">
+            Secure your spot this month and the discounted weekly rate stays locked in for the year. Weekly rate requires a minimum 1-month commitment. One-off single week: AUD $50.
+          </p>
         </div>
       </motion.div>
 
@@ -172,8 +177,12 @@ export default function CoachingApply() {
             Ready to apply for BTCALI 1-1 Coaching?
           </h2>
 
-          <p className="font-heading font-extrabold text-xl sm:text-2xl gradient-text mb-6 tracking-wide uppercase">
+          <p className="font-heading font-extrabold text-xl sm:text-2xl gradient-text mb-3 tracking-wide uppercase">
             SERIOUS ATHLETES ONLY
+          </p>
+
+          <p className="text-sm font-body text-muted-foreground mb-5 max-w-md mx-auto">
+            Please read everything on this page in depth before applying or enquiring with BTCALI.
           </p>
 
           <div className="glass rounded-xl p-5 mb-6 text-left">
