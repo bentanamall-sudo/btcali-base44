@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { Mail, Users, ArrowRight, Zap, CheckCircle } from 'lucide-react';
+import { Mail, Users, ArrowRight, Zap, CheckCircle, Lock, Star } from 'lucide-react';
 
 const EMAIL = 'ben.tanamall@gmail.com';
 const INQUIRY_URL = 'https://ig.me/j/AbaAth3FA0NMTibx/';
@@ -31,25 +31,42 @@ export default function CoachingCTA() {
 
       <div className="relative p-6 sm:p-8">
       {/* Pricing highlight */}
-      <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mb-4">
+      <div className="inline-flex items-center gap-2 bg-primary/20 border border-primary/40 rounded-full px-4 py-1.5 mb-4 mx-auto flex justify-center">
+        <Lock className="w-3.5 h-3.5 text-primary" />
+        <span className="text-xs font-heading font-bold text-primary uppercase tracking-wider">Limited Monthly Special Offer</span>
+      </div>
+      <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-3">
         <div className="glass rounded-2xl px-6 py-3 text-center border border-primary/30">
           <div className="text-xs font-heading text-muted-foreground uppercase tracking-widest mb-0.5">Monthly</div>
+          <div className="text-xs font-body text-muted-foreground line-through mb-0.5">AUD $200/month</div>
           <div className="font-heading font-bold text-3xl gradient-text">AUD $150<span className="text-base font-body text-muted-foreground font-normal">/month</span></div>
-          <div className="text-xs font-body text-muted-foreground mt-0.5 line-through">normally AUD $200/month</div>
+          <div className="mt-1 inline-flex items-center gap-1 bg-green-500/15 border border-green-500/30 rounded-full px-2 py-0.5">
+            <span className="text-xs font-heading font-bold text-green-400">Save $50/mo</span>
+          </div>
         </div>
         <div className="font-heading text-muted-foreground text-sm">or</div>
         <div className="glass rounded-2xl px-6 py-3 text-center glow-border border border-primary/50 relative overflow-hidden">
           <div className="absolute inset-0 gradient-bg pointer-events-none" />
           <div className="relative">
-            <div className="text-xs font-heading text-primary uppercase tracking-widest mb-0.5 font-bold">Special Offer — This Month</div>
+            <div className="text-xs font-heading text-primary uppercase tracking-widest mb-0.5 font-bold">Weekly</div>
+            <div className="text-xs font-body text-muted-foreground line-through mb-0.5">AUD $49.99/week</div>
             <div className="font-heading font-bold text-3xl gradient-text">AUD $39.99<span className="text-base font-body text-muted-foreground font-normal">/week</span></div>
-            <div className="text-xs font-body text-muted-foreground mt-0.5 line-through">normally AUD $49.99/week</div>
+            <div className="mt-1 inline-flex items-center gap-1 bg-green-500/15 border border-green-500/30 rounded-full px-2 py-0.5">
+              <span className="text-xs font-heading font-bold text-green-400">Save $10/wk</span>
+            </div>
           </div>
         </div>
       </div>
-      <p className="text-center text-xs font-body text-muted-foreground mb-6 max-w-lg mx-auto">
-        Secure your spot this month and the discounted weekly rate stays locked in for the year. To qualify for the weekly price, a minimum 1-month commitment is required. One-off single week without committing: AUD $50.
-      </p>
+      <div className="flex justify-center mb-5">
+        <div className="glass rounded-xl p-3 border border-primary/20 max-w-md">
+          <div className="flex items-start gap-2">
+            <Star className="w-3.5 h-3.5 text-primary flex-shrink-0 mt-0.5" />
+            <p className="text-xs font-body text-foreground/75 leading-relaxed text-left">
+              Athletes who secure a spot this month keep the discounted pricing <strong className="text-foreground">locked in for the full year</strong>, even after prices increase. Weekly rate requires a minimum 1-month commitment. One-off single week: AUD $50.
+            </p>
+          </div>
+        </div>
+      </div>
 
       {/* Header */}
       <div className="mb-6 text-center">

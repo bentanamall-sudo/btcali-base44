@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { Check, Crown, Zap, ArrowRight, Shield, Lock, Clock } from 'lucide-react';
+import { Check, Crown, Zap, ArrowRight, Shield, Lock, Star } from 'lucide-react';
 import GlassCard from '../components/GlassCard';
 import GlowButton from '../components/GlowButton';
 
@@ -117,17 +117,30 @@ export default function Pricing() {
               <div className="text-center mb-6">
                 <h3 className="font-heading font-semibold text-lg mb-1 text-foreground">{plan.name}</h3>
                 <p className="text-xs text-muted-foreground font-body mb-3">{plan.description}</p>
+                {plan.name === 'Elite 1-on-1' && (
+                    <div className="text-sm text-muted-foreground font-body line-through mb-0.5">AUD $200/month</div>
+                  )}
                 <div className="font-heading font-bold text-4xl gradient-text">
                   {plan.price}
                   <span className="text-sm text-muted-foreground font-body font-normal">{plan.period}</span>
                 </div>
                 {plan.name === 'Elite 1-on-1' && (
-                  <div className="mt-2 space-y-1">
-                    <div className="inline-flex items-center gap-1.5 glass glow-border rounded-full px-4 py-1.5">
-                      <Zap className="w-3.5 h-3.5 text-primary" />
-                      <span className="font-heading font-bold text-sm gradient-text">AUD $39.99/week (special offer)</span>
+                  <div className="mt-3 space-y-2">
+                    <div className="inline-flex items-center gap-1.5 bg-primary/20 border border-primary/40 rounded-full px-3 py-1">
+                      <Lock className="w-3 h-3 text-primary" />
+                      <span className="font-heading font-bold text-xs text-primary uppercase tracking-wide">Limited Monthly Offer</span>
                     </div>
-                    <div className="text-xs text-muted-foreground font-body">normally AUD $49.99/week · min 1 month</div>
+                    <div>
+                      <div className="text-xs text-muted-foreground font-body line-through">AUD $49.99/week</div>
+                      <div className="inline-flex items-center gap-1.5 glass glow-border rounded-full px-4 py-1.5 mt-1">
+                        <Zap className="w-3.5 h-3.5 text-primary" />
+                        <span className="font-heading font-bold text-sm gradient-text">AUD $39.99/week</span>
+                      </div>
+                    </div>
+                    <div className="flex items-start gap-1.5 max-w-xs mx-auto">
+                      <Star className="w-3 h-3 text-primary flex-shrink-0 mt-0.5" />
+                      <p className="text-xs text-muted-foreground font-body leading-relaxed text-left">Lock in this rate now — keeps for the full year even after prices increase. Min 1-month commitment.</p>
+                    </div>
                   </div>
                 )}
               </div>
