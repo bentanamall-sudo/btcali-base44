@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, Zap, User, BarChart3, BookOpen, Layers, Trophy, DollarSign, Bot, ScanLine } from 'lucide-react';
+import { Menu, X, Zap, BookOpen, Trophy, DollarSign, ScanLine, Bot } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Logo from './Logo';
 import CodeUnlock from './CodeUnlock';
@@ -9,10 +9,9 @@ import { cn } from '@/lib/utils';
 
 const navLinks = [
   { to: '/', label: 'Home', icon: Zap },
-  { to: '/tutorials', label: 'Free Tutorials', icon: BookOpen },
-  { to: '/programs', label: 'Programs', icon: Layers },
+  { to: '/skills', label: 'Skill Library', icon: BookOpen },
   { to: '/results', label: 'Results', icon: Trophy },
-  { to: '/pricing', label: 'Coaching', icon: DollarSign },
+  { to: '/pricing', label: '1-on-1 Coaching', icon: DollarSign },
   { to: '/diagnostic', label: 'Athlete Scan', icon: ScanLine },
 ];
 

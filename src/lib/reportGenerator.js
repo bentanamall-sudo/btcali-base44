@@ -38,11 +38,11 @@ export function generateReport(data) {
   if (data.can_lsit_to_hs === 'Yes') score += 2;
 
   let athlete_level;
-  if (score >= 20) athlete_level = 'Legend';
-  else if (score >= 14) athlete_level = 'Elite';
-  else if (score >= 9) athlete_level = 'Warrior';
-  else if (score >= 4) athlete_level = 'Initiate';
-  else athlete_level = 'Recruit';
+  if (score >= 20) athlete_level = 'Advanced Foundation';
+  else if (score >= 14) athlete_level = 'Strong Foundation';
+  else if (score >= 9) athlete_level = 'Intermediate Foundation';
+  else if (score >= 4) athlete_level = 'Developing Foundation';
+  else athlete_level = 'Beginner Foundation';
 
   const strengths = [];
   const weaknesses = [];
@@ -91,7 +91,7 @@ export function generateReport(data) {
   const recommended_focus = weaknesses.slice(0, 2).join(', ') || 'Build overall foundation';
 
   const exp = data.training_experience || 'Unknown';
-  const athlete_summary = `${data.full_name} is a ${athlete_level}-level calisthenics athlete with ${exp} of training experience. ` +
+  const athlete_summary = `${data.full_name} is at the ${athlete_level} stage with ${exp} of calisthenics training experience. ` +
     `They can perform ${pushups} push-ups, ${pullups} pull-ups, and ${dips} dips. ` +
     `${hsHold > 0 ? `Handstand hold: ${hsHold}s. ` : ''}` +
     `${tuckPlanche > 0 ? `Tuck planche: ${tuckPlanche}s. ` : ''}` +

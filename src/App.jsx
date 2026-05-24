@@ -24,6 +24,7 @@ import ProgramBuilder from './pages/ProgramBuilder';
 import Purchase from './pages/Purchase';
 import AthleteDiagnostic from './pages/AthleteDiagnostic';
 import AdminDiagnostics from './pages/AdminDiagnostics';
+import SkillLibraryCategory from './pages/SkillLibraryCategory';
 import HandstandGuide from './pages/tutorials/HandstandGuide';
 import LSitHandstandGuide from './pages/tutorials/LSitHandstandGuide';
 import PlancheGuide from './pages/tutorials/PlancheGuide';
@@ -58,7 +59,6 @@ const AuthenticatedApp = () => {
         <Route path="/tutorials/planche-conditioning-guide" element={<PlancheGuide />} />
         <Route path="/programs/planche-programs" element={<PlanchePrograms />} />
         <Route path="/programs/front-lever-programs" element={<FrontLeverPrograms />} />
-        <Route path="/skills" element={<SkillLibrary />} />
         <Route path="/programs" element={<Programs />} />
         <Route path="/apply" element={<CoachingApply />} />
         <Route path="/admin/analytics" element={<AdminAnalytics />} />
@@ -71,6 +71,8 @@ const AuthenticatedApp = () => {
         <Route path="/coach/programs" element={<ProgramBuilder />} />
         <Route path="/purchase" element={<Purchase />} />
         <Route path="/diagnostic" element={<AthleteDiagnostic />} />
+        <Route path="/skills" element={<SkillLibrary />} />
+        <Route path="/skills/:categoryId" element={<SkillLibraryCategory />} />
         <Route path="/admin/diagnostics" element={<AdminDiagnostics />} />
         <Route path="*" element={<PageNotFound />} />
       </Route>

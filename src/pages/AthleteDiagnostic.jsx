@@ -120,7 +120,7 @@ export default function AthleteDiagnostic() {
     followed_program: '', has_coach: '',
     pushup_max: '', pullup_max: '', dip_max: '', pike_pushup_max: '',
     handstand_hold: '', lsit_hold: '', tuck_planche_hold: '',
-    front_lever_level: 'None', can_muscle_up: '', can_hspu: '',
+    front_lever_level: '', can_muscle_up: '', can_hspu: '',
     can_bent_arm_press: '', can_lsit_to_hs: '',
     goals: [],
     wrist_mobility: '', shoulder_mobility: '', hamstring_mobility: '',
@@ -292,58 +292,31 @@ export default function AthleteDiagnostic() {
 
     // 6 — Extra Details
     <div key="s6" className="space-y-0">
-      <p className="text-sm text-muted-foreground font-body mb-5 leading-relaxed">
-        These fields help BTCALI understand your situation in detail. The more you share, the more personalised your coaching will be.
-      </p>
       <Field>
         <Label>Equipment Available</Label>
-        <p className="text-xs text-muted-foreground font-body mb-2 leading-relaxed">
-          Type out <strong className="text-foreground">everything</strong> you have access to. Be specific — this directly affects how BTCALI programs your training.
-        </p>
-        <p className="text-xs text-muted-foreground/70 font-body mb-3 leading-relaxed">
-          Examples: pull-up bar, rings, dip bars, parallettes, resistance bands, gym access, cables, barbells, dumbbells, weighted vest, machines, gymnastics mat, floor only, etc.
-        </p>
         <TextArea
-          rows={5}
+          rows={4}
           value={data.equipment_available}
           onChange={v => set('equipment_available', v)}
-          placeholder={"Type all equipment you have access to...\n\ne.g. Pull-up bar, dip bars, parallettes, resistance bands (light/medium/heavy), rings, gym access with cables and barbells, weighted vest, dumbbells up to 30kg..."}
+          placeholder="What equipment do you currently have access to?"
         />
       </Field>
       <Field>
-        <Label>Current Skills / Skill Level</Label>
-        <p className="text-xs text-muted-foreground font-body mb-2">Describe what you can already do — include hold times, reps, current progressions, strengths, and weaknesses.</p>
+        <Label>Current Skills / Goals</Label>
         <TextArea
-          rows={6}
+          rows={4}
           value={data.exact_current_skills}
           onChange={v => set('exact_current_skills', v)}
-          placeholder={`e.g.
-• Tuck planche hold: ~3 seconds
-• Tuck front lever: ~5 seconds
-• Freestanding handstand: ~8 seconds sometimes
-• Can do 1 muscle-up but form is messy
-• Pull-ups: 12 reps clean
-• Push-ups: 30 reps
-• No planche lean yet
-• Wrist pain when loading planche
-• Strong in pulling, weak in pushing overhead...`}
+          placeholder="Briefly describe your current level and goals."
         />
       </Field>
       <Field>
         <Label>Additional Notes</Label>
-        <p className="text-xs text-muted-foreground font-body mb-2">Anything else BTCALI should know — injuries, schedule, goals, limitations, training preferences, or extra context.</p>
         <TextArea
-          rows={6}
+          rows={4}
           value={data.additional_notes}
           onChange={v => set('additional_notes', v)}
-          placeholder={`e.g.
-• I can only train on Tuesday, Thursday, Saturday
-• Lower back issue — can't load spine heavily
-• Main goal is planche within 6 months
-• Poor hip flexor mobility affecting L-sit
-• Prefer bodyweight-only, no gym
-• I've tried programs before but always get injured
-• Looking for long-term consistent coaching...`}
+          placeholder="Anything else BTCALI should know?"
         />
       </Field>
     </div>,
@@ -466,40 +439,21 @@ Weaknesses: ${(report?.weaknesses || []).join(', ')}`
       <div className="min-h-screen py-12 px-4 sm:px-6 max-w-4xl mx-auto">
         <DiagnosticReport data={data} report={report} />
 
-        {/* Recommended Program Waiting List */}
-        {report.recommended_programs?.length > 0 && (
-          <div className="mt-8 glass rounded-2xl p-6 glow-border space-y-3">
-            <h3 className="font-heading font-bold text-foreground text-base">Recommended Programs</h3>
-            <p className="text-sm text-muted-foreground font-body">Custom programs available for AUD $50 each. Enquire with BTCALI to get started.</p>
-            <div className="space-y-2">
-              {report.recommended_programs.map((prog) => (
-                <motion.button
-                  key={prog}
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.97 }}
-                  onClick={() => handleWaitingList(prog)}
-                  className="w-full py-3 px-4 rounded-xl glass border border-primary/40 text-foreground font-heading font-semibold text-sm flex items-center justify-center gap-2 hover:border-primary/60 transition-all"
-                >
-                  <Zap className="w-4 h-4 text-primary" />
-                  Apply for {prog} Waiting List
-                </motion.button>
-              ))}
-            </div>
-            {/* 1-on-1 Coaching CTA */}
-            <div className="pt-3 border-t border-border/30">
-              <p className="text-sm text-muted-foreground font-body mb-2">Want faster progress while waiting? BTCALI 1-1 Coaching is available now.</p>
-              <a href="/pricing">
-                <motion.button
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.97 }}
-                  className="w-full py-3 rounded-xl gradient-bg-strong text-primary-foreground font-heading font-semibold text-sm flex items-center justify-center gap-2 glow-primary"
-                >
-                  <Trophy className="w-4 h-4" /> View 1-1 Coaching
-                </motion.button>
-              </a>
-            </div>
-          </div>
-        )}
+        {/* Coaching CTA */}
+        <div className="mt-8 glass rounded-2xl p-6 border border-primary/20 text-center">
+          <p className="font-body text-muted-foreground text-sm max-w-md mx-auto mb-4 leading-relaxed">
+            If you want to achieve elite calisthenics skills faster with structured guidance and personalised coaching, apply for BTCALI 1-on-1 coaching below.
+          </p>
+          <a href="/pricing">
+            <motion.button
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.97 }}
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl gradient-bg-strong text-primary-foreground font-heading font-bold text-sm glow-primary"
+            >
+              <Trophy className="w-4 h-4" /> View 1-on-1 Coaching
+            </motion.button>
+          </a>
+        </div>
 
         <div className="mt-6 space-y-3">
           {/* Primary send button */}
@@ -562,6 +516,9 @@ Weaknesses: ${(report?.weaknesses || []).join(', ')}`
           <span className="text-sm font-body text-muted-foreground">Athlete Diagnostic</span>
         </div>
         <h1 className="font-heading font-bold text-2xl sm:text-3xl gradient-text">BTCALI Athlete Scan</h1>
+        <p className="text-sm font-body text-muted-foreground mt-3 max-w-sm mx-auto leading-relaxed">
+          Please answer every question carefully so BTCALI can accurately analyse your level and build the best recommendations possible.
+        </p>
       </motion.div>
 
       {/* Progress bar */}

@@ -32,14 +32,18 @@ export default function HeroSection() {
           </motion.div>
 
           {/* Main heading */}
-          <h1 className="font-heading font-bold text-4xl sm:text-5xl md:text-7xl lg:text-8xl leading-tight mb-6">
-            <span className="text-foreground">Unlock Elite</span>
+          <h1 className="font-heading font-bold text-4xl sm:text-5xl md:text-6xl lg:text-7xl leading-tight mb-6">
+            <span className="text-foreground">Unlock Elite Bodyweight</span>
             <br />
-            <span className="gradient-text">Bodyweight Strength</span>
+            <span className="gradient-text">Strength With BTCALI Coaching</span>
           </h1>
 
-          <p className="font-body text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto mb-10 leading-relaxed">
-            The ultimate premium calisthenics coaching platform — combining elite coaching, athlete diagnostics, proven transformation systems, and structured programs designed to help athletes at every level unlock serious bodyweight strength and elite-level progress.
+          <p className="font-body text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto mb-10 leading-relaxed">
+            Thousands of athletes want to unlock elite calisthenics skills like the muscle-up, handstand push-up, front lever, and planche — but most never reach them because of confusion, inconsistent advice, and poor programming.
+            <br /><br />
+            BTCALI removes the guesswork with structured systems, proven progressions, and real coaching built from experience helping athletes achieve advanced bodyweight strength faster and more efficiently.
+            <br /><br />
+            No random tutorials. No confusion. Just a clear path toward elite calisthenics performance.
           </p>
 
           {/* CTA Buttons */}
@@ -51,9 +55,9 @@ export default function HeroSection() {
                 <ArrowRight className="w-5 h-5" />
               </GlowButton>
             </Link>
-            <Link to="/tutorials">
+            <Link to="/skills">
               <GlowButton variant="secondary" size="lg">
-                Start Free Tutorials
+                Explore Skill Library
               </GlowButton>
             </Link>
           </div>
