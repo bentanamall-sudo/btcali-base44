@@ -1,13 +1,13 @@
 import { useTheme } from '@/lib/useTheme';
 
-// Official BTCALI PNG logos
+// Transparent BTCALI logo PNGs — tight-cropped circular emblems
 const LOGO_URLS = {
-  carbon: 'https://media.base44.com/images/public/69fd635623a9368c153045ad/9086a44ef_Screenshot2026-05-26at81207am.png',
-  neon:   'https://media.base44.com/images/public/69fd635623a9368c153045ad/8e79feae7_Screenshot2026-05-26at81220am.png',
-  ice:    'https://media.base44.com/images/public/69fd635623a9368c153045ad/afb5818ec_Screenshot2026-05-26at81230am.png',
+  carbon: 'https://media.base44.com/images/public/69fd635623a9368c153045ad/7e6197939_generated_image.png',
+  neon:   'https://media.base44.com/images/public/69fd635623a9368c153045ad/0f29ee22e_generated_image.png',
+  ice:    'https://media.base44.com/images/public/69fd635623a9368c153045ad/acc557e8a_generated_image.png',
 };
 
-// Preload all logos on module load
+// Preload all logos on module load for instant theme switching
 if (typeof window !== 'undefined') {
   Object.values(LOGO_URLS).forEach(url => {
     const img = new Image();
@@ -20,68 +20,54 @@ function useLogoSrc() {
   return LOGO_URLS[theme] || LOGO_URLS.carbon;
 }
 
-// Shared circular crop component
-// The PNG has transparent padding around the circle — we use a square div with
-// border-radius:50% + overflow:hidden and scale the image up so the circle
-// fills the container, cropping out the transparent canvas edges.
-function CircularLogo({ src, size }) {
+// NavbarLogo — 48px height
+export function NavbarLogo() {
+  const src = useLogoSrc();
   return (
-    <div
-      style={{
-        width: size,
-        height: size,
-        borderRadius: '50%',
-        overflow: 'hidden',
-        flexShrink: 0,
-        background: 'transparent',
-      }}
-    >
-      <img
-        src={src}
-        alt="BTCALI"
-        style={{
-          // Scale slightly beyond 100% to push the transparent padding out of view.
-          // The circular logo occupies roughly 88% of the PNG canvas width,
-          // so scaling to ~114% brings the emblem edge flush with the container.
-          width: '114%',
-          height: '114%',
-          marginLeft: '-7%',
-          marginTop: '-7%',
-          objectFit: 'cover',
-          background: 'transparent',
-          display: 'block',
-        }}
-      />
-    </div>
+    <img
+      src={src}
+      alt="BTCALI"
+      style={{ height: '48px', width: 'auto', display: 'block', background: 'transparent' }}
+    />
   );
 }
 
-// NavbarLogo — 48px
-export function NavbarLogo() {
-  const src = useLogoSrc();
-  return <CircularLogo src={src} size={48} />;
-}
-
-// PageLogo — page headers
+// PageLogo — page headers ~220px
 export function PageLogo() {
   const src = useLogoSrc();
-  return <CircularLogo src={src} size={220} />;
+  return (
+    <img
+      src={src}
+      alt="BTCALI"
+      style={{ width: '220px', height: 'auto', display: 'block', background: 'transparent' }}
+    />
+  );
 }
 
-// HeroLogo — hero centerpiece
+// HeroLogo — large hero centerpiece
 export function HeroLogo() {
   const src = useLogoSrc();
   return (
-    <div className="animate-float" style={{ display: 'inline-block' }}>
-      <CircularLogo src={src} size={320} />
-    </div>
+    <img
+      src={src}
+      alt="BTCALI"
+      className="animate-float"
+      style={{ width: '320px', maxWidth: '85vw', height: 'auto', display: 'block', background: 'transparent' }}
+    />
   );
 }
 
 // LogoBadge — configurable px size
 export function LogoBadge({ size = 64 }) {
   const src = useLogoSrc();
-  return <CircularLogo src={src} size={typeof size === 'number' ? size : 64} />;
+  const px = typeof size === 'number' ? size : 64;
+  return (
+    <img
+      src={src}
+      alt="BTCALI"
+      style={{ width: `${px}px`, height: `${px}px`, objectFit: 'contain', display: 'block', background: 'transparent' }}
+    />
+  );
 }
 
 export default function Logo() {
