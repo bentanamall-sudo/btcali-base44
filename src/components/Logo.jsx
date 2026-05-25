@@ -54,8 +54,7 @@ export function HeroLogo() {
       <img
         src={OFFICIAL_LOGO}
         alt="BTCALI"
-        className="animate-float"
-        style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block', background: 'transparent' }}
+        style={{ width: '115%', height: '115%', objectFit: 'cover', display: 'block', background: 'transparent', transform: 'translate(-6.5%, -6.5%)', animation: 'none', transition: 'none' }}
       />
     </ClipCircle>
   );
