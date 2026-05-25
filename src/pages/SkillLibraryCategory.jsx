@@ -145,35 +145,39 @@ function VideoModal({ tutorial, onClose }) {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
-        className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm"
+        className="fixed inset-0 z-[100] flex items-center justify-center p-4"
+        style={{ background: 'rgba(0,0,0,0.88)', backdropFilter: 'blur(10px)' }}
         onClick={onClose}
       >
         <motion.div
           initial={{ scale: 0.9, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           exit={{ scale: 0.9, opacity: 0 }}
-          transition={{ type: 'spring', stiffness: 300, damping: 25 }}
-          className="relative w-full max-w-2xl glass rounded-2xl overflow-hidden"
+          transition={{ duration: 0.25 }}
+          className="w-full max-w-sm glass rounded-2xl overflow-hidden border border-primary/30"
           onClick={e => e.stopPropagation()}
         >
-          <button
-            onClick={onClose}
-            className="absolute top-3 right-3 z-10 p-2 glass rounded-full text-foreground/70 hover:text-foreground transition-colors"
-          >
-            <X className="w-5 h-5" />
-          </button>
-          <div className="aspect-video w-full">
-            <iframe
-              className="w-full h-full"
-              src={`https://www.youtube.com/embed/${tutorial.videoId}?autoplay=1`}
-              title={tutorial.title}
-              allow="autoplay; encrypted-media"
-              allowFullScreen
-            />
+          {/* Header */}
+          <div className="flex items-center justify-between px-5 py-3 border-b border-border/30">
+            <div className="flex-1 min-w-0 mr-3">
+              <p className="font-heading font-bold text-sm text-foreground truncate">{tutorial.title}</p>
+              <span className={`text-xs font-heading font-semibold px-2 py-0.5 rounded-full mt-1 inline-block border ${LEVEL_COLORS[tutorial.level] || LEVEL_COLORS.Beginner}`}>
+                {tutorial.level}
+              </span>
+            </div>
+            <button onClick={onClose} className="p-1.5 rounded-lg hover:bg-muted/40 transition-colors flex-shrink-0">
+              <X className="w-4 h-4 text-muted-foreground" />
+            </button>
           </div>
-          <div className="p-4">
-            <h3 className="font-heading font-bold text-foreground">{tutorial.title}</h3>
-            <p className="text-sm text-muted-foreground font-body">{tutorial.level}</p>
+          {/* Video — 9:16 portrait */}
+          <div className="relative w-full" style={{ paddingBottom: '177.78%' }}>
+            <iframe
+              src={`https://www.youtube.com/embed/${tutorial.videoId}?autoplay=1&rel=0`}
+              title={tutorial.title}
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+              className="absolute inset-0 w-full h-full border-0"
+            />
           </div>
         </motion.div>
       </motion.div>
