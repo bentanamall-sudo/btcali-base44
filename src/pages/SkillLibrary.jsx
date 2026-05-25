@@ -132,27 +132,35 @@ export default function SkillLibrary() {
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: i * 0.07 }}
-            whileHover={{ y: -4, transition: { duration: 0.2 } }}
+            whileHover={{ y: -6, transition: { duration: 0.25, ease: [0.16,1,0.3,1] } }}
             onClick={() => navigate(`/skills/${cat.id}`)}
-            className="cursor-pointer group rounded-2xl border border-border/40 overflow-hidden relative"
+            className="cursor-pointer group rounded-2xl overflow-hidden relative card-3d"
             style={{
-              background: 'linear-gradient(145deg, hsl(var(--card)), hsl(var(--surface-2)))',
+              background: `linear-gradient(145deg, hsl(var(--card)), hsl(var(--surface-2)))`,
+              border: `1px solid hsl(var(--border)/0.5)`,
             }}
           >
-            {/* Top accent line */}
+            {/* Top shimmer line */}
             <div
-              className="h-px w-full"
-              style={{ background: `linear-gradient(90deg, transparent, ${cat.accentColor}66, transparent)` }}
+              className="h-px w-full transition-opacity duration-300 opacity-40 group-hover:opacity-90"
+              style={{ background: `linear-gradient(90deg, transparent, ${cat.accentColor}, transparent)` }}
+            />
+
+            {/* Inner top-edge light */}
+            <div
+              className="h-[1px] w-full opacity-10 group-hover:opacity-20 transition-opacity duration-300"
+              style={{ background: 'linear-gradient(90deg,transparent,hsl(0 0% 100%/0.6),transparent)' }}
             />
 
             <div className="p-6">
               {/* Icon + badge row */}
               <div className="flex items-start justify-between mb-5">
                 <div
-                  className="w-12 h-12 rounded-xl flex items-center justify-center text-2xl"
+                  className="w-12 h-12 rounded-xl flex items-center justify-center text-2xl relative overflow-hidden"
                   style={{
-                    background: `linear-gradient(135deg, ${cat.accentColor}18, ${cat.accentColor}08)`,
-                    border: `1px solid ${cat.accentColor}30`,
+                    background: `linear-gradient(135deg, ${cat.accentColor}22, ${cat.accentColor}08)`,
+                    border: `1px solid ${cat.accentColor}35`,
+                    boxShadow: `0 4px 16px ${cat.accentColor}15, inset 0 1px 0 ${cat.accentColor}25`,
                   }}
                 >
                   {cat.icon}
@@ -161,7 +169,9 @@ export default function SkillLibrary() {
               </div>
 
               {/* Text */}
-              <h3 className="font-heading font-bold text-base text-foreground mb-2 group-hover:text-primary transition-colors duration-200">
+              <h3 className="font-heading font-bold text-base text-foreground mb-2 transition-all duration-200 group-hover:gradient-text"
+                style={{ transition: 'color 0.2s' }}
+              >
                 {cat.title}
               </h3>
               <p className="text-sm font-body text-muted-foreground leading-relaxed mb-5">
@@ -170,9 +180,9 @@ export default function SkillLibrary() {
 
               {/* Footer row */}
               <div className="flex items-center justify-between pt-4 border-t border-border/30">
-                <span className="text-xs font-body text-muted-foreground/60">{cat.level}</span>
+                <span className="text-xs font-body text-muted-foreground/50">{cat.level}</span>
                 <span
-                  className="text-xs font-heading font-bold transition-all duration-200 group-hover:translate-x-0.5"
+                  className="text-xs font-heading font-bold transition-all duration-200 group-hover:translate-x-1"
                   style={{ color: cat.accentColor }}
                 >
                   Explore →
@@ -180,10 +190,13 @@ export default function SkillLibrary() {
               </div>
             </div>
 
-            {/* Hover glow overlay */}
+            {/* Hover ambient glow */}
             <div
-              className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
-              style={{ boxShadow: `inset 0 0 40px ${cat.accentColor}08` }}
+              className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-400 pointer-events-none"
+              style={{
+                background: `radial-gradient(ellipse at 50% 0%, ${cat.accentColor}10 0%, transparent 60%)`,
+                boxShadow: `inset 0 0 0 1px ${cat.accentColor}20`,
+              }}
             />
           </motion.div>
         ))}

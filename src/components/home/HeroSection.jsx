@@ -1,53 +1,92 @@
-import { motion } from 'framer-motion';
+import { motion, useMotionValue, useTransform } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Zap, Target, Trophy, Play } from 'lucide-react';
 import GlowButton from '../GlowButton';
+import Logo from '../Logo';
 
 export default function HeroSection() {
   return (
-    <section className="relative min-h-[90vh] flex items-center overflow-hidden">
-      {/* Background effects */}
-      <div className="absolute inset-0">
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/10 rounded-full blur-3xl animate-float" />
-        <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-accent/10 rounded-full blur-3xl animate-float" style={{ animationDelay: '3s' }} />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-primary/5 rounded-full blur-[100px]" />
+    <section className="relative min-h-[92vh] flex items-center overflow-hidden">
+
+      {/* ── Layered ambient background ── */}
+      <div className="absolute inset-0 pointer-events-none" aria-hidden>
+        {/* Deep ambient centre glow */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] rounded-full"
+          style={{ background: 'radial-gradient(circle, hsl(var(--glow-primary)/0.07) 0%, transparent 65%)' }} />
+        {/* Top-left float */}
+        <div className="ambient-blob-1 top-[-100px] left-[-100px]" />
+        {/* Bottom-right float */}
+        <div className="ambient-blob-2 bottom-[-80px] right-[-80px]" />
+        {/* Subtle horizontal scan line */}
+        <div className="absolute top-0 left-0 right-0 h-px"
+          style={{ background: 'linear-gradient(90deg,transparent,hsl(var(--glow-primary)/0.3),transparent)' }} />
+        {/* Grid texture */}
+        <div className="absolute inset-0 opacity-[0.025]"
+          style={{
+            backgroundImage: 'linear-gradient(hsl(var(--foreground)/0.15) 1px,transparent 1px),linear-gradient(90deg,hsl(var(--foreground)/0.15) 1px,transparent 1px)',
+            backgroundSize: '60px 60px',
+          }} />
       </div>
 
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 py-20">
+      <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 py-24 w-full">
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
+          transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
           className="text-center"
         >
+          {/* Logo mark above headline */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.85 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.1, duration: 0.6 }}
+            className="flex justify-center mb-6"
+          >
+            <Logo size="lg" />
+          </motion.div>
+
           {/* Badge */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.2 }}
-            className="inline-flex items-center gap-2 glass px-4 py-2 rounded-full mb-8"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.25 }}
+            className="inline-flex items-center gap-2 glass glow-border px-4 py-2 rounded-full mb-8"
           >
-            <Zap className="w-4 h-4 text-primary" />
-            <span className="text-sm font-body text-muted-foreground">Elite Calisthenics Coaching For Proven High-Level Progress</span>
+            <Zap className="w-3.5 h-3.5 text-primary" />
+            <span className="text-xs font-heading font-semibold text-muted-foreground tracking-wider uppercase">
+              Elite Calisthenics Coaching
+            </span>
           </motion.div>
 
           {/* Main heading */}
-          <h1 className="font-heading font-bold text-4xl sm:text-5xl md:text-6xl lg:text-7xl leading-tight mb-6">
-            <span className="text-foreground">Unlock Elite Bodyweight</span>
+          <motion.h1
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.35, duration: 0.7 }}
+            className="font-heading font-black text-4xl sm:text-5xl md:text-6xl lg:text-7xl leading-[1.05] mb-6 tracking-tight"
+          >
+            <span className="text-foreground">Unlock Elite</span>
             <br />
-            <span className="gradient-text">Strength With BTCALI Coaching</span>
-          </h1>
+            <span className="gradient-text">Bodyweight Strength</span>
+          </motion.h1>
 
-          <p className="font-body text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto mb-10 leading-relaxed">
-            Thousands of athletes want to unlock elite calisthenics skills like the muscle-up, handstand push-up, front lever, and planche — but most never reach them because of confusion, inconsistent advice, and poor programming.
-            <br /><br />
-            BTCALI removes the guesswork with structured systems, proven progressions, and real coaching built from experience helping athletes achieve advanced bodyweight strength faster and more efficiently.
-            <br /><br />
-            No random tutorials. No confusion. Just a clear path toward elite calisthenics performance.
-          </p>
+          {/* Sub headline */}
+          <motion.p
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.5, duration: 0.6 }}
+            className="font-body text-base sm:text-lg text-muted-foreground max-w-xl mx-auto mb-10 leading-relaxed"
+          >
+            Structured systems, proven progressions, and real coaching — built to take athletes from basic to elite calisthenics performance.
+          </motion.p>
 
           {/* CTA Buttons */}
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16">
+          <motion.div
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.65 }}
+            className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-20"
+          >
             <Link to="/scan">
               <GlowButton size="lg">
                 <Target className="w-5 h-5" />
@@ -60,35 +99,43 @@ export default function HeroSection() {
                 Explore Skill Library
               </GlowButton>
             </Link>
-          </div>
+          </motion.div>
 
-          {/* Stats */}
+          {/* Stats row */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.6 }}
-            className="flex items-center justify-center gap-10 max-w-lg mx-auto"
+            transition={{ delay: 0.8 }}
+            className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6"
           >
-            <div className="text-center">
-              <div className="font-heading font-bold text-2xl sm:text-3xl gradient-text">20+</div>
-              <div className="text-xs sm:text-sm text-muted-foreground font-body mt-1">Athletes Transformed</div>
+            {/* Stat pill */}
+            <div className="glass rounded-2xl px-6 py-4 border border-border/40 card-3d">
+              <div className="font-heading font-black text-2xl sm:text-3xl gradient-text">20+</div>
+              <div className="text-xs text-muted-foreground font-body mt-0.5">Athletes Transformed</div>
             </div>
+
+            {/* Results CTA */}
             <Link to="/results">
               <motion.div
-                whileHover={{ scale: 1.05 }}
+                whileHover={{ scale: 1.03, y: -2 }}
                 whileTap={{ scale: 0.97 }}
-                className="text-center glass glow-border rounded-xl px-5 py-3 cursor-pointer"
+                className="glass glow-border rounded-2xl px-6 py-4 cursor-pointer card-3d transition-all duration-300"
               >
-                <div className="font-heading font-bold text-2xl sm:text-3xl gradient-text flex items-center gap-1.5 justify-center">
-                  <Play className="w-5 h-5 text-primary" />
-                  Insane Student Results
+                <div className="font-heading font-bold text-base sm:text-lg gradient-text flex items-center gap-2 justify-center">
+                  <Play className="w-4 h-4 text-primary fill-current" />
+                  Student Results
                 </div>
-                <div className="text-xs sm:text-sm text-primary font-body mt-1">Watch the proof →</div>
+                <div className="text-xs text-primary font-body mt-0.5 text-center">Watch the proof →</div>
               </motion.div>
             </Link>
           </motion.div>
+
         </motion.div>
       </div>
+
+      {/* Bottom fade */}
+      <div className="absolute bottom-0 left-0 right-0 h-32 pointer-events-none"
+        style={{ background: 'linear-gradient(to bottom, transparent, hsl(var(--background)))' }} />
     </section>
   );
 }
