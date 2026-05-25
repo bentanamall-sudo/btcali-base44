@@ -5,22 +5,56 @@ import { Search, Lock, BookOpen } from 'lucide-react';
 
 const CATEGORIES = [
   {
+    id: 'master-basics',
+    title: 'Master The Basics',
+    description: 'Push basics, pull basics, and core fundamentals — the foundation that everything is built on.',
+    level: 'Beginner',
+    accent: 'from-slate-500/15 to-gray-500/10',
+    border: 'border-slate-500/30',
+    icon: '📐',
+    free: true,
+  },
+  {
+    id: 'handstand-pressing',
+    title: 'Handstand & Pressing',
+    description: 'From wrist warmups and pike push-ups to freestanding handstands and bent arm press.',
+    level: 'Beginner → Advanced',
+    accent: 'from-amber-500/15 to-yellow-500/10',
+    border: 'border-amber-500/30',
+    icon: '⚡',
+    free: false,
+  },
+  {
     id: 'planche',
     title: 'Planche',
-    description: 'From tuck planche to full planche — structured progressions for straight-arm pushing dominance.',
-    level: 'Advanced',
+    description: 'From conditioning and planche lean to tuck, straddle, and full planche.',
+    level: 'Intermediate → Elite',
     accent: 'from-violet-500/20 to-purple-500/10',
     border: 'border-violet-500/30',
     icon: '💪',
+    free: false,
+    hasFree: true,
   },
   {
     id: 'front-lever',
     title: 'Front Lever',
-    description: 'Build the horizontal pulling strength to achieve and hold a full front lever.',
-    level: 'Advanced',
+    description: 'Build horizontal pulling strength from hollow body to full front lever.',
+    level: 'Intermediate → Advanced',
     accent: 'from-cyan-500/15 to-blue-500/10',
     border: 'border-cyan-500/30',
     icon: '🔱',
+    free: false,
+    hasFree: true,
+  },
+  {
+    id: 'l-sit-to-handstand',
+    title: 'L-Sit to Handstand',
+    description: 'The elite pressing skill — structured path from compression to full inversion.',
+    level: 'Advanced → Elite',
+    accent: 'from-fuchsia-500/15 to-purple-500/10',
+    border: 'border-fuchsia-500/30',
+    icon: '🌟',
+    free: true,
   },
   {
     id: 'muscle-up',
@@ -30,52 +64,7 @@ const CATEGORIES = [
     accent: 'from-emerald-500/15 to-teal-500/10',
     border: 'border-emerald-500/30',
     icon: '⚡',
-  },
-  {
-    id: 'handstand',
-    title: 'Handstand',
-    description: 'From wall holds to freestanding balance — the complete handstand development path.',
-    level: 'Intermediate',
-    accent: 'from-amber-500/15 to-yellow-500/10',
-    border: 'border-amber-500/30',
-    icon: '🤸',
-  },
-  {
-    id: 'handstand-pushup',
-    title: 'Handstand Push-Up',
-    description: 'Develop overhead pressing strength to perform strict handstand push-ups.',
-    level: 'Advanced',
-    accent: 'from-rose-500/15 to-pink-500/10',
-    border: 'border-rose-500/30',
-    icon: '🏋️',
-  },
-  {
-    id: 'l-sit',
-    title: 'L-Sit',
-    description: 'Build core compression and hip flexor strength for a solid L-sit hold.',
-    level: 'Beginner–Intermediate',
-    accent: 'from-sky-500/15 to-indigo-500/10',
-    border: 'border-sky-500/30',
-    icon: '🧘',
-  },
-  {
-    id: 'l-sit-to-handstand',
-    title: 'L-Sit to Handstand',
-    description: 'The elite pressing skill — transitioning from L-sit compression to a full handstand.',
-    level: 'Elite',
-    accent: 'from-fuchsia-500/15 to-purple-500/10',
-    border: 'border-fuchsia-500/30',
-    icon: '🌟',
-  },
-  {
-    id: 'master-basics',
-    title: 'Master The Basics',
-    description: 'Pushups, pull-ups, dips, core basics, and straight-arm foundations — the fundamentals that build everything.',
-    level: 'Beginner',
-    accent: 'from-slate-500/15 to-gray-500/10',
-    border: 'border-slate-500/30',
-    icon: '📐',
-    free: true,
+    free: false,
   },
 ];
 
@@ -138,6 +127,8 @@ export default function SkillLibrary() {
               <div className="flex items-center gap-2">
                 {cat.free ? (
                   <span className="text-xs font-heading font-bold px-2 py-1 rounded-full bg-green-500/20 text-green-400 border border-green-500/30">Free</span>
+                ) : cat.hasFree ? (
+                  <span className="text-xs font-heading font-bold px-2 py-1 rounded-full bg-green-500/10 text-green-400/80 border border-green-500/20">Free + Members</span>
                 ) : (
                   <span className="flex items-center gap-1 text-xs font-heading font-bold px-2 py-1 rounded-full bg-primary/10 text-primary border border-primary/20">
                     <Lock className="w-3 h-3" /> Members

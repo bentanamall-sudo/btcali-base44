@@ -85,21 +85,7 @@ export default function DiagnosticReport({ data, report, compact }) {
             <p className="text-sm font-body text-foreground/80">{report.recommended_focus}</p>
           </motion.div>
 
-          {/* Coaching CTA */}
-          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="glass rounded-2xl p-6 border border-primary/20 text-center">
-            <p className="font-body text-muted-foreground text-sm max-w-md mx-auto mb-4">
-              If you want to achieve elite calisthenics skills faster with structured guidance and personalised coaching, apply for BTCALI 1-on-1 coaching below.
-            </p>
-            <Link to="/pricing">
-              <motion.button
-                whileHover={{ scale: 1.03 }}
-                whileTap={{ scale: 0.97 }}
-                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl gradient-bg-strong text-primary-foreground font-heading font-bold text-sm glow-primary"
-              >
-                View 1-on-1 Coaching <ArrowRight className="w-4 h-4" />
-              </motion.button>
-            </Link>
-          </motion.div>
+
         </>
       )}
 

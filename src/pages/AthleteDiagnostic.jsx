@@ -439,23 +439,7 @@ Weaknesses: ${(report?.weaknesses || []).join(', ')}`
       <div className="min-h-screen py-12 px-4 sm:px-6 max-w-4xl mx-auto">
         <DiagnosticReport data={data} report={report} />
 
-        {/* Coaching CTA */}
-        <div className="mt-8 glass rounded-2xl p-6 border border-primary/20 text-center">
-          <p className="font-body text-muted-foreground text-sm max-w-md mx-auto mb-4 leading-relaxed">
-            If you want to achieve elite calisthenics skills faster with structured guidance and personalised coaching, apply for BTCALI 1-on-1 coaching below.
-          </p>
-          <a href="/pricing">
-            <motion.button
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.97 }}
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl gradient-bg-strong text-primary-foreground font-heading font-bold text-sm glow-primary"
-            >
-              <Trophy className="w-4 h-4" /> View 1-on-1 Coaching
-            </motion.button>
-          </a>
-        </div>
-
-        <div className="mt-6 space-y-3">
+        <div className="mt-8 space-y-3">
           {/* Primary send button */}
           <div className="glass rounded-2xl p-5 border border-primary/30 text-center mb-2">
             <p className="font-heading font-bold text-foreground text-base mb-1">This is the final step</p>
