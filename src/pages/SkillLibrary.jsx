@@ -1,81 +1,83 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import { Search, Lock, BookOpen } from 'lucide-react';
+import { Search, Lock, BookOpen, Crown } from 'lucide-react';
 
 const CATEGORIES = [
   {
     id: 'master-basics',
     title: 'Master The Basics',
-    description: 'Push basics, pull basics, and core fundamentals — the foundation that everything is built on.',
+    description: 'Push basics, pull basics, and core fundamentals — the foundation everything is built on.',
     level: 'Beginner',
-    accent: 'from-slate-500/15 to-gray-500/10',
-    border: 'border-slate-500/30',
     icon: '📐',
     access: 'free',
+    accentColor: '#6B7280',
   },
   {
     id: 'l-sit-to-handstand',
     title: 'L-Sit to Handstand Guide',
     description: 'Wrist warmups, pike push-ups, handstand progressions, bent arm press, and the full L-sit to handstand path.',
     level: 'Beginner → Elite',
-    accent: 'from-fuchsia-500/15 to-purple-500/10',
-    border: 'border-fuchsia-500/30',
     icon: '⚡',
     access: 'free',
+    accentColor: '#B8860B',
   },
   {
     id: 'planche',
     title: 'Planche',
     description: 'From conditioning and planche lean to tuck, straddle, and full planche.',
     level: 'Intermediate → Elite',
-    accent: 'from-violet-500/20 to-purple-500/10',
-    border: 'border-violet-500/30',
     icon: '💪',
     access: 'mixed',
+    accentColor: '#8B5CF6',
   },
   {
     id: 'front-lever',
     title: 'Front Lever',
     description: 'Build horizontal pulling strength from hollow body to full front lever.',
     level: 'Intermediate → Advanced',
-    accent: 'from-cyan-500/15 to-blue-500/10',
-    border: 'border-cyan-500/30',
     icon: '🔱',
     access: 'members',
+    accentColor: '#D4AF37',
   },
   {
     id: 'handstand-pushups',
     title: 'Handstand Pushups',
     description: 'Wall HSPU, chest-to-wall progressions, and freestanding handstand push-up development.',
     level: 'Intermediate → Advanced',
-    accent: 'from-rose-500/15 to-pink-500/10',
-    border: 'border-rose-500/30',
     icon: '🏋️',
     access: 'members',
+    accentColor: '#D4AF37',
   },
   {
     id: 'muscle-up',
     title: 'Muscle-Up',
     description: 'Master the explosive transition from pull to push above the bar.',
     level: 'Intermediate',
-    accent: 'from-emerald-500/15 to-teal-500/10',
-    border: 'border-emerald-500/30',
     icon: '⚡',
     access: 'members',
+    accentColor: '#D4AF37',
   },
 ];
 
 function AccessBadge({ access }) {
   if (access === 'free') {
-    return <span className="text-xs font-heading font-bold px-2 py-1 rounded-full bg-green-500/20 text-green-400 border border-green-500/30">Free</span>;
+    return (
+      <span className="text-xs font-heading font-bold px-2.5 py-1 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+        Free
+      </span>
+    );
   }
   if (access === 'mixed') {
-    return <span className="text-xs font-heading font-bold px-2 py-1 rounded-full bg-green-500/10 text-green-400/80 border border-green-500/20">Free + Members</span>;
+    return (
+      <span className="text-xs font-heading font-bold px-2.5 py-1 rounded-full bg-emerald-500/10 text-emerald-400/80 border border-emerald-500/15">
+        Free + Members
+      </span>
+    );
   }
   return (
-    <span className="flex items-center gap-1 text-xs font-heading font-bold px-2 py-1 rounded-full bg-primary/10 text-primary border border-primary/20">
-      <Lock className="w-3 h-3" /> Members
+    <span className="flex items-center gap-1 text-xs font-heading font-bold px-2.5 py-1 rounded-full bg-amber-500/10 text-amber-400 border border-amber-500/25">
+      <Crown className="w-3 h-3" /> Members
     </span>
   );
 }
@@ -90,18 +92,18 @@ export default function SkillLibrary() {
   );
 
   return (
-    <div className="min-h-screen py-12 px-4 sm:px-6 max-w-6xl mx-auto">
+    <div className="min-h-screen py-14 px-4 sm:px-6 max-w-6xl mx-auto">
       {/* Header */}
-      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-12">
-        <div className="inline-flex items-center gap-2 glass px-4 py-2 rounded-full mb-4">
+      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-14">
+        <div className="inline-flex items-center gap-2 glass px-4 py-2 rounded-full mb-5 border border-border/40">
           <BookOpen className="w-4 h-4 text-primary" />
-          <span className="text-sm font-body text-muted-foreground">BTCALI Skill Library</span>
+          <span className="text-xs font-heading font-semibold text-muted-foreground uppercase tracking-widest">BTCALI Skill Library</span>
         </div>
-        <h1 className="font-heading font-bold text-3xl sm:text-5xl mb-4">
+        <h1 className="font-heading font-bold text-4xl sm:text-5xl mb-4 leading-tight">
           The <span className="gradient-text">Skill Library</span>
         </h1>
-        <p className="text-muted-foreground font-body text-base max-w-xl mx-auto">
-          Structured progressions for every elite calisthenics skill. Select a category to explore tutorials, progressions, and coaching content.
+        <p className="text-muted-foreground font-body text-base max-w-lg mx-auto leading-relaxed">
+          Structured progressions for every elite calisthenics skill. Select a category to begin.
         </p>
       </motion.div>
 
@@ -110,44 +112,79 @@ export default function SkillLibrary() {
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.1 }}
-        className="relative max-w-xl mx-auto mb-12"
+        className="relative max-w-md mx-auto mb-12"
       >
-        <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+        <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
         <input
           type="text"
           value={search}
           onChange={e => setSearch(e.target.value)}
-          placeholder="Search skills, tutorials, or progressions..."
-          className="w-full glass rounded-2xl pl-12 pr-5 py-4 text-foreground font-body text-base border border-border/40 focus:border-primary/60 focus:outline-none focus:ring-1 focus:ring-primary/40 bg-transparent placeholder:text-muted-foreground/50"
+          placeholder="Search skills or progressions..."
+          className="w-full glass rounded-xl pl-11 pr-5 py-3.5 text-foreground font-body text-sm border border-border/40 focus:border-primary/50 focus:outline-none bg-transparent placeholder:text-muted-foreground/40"
         />
       </motion.div>
 
       {/* Category Grid */}
-      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {filtered.map((cat, i) => (
           <motion.div
             key={cat.id}
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: i * 0.06 }}
-            whileHover={{ y: -3 }}
+            transition={{ delay: i * 0.07 }}
+            whileHover={{ y: -4, transition: { duration: 0.2 } }}
             onClick={() => navigate(`/skills/${cat.id}`)}
-            className={`cursor-pointer rounded-2xl border bg-gradient-to-br ${cat.accent} ${cat.border} p-6 flex flex-col gap-4 transition-all duration-300 hover:shadow-lg`}
+            className="cursor-pointer group rounded-2xl border border-border/40 overflow-hidden relative"
+            style={{
+              background: 'linear-gradient(145deg, hsl(var(--card)), hsl(var(--surface-2)))',
+            }}
           >
-            <div className="flex items-start justify-between">
-              <span className="text-3xl">{cat.icon}</span>
-              <AccessBadge access={cat.access} />
+            {/* Top accent line */}
+            <div
+              className="h-px w-full"
+              style={{ background: `linear-gradient(90deg, transparent, ${cat.accentColor}66, transparent)` }}
+            />
+
+            <div className="p-6">
+              {/* Icon + badge row */}
+              <div className="flex items-start justify-between mb-5">
+                <div
+                  className="w-12 h-12 rounded-xl flex items-center justify-center text-2xl"
+                  style={{
+                    background: `linear-gradient(135deg, ${cat.accentColor}18, ${cat.accentColor}08)`,
+                    border: `1px solid ${cat.accentColor}30`,
+                  }}
+                >
+                  {cat.icon}
+                </div>
+                <AccessBadge access={cat.access} />
+              </div>
+
+              {/* Text */}
+              <h3 className="font-heading font-bold text-base text-foreground mb-2 group-hover:text-primary transition-colors duration-200">
+                {cat.title}
+              </h3>
+              <p className="text-sm font-body text-muted-foreground leading-relaxed mb-5">
+                {cat.description}
+              </p>
+
+              {/* Footer row */}
+              <div className="flex items-center justify-between pt-4 border-t border-border/30">
+                <span className="text-xs font-body text-muted-foreground/60">{cat.level}</span>
+                <span
+                  className="text-xs font-heading font-bold transition-all duration-200 group-hover:translate-x-0.5"
+                  style={{ color: cat.accentColor }}
+                >
+                  Explore →
+                </span>
+              </div>
             </div>
 
-            <div>
-              <h3 className="font-heading font-bold text-lg text-foreground mb-1">{cat.title}</h3>
-              <p className="text-sm font-body text-muted-foreground leading-relaxed">{cat.description}</p>
-            </div>
-
-            <div className="flex items-center justify-between pt-2 border-t border-white/10">
-              <span className="text-xs font-body text-muted-foreground">{cat.level}</span>
-              <span className="text-xs font-heading font-semibold text-primary">Explore →</span>
-            </div>
+            {/* Hover glow overlay */}
+            <div
+              className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
+              style={{ boxShadow: `inset 0 0 40px ${cat.accentColor}08` }}
+            />
           </motion.div>
         ))}
       </div>
@@ -157,6 +194,30 @@ export default function SkillLibrary() {
           No results for "{search}"
         </div>
       )}
+
+      {/* Bottom CTA */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        className="mt-20 rounded-2xl border border-primary/20 p-10 text-center relative overflow-hidden"
+        style={{ background: 'linear-gradient(145deg, hsl(var(--card)), hsl(var(--surface-2)))' }}
+      >
+        <div className="absolute inset-0 pointer-events-none"
+          style={{ background: 'radial-gradient(ellipse at center, hsl(var(--primary)/0.06) 0%, transparent 70%)' }} />
+        <div className="relative">
+          <p className="font-heading font-bold text-foreground text-xl mb-2">Ready for personalised coaching?</p>
+          <p className="text-muted-foreground font-body text-sm mb-6 max-w-md mx-auto">
+            Unlock all tutorials and get a custom programme built for your exact level and goals.
+          </p>
+          <button
+            onClick={() => navigate('/pricing')}
+            className="inline-flex items-center gap-2 px-8 py-3.5 rounded-xl gradient-bg-strong text-primary-foreground font-heading font-bold text-sm glow-primary"
+          >
+            <Crown className="w-4 h-4" /> View 1-on-1 Coaching
+          </button>
+        </div>
+      </motion.div>
     </div>
   );
 }

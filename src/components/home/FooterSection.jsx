@@ -17,8 +17,8 @@ export default function FooterSection() {
             <ul className="space-y-2">
               {[
                 { to: '/scan', label: 'Athlete Scan' },
-                { to: '/tutorials', label: 'Free Tutorials' },
-                { to: '/programs', label: 'Programs' },
+                { to: '/skills', label: 'Skill Library' },
+                { to: '/brand', label: 'Brand Identity' },
               ].map((link) => (
                 <li key={link.to}>
                   <Link to={link.to} className="text-sm text-muted-foreground hover:text-foreground transition-colors font-body">

@@ -30,6 +30,7 @@ import LSitHandstandGuide from './pages/tutorials/LSitHandstandGuide';
 import PlancheGuide from './pages/tutorials/PlancheGuide';
 import PlanchePrograms from './pages/programs/PlanchePrograms';
 import FrontLeverPrograms from './pages/programs/FrontLeverPrograms';
+import BrandIdentity from './pages/BrandIdentity';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -74,6 +75,7 @@ const AuthenticatedApp = () => {
         <Route path="/skills" element={<SkillLibrary />} />
         <Route path="/skills/:categoryId" element={<SkillLibraryCategory />} />
         <Route path="/admin/diagnostics" element={<AdminDiagnostics />} />
+        <Route path="/brand" element={<BrandIdentity />} />
         <Route path="*" element={<PageNotFound />} />
       </Route>
     </Routes>

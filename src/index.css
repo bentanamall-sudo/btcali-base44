@@ -9,52 +9,53 @@
     --font-heading: 'Space Grotesk', sans-serif;
     --font-body: 'Inter', sans-serif;
 
-    /* ── THEME 1: BTCALI ELITE (default) — matte black + bronze/gold ── */
-    --background: 0 0% 4%;
-    --foreground: 0 0% 95%;
-    --card: 0 0% 6%;
-    --card-foreground: 0 0% 95%;
-    --popover: 0 0% 6%;
-    --popover-foreground: 0 0% 95%;
-    --primary: 38 65% 45%;          /* bronze #B8860B-ish */
+    /* ── THEME 1: BTCALI ELITE (DEFAULT) — matte black + metallic bronze/gold ── */
+    /* Palette: #0A0A0A bg, #141414 card, #B8860B bronze, #D4AF37 gold, #F5E6A1 light gold */
+    --background: 0 0% 4%;           /* #0A0A0A */
+    --foreground: 0 0% 96%;
+    --card: 0 0% 7%;                  /* #141414 charcoal */
+    --card-foreground: 0 0% 96%;
+    --popover: 0 0% 7%;
+    --popover-foreground: 0 0% 96%;
+    --primary: 38 82% 38%;            /* #B8860B metallic bronze */
     --primary-foreground: 0 0% 100%;
-    --secondary: 0 0% 9%;
+    --secondary: 0 0% 10%;
     --secondary-foreground: 0 0% 88%;
-    --muted: 0 0% 12%;
-    --muted-foreground: 0 0% 50%;
-    --accent: 42 72% 52%;           /* gold #D4AF37 */
-    --accent-foreground: 0 0% 5%;
-    --destructive: 0 72% 55%;
+    --muted: 0 0% 13%;
+    --muted-foreground: 0 0% 48%;
+    --accent: 43 67% 51%;             /* #D4AF37 dark gold */
+    --accent-foreground: 0 0% 4%;
+    --destructive: 0 72% 50%;
     --destructive-foreground: 0 0% 98%;
-    --border: 0 0% 13%;
-    --input: 0 0% 11%;
-    --ring: 38 65% 45%;
+    --border: 0 0% 15%;
+    --input: 0 0% 12%;
+    --ring: 38 82% 38%;
     --radius: 0.75rem;
 
-    --glow-primary: 38 65% 45%;
-    --glow-secondary: 42 72% 52%;
-    --gradient-start: 38 65% 45%;
-    --gradient-end: 42 72% 52%;
-    --glass-bg: 0 0% 6%;
-    --glass-border: 0 0% 18%;
+    --glow-primary: 38 82% 38%;
+    --glow-secondary: 43 67% 51%;
+    --gradient-start: 38 82% 38%;     /* bronze */
+    --gradient-end: 43 67% 51%;       /* gold */
+    --glass-bg: 0 0% 7%;
+    --glass-border: 0 0% 20%;
     --surface-1: 0 0% 4%;
-    --surface-2: 0 0% 7%;
-    --surface-3: 0 0% 10%;
+    --surface-2: 0 0% 8%;
+    --surface-3: 0 0% 11%;
 
-    --chart-1: 38 65% 45%;
-    --chart-2: 42 72% 52%;
-    --chart-3: 45 80% 60%;
-    --chart-4: 150 50% 40%;
-    --chart-5: 340 60% 50%;
+    --chart-1: 38 82% 38%;
+    --chart-2: 43 67% 51%;
+    --chart-3: 45 80% 62%;
+    --chart-4: 150 50% 38%;
+    --chart-5: 340 60% 48%;
 
     --sidebar-background: 0 0% 4%;
     --sidebar-foreground: 0 0% 88%;
-    --sidebar-primary: 38 65% 45%;
+    --sidebar-primary: 38 82% 38%;
     --sidebar-primary-foreground: 0 0% 100%;
     --sidebar-accent: 0 0% 10%;
     --sidebar-accent-foreground: 0 0% 88%;
-    --sidebar-border: 0 0% 12%;
-    --sidebar-ring: 38 65% 45%;
+    --sidebar-border: 0 0% 13%;
+    --sidebar-ring: 38 82% 38%;
   }
 
   /* ── THEME 2: FUTURISTIC BTCALI — deep black + electric purple/blue ── */
