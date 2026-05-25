@@ -27,7 +27,7 @@ export function NavbarLogo() {
     <img
       src={src}
       alt="BTCALI"
-      style={{ height: '48px', width: 'auto', display: 'block', background: 'transparent' }}
+      style={{ height: '48px', width: 'auto', display: 'block', background: 'transparent', borderRadius: '50%' }}
     />
   );
 }
@@ -39,7 +39,7 @@ export function PageLogo() {
     <img
       src={src}
       alt="BTCALI"
-      style={{ width: '220px', height: 'auto', display: 'block', background: 'transparent' }}
+      style={{ width: '220px', height: 'auto', display: 'block', background: 'transparent', borderRadius: '50%' }}
     />
   );
 }
@@ -52,7 +52,7 @@ export function HeroLogo() {
       src={src}
       alt="BTCALI"
       className="animate-float"
-      style={{ width: '320px', maxWidth: '85vw', height: 'auto', display: 'block', background: 'transparent' }}
+      style={{ width: '320px', maxWidth: '85vw', height: 'auto', display: 'block', background: 'transparent', borderRadius: '50%' }}
     />
   );
 }
@@ -65,7 +65,7 @@ export function LogoBadge({ size = 64 }) {
     <img
       src={src}
       alt="BTCALI"
-      style={{ width: `${px}px`, height: `${px}px`, objectFit: 'contain', display: 'block', background: 'transparent' }}
+      style={{ width: `${px}px`, height: `${px}px`, objectFit: 'contain', display: 'block', background: 'transparent', borderRadius: '50%' }}
     />
   );
 }
