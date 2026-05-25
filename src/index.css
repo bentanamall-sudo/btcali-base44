@@ -96,45 +96,7 @@
     --sidebar-ring: 262 85% 62%;
   }
 
-  /* ── THEME 3: MATTE BLACK BTCALI — stealth graphite ── */
-  .theme-gold {
-    --background: 0 0% 4%;
-    --foreground: 0 0% 92%;
-    --card: 0 0% 7%;
-    --card-foreground: 0 0% 92%;
-    --popover: 0 0% 7%;
-    --popover-foreground: 0 0% 92%;
-    --primary: 0 0% 68%;            /* steel grey #ADADAD */
-    --primary-foreground: 0 0% 5%;
-    --secondary: 0 0% 10%;
-    --secondary-foreground: 0 0% 85%;
-    --muted: 0 0% 13%;
-    --muted-foreground: 0 0% 46%;
-    --accent: 0 0% 80%;
-    --accent-foreground: 0 0% 5%;
-    --border: 0 0% 14%;
-    --input: 0 0% 12%;
-    --ring: 0 0% 68%;
-    --glow-primary: 0 0% 68%;
-    --glow-secondary: 0 0% 50%;
-    --gradient-start: 0 0% 75%;
-    --gradient-end: 0 0% 50%;
-    --glass-bg: 0 0% 7%;
-    --glass-border: 0 0% 17%;
-    --surface-1: 0 0% 4%;
-    --surface-2: 0 0% 7%;
-    --surface-3: 0 0% 10%;
-    --sidebar-background: 0 0% 4%;
-    --sidebar-border: 0 0% 13%;
-    --sidebar-foreground: 0 0% 85%;
-    --sidebar-primary: 0 0% 68%;
-    --sidebar-primary-foreground: 0 0% 5%;
-    --sidebar-accent: 0 0% 10%;
-    --sidebar-accent-foreground: 0 0% 85%;
-    --sidebar-ring: 0 0% 68%;
-  }
-
-  /* ── THEME 4: LIGHT BTCALI — Apple-inspired white/blue ── */
+  /* ── THEME 3: LIGHT BTCALI — Apple-inspired white/blue ── */
   .theme-ice {
     --background: 210 20% 97%;
     --foreground: 220 25% 12%;

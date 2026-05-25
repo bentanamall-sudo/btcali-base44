@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { Trophy, Play, Users, ArrowRight, X, ExternalLink } from 'lucide-react';
 import GlowButton from '../components/GlowButton';
+import { LogoBadge } from '../components/Logo';
 
 const testimonials = [
   {
@@ -164,6 +165,9 @@ export default function ProvenResults() {
     <div className="min-h-screen py-12 px-4 sm:px-6 max-w-7xl mx-auto">
       {/* Header */}
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-12">
+        <div className="flex justify-center mb-6">
+          <LogoBadge size="lg" />
+        </div>
         <div className="inline-flex items-center gap-2 glass px-4 py-2 rounded-full mb-4">
           <Trophy className="w-4 h-4 text-primary" />
           <span className="text-sm font-body text-muted-foreground">Student Testimonials</span>
