@@ -18,14 +18,14 @@ export default function Layout() {
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.9 }}
           onClick={() => {
-            const themes = ['carbon', 'neon', 'gold', 'ice'];
-            const idx = themes.indexOf(theme);
-            setTheme(themes[(idx + 1) % themes.length]);
+            const themeList = ['carbon', 'neon', 'gold', 'ice'];
+            const idx = themeList.indexOf(theme);
+            setTheme(themeList[(idx + 1) % themeList.length]);
           }}
           className="w-12 h-12 rounded-full glass-strong glow-border flex items-center justify-center text-lg shadow-lg hover:glow-primary transition-all duration-300"
           title="Cycle Theme"
         >
-          {theme === 'carbon' ? '⚫' : theme === 'neon' ? '🟣' : theme === 'gold' ? '🥇' : '🤍'}
+          {theme === 'carbon' ? '🥇' : theme === 'neon' ? '🟣' : theme === 'gold' ? '⚫' : '🤍'}
         </motion.button>
       </div>
     </div>

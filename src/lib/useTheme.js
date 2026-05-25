@@ -28,8 +28,8 @@ export function useTheme() {
 }
 
 export const themes = [
-  { id: 'carbon', name: 'Carbon Black', icon: '⚫' },
-  { id: 'neon', name: 'Neon Purple', icon: '🟣' },
-  { id: 'gold', name: 'Gold Elite', icon: '🥇' },
-  { id: 'ice', name: 'Ice White', icon: '🤍' },
+  { id: 'carbon', name: 'BTCALI Elite', icon: '🥇' },
+  { id: 'neon',   name: 'Futuristic',   icon: '🟣' },
+  { id: 'gold',   name: 'Matte Black',  icon: '⚫' },
+  { id: 'ice',    name: 'Light',        icon: '🤍' },
 ];
