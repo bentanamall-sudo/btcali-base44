@@ -39,7 +39,7 @@ export default function HeroSection() {
             transition={{ delay: 0.1, duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
             className="flex justify-center mb-8"
           >
-            <HeroLogo className="w-[280px] sm:w-[340px] md:w-[400px]" />
+            <HeroLogo />
           </motion.div>
 
           {/* Badge pill */}
