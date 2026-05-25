@@ -20,79 +20,68 @@ function useLogoSrc() {
   return LOGO_URLS[theme] || LOGO_URLS.carbon;
 }
 
-// NavbarLogo — 48px height, auto width
+// Shared circular crop component
+// The PNG has transparent padding around the circle — we use a square div with
+// border-radius:50% + overflow:hidden and scale the image up so the circle
+// fills the container, cropping out the transparent canvas edges.
+function CircularLogo({ src, size }) {
+  return (
+    <div
+      style={{
+        width: size,
+        height: size,
+        borderRadius: '50%',
+        overflow: 'hidden',
+        flexShrink: 0,
+        background: 'transparent',
+      }}
+    >
+      <img
+        src={src}
+        alt="BTCALI"
+        style={{
+          // Scale slightly beyond 100% to push the transparent padding out of view.
+          // The circular logo occupies roughly 88% of the PNG canvas width,
+          // so scaling to ~114% brings the emblem edge flush with the container.
+          width: '114%',
+          height: '114%',
+          marginLeft: '-7%',
+          marginTop: '-7%',
+          objectFit: 'cover',
+          background: 'transparent',
+          display: 'block',
+        }}
+      />
+    </div>
+  );
+}
+
+// NavbarLogo — 48px
 export function NavbarLogo() {
   const src = useLogoSrc();
-  return (
-    <img
-      src={src}
-      alt="BTCALI"
-      style={{
-        height: '48px',
-        width: 'auto',
-        objectFit: 'contain',
-        background: 'transparent',
-        display: 'block',
-      }}
-    />
-  );
+  return <CircularLogo src={src} size={48} />;
 }
 
-// PageLogo — large centered logo for page headers
+// PageLogo — page headers
 export function PageLogo() {
   const src = useLogoSrc();
-  return (
-    <img
-      src={src}
-      alt="BTCALI"
-      style={{
-        width: '220px',
-        height: 'auto',
-        objectFit: 'contain',
-        background: 'transparent',
-        display: 'block',
-      }}
-    />
-  );
+  return <CircularLogo src={src} size={220} />;
 }
 
-// HeroLogo — large hero centerpiece
+// HeroLogo — hero centerpiece
 export function HeroLogo() {
   const src = useLogoSrc();
   return (
-    <img
-      src={src}
-      alt="BTCALI"
-      className="animate-float"
-      style={{
-        maxWidth: '380px',
-        width: '100%',
-        height: 'auto',
-        objectFit: 'contain',
-        background: 'transparent',
-        display: 'block',
-      }}
-    />
+    <div className="animate-float" style={{ display: 'inline-block' }}>
+      <CircularLogo src={src} size={320} />
+    </div>
   );
 }
 
-// LogoBadge — small configurable size
+// LogoBadge — configurable px size
 export function LogoBadge({ size = 64 }) {
   const src = useLogoSrc();
-  const px = typeof size === 'number' ? size : 64;
-  return (
-    <img
-      src={src}
-      alt="BTCALI"
-      style={{
-        width: `${px}px`,
-        height: `${px}px`,
-        objectFit: 'contain',
-        background: 'transparent',
-        display: 'block',
-      }}
-    />
-  );
+  return <CircularLogo src={src} size={typeof size === 'number' ? size : 64} />;
 }
 
 export default function Logo() {
