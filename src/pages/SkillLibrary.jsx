@@ -12,17 +12,17 @@ const CATEGORIES = [
     accent: 'from-slate-500/15 to-gray-500/10',
     border: 'border-slate-500/30',
     icon: '📐',
-    free: true,
+    access: 'free',
   },
   {
-    id: 'handstand-pressing',
-    title: 'Handstand & Pressing',
-    description: 'From wrist warmups and pike push-ups to freestanding handstands and bent arm press.',
-    level: 'Beginner → Advanced',
-    accent: 'from-amber-500/15 to-yellow-500/10',
-    border: 'border-amber-500/30',
+    id: 'l-sit-to-handstand',
+    title: 'L-Sit to Handstand Guide',
+    description: 'Wrist warmups, pike push-ups, handstand progressions, bent arm press, and the full L-sit to handstand path.',
+    level: 'Beginner → Elite',
+    accent: 'from-fuchsia-500/15 to-purple-500/10',
+    border: 'border-fuchsia-500/30',
     icon: '⚡',
-    free: false,
+    access: 'free',
   },
   {
     id: 'planche',
@@ -32,8 +32,7 @@ const CATEGORIES = [
     accent: 'from-violet-500/20 to-purple-500/10',
     border: 'border-violet-500/30',
     icon: '💪',
-    free: false,
-    hasFree: true,
+    access: 'mixed',
   },
   {
     id: 'front-lever',
@@ -43,18 +42,17 @@ const CATEGORIES = [
     accent: 'from-cyan-500/15 to-blue-500/10',
     border: 'border-cyan-500/30',
     icon: '🔱',
-    free: false,
-    hasFree: true,
+    access: 'members',
   },
   {
-    id: 'l-sit-to-handstand',
-    title: 'L-Sit to Handstand',
-    description: 'The elite pressing skill — structured path from compression to full inversion.',
-    level: 'Advanced → Elite',
-    accent: 'from-fuchsia-500/15 to-purple-500/10',
-    border: 'border-fuchsia-500/30',
-    icon: '🌟',
-    free: true,
+    id: 'handstand-pushups',
+    title: 'Handstand Pushups',
+    description: 'Wall HSPU, chest-to-wall progressions, and freestanding handstand push-up development.',
+    level: 'Intermediate → Advanced',
+    accent: 'from-rose-500/15 to-pink-500/10',
+    border: 'border-rose-500/30',
+    icon: '🏋️',
+    access: 'members',
   },
   {
     id: 'muscle-up',
@@ -64,9 +62,23 @@ const CATEGORIES = [
     accent: 'from-emerald-500/15 to-teal-500/10',
     border: 'border-emerald-500/30',
     icon: '⚡',
-    free: false,
+    access: 'members',
   },
 ];
+
+function AccessBadge({ access }) {
+  if (access === 'free') {
+    return <span className="text-xs font-heading font-bold px-2 py-1 rounded-full bg-green-500/20 text-green-400 border border-green-500/30">Free</span>;
+  }
+  if (access === 'mixed') {
+    return <span className="text-xs font-heading font-bold px-2 py-1 rounded-full bg-green-500/10 text-green-400/80 border border-green-500/20">Free + Members</span>;
+  }
+  return (
+    <span className="flex items-center gap-1 text-xs font-heading font-bold px-2 py-1 rounded-full bg-primary/10 text-primary border border-primary/20">
+      <Lock className="w-3 h-3" /> Members
+    </span>
+  );
+}
 
 export default function SkillLibrary() {
   const [search, setSearch] = useState('');
@@ -124,17 +136,7 @@ export default function SkillLibrary() {
           >
             <div className="flex items-start justify-between">
               <span className="text-3xl">{cat.icon}</span>
-              <div className="flex items-center gap-2">
-                {cat.free ? (
-                  <span className="text-xs font-heading font-bold px-2 py-1 rounded-full bg-green-500/20 text-green-400 border border-green-500/30">Free</span>
-                ) : cat.hasFree ? (
-                  <span className="text-xs font-heading font-bold px-2 py-1 rounded-full bg-green-500/10 text-green-400/80 border border-green-500/20">Free + Members</span>
-                ) : (
-                  <span className="flex items-center gap-1 text-xs font-heading font-bold px-2 py-1 rounded-full bg-primary/10 text-primary border border-primary/20">
-                    <Lock className="w-3 h-3" /> Members
-                  </span>
-                )}
-              </div>
+              <AccessBadge access={cat.access} />
             </div>
 
             <div>

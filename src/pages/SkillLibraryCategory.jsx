@@ -26,34 +26,35 @@ const CATEGORY_DATA = {
     ],
   },
 
-  'handstand-pressing': {
-    title: 'Handstand & Pressing Progressions',
-    description: 'From wrist warmups and pike push-ups to freestanding handstands, HSPU, and bent arm press.',
+  'l-sit-to-handstand': {
+    title: 'L-Sit to Handstand Guide',
+    description: 'Wrist warmups through to the full L-sit to handstand press — all tutorials in this section are free.',
     subcategories: ['Beginner', 'Intermediate', 'Advanced'],
     tutorials: [
       // Beginner
-      { id: 'hs-wrist-warmup', title: 'Wrist Warmup', level: 'Beginner', sub: 'Beginner', videoId: 'A1YPZdLyXPI', free: true },
-      { id: 'hs-lsit-entry', title: 'L-Sit Progressions & Entry', level: 'Beginner', sub: 'Beginner', videoId: 'JV2QPQFlpZQ', free: true },
-      { id: 'hs-bent-knee-pike', title: 'Bent Knee Pike Push-Ups', level: 'Beginner', sub: 'Beginner', videoId: '5HRq7xpcBkw', free: true },
-      { id: 'hs-pike-pushup', title: 'Pike Push-Ups', level: 'Beginner', sub: 'Beginner', videoId: 'PSHF4b99J0Q', free: true },
-      { id: 'hs-where-to-look', title: 'Where to Look in a Handstand', level: 'Beginner', sub: 'Beginner', videoId: 'pgKP61v2kz8', free: false },
-      { id: 'hs-kickup', title: 'Handstand Kick-Up Tutorial', level: 'Beginner', sub: 'Beginner', videoId: '8GLA_c0jueA', free: false },
-      { id: 'hs-bail', title: 'Handstand Bail — Face the Fear', level: 'Beginner', sub: 'Beginner', videoId: 'rGoEHcIPeFY', free: false },
+      { id: 'lshs-wrist-warmup', title: 'Wrist Warmup', level: 'Beginner', sub: 'Beginner', videoId: 'A1YPZdLyXPI', free: true },
+      { id: 'lshs-lsit-entry', title: 'L-Sit Progressions & Entry', level: 'Beginner', sub: 'Beginner', videoId: 'JV2QPQFlpZQ', free: true },
+      { id: 'lshs-bent-knee-pike', title: 'Bent Knee Pike Push-Ups', level: 'Beginner', sub: 'Beginner', videoId: '5HRq7xpcBkw', free: true },
+      { id: 'lshs-pike-pushup', title: 'Pike Push-Ups', level: 'Beginner', sub: 'Beginner', videoId: 'PSHF4b99J0Q', free: true },
+      { id: 'lshs-where-to-look', title: 'Where to Look in a Handstand', level: 'Beginner', sub: 'Beginner', videoId: 'pgKP61v2kz8', free: true },
+      { id: 'lshs-kickup', title: 'Handstand Kick-Up Tutorial', level: 'Beginner', sub: 'Beginner', videoId: '8GLA_c0jueA', free: true },
+      { id: 'lshs-bail', title: 'Handstand Bail — Face the Fear', level: 'Beginner', sub: 'Beginner', videoId: 'rGoEHcIPeFY', free: true },
       // Intermediate
-      { id: 'hs-decline-pike', title: 'Decline Pike Push-Ups', level: 'Intermediate', sub: 'Intermediate', videoId: '3OfR0Kd1u-Q', free: false },
-      { id: 'hs-toe-taps', title: 'Handstand Toe Taps', level: 'Intermediate', sub: 'Intermediate', videoId: 'yDYk7w7uqTA', free: false },
-      { id: 'hs-dolphin-press', title: 'Dolphin Press', level: 'Intermediate', sub: 'Intermediate', videoId: 'SWJn6e7Kc50', free: false },
-      { id: 'hs-floating-pike', title: 'Floating Pike Push-Ups', level: 'Intermediate', sub: 'Intermediate', videoId: 'AfLQJ-cCF2I', free: false },
-      { id: 'hs-chest-wall-hspu', title: 'Chest to Wall Handstand Push-Ups', level: 'Intermediate', sub: 'Intermediate', videoId: 'GwHgAPqMMq0', free: false },
-      { id: 'hs-bent-arm-cues', title: 'Bent Arm Press Cues', level: 'Intermediate', sub: 'Intermediate', videoId: 'jD7JOlacCgg', free: false },
-      { id: 'hs-bent-arm-tuck-pos', title: 'Bent Arm Tuck Planche Positions', level: 'Intermediate', sub: 'Intermediate', videoId: 'WRflJHXBIrA', free: false },
-      { id: 'hs-bent-arm-quick', title: 'Bent Arm Press Quick Tutorial', level: 'Intermediate', sub: 'Intermediate', videoId: '6MpY6iLDtQM', free: false },
-      { id: 'hs-momentum-press', title: 'Momentum Bent Arm Press', level: 'Intermediate', sub: 'Intermediate', free: false, comingSoon: true },
-      { id: 'hs-clean-press', title: 'Clean Form Bent Arm Press', level: 'Intermediate', sub: 'Intermediate', free: false, comingSoon: true },
-      { id: 'hs-chest-wall-hold', title: 'Handstand Chest to Wall Hold', level: 'Intermediate', sub: 'Intermediate', free: false, comingSoon: true },
+      { id: 'lshs-decline-pike', title: 'Decline Pike Push-Ups', level: 'Intermediate', sub: 'Intermediate', videoId: '3OfR0Kd1u-Q', free: true },
+      { id: 'lshs-toe-taps', title: 'Handstand Toe Taps', level: 'Intermediate', sub: 'Intermediate', videoId: 'yDYk7w7uqTA', free: true },
+      { id: 'lshs-dolphin-press', title: 'Dolphin Press', level: 'Intermediate', sub: 'Intermediate', videoId: 'SWJn6e7Kc50', free: true },
+      { id: 'lshs-floating-pike', title: 'Floating Pike Push-Ups', level: 'Intermediate', sub: 'Intermediate', videoId: 'AfLQJ-cCF2I', free: true },
+      { id: 'lshs-bent-arm-cues', title: 'Bent Arm Press Cues', level: 'Intermediate', sub: 'Intermediate', videoId: 'jD7JOlacCgg', free: true },
+      { id: 'lshs-bent-arm-tuck-pos', title: 'Bent Arm Tuck Planche Positions', level: 'Intermediate', sub: 'Intermediate', videoId: 'WRflJHXBIrA', free: true },
+      { id: 'lshs-bent-arm-quick', title: 'Bent Arm Press Quick Tutorial', level: 'Intermediate', sub: 'Intermediate', videoId: '6MpY6iLDtQM', free: true },
+      { id: 'lshs-momentum-press', title: 'Momentum Bent Arm Press', level: 'Intermediate', sub: 'Intermediate', free: true, comingSoon: true },
+      { id: 'lshs-clean-press', title: 'Clean Form Bent Arm Press', level: 'Intermediate', sub: 'Intermediate', free: true, comingSoon: true },
+      { id: 'lshs-chest-wall-hold', title: 'Handstand Chest to Wall Hold', level: 'Intermediate', sub: 'Intermediate', free: true, comingSoon: true },
       // Advanced
-      { id: 'hs-indepth-press', title: 'In-Depth Bent Arm Press Tutorial', level: 'Advanced', sub: 'Advanced', videoId: 'UO7pBH4FnOI', free: false },
-      { id: 'hs-lsit-to-hs', title: 'L-Sit to Handstand', level: 'Advanced', sub: 'Advanced', videoId: '8SOeZroRebI', free: false },
+      { id: 'lshs-indepth-press', title: 'In-Depth Bent Arm Press Tutorial', level: 'Advanced', sub: 'Advanced', videoId: 'UO7pBH4FnOI', free: true },
+      { id: 'lshs-lsit-to-hs', title: 'L-Sit to Handstand', level: 'Advanced', sub: 'Advanced', videoId: '8SOeZroRebI', free: true },
+      { id: 'lshs-straddle-press', title: 'Straddle Press to Handstand', level: 'Advanced', sub: 'Advanced', free: true, comingSoon: true },
+      { id: 'lshs-straight-press', title: 'Straight Press to Handstand', level: 'Elite', sub: 'Advanced', free: true, comingSoon: true },
     ],
   },
 
@@ -88,12 +89,12 @@ const CATEGORY_DATA = {
     description: 'Build horizontal pulling strength from hollow body to full front lever.',
     subcategories: ['Beginner', 'Intermediate'],
     tutorials: [
-      // Beginner
-      { id: 'fl-hollow-body', title: 'Hollow Body Hold', level: 'Beginner', sub: 'Beginner', videoId: 'DQu4UNPY8BU', free: true },
-      { id: 'fl-activations', title: 'Front Lever Activations', level: 'Beginner', sub: 'Beginner', videoId: 'QVqbRvkFlx0', free: true },
+      // Beginner — all members only
+      { id: 'fl-hollow-body', title: 'Hollow Body Hold', level: 'Beginner', sub: 'Beginner', videoId: 'DQu4UNPY8BU', free: false },
+      { id: 'fl-activations', title: 'Front Lever Activations', level: 'Beginner', sub: 'Beginner', videoId: 'QVqbRvkFlx0', free: false },
       { id: 'fl-tuck', title: 'Tuck Front Lever', level: 'Beginner', sub: 'Beginner', free: false, comingSoon: true },
       { id: 'fl-adv-tuck', title: 'Advanced Tuck Front Lever', level: 'Beginner', sub: 'Beginner', free: false, comingSoon: true },
-      // Intermediate
+      // Intermediate — all members only
       { id: 'fl-full-banded-entry', title: 'Full Banded FL Entry', level: 'Intermediate', sub: 'Intermediate', videoId: 'xeNxL7ygiHg', free: false },
       { id: 'fl-band-raises', title: 'Band Assisted Front Lever Raises', level: 'Intermediate', sub: 'Intermediate', videoId: 'aku6BVmhuck', free: false },
       { id: 'fl-hip-thrust', title: 'Front Lever Hip Thrust', level: 'Intermediate', sub: 'Intermediate', videoId: 'IEbuq-vlXgs', free: false },
@@ -102,14 +103,19 @@ const CATEGORY_DATA = {
     ],
   },
 
-  'l-sit-to-handstand': {
-    title: 'L-Sit to Handstand',
-    description: 'The elite pressing skill — L-sit progressions through to full handstand press.',
+  'handstand-pushups': {
+    title: 'Handstand Pushups',
+    description: 'Wall HSPU, chest-to-wall progressions, and freestanding handstand push-up development.',
+    subcategories: ['Beginner', 'Intermediate', 'Advanced'],
     tutorials: [
-      { id: 'lshs-lsit-entry', title: 'L-Sit Progressions & Entry', level: 'Beginner', videoId: 'JV2QPQFlpZQ', free: true },
-      { id: 'lshs-guide', title: 'L-Sit to Handstand Guide', level: 'Intermediate', videoId: '8SOeZroRebI', free: true },
-      { id: 'lshs-straddle-press', title: 'Straddle Press to Handstand', level: 'Advanced', free: false, comingSoon: true },
-      { id: 'lshs-straight-press', title: 'Straight Press to Handstand', level: 'Elite', free: false, comingSoon: true },
+      // Beginner
+      { id: 'hspu-pike-foundation', title: 'Pike Push-Up Foundation', level: 'Beginner', sub: 'Beginner', free: false, comingSoon: true },
+      { id: 'hspu-wall-negatives', title: 'Wall HSPU Negatives', level: 'Beginner', sub: 'Beginner', free: false, comingSoon: true },
+      // Intermediate
+      { id: 'hspu-chest-wall', title: 'Chest to Wall Handstand Push-Ups', level: 'Intermediate', sub: 'Intermediate', videoId: 'GwHgAPqMMq0', free: false },
+      { id: 'hspu-strict', title: 'Strict HSPU Technique', level: 'Intermediate', sub: 'Intermediate', free: false, comingSoon: true },
+      // Advanced
+      { id: 'hspu-freestanding', title: 'Freestanding HSPU Progressions', level: 'Advanced', sub: 'Advanced', free: false, comingSoon: true },
     ],
   },
 
@@ -177,11 +183,9 @@ function VideoModal({ tutorial, onClose }) {
 
 function ComingSoonCard({ tutorial }) {
   return (
-    <div className="glass rounded-xl border border-border/20 overflow-hidden opacity-70">
+    <div className="glass rounded-xl border border-border/20 overflow-hidden opacity-60">
       <div className="aspect-video w-full bg-muted/10 flex items-center justify-center">
-        <div className="flex flex-col items-center gap-2">
-          <Clock className="w-7 h-7 text-muted-foreground/50" />
-        </div>
+        <Clock className="w-7 h-7 text-muted-foreground/40" />
       </div>
       <div className="p-4">
         <div className="flex items-start justify-between gap-2 mb-2">
@@ -206,8 +210,6 @@ function LockedCard({ tutorial }) {
     const result = unlockCode(code);
     if (!result) { setError(true); setCode(''); } else setError(false);
   };
-
-  if (tutorial.comingSoon) return <ComingSoonCard tutorial={tutorial} />;
 
   return (
     <div className="glass rounded-xl border border-border/30 overflow-hidden">
