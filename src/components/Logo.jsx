@@ -1,10 +1,10 @@
 import { useTheme } from '@/lib/useTheme';
 
-// Transparent BTCALI logo PNGs — tight-cropped circular emblems
+// Tight-cropped circular BTCALI emblem logos — no canvas padding
 const LOGO_URLS = {
-  carbon: 'https://media.base44.com/images/public/69fd635623a9368c153045ad/7e6197939_generated_image.png',
-  neon:   'https://media.base44.com/images/public/69fd635623a9368c153045ad/0f29ee22e_generated_image.png',
-  ice:    'https://media.base44.com/images/public/69fd635623a9368c153045ad/acc557e8a_generated_image.png',
+  carbon: 'https://media.base44.com/images/public/69fd635623a9368c153045ad/01eabd7c2_generated_image.png',
+  neon:   'https://media.base44.com/images/public/69fd635623a9368c153045ad/2c5dc788a_generated_image.png',
+  ice:    'https://media.base44.com/images/public/69fd635623a9368c153045ad/a1cec0707_generated_image.png',
 };
 
 // Preload all logos on module load for instant theme switching
@@ -48,12 +48,14 @@ export function PageLogo() {
 export function HeroLogo() {
   const src = useLogoSrc();
   return (
-    <img
-      src={src}
-      alt="BTCALI"
-      className="animate-float"
-      style={{ width: '320px', maxWidth: '85vw', height: 'auto', display: 'block', background: 'transparent', borderRadius: '50%' }}
-    />
+    <div style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: 'fit-content', height: 'fit-content', padding: 0, margin: '0 auto', background: 'transparent', border: 'none', boxShadow: 'none', overflow: 'visible' }}>
+      <img
+        src={src}
+        alt="BTCALI"
+        className="animate-float"
+        style={{ display: 'block', width: '340px', maxWidth: '85vw', height: 'auto', objectFit: 'contain', background: 'transparent' }}
+      />
+    </div>
   );
 }
 
