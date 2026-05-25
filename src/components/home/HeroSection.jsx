@@ -2,7 +2,7 @@ import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Zap, Target, Play, ChevronRight } from 'lucide-react';
 import GlowButton from '../GlowButton';
-import { LogoBadge } from '../Logo';
+import { HeroLogo } from '../Logo';
 
 export default function HeroSection() {
   return (
@@ -39,7 +39,7 @@ export default function HeroSection() {
             transition={{ delay: 0.1, duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
             className="flex justify-center mb-8"
           >
-            <LogoBadge size="xl" />
+            <HeroLogo className="w-[280px] sm:w-[340px] md:w-[400px]" />
           </motion.div>
 
           {/* Badge pill */}

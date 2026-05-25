@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { Search, Lock, BookOpen, Crown } from 'lucide-react';
-import { LogoBadge } from '../components/Logo';
+import { PageLogo } from '../components/Logo';
 
 const CATEGORIES = [
   {
@@ -97,7 +97,7 @@ export default function SkillLibrary() {
       {/* Header */}
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-14">
         <div className="flex justify-center mb-6">
-          <LogoBadge size="lg" />
+          <PageLogo />
         </div>
         <div className="inline-flex items-center gap-2 glass px-4 py-2 rounded-full mb-5 border border-border/40">
           <BookOpen className="w-4 h-4 text-primary" />

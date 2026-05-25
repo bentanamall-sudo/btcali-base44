@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Menu, X, Zap, BookOpen, Trophy, DollarSign, ScanLine, Bot } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import Logo from './Logo';
+import { NavbarLogo } from './Logo';
 import CodeUnlock from './CodeUnlock';
 import ThemeSwitcher from './ThemeSwitcher';
 import { cn } from '@/lib/utils';
@@ -24,7 +24,7 @@ export default function Navbar({ theme, setTheme }) {
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div className="flex items-center justify-between h-16">
           <Link to="/" className="flex-shrink-0">
-            <Logo size="default" />
+            <NavbarLogo />
           </Link>
 
           {/* Desktop nav */}
