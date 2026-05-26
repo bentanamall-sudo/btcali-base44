@@ -9,35 +9,35 @@
     --font-heading: 'Space Grotesk', sans-serif;
     --font-body: 'Inter', sans-serif;
 
-    /* ── THEME 1: BTCALI ELITE (DEFAULT) — matte black + metallic bronze/gold ── */
-    /* Palette: #0A0A0A bg, #141414 card, #B8860B bronze, #D4AF37 gold, #F5E6A1 light gold */
+    /* ── THEME 1: BTCALI ELITE (DEFAULT) — matte black + logo-matched metallic gold ── */
+    /* Exact logo colours: #D4AF37 gold, #F5E6A1 highlight, #B8860B bronze, #0A0A0A bg, #1A1A1A charcoal */
     --background: 0 0% 4%;           /* #0A0A0A */
     --foreground: 0 0% 96%;
-    --card: 0 0% 7%;                  /* #141414 charcoal */
+    --card: 0 0% 10%;                 /* #1A1A1A charcoal */
     --card-foreground: 0 0% 96%;
-    --popover: 0 0% 7%;
+    --popover: 0 0% 10%;
     --popover-foreground: 0 0% 96%;
-    --primary: 38 82% 38%;            /* #B8860B metallic bronze */
-    --primary-foreground: 0 0% 100%;
+    --primary: 43 67% 51%;            /* #D4AF37 logo gold */
+    --primary-foreground: 0 0% 4%;
     --secondary: 0 0% 10%;
     --secondary-foreground: 0 0% 88%;
     --muted: 0 0% 13%;
     --muted-foreground: 0 0% 48%;
-    --accent: 43 67% 51%;             /* #D4AF37 dark gold */
+    --accent: 45 80% 72%;             /* #F5E6A1 bright highlight gold */
     --accent-foreground: 0 0% 4%;
     --destructive: 0 72% 50%;
     --destructive-foreground: 0 0% 98%;
-    --border: 0 0% 15%;
+    --border: 38 40% 20%;
     --input: 0 0% 12%;
-    --ring: 38 82% 38%;
+    --ring: 43 67% 51%;
     --radius: 0.75rem;
 
-    --glow-primary: 38 82% 38%;
-    --glow-secondary: 43 67% 51%;
-    --gradient-start: 38 82% 38%;     /* bronze */
-    --gradient-end: 43 67% 51%;       /* gold */
+    --glow-primary: 43 67% 51%;       /* #D4AF37 */
+    --glow-secondary: 38 82% 38%;     /* #B8860B bronze */
+    --gradient-start: 43 67% 51%;     /* gold */
+    --gradient-end: 38 82% 38%;       /* bronze */
     --glass-bg: 0 0% 7%;
-    --glass-border: 0 0% 20%;
+    --glass-border: 38 30% 22%;
     --surface-1: 0 0% 4%;
     --surface-2: 0 0% 8%;
     --surface-3: 0 0% 11%;
@@ -58,80 +58,82 @@
     --sidebar-ring: 38 82% 38%;
   }
 
-  /* ── THEME 2: FUTURISTIC BTCALI — deep black + electric purple/blue ── */
+  /* ── THEME 2: FUTURISTIC BTCALI — deep black + logo-matched electric purple/blue ── */
+  /* Exact logo colours: #8B5CF6 electric purple, #3B82F6 neon blue, #60A5FA soft blue, #0B0B12 deep black */
   .theme-neon {
-    --background: 235 25% 4%;
+    --background: 237 30% 5%;       /* #0B0B12 */
     --foreground: 0 0% 95%;
-    --card: 235 22% 7%;
+    --card: 234 25% 8%;             /* #111827 dark navy */
     --card-foreground: 0 0% 95%;
-    --popover: 235 22% 7%;
+    --popover: 234 25% 8%;
     --popover-foreground: 0 0% 95%;
-    --primary: 262 85% 62%;         /* #8B5CF6 purple */
+    --primary: 262 83% 63%;         /* #8B5CF6 electric purple */
     --primary-foreground: 0 0% 100%;
     --secondary: 235 22% 11%;
     --secondary-foreground: 0 0% 88%;
     --muted: 235 20% 14%;
     --muted-foreground: 230 10% 52%;
-    --accent: 211 90% 58%;          /* #3B82F6 blue */
+    --accent: 213 93% 60%;          /* #3B82F6 neon blue */
     --accent-foreground: 0 0% 100%;
-    --border: 235 20% 14%;
+    --border: 250 25% 18%;
     --input: 235 20% 12%;
-    --ring: 262 85% 62%;
-    --glow-primary: 262 85% 62%;
-    --glow-secondary: 211 90% 58%;
-    --gradient-start: 262 85% 62%;
-    --gradient-end: 211 90% 58%;
-    --glass-bg: 235 22% 7%;
-    --glass-border: 235 20% 18%;
-    --surface-1: 235 25% 5%;
-    --surface-2: 235 22% 8%;
-    --surface-3: 235 20% 11%;
-    --sidebar-background: 235 25% 4%;
-    --sidebar-border: 235 20% 13%;
+    --ring: 262 83% 63%;
+    --glow-primary: 262 83% 63%;    /* #8B5CF6 */
+    --glow-secondary: 213 93% 60%;  /* #3B82F6 */
+    --gradient-start: 262 83% 63%;  /* purple */
+    --gradient-end: 213 93% 60%;    /* blue */
+    --glass-bg: 234 25% 8%;
+    --glass-border: 250 25% 22%;
+    --surface-1: 237 30% 5%;
+    --surface-2: 235 25% 8%;
+    --surface-3: 235 22% 11%;
+    --sidebar-background: 237 30% 5%;
+    --sidebar-border: 250 25% 14%;
     --sidebar-foreground: 0 0% 88%;
-    --sidebar-primary: 262 85% 62%;
+    --sidebar-primary: 262 83% 63%;
     --sidebar-primary-foreground: 0 0% 100%;
     --sidebar-accent: 235 20% 11%;
     --sidebar-accent-foreground: 0 0% 88%;
-    --sidebar-ring: 262 85% 62%;
+    --sidebar-ring: 262 83% 63%;
   }
 
-  /* ── THEME 3: LIGHT BTCALI — Apple-inspired white/blue ── */
+  /* ── THEME 3: LIGHT BTCALI — logo-matched white/blue ── */
+  /* Exact logo colours: #3B82F6 blue, #BAE6FD soft blue, #E0F2FE light blue, #FFFFFF white, #F3F4F6 light grey */
   .theme-ice {
-    --background: 210 20% 97%;
+    --background: 210 40% 98%;      /* near-white */
     --foreground: 220 25% 12%;
-    --card: 0 0% 100%;
+    --card: 0 0% 100%;              /* #FFFFFF */
     --card-foreground: 220 25% 12%;
     --popover: 0 0% 100%;
     --popover-foreground: 220 25% 12%;
-    --primary: 211 85% 55%;         /* #3B82F6 soft blue */
+    --primary: 213 93% 60%;         /* #3B82F6 logo blue */
     --primary-foreground: 0 0% 100%;
-    --secondary: 210 15% 93%;
+    --secondary: 210 40% 94%;       /* #E0F2FE light blue */
     --secondary-foreground: 220 20% 18%;
-    --muted: 210 12% 91%;
-    --muted-foreground: 220 8% 44%;
-    --accent: 211 85% 55%;
-    --accent-foreground: 0 0% 100%;
-    --border: 210 12% 88%;
-    --input: 210 12% 90%;
-    --ring: 211 85% 55%;
-    --glow-primary: 211 85% 55%;
-    --glow-secondary: 190 75% 48%;
-    --gradient-start: 211 85% 55%;
-    --gradient-end: 190 75% 48%;
+    --muted: 213 40% 92%;           /* #BAE6FD soft blue tint */
+    --muted-foreground: 220 12% 44%;
+    --accent: 199 89% 88%;          /* #BAE6FD */
+    --accent-foreground: 220 25% 12%;
+    --border: 213 40% 86%;
+    --input: 213 30% 92%;
+    --ring: 213 93% 60%;
+    --glow-primary: 213 93% 60%;    /* #3B82F6 */
+    --glow-secondary: 199 89% 76%;  /* #BAE6FD */
+    --gradient-start: 213 93% 60%;  /* blue */
+    --gradient-end: 199 89% 76%;    /* soft blue */
     --glass-bg: 0 0% 100%;
-    --glass-border: 210 12% 86%;
-    --surface-1: 210 20% 96%;
-    --surface-2: 210 15% 93%;
-    --surface-3: 210 12% 90%;
+    --glass-border: 213 40% 84%;
+    --surface-1: 210 40% 97%;
+    --surface-2: 210 30% 94%;
+    --surface-3: 210 20% 91%;
     --sidebar-background: 0 0% 100%;
-    --sidebar-border: 210 12% 87%;
+    --sidebar-border: 213 40% 86%;
     --sidebar-foreground: 220 20% 18%;
-    --sidebar-primary: 211 85% 55%;
+    --sidebar-primary: 213 93% 60%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 210 12% 93%;
+    --sidebar-accent: 210 30% 94%;
     --sidebar-accent-foreground: 220 20% 18%;
-    --sidebar-ring: 211 85% 55%;
+    --sidebar-ring: 213 93% 60%;
   }
 }
 
