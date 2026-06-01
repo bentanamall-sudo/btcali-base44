@@ -4,7 +4,6 @@ import { Menu, X, Zap, BookOpen, Trophy, DollarSign, ScanLine, Bot } from 'lucid
 import { motion, AnimatePresence } from 'framer-motion';
 import { NavbarLogo } from './Logo';
 import CodeUnlock from './CodeUnlock';
-import ThemeSwitcher from './ThemeSwitcher';
 import { cn } from '@/lib/utils';
 
 const navLinks = [
@@ -15,7 +14,7 @@ const navLinks = [
   { to: '/diagnostic', label: 'Athlete Scan', icon: ScanLine },
 ];
 
-export default function Navbar({ theme, setTheme }) {
+export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const location = useLocation();
 
@@ -105,7 +104,6 @@ export default function Navbar({ theme, setTheme }) {
                 <Bot className="w-5 h-5" />
                 AI Coach
               </Link>
-
             </div>
           </motion.div>
         )}

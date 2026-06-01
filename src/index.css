@@ -58,9 +58,8 @@
     --sidebar-ring: 38 82% 38%;
   }
 
-  /* ── THEME 2: FUTURISTIC BTCALI — deep black + logo-matched electric purple/blue ── */
-  /* Exact logo colours: #8B5CF6 electric purple, #3B82F6 neon blue, #60A5FA soft blue, #0B0B12 deep black */
-  .theme-neon {
+  /* ── THEMES 2 & 3 REMOVED — single gold theme only ── */
+  .theme-neon-disabled {
     --background: 237 30% 5%;       /* #0B0B12 */
     --foreground: 0 0% 95%;
     --card: 234 25% 8%;             /* #111827 dark navy */
@@ -97,9 +96,7 @@
     --sidebar-ring: 262 83% 63%;
   }
 
-  /* ── THEME 3: LIGHT BTCALI — logo-matched white/blue ── */
-  /* Exact logo colours: #3B82F6 blue, #BAE6FD soft blue, #E0F2FE light blue, #FFFFFF white, #F3F4F6 light grey */
-  .theme-ice {
+  .theme-ice-disabled {
     --background: 210 40% 98%;      /* near-white */
     --foreground: 220 25% 12%;
     --card: 0 0% 100%;              /* #FFFFFF */
