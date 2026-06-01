@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Bot, Send, X, Loader2, ArrowRight, MessageCircle } from 'lucide-react';
 import { base44 } from '@/api/base44Client';
 
-const LOGO_URL = 'https://media.base44.com/images/public/69fd635623a9368c153045ad/ed73dd1f3_ChatGPTImageJun2202609_10_56AM.png';
+const LOGO_URL = 'https://media.base44.com/images/public/69fd635623a9368c153045ad/668f24dc5_ChatGPTImageJun2202609_27_21AM.png';
 
 const systemPrompt = `You are the BTCALI AI Coaching Assistant — elite calisthenics coach.
 Specialties: handstand, planche, front lever, muscle-up, HSPU, L-sit, bodyweight strength.

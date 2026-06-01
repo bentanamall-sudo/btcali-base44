@@ -3,7 +3,7 @@
 
 import { createContext, useContext } from 'react';
 
-export const LOGO_URL = 'https://media.base44.com/images/public/69fd635623a9368c153045ad/ed73dd1f3_ChatGPTImageJun2202609_10_56AM.png';
+export const LOGO_URL = 'https://media.base44.com/images/public/69fd635623a9368c153045ad/668f24dc5_ChatGPTImageJun2202609_27_21AM.png';
 
 const ThemeContext = createContext({ theme: 'carbon', logoSrc: LOGO_URL });
 
