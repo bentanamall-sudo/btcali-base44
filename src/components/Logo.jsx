@@ -17,7 +17,7 @@ export function NavbarLogo() {
 
 export function PageLogo() {
   return (
-    <img src={LOGO_URL} alt="BTCALI" style={{ ...logoStyle, width: '220px', height: '220px' }} fetchpriority="high" />
+    <img src={LOGO_URL} alt="BTCALI" style={{ ...logoStyle, width: '320px', height: '320px' }} fetchpriority="high" />
   );
 }
 
