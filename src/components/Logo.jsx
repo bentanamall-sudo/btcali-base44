@@ -17,13 +17,13 @@ export function NavbarLogo() {
 
 export function PageLogo() {
   return (
-    <img src={LOGO_URL} alt="BTCALI" style={{ ...logoStyle, width: '140px', height: '140px' }} fetchpriority="high" />
+    <img src={LOGO_URL} alt="BTCALI" style={{ ...logoStyle, width: '220px', height: '220px' }} fetchpriority="high" />
   );
 }
 
 export function HeroLogo() {
   return (
-    <div style={{ position: 'relative', width: '280px', height: '280px', margin: '0 auto' }}>
+    <div style={{ position: 'relative', width: '420px', height: '420px', margin: '0 auto' }}>
       <div style={{
         position: 'absolute', inset: 0, borderRadius: '50%',
         background: 'radial-gradient(circle, hsl(var(--glow-primary)/0.15) 0%, transparent 70%)',
@@ -33,7 +33,7 @@ export function HeroLogo() {
         src={LOGO_URL}
         alt="BTCALI"
         fetchpriority="high"
-        style={{ ...logoStyle, position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', width: '280px', height: 'auto' }}
+        style={{ ...logoStyle, position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', width: '420px', height: 'auto' }}
       />
     </div>
   );
