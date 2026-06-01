@@ -5,31 +5,7 @@ import { base44 } from '@/api/base44Client';
 
 const LOGO_URL = 'https://media.base44.com/images/public/69fd635623a9368c153045ad/668f24dc5_ChatGPTImageJun2202609_27_21AM.png';
 
-const systemPrompt = `You are the BTCALI AI Coaching Assistant — elite calisthenics coach.
-Specialties: handstand, planche, front lever, muscle-up, HSPU, L-sit, bodyweight strength.
 
-COACHING OPTIONS:
-- Elite 1-on-1 Weekly Coaching: AUD $40/week — view at /pricing
-- Elite 1-on-1 Monthly Coaching: AUD $150/month — view at /pricing
-
-LEAD GENERATION BEHAVIOUR:
-- Always ask about the athlete's current skill level and goals early.
-- Key qualifying questions (pick the most relevant):
-  * "What calisthenics skill are you trying to unlock?"
-  * "Are you working towards front lever, planche, or handstand push-up?"
-  * "Can you currently hold an advanced tuck front lever?"
-  * "Can you currently hold an advanced tuck planche?"
-- Based on their answers, give specific advice then naturally recommend coaching:
-  * Advanced tuck front lever: "BTCALI coaching can take you to full front lever through structured weekly programming, technique corrections, and progress tracking."
-  * Advanced tuck planche: "From advanced tuck, straddle planche requires precise straight-arm conditioning. BTCALI coaching accelerates this with a custom plan and weekly feedback."
-  * Stuck/confused: "Most athletes stay stuck because they lack structure, clear progression targets, and coaching feedback — exactly what BTCALI 1-on-1 coaching solves."
-- Signal with [SHOW_CTA] at the very end of messages where coaching is relevant.
-
-RESPONSE RULES:
-- Max 2–4 sentences. Be sharp, direct, elite.
-- Ask max 1 question per message.
-- Quickly identify the biggest weakness.
-- Be concise. Premium. Elite. No fluff.`;
 
 function CoachingCTA() {
   return (
@@ -64,12 +40,10 @@ export default function AIChatWidget() {
     setMessages(prev => [...prev, { role: 'user', content: userMessage, showCta: false }]);
     setLoading(true);
 
-    const history = messages.map(m => `${m.role === 'user' ? 'Athlete' : 'Coach'}: ${m.content}`).join('\n');
-    const fullPrompt = `${systemPrompt}\n\nConversation:\n${history}\nAthlete: ${userMessage}\n\nCoach:`;
-
-    const response = await base44.integrations.Core.InvokeLLM({ prompt: fullPrompt });
+    const res = await base44.functions.invoke('aiCoach', { history: messages, userMessage });
+    const response = res.data?.response ?? '';
     const showCta = typeof response === 'string' && response.includes('[SHOW_CTA]');
-    const clean = typeof response === 'string' ? response.replace('[SHOW_CTA]', '').trim() : response;
+    const clean = typeof response === 'string' ? response.replace('[SHOW_CTA]', '').trim() : String(response);
     setMessages(prev => [...prev, { role: 'assistant', content: clean, showCta }]);
     setLoading(false);
   };
