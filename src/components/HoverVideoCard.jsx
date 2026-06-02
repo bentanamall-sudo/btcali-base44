@@ -1,133 +1,114 @@
 import { useState, useRef, useCallback, useEffect } from 'react';
 
 /**
- * HoverVideoCard
+ * HoverVideoCard — robust thumbnail-first video card
  *
- * Strategy:
- * 1. On mount, load the video with preload="metadata" and seek to 0.01s
- *    then capture a canvas snapshot → use as poster (data URL).
- * 2. Show that snapshot as an <img> immediately — no blank cards ever.
- * 3. On hover/tap: mount the real <video> element and play it.
- * 4. On leave: unmount the video element entirely (frees memory).
- *
- * Props:
- *   src       — video URL
- *   poster    — optional external poster URL (used if provided and loads OK)
- *   eager     — load thumbnail immediately vs lazily
- *   className — wrapper className
- *   children  — overlay elements
- *   onClick   — optional click handler
+ * - Always shows a real thumbnail (captured from video frame 0.01s)
+ * - Thumbnail NEVER disappears during video loading
+ * - Video fades IN over the thumbnail only after canplay fires
+ * - On leave: video fades out, thumbnail stays visible
+ * - Desktop: hover to play / leave to pause
+ * - Mobile: tap to play / tap again to pause
  */
 export default function HoverVideoCard({
   src,
-  poster,
   eager = false,
   className = '',
   children,
   onClick,
 }) {
-  const [thumb, setThumb] = useState(poster || null);
-  const [videoActive, setVideoActive] = useState(false);
-  const [thumbFailed, setThumbFailed] = useState(false);
+  const [thumb, setThumb] = useState(null);
+  const [videoReady, setVideoReady] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(false);
   const capturedRef = useRef(false);
-  const isMobile = useRef(
-    typeof window !== 'undefined' && window.matchMedia('(hover: none)').matches
-  );
+  const videoRef = useRef(null);
+  const containerRef = useRef(null);
 
-  // Generate thumbnail from video's first frame via canvas
+  const isMobile =
+    typeof window !== 'undefined' && window.matchMedia('(hover: none)').matches;
+
+  // ── Thumbnail generation via hidden video + canvas ──────────────────────────
   const generateThumb = useCallback(() => {
     if (capturedRef.current) return;
     capturedRef.current = true;
 
-    const video = document.createElement('video');
-    video.crossOrigin = 'anonymous';
-    video.muted = true;
-    video.playsInline = true;
-    video.preload = 'metadata';
-    video.src = src;
+    const v = document.createElement('video');
+    v.crossOrigin = 'anonymous';
+    v.muted = true;
+    v.playsInline = true;
+    v.preload = 'metadata';
+    v.src = src;
 
-    const capture = () => {
+    v.addEventListener('loadedmetadata', () => { v.currentTime = 0.01; }, { once: true });
+
+    v.addEventListener('seeked', () => {
       try {
-        const canvas = document.createElement('canvas');
-        canvas.width = video.videoWidth || 360;
-        canvas.height = video.videoHeight || 640;
-        const ctx = canvas.getContext('2d');
-        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-        const dataUrl = canvas.toDataURL('image/jpeg', 0.7);
-        // Only use it if it's not a blank frame (all-black)
-        setThumb(dataUrl);
+        const c = document.createElement('canvas');
+        c.width = v.videoWidth || 360;
+        c.height = v.videoHeight || 640;
+        c.getContext('2d').drawImage(v, 0, 0, c.width, c.height);
+        setThumb(c.toDataURL('image/jpeg', 0.72));
       } catch {
-        // CORS or other issue — fall back to paused video
-        setThumbFailed(true);
+        // CORS block — use paused video fallback (handled in JSX)
+        setThumb('__video__');
       }
-      video.src = '';
-    };
+      v.src = '';
+    }, { once: true });
 
-    video.addEventListener('seeked', capture, { once: true });
-    video.addEventListener('loadedmetadata', () => {
-      video.currentTime = 0.01;
-    }, { once: true });
-    video.addEventListener('error', () => {
-      setThumbFailed(true);
-    }, { once: true });
+    v.addEventListener('error', () => setThumb('__video__'), { once: true });
   }, [src]);
 
   useEffect(() => {
     if (eager) {
       generateThumb();
-    } else {
-      // For lazy cards, use IntersectionObserver to trigger when near viewport
-      const el = document.createElement('div');
-      const observer = new IntersectionObserver(
-        (entries) => {
-          if (entries[0].isIntersecting) {
-            generateThumb();
-            observer.disconnect();
-          }
-        },
-        { rootMargin: '200px' }
-      );
-      // We'll trigger via the container ref below
-      return () => observer.disconnect();
+      return;
     }
+    const el = containerRef.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) { generateThumb(); obs.disconnect(); } },
+      { rootMargin: '400px' }
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
   }, [eager, generateThumb]);
 
-  // Ref callback: attach IntersectionObserver for lazy cards
-  const containerRef = useCallback((el) => {
-    if (!el || eager) return;
-    if (capturedRef.current) return;
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting) {
-          generateThumb();
-          observer.disconnect();
-        }
-      },
-      { rootMargin: '300px' }
-    );
-    observer.observe(el);
-  }, [eager, generateThumb]);
+  // ── Play / pause ─────────────────────────────────────────────────────────────
+  const startPlay = useCallback(() => {
+    setIsPlaying(true);
+  }, []);
+
+  const stopPlay = useCallback(() => {
+    setIsPlaying(false);
+    setVideoReady(false);
+    const v = videoRef.current;
+    if (v) { v.pause(); v.currentTime = 0; }
+  }, []);
 
   const handleMouseEnter = useCallback(() => {
-    if (isMobile.current) return;
-    setVideoActive(true);
-  }, []);
+    if (!isMobile) startPlay();
+  }, [isMobile, startPlay]);
 
   const handleMouseLeave = useCallback(() => {
-    if (isMobile.current) return;
-    setVideoActive(false);
-  }, []);
+    if (!isMobile) stopPlay();
+  }, [isMobile, stopPlay]);
 
   const handleClick = useCallback((e) => {
-    if (isMobile.current) {
-      setVideoActive(v => !v);
+    if (isMobile) {
+      isPlaying ? stopPlay() : startPlay();
     }
     if (onClick) onClick(e);
-  }, [onClick]);
+  }, [isMobile, isPlaying, startPlay, stopPlay, onClick]);
 
+  // Auto-play when video mounts
   const handleVideoRef = useCallback((el) => {
+    videoRef.current = el;
     if (!el) return;
     el.play().catch(() => {});
+  }, []);
+
+  const handleCanPlay = useCallback(() => {
+    setVideoReady(true);
   }, []);
 
   return (
@@ -138,51 +119,47 @@ export default function HoverVideoCard({
       onMouseLeave={handleMouseLeave}
       onClick={handleClick}
     >
-      {/* Thumbnail layer — always visible when video isn't active */}
-      {!videoActive && (
-        <>
-          {thumb && !thumbFailed ? (
-            <img
-              src={thumb}
-              alt=""
-              className="absolute inset-0 w-full h-full object-cover"
-              onError={() => setThumbFailed(true)}
-            />
-          ) : thumbFailed ? (
-            // Fallback: paused video at 0.01s — still shows first frame, no broken icon
-            <video
-              src={src}
-              muted
-              playsInline
-              preload="metadata"
-              className="absolute inset-0 w-full h-full object-cover"
-              ref={(el) => { if (el) el.currentTime = 0.01; }}
-            />
-          ) : (
-            // Still generating — show a dark shimmer placeholder
-            <div
-              className="absolute inset-0 w-full h-full"
-              style={{
-                background: 'linear-gradient(135deg, #1a1a1a 0%, #111 50%, #1a1a1a 100%)',
-                backgroundSize: '200% 200%',
-                animation: 'shimmer-bg 1.5s ease infinite',
-              }}
-            />
-          )}
-        </>
+      {/* ── Thumbnail layer — ALWAYS present ────────────────────────────────── */}
+      {thumb === '__video__' ? (
+        // CORS fallback: paused video acts as thumbnail
+        <video
+          src={src}
+          muted playsInline preload="metadata"
+          className="absolute inset-0 w-full h-full object-cover"
+          ref={(el) => { if (el) { el.currentTime = 0.01; } }}
+        />
+      ) : thumb ? (
+        <img
+          src={thumb}
+          alt=""
+          className="absolute inset-0 w-full h-full object-cover"
+          style={{ transition: 'opacity 0.25s', opacity: videoReady ? 0 : 1 }}
+        />
+      ) : (
+        // Still capturing — dark shimmer, never a broken icon
+        <div
+          className="absolute inset-0 w-full h-full"
+          style={{
+            background: 'linear-gradient(135deg, #1c1c1c 0%, #111 50%, #1c1c1c 100%)',
+            backgroundSize: '200% 200%',
+            animation: 'shimmer-bg 1.8s ease infinite',
+          }}
+        />
       )}
 
-      {/* Video — only mounted during hover/tap */}
-      {videoActive && (
+      {/* ── Playback video — only mounted when playing ───────────────────────── */}
+      {isPlaying && (
         <video
           ref={handleVideoRef}
           src={src}
           preload="auto"
-          muted
-          loop
-          playsInline
-          autoPlay
+          muted loop playsInline autoPlay
+          onCanPlay={handleCanPlay}
           className="absolute inset-0 w-full h-full object-cover"
+          style={{
+            transition: 'opacity 0.25s',
+            opacity: videoReady ? 1 : 0,
+          }}
         />
       )}
 

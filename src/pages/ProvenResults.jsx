@@ -66,10 +66,10 @@ export default function ProvenResults() {
         </div>
         <div className="inline-flex items-center gap-2 glass px-4 py-2 rounded-full mb-4">
           <Trophy className="w-4 h-4 text-primary" />
-          <span className="text-sm font-body text-muted-foreground">Student Testimonials</span>
+          <span className="text-sm font-body text-muted-foreground">Student Results</span>
         </div>
         <h1 className="font-heading font-bold text-3xl sm:text-4xl md:text-5xl mb-4">
-          Student <span className="gradient-text">Testimonials</span>
+          Student <span className="gradient-text">Results</span>
         </h1>
         <p className="text-muted-foreground font-body text-lg max-w-xl mx-auto">
           Real BTCALI student progress — shown through actual training videos.
