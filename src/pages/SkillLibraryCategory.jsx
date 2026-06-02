@@ -302,6 +302,7 @@ function TutorialCard({ tutorial, onPlay }) {
 }
 
 const PREMIUM_CATEGORIES = ['planche', 'front-lever', 'handstand-pushups', 'muscle-up'];
+const PLANCHE_FREE_SUBS = ['Free Conditioning'];
 
 function PremiumGate({ cat }) {
   const [showCode, setShowCode] = useState(false);
@@ -384,8 +385,12 @@ export default function SkillLibraryCategory() {
 
   const cat = CATEGORY_DATA[categoryId];
 
-  // Show full gate for premium categories when user is not admin/member
-  if (cat && PREMIUM_CATEGORIES.includes(categoryId) && !isAdmin) {
+  // For planche: show premium gate for non-free subcategories only when not admin/member
+  // For other premium categories: gate the whole page
+  const isPlanche = categoryId === 'planche';
+  const showPlancheMemberGate = isPlanche && !isAdmin && activeSub && !PLANCHE_FREE_SUBS.includes(activeSub);
+
+  if (cat && PREMIUM_CATEGORIES.includes(categoryId) && !isAdmin && !isPlanche) {
     const allLocked = cat.tutorials.every(t => !t.free);
     if (allLocked) return <div className="min-h-screen py-12 px-4 sm:px-6 max-w-3xl mx-auto"><PremiumGate cat={cat} /></div>;
   }
@@ -451,25 +456,34 @@ export default function SkillLibraryCategory() {
         </div>
       )}
 
+      {/* Planche member gate — shown inline when a locked subcategory is selected */}
+      {showPlancheMemberGate && (
+        <div className="mb-8">
+          <PremiumGate cat={{ ...cat, title: `Planche — ${activeSub}` }} />
+        </div>
+      )}
+
       {/* Tutorials grid */}
-      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-        {filtered.map((tutorial, i) => (
-          <motion.div
-            key={tutorial.id}
-            initial={{ opacity: 0, y: 15 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: i * 0.04 }}
-          >
-            {tutorial.comingSoon ? (
-              <ComingSoonCard tutorial={tutorial} />
-            ) : tutorial.free || isAdmin ? (
-              <TutorialCard tutorial={tutorial} onPlay={() => setActiveVideo(tutorial)} />
-            ) : (
-              <LockedCard tutorial={tutorial} />
-            )}
-          </motion.div>
-        ))}
-      </div>
+      {!showPlancheMemberGate && (
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+          {filtered.map((tutorial, i) => (
+            <motion.div
+              key={tutorial.id}
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: i * 0.04 }}
+            >
+              {tutorial.comingSoon ? (
+                <ComingSoonCard tutorial={tutorial} />
+              ) : tutorial.free || isAdmin ? (
+                <TutorialCard tutorial={tutorial} onPlay={() => setActiveVideo(tutorial)} />
+              ) : (
+                <LockedCard tutorial={tutorial} />
+              )}
+            </motion.div>
+          ))}
+        </div>
+      )}
 
       {/* Video Modal */}
       {activeVideo && <VideoModal tutorial={activeVideo} onClose={() => setActiveVideo(null)} />}

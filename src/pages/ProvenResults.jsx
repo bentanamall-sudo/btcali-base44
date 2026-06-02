@@ -1,118 +1,59 @@
-import { useState, useRef, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useRef } from 'react';
+import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { Trophy, Users, ArrowRight, ExternalLink } from 'lucide-react';
+import { Trophy, Users, ArrowRight } from 'lucide-react';
 import GlowButton from '../components/GlowButton';
 import { PageHeaderLogo } from '../components/Logo';
 
-const testimonials = [
-  {
-    id: 'JIOPPWpEds8',
-    title: "Haejun's 5 Week Progress",
-    label: '5 Weeks',
-    labelColor: 'text-primary bg-primary/15',
-  },
-  {
-    id: 'D4llYbwGojs',
-    title: "Adrian's 1 Hour Progress",
-    label: '1 Hour Session',
-    labelColor: 'text-cyan-400 bg-cyan-400/15',
-  },
-  {
-    id: 'xCHxH-oVO0s',
-    title: "Haegun's 30 Min Pike Press Progress",
-    label: '30 Minutes',
-    labelColor: 'text-green-400 bg-green-400/15',
-  },
-  {
-    id: 'ljX0zJJn0Q4',
-    title: "Haegun's 5 Week Progress",
-    label: '5 Weeks',
-    labelColor: 'text-primary bg-primary/15',
-  },
-  {
-    id: 'lAz9QY81SkI',
-    title: "Cardea's Less Than 1 Month Progress",
-    label: '< 1 Month',
-    labelColor: 'text-amber-400 bg-amber-400/15',
-  },
-  {
-    id: 'j8PrFLzyAcc',
-    title: "Andreas' 1 Week L-Sit to Handstand",
-    label: '1 Week',
-    labelColor: 'text-purple-400 bg-purple-400/15',
-  },
-  {
-    id: 'ep1uFxV0o50',
-    title: "Andreas 1 Week L-Sit To Handstand",
-    label: '1 Week Progress',
-    labelColor: 'text-cyan-400 bg-cyan-400/15',
-  },
+export const RESULTS_VIDEOS = [
+  { src: 'https://media.base44.com/videos/public/69fd635623a9368c153045ad/30726ddef_C2235DA5-CFA6-4B66-A712-1CFD414AEE34.mp4', label: '5 Weeks', labelColor: 'text-primary bg-primary/15' },
+  { src: 'https://media.base44.com/videos/public/69fd635623a9368c153045ad/ab40f3e73_3DBD7B8B-0985-4366-803A-6BF5FE6E16DA.mp4', label: '1 Hour', labelColor: 'text-cyan-400 bg-cyan-400/15' },
+  { src: 'https://media.base44.com/videos/public/69fd635623a9368c153045ad/d03b8e901_87AA93C8-C62D-44CB-92B4-25DE7D6EB9EF.mp4', label: '30 Minutes', labelColor: 'text-green-400 bg-green-400/15' },
+  { src: 'https://media.base44.com/videos/public/69fd635623a9368c153045ad/33e465fb1_8FB2940B-72DC-4171-B5BD-3B262CA0230A.mp4', label: '5 Weeks', labelColor: 'text-primary bg-primary/15' },
+  { src: 'https://media.base44.com/videos/public/69fd635623a9368c153045ad/9bce54fa0_F8C3EC32-6F28-43F9-9274-5DCA2E4AD3AE.mp4', label: '< 1 Month', labelColor: 'text-amber-400 bg-amber-400/15' },
+  { src: 'https://media.base44.com/videos/public/69fd635623a9368c153045ad/b29797e50_C52B9D44-CCC6-4C11-B563-D29E72D5E742.mp4', label: '1 Week', labelColor: 'text-purple-400 bg-purple-400/15' },
+  { src: 'https://media.base44.com/videos/public/69fd635623a9368c153045ad/a7025db1d_C88E406D-F072-4021-9F9D-376E1AE850BA.mp4', label: '1 Week', labelColor: 'text-cyan-400 bg-cyan-400/15' },
+  { src: 'https://media.base44.com/videos/public/69fd635623a9368c153045ad/acb324d63_D9DC1424-7087-4C6F-BC4C-83A843896E19.mp4', label: 'Progress', labelColor: 'text-primary bg-primary/15' },
+  { src: 'https://media.base44.com/videos/public/69fd635623a9368c153045ad/7c2816870_BF734FD2-A5B6-4EA6-9DFC-3725ABB1BAAD.mp4', label: 'Session', labelColor: 'text-green-400 bg-green-400/15' },
+  { src: 'https://media.base44.com/videos/public/69fd635623a9368c153045ad/3a0d49733_D05272AD-F171-4C80-8119-90847BFEFB36.mp4', label: 'Progress', labelColor: 'text-amber-400 bg-amber-400/15' },
+  { src: 'https://media.base44.com/videos/public/69fd635623a9368c153045ad/bb51770b0_61F09AF3-D0FC-44CC-8EC6-6037B4540D78.mp4', label: 'Progress', labelColor: 'text-purple-400 bg-purple-400/15' },
+  { src: 'https://media.base44.com/videos/public/69fd635623a9368c153045ad/7da5945e5_2882F251-A505-4D09-9090-44FCD8DAEDB4.mp4', label: 'Progress', labelColor: 'text-cyan-400 bg-cyan-400/15' },
+  { src: 'https://media.base44.com/videos/public/69fd635623a9368c153045ad/3a47f6089_5DDF0CFF-6FD2-432E-B713-A609FBBD691A.mp4', label: 'Progress', labelColor: 'text-primary bg-primary/15' },
+  { src: 'https://media.base44.com/videos/public/69fd635623a9368c153045ad/8062fad09_5fed1466edd6499c94832fcfc468d25c.mov', label: 'Progress', labelColor: 'text-amber-400 bg-amber-400/15' },
 ];
 
 function VideoCard({ video, index }) {
-  const cardRef = useRef(null);
-  const [playing, setPlaying] = useState(false);
-
-  useEffect(() => {
-    const el = cardRef.current;
-    if (!el) return;
-    // Auto-set playing immediately so iframes load on render
-    setPlaying(true);
-  }, []);
-
-  const handleClick = () => {
-    window.open(`https://youtube.com/shorts/${video.id}`, '_blank', 'noopener');
-  };
+  const videoRef = useRef(null);
 
   return (
     <motion.div
-      ref={cardRef}
       initial={{ opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
-      transition={{ delay: index * 0.08 }}
+      transition={{ delay: index * 0.06 }}
       whileHover={{ scale: 1.02 }}
-      className="group rounded-2xl overflow-hidden cursor-pointer relative"
+      className="rounded-2xl overflow-hidden relative"
       style={{
         aspectRatio: '9/16',
         border: '1px solid hsl(var(--glow-primary)/0.25)',
         boxShadow: '0 4px 24px hsl(var(--glow-primary)/0.08)',
       }}
-      onClick={handleClick}
     >
-      {playing ? (
-        <iframe
-          src={`https://www.youtube.com/embed/${video.id}?autoplay=1&mute=1&loop=1&playlist=${video.id}&controls=0&rel=0&modestbranding=1`}
-          title={video.title}
-          allow="autoplay; encrypted-media"
-          className="w-full h-full border-0 pointer-events-none"
-        />
-      ) : (
-        <img
-          src={`https://img.youtube.com/vi/${video.id}/mqdefault.jpg`}
-          alt={video.title}
-          className="w-full h-full object-cover brightness-70"
-        />
-      )}
-
-      {/* Overlay */}
-      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent pointer-events-none" />
-
-      {/* Labels */}
+      <video
+        ref={videoRef}
+        src={video.src}
+        autoPlay
+        muted
+        loop
+        playsInline
+        preload="metadata"
+        className="w-full h-full object-cover"
+      />
+      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
       <div className="absolute top-3 left-3 pointer-events-none">
         <span className={`text-xs font-heading font-bold px-3 py-1 rounded-full backdrop-blur-sm ${video.labelColor}`}>
           {video.label}
         </span>
-      </div>
-
-      {/* Open hint */}
-      <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
-        <ExternalLink className="w-4 h-4 text-white/80" />
-      </div>
-
-      <div className="absolute bottom-0 left-0 right-0 p-4 pointer-events-none">
-        <p className="font-heading font-semibold text-white text-sm leading-snug">{video.title}</p>
       </div>
     </motion.div>
   );
@@ -139,9 +80,9 @@ export default function ProvenResults() {
       </motion.div>
 
       {/* Video grid */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 sm:gap-5 mb-16">
-        {testimonials.map((video, i) => (
-          <VideoCard key={video.id} video={video} index={i} />
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-5 mb-16">
+        {RESULTS_VIDEOS.map((video, i) => (
+          <VideoCard key={i} video={video} index={i} />
         ))}
       </div>
 
@@ -169,8 +110,6 @@ export default function ProvenResults() {
           </Link>
         </div>
       </motion.div>
-
-
     </div>
   );
 }

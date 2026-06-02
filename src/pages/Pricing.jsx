@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { Check, Crown, Zap, ArrowRight, Shield, Lock, Star, Mail } from 'lucide-react';
@@ -22,8 +23,13 @@ const faqs = [
 ];
 
 export default function Pricing() {
+  const [instagram, setInstagram] = useState('');
+
   const handleEmail = () => {
-    window.location.href = 'mailto:btcalisw@gmail.com?subject=BTCALI%201-1%20Coaching%20Application&body=I%20want%20to%20apply%20for%20BTCALI%201-1%20coaching.%0D%0A%0D%0AName%3A%0D%0AGoals%3A%0D%0A';
+    const ig = instagram.trim() || 'N/A';
+    const subject = encodeURIComponent('Apply for $40 Coaching a Week — BTCALI');
+    const body = encodeURIComponent(`Hi BTCALI,\n\nI want to apply for $40 coaching a week.\n\nInstagram: ${ig}\n\nName:\nGoals:\n`);
+    window.location.href = `mailto:btcalisw@gmail.com?subject=${subject}&body=${body}`;
   };
 
   return (
@@ -78,14 +84,22 @@ export default function Pricing() {
             <p className="text-xs text-muted-foreground font-body mb-6 leading-relaxed">
               Lock in this rate now — kept for the full year even after prices increase.
             </p>
-            <div className="mt-auto">
+            <div className="mt-auto space-y-3">
+              <input
+                type="text"
+                value={instagram}
+                onChange={e => setInstagram(e.target.value)}
+                placeholder="Your Instagram @handle"
+                className="w-full glass rounded-xl px-4 py-2.5 text-foreground font-body text-sm border border-border/40 focus:border-primary/60 focus:outline-none bg-transparent"
+              />
               <motion.button
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.97 }}
                 onClick={handleEmail}
-                className="w-full py-4 rounded-xl gradient-bg-strong text-primary-foreground font-heading font-bold text-base flex items-center justify-center gap-2 glow-primary"
+                disabled={!instagram.trim()}
+                className="w-full py-4 rounded-xl gradient-bg-strong text-primary-foreground font-heading font-bold text-base flex items-center justify-center gap-2 glow-primary disabled:opacity-50"
               >
-                <Mail className="w-5 h-5" /> Apply Now
+                <Mail className="w-5 h-5" /> Apply for $40/week
               </motion.button>
             </div>
           </div>
@@ -125,14 +139,22 @@ export default function Pricing() {
             <p className="text-xs text-muted-foreground font-body mb-6 leading-relaxed">
               Lock in this rate now — kept for the full year even after prices increase.
             </p>
-            <div className="mt-auto">
+            <div className="mt-auto space-y-3">
+              <input
+                type="text"
+                value={instagram}
+                onChange={e => setInstagram(e.target.value)}
+                placeholder="Your Instagram @handle"
+                className="w-full glass rounded-xl px-4 py-2.5 text-foreground font-body text-sm border border-border/40 focus:border-primary/60 focus:outline-none bg-transparent"
+              />
               <motion.button
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.97 }}
                 onClick={handleEmail}
-                className="w-full py-4 rounded-xl gradient-bg-strong text-primary-foreground font-heading font-bold text-base flex items-center justify-center gap-2 glow-primary"
+                disabled={!instagram.trim()}
+                className="w-full py-4 rounded-xl gradient-bg-strong text-primary-foreground font-heading font-bold text-base flex items-center justify-center gap-2 glow-primary disabled:opacity-50"
               >
-                <Mail className="w-5 h-5" /> Apply Now
+                <Mail className="w-5 h-5" /> Apply for $40/week
               </motion.button>
             </div>
           </div>

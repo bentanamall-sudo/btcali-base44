@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { Zap, CheckCircle, Crown, Mail, Target, ArrowRight, Lock, Star } from 'lucide-react';
@@ -78,8 +79,13 @@ const WHAT_I_ANALYZE = [
 ];
 
 export default function CoachingApply() {
+  const [instagram, setInstagram] = useState('');
+
   const handleEmail = () => {
-    window.location.href = 'mailto:btcalisw@gmail.com?subject=BTCALI%201-1%20Coaching%20Application&body=I%20completed%20the%20BTCALI%20Athlete%20Diagnostic%20and%20want%20to%20apply%20for%201-1%20coaching.%0D%0A';
+    const ig = instagram.trim() || 'N/A';
+    const subject = encodeURIComponent('Apply for $40 Coaching a Week — BTCALI');
+    const body = encodeURIComponent(`Hi BTCALI,\n\nI want to apply for $40 coaching a week.\n\nInstagram: ${ig}\n\nI have completed (or plan to complete) the BTCALI Athlete Scan.\n\nName:\nGoals:\n`);
+    window.location.href = `mailto:btcalisw@gmail.com?subject=${subject}&body=${body}`;
   };
 
   return (
@@ -260,7 +266,7 @@ export default function CoachingApply() {
           </div>
 
           <h2 className="font-heading font-bold text-2xl sm:text-3xl text-foreground mb-3">
-            Ready to apply for BTCALI 1-1 Coaching?
+            Apply for $40 Coaching a Week
           </h2>
 
           <p className="font-heading font-extrabold text-xl sm:text-2xl gradient-text mb-3 tracking-wide uppercase">
@@ -288,15 +294,29 @@ export default function CoachingApply() {
             </p>
           </div>
 
+          <div className="mb-5">
+            <label className="block font-heading font-semibold text-foreground text-sm mb-2 text-left">
+              Your Instagram Username <span className="text-primary">*</span>
+            </label>
+            <input
+              type="text"
+              value={instagram}
+              onChange={e => setInstagram(e.target.value)}
+              placeholder="@yourhandle"
+              className="w-full glass rounded-xl px-4 py-3 text-foreground font-body text-sm border border-border/40 focus:border-primary/60 focus:outline-none focus:ring-1 focus:ring-primary/40 bg-transparent"
+            />
+          </div>
+
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <motion.button
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.97 }}
               onClick={handleEmail}
-              className="flex items-center justify-center gap-2 px-6 py-4 rounded-xl gradient-bg-strong text-primary-foreground font-heading font-bold text-base glow-primary"
+              disabled={!instagram.trim()}
+              className="flex items-center justify-center gap-2 px-6 py-4 rounded-xl gradient-bg-strong text-primary-foreground font-heading font-bold text-base glow-primary disabled:opacity-50"
             >
               <Mail className="w-5 h-5" />
-              Email BTCALI
+              Apply for $40 Coaching a Week
             </motion.button>
             <Link to="/scan">
               <motion.button
