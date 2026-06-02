@@ -2,36 +2,26 @@ import { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { RESULTS_VIDEOS } from '../../pages/ProvenResults';
-import LazyVideo from '../LazyVideo';
+import HoverVideoCard from '../HoverVideoCard';
 
-// Use only first 5 videos for the strip — minimise simultaneous loads
-const STRIP_VIDEOS = RESULTS_VIDEOS.slice(0, 5);
+// 6 videos max for the homepage strip
+const STRIP_VIDEOS = RESULTS_VIDEOS.slice(0, 6);
 
-function ResultCard({ item, eager }) {
+function ResultCard({ item }) {
   const navigate = useNavigate();
 
   return (
     <div
-      onClick={() => navigate('/results')}
       className="flex-shrink-0 w-32 h-48 sm:w-36 sm:h-52 rounded-2xl overflow-hidden relative cursor-pointer bg-muted/20"
       style={{ border: '1px solid hsl(var(--glow-primary)/0.2)' }}
     >
-      <LazyVideo
+      <HoverVideoCard
         src={item.src}
-        eager={eager}
-        rootMargin="150px"
-        autoPlay
-        muted
-        loop
-        playsInline
-        className="absolute inset-0 w-full h-full object-cover pointer-events-none"
-      />
-      <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent pointer-events-none" />
-      <div className="absolute top-2 left-2 pointer-events-none">
-        <span className={`text-[10px] font-heading font-bold px-2 py-0.5 rounded-full backdrop-blur-sm ${item.labelColor}`}>
-          {item.label}
-        </span>
-      </div>
+        className="absolute inset-0 w-full h-full"
+        onClick={() => navigate('/results')}
+      >
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
+      </HoverVideoCard>
     </div>
   );
 }
@@ -59,20 +49,20 @@ export default function ScrollingResultsStrip() {
         <p className="text-xs font-heading font-bold text-muted-foreground/50 uppercase tracking-[0.25em]">
           Real Athletes · Real Results
         </p>
-        <p className="text-xs text-muted-foreground/40 font-body mt-1">Click any video to see all results</p>
+        <p className="text-xs text-muted-foreground/40 font-body mt-1">Hover or tap any video to preview</p>
       </div>
 
       {/* Row 1 */}
       <motion.div style={{ x: x1 }} className="flex gap-3 mb-3 px-8">
         {row1.map((item, i) => (
-          <ResultCard key={`r1-${i}`} item={item} eager={i < 2} />
+          <ResultCard key={`r1-${i}`} item={item} />
         ))}
       </motion.div>
 
       {/* Row 2 */}
       <motion.div style={{ x: x2 }} className="flex gap-3 px-8" initial={{ x: '-4%' }}>
         {row2.map((item, i) => (
-          <ResultCard key={`r2-${i}`} item={item} eager={false} />
+          <ResultCard key={`r2-${i}`} item={item} />
         ))}
       </motion.div>
 
