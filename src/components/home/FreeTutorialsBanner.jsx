@@ -41,7 +41,7 @@ export default function FreeTutorialsBanner() {
             </p>
           </div>
           <div className="flex flex-col sm:flex-row gap-3 flex-shrink-0">
-            <Link to="/tutorials">
+            <Link to="/skills">
               <GlowButton size="lg">
                 <BookOpen className="w-5 h-5" />
                 Free Tutorials

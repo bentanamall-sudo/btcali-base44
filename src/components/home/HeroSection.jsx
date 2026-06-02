@@ -32,15 +32,10 @@ export default function HeroSection() {
           transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
           className="text-center"
         >
-          {/* Large premium circular logo badge */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.7 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.1, duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-            className="flex justify-center mb-8"
-          >
+          {/* Large premium circular logo badge — no delay, instant render */}
+          <div className="flex justify-center mb-8">
             <HeroLogo />
-          </motion.div>
+          </div>
 
           {/* Badge pill */}
           <motion.div

@@ -21,6 +21,18 @@ export function PageLogo() {
   );
 }
 
+// Medium logo for non-home page headers — top-left aligned, Nike-style
+export function PageHeaderLogo() {
+  return (
+    <img
+      src={LOGO_URL}
+      alt="BTCALI"
+      fetchpriority="high"
+      style={{ ...logoStyle, width: '100px', height: '100px' }}
+    />
+  );
+}
+
 export function HeroLogo() {
   return (
     <div style={{ position: 'relative', width: '420px', height: '420px', margin: '0 auto' }}>

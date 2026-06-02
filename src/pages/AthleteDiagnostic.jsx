@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronRight, ChevronLeft, Zap, CheckCircle, Trophy } from 'lucide-react';
-import { PageLogo } from '@/components/Logo';
+import { PageHeaderLogo } from '@/components/Logo';
 import { base44 } from '@/api/base44Client';
 import { generateReport, buildEmailBody } from '@/lib/reportGenerator';
 import DiagnosticReport from '../components/diagnostic/DiagnosticReport';
@@ -496,8 +496,8 @@ Weaknesses: ${(report?.weaknesses || []).join(', ')}`
     <div className="min-h-screen py-12 px-4 sm:px-6 max-w-2xl mx-auto">
       {/* Header */}
       <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
-        <div className="flex justify-center mb-5">
-          <PageLogo />
+        <div className="flex justify-start mb-5">
+          <PageHeaderLogo />
         </div>
         <div className="inline-flex items-center gap-2 glass px-4 py-2 rounded-full mb-3">
           <Zap className="w-4 h-4 text-primary" />

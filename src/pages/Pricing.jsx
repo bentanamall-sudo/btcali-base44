@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { Check, Crown, Zap, ArrowRight, Shield, Lock, Star, Mail } from 'lucide-react';
-import { PageLogo } from '../components/Logo';
+import { PageHeaderLogo } from '../components/Logo';
 
 const COACHING_FEATURES = [
   'Personalized training routine built for your level & goals',
@@ -31,8 +31,8 @@ export default function Pricing() {
 
       {/* Header */}
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-16">
-        <div className="flex justify-center mb-6">
-          <PageLogo />
+        <div className="flex justify-start mb-6">
+          <PageHeaderLogo />
         </div>
         <div className="inline-flex items-center gap-2 glass px-4 py-2 rounded-full mb-4">
           <Shield className="w-4 h-4 text-primary" />
