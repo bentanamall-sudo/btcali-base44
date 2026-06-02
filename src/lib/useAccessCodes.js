@@ -5,14 +5,14 @@ const STORAGE_KEY = 'btcali-access';
 
 function loadAccess() {
   try {
-    return JSON.parse(sessionStorage.getItem(STORAGE_KEY) || '{}');
+    return JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
   } catch {
     return {};
   }
 }
 
 function saveAccess(data) {
-  sessionStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
 }
 
 export function useAccessCodes() {

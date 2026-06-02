@@ -1,7 +1,7 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { Trophy, Play, Users, ArrowRight, X, ExternalLink } from 'lucide-react';
+import { Trophy, Users, ArrowRight, ExternalLink } from 'lucide-react';
 import GlowButton from '../components/GlowButton';
 import { PageHeaderLogo } from '../components/Logo';
 
@@ -50,117 +50,79 @@ const testimonials = [
   },
 ];
 
-function VideoCard({ video, index, onPlay }) {
-  const thumbUrl = `https://img.youtube.com/vi/${video.id}/maxresdefault.jpg`;
+function VideoCard({ video, index }) {
+  const cardRef = useRef(null);
+  const [playing, setPlaying] = useState(false);
+
+  useEffect(() => {
+    const el = cardRef.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(
+      ([entry]) => { if (entry.intersectionRatio >= 0.5) setPlaying(true); },
+      { threshold: 0.5 }
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, []);
+
+  const handleClick = () => {
+    window.open(`https://youtube.com/shorts/${video.id}`, '_blank', 'noopener');
+  };
 
   return (
     <motion.div
+      ref={cardRef}
       initial={{ opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ delay: index * 0.08 }}
-      className="group rounded-2xl overflow-hidden glass glow-border hover:ring-1 hover:ring-primary/40 transition-all duration-300 cursor-pointer"
-      style={{ aspectRatio: '9/16' }}
-      onClick={() => onPlay(video)}
+      whileHover={{ scale: 1.02 }}
+      className="group rounded-2xl overflow-hidden cursor-pointer relative"
+      style={{
+        aspectRatio: '9/16',
+        border: '1px solid hsl(var(--glow-primary)/0.25)',
+        boxShadow: '0 4px 24px hsl(var(--glow-primary)/0.08)',
+      }}
+      onClick={handleClick}
     >
-      <div className="relative w-full h-full">
-        <img
-          src={thumbUrl}
-          alt={video.title}
-          className="w-full h-full object-cover brightness-75 group-hover:brightness-90 transition-all duration-300"
+      {playing ? (
+        <iframe
+          src={`https://www.youtube.com/embed/${video.id}?autoplay=1&mute=1&loop=1&playlist=${video.id}&controls=0&rel=0&modestbranding=1`}
+          title={video.title}
+          allow="autoplay; encrypted-media"
+          className="w-full h-full border-0 pointer-events-none"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+      ) : (
+        <img
+          src={`https://img.youtube.com/vi/${video.id}/mqdefault.jpg`}
+          alt={video.title}
+          className="w-full h-full object-cover brightness-70"
+        />
+      )}
 
-        {/* Play button */}
-        <div className="absolute inset-0 flex items-center justify-center">
-          <motion.div
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.95 }}
-            className="w-16 h-16 rounded-full gradient-bg-strong glow-primary flex items-center justify-center"
-          >
-            <Play className="w-7 h-7 text-primary-foreground fill-primary-foreground ml-1" />
-          </motion.div>
-        </div>
+      {/* Overlay */}
+      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent pointer-events-none" />
 
-        {/* Labels */}
-        <div className="absolute top-3 left-3">
-          <span className={`text-xs font-heading font-bold px-3 py-1 rounded-full backdrop-blur-sm ${video.labelColor}`}>
-            {video.label}
-          </span>
-        </div>
+      {/* Labels */}
+      <div className="absolute top-3 left-3 pointer-events-none">
+        <span className={`text-xs font-heading font-bold px-3 py-1 rounded-full backdrop-blur-sm ${video.labelColor}`}>
+          {video.label}
+        </span>
+      </div>
 
-        {/* Title */}
-        <div className="absolute bottom-0 left-0 right-0 p-4">
-          <p className="font-heading font-semibold text-white text-sm leading-snug">{video.title}</p>
-        </div>
+      {/* Open hint */}
+      <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+        <ExternalLink className="w-4 h-4 text-white/80" />
+      </div>
+
+      <div className="absolute bottom-0 left-0 right-0 p-4 pointer-events-none">
+        <p className="font-heading font-semibold text-white text-sm leading-snug">{video.title}</p>
       </div>
     </motion.div>
   );
 }
 
-function VideoModal({ video, onClose }) {
-  const embedSrc = `https://www.youtube.com/embed/${video.id}?autoplay=1&rel=0`;
-
-  return (
-    <AnimatePresence>
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        className="fixed inset-0 z-[100] flex items-center justify-center p-4"
-        style={{ background: 'rgba(0,0,0,0.85)', backdropFilter: 'blur(8px)' }}
-        onClick={onClose}
-      >
-        <motion.div
-          initial={{ scale: 0.9, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          exit={{ scale: 0.9, opacity: 0 }}
-          transition={{ duration: 0.25 }}
-          className="w-full max-w-sm glass rounded-2xl overflow-hidden border border-primary/30"
-          onClick={e => e.stopPropagation()}
-        >
-          {/* Header bar */}
-          <div className="flex items-center justify-between px-5 py-3 border-b border-border/30">
-            <div className="flex-1 min-w-0 mr-3">
-              <p className="font-heading font-bold text-sm text-foreground truncate">{video.title}</p>
-              <span className={`text-xs font-heading font-bold px-2 py-0.5 rounded-full mt-1 inline-block ${video.labelColor}`}>
-                {video.label}
-              </span>
-            </div>
-            <div className="flex items-center gap-2 flex-shrink-0">
-              <a
-                href={`https://youtube.com/shorts/${video.id}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-xs font-body text-muted-foreground hover:text-foreground flex items-center gap-1 transition-colors"
-              >
-                <ExternalLink className="w-3.5 h-3.5" /> YouTube
-              </a>
-              <button onClick={onClose} className="p-1 rounded-lg hover:bg-muted/40 transition-colors">
-                <X className="w-4 h-4 text-muted-foreground" />
-              </button>
-            </div>
-          </div>
-
-          {/* Video — 9:16 portrait */}
-          <div className="relative w-full" style={{ paddingBottom: '177.78%' }}>
-            <iframe
-              src={embedSrc}
-              title={video.title}
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-              className="absolute inset-0 w-full h-full border-0"
-            />
-          </div>
-        </motion.div>
-      </motion.div>
-    </AnimatePresence>
-  );
-}
-
 export default function ProvenResults() {
-  const [activeVideo, setActiveVideo] = useState(null);
-
   return (
     <div className="min-h-screen py-12 px-4 sm:px-6 max-w-7xl mx-auto">
       {/* Header */}
@@ -183,7 +145,7 @@ export default function ProvenResults() {
       {/* Video grid */}
       <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 sm:gap-5 mb-16">
         {testimonials.map((video, i) => (
-          <VideoCard key={video.id} video={video} index={i} onPlay={setActiveVideo} />
+          <VideoCard key={video.id} video={video} index={i} />
         ))}
       </div>
 
@@ -212,10 +174,7 @@ export default function ProvenResults() {
         </div>
       </motion.div>
 
-      {/* Premium video modal */}
-      {activeVideo && (
-        <VideoModal video={activeVideo} onClose={() => setActiveVideo(null)} />
-      )}
+
     </div>
   );
 }

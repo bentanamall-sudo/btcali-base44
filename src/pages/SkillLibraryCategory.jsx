@@ -301,6 +301,80 @@ function TutorialCard({ tutorial, onPlay }) {
   );
 }
 
+const PREMIUM_CATEGORIES = ['planche', 'front-lever', 'handstand-pushups', 'muscle-up'];
+
+function PremiumGate({ cat }) {
+  const [showCode, setShowCode] = useState(false);
+  const [code, setCode] = useState('');
+  const [error, setError] = useState(false);
+  const { unlockCode } = useAccessCodes();
+
+  const handleUnlock = () => {
+    const result = unlockCode(code);
+    if (!result) { setError(true); setTimeout(() => setError(false), 2000); }
+  };
+
+  return (
+    <div className="min-h-[70vh] flex items-center justify-center px-4">
+      <motion.div
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        className="glass-strong rounded-2xl p-8 sm:p-12 border border-primary/30 max-w-md w-full text-center glow-border"
+      >
+        <div className="w-14 h-14 rounded-2xl gradient-bg-strong glow-primary flex items-center justify-center mx-auto mb-5">
+          <Crown className="w-6 h-6 text-primary-foreground" />
+        </div>
+        <h2 className="font-heading font-bold text-2xl text-foreground mb-1">{cat.title}</h2>
+        <p className="text-xs font-heading font-bold text-primary uppercase tracking-widest mb-5">Exclusive to BTCALI Members</p>
+        <p className="text-sm font-body text-muted-foreground mb-7 leading-relaxed">
+          This skill library is exclusively available to BTCALI coaching members. Apply for coaching or enter your member access code below.
+        </p>
+
+        <Link to="/pricing">
+          <motion.button
+            whileHover={{ scale: 1.03 }}
+            whileTap={{ scale: 0.97 }}
+            className="w-full py-3.5 rounded-xl gradient-bg-strong text-primary-foreground font-heading font-bold text-sm glow-primary mb-3 flex items-center justify-center gap-2"
+          >
+            <Crown className="w-4 h-4" /> Apply Now
+          </motion.button>
+        </Link>
+
+        {!showCode ? (
+          <button
+            onClick={() => setShowCode(true)}
+            className="w-full py-2.5 rounded-xl glass border border-border/40 text-muted-foreground font-heading font-semibold text-xs hover:border-primary/40 hover:text-foreground transition-all"
+          >
+            I am a BTCALI member — Enter Access Code
+          </button>
+        ) : (
+          <div>
+            <p className="text-xs text-muted-foreground font-body mb-2">If you are a BTCALI member, enter your unique access code below.</p>
+            <div className={`flex gap-2 rounded-xl overflow-hidden mb-2 ${error ? 'ring-2 ring-destructive/60' : 'ring-1 ring-border/40'}`}>
+              <input
+                type="text"
+                value={code}
+                onChange={e => { setCode(e.target.value.toUpperCase()); setError(false); }}
+                onKeyDown={e => e.key === 'Enter' && handleUnlock()}
+                placeholder="Enter access code..."
+                className="flex-1 bg-transparent text-foreground font-body text-sm px-4 py-3 outline-none placeholder:text-muted-foreground/50"
+              />
+              <button onClick={handleUnlock} className="gradient-bg-strong px-4 text-primary-foreground font-heading font-bold text-xs">
+                Unlock
+              </button>
+            </div>
+            {error && <p className="text-xs text-destructive font-body">Invalid code. Try again.</p>}
+          </div>
+        )}
+
+        <Link to="/skills" className="inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground transition-colors mt-4 font-body">
+          <ChevronLeft className="w-3 h-3" /> Back to Skill Library
+        </Link>
+      </motion.div>
+    </div>
+  );
+}
+
 export default function SkillLibraryCategory() {
   const { categoryId } = useParams();
   const [search, setSearch] = useState('');
@@ -309,6 +383,12 @@ export default function SkillLibraryCategory() {
   const { isAdmin } = useAccessCodes();
 
   const cat = CATEGORY_DATA[categoryId];
+
+  // Show full gate for premium categories when user is not admin/member
+  if (cat && PREMIUM_CATEGORIES.includes(categoryId) && !isAdmin) {
+    const allLocked = cat.tutorials.every(t => !t.free);
+    if (allLocked) return <div className="min-h-screen py-12 px-4 sm:px-6 max-w-3xl mx-auto"><PremiumGate cat={cat} /></div>;
+  }
 
   if (!cat) {
     return (
