@@ -1,9 +1,9 @@
-import { useRef } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { Trophy, Users, ArrowRight } from 'lucide-react';
 import GlowButton from '../components/GlowButton';
 import { PageHeaderLogo } from '../components/Logo';
+import LazyVideo from '../components/LazyVideo';
 
 export const RESULTS_VIDEOS = [
   { src: 'https://media.base44.com/videos/public/69fd635623a9368c153045ad/30726ddef_C2235DA5-CFA6-4B66-A712-1CFD414AEE34.mp4', label: '5 Weeks', labelColor: 'text-primary bg-primary/15' },
@@ -22,32 +22,35 @@ export const RESULTS_VIDEOS = [
   { src: 'https://media.base44.com/videos/public/69fd635623a9368c153045ad/8062fad09_5fed1466edd6499c94832fcfc468d25c.mov', label: 'Progress', labelColor: 'text-amber-400 bg-amber-400/15' },
 ];
 
+// First 4 are above-the-fold on the results grid — load eagerly
+const EAGER_COUNT = 4;
+
 function VideoCard({ video, index }) {
-  const videoRef = useRef(null);
+  const eager = index < EAGER_COUNT;
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 30 }}
+      initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ delay: index * 0.06 }}
+      viewport={{ once: true, margin: '-40px' }}
+      transition={{ delay: Math.min(index * 0.04, 0.2) }}
       whileHover={{ scale: 1.02 }}
-      className="rounded-2xl overflow-hidden relative"
+      className="rounded-2xl overflow-hidden relative bg-muted/20"
       style={{
         aspectRatio: '9/16',
         border: '1px solid hsl(var(--glow-primary)/0.25)',
         boxShadow: '0 4px 24px hsl(var(--glow-primary)/0.08)',
       }}
     >
-      <video
-        ref={videoRef}
+      <LazyVideo
         src={video.src}
+        eager={eager}
+        rootMargin="300px"
         autoPlay
         muted
         loop
         playsInline
-        preload="metadata"
-        className="w-full h-full object-cover"
+        className="absolute inset-0 w-full h-full object-cover"
       />
       <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
       <div className="absolute top-3 left-3 pointer-events-none">

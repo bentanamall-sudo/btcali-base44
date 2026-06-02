@@ -2,24 +2,29 @@ import { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { RESULTS_VIDEOS } from '../../pages/ProvenResults';
+import LazyVideo from '../LazyVideo';
 
-function ResultCard({ item }) {
+// Use only first 7 videos for the strip — fewer simultaneous loads
+const STRIP_VIDEOS = RESULTS_VIDEOS.slice(0, 7);
+
+function ResultCard({ item, eager }) {
   const navigate = useNavigate();
 
   return (
     <div
       onClick={() => navigate('/results')}
-      className="flex-shrink-0 w-36 h-52 rounded-2xl overflow-hidden relative cursor-pointer"
+      className="flex-shrink-0 w-32 h-48 sm:w-36 sm:h-52 rounded-2xl overflow-hidden relative cursor-pointer bg-muted/20"
       style={{ border: '1px solid hsl(var(--glow-primary)/0.2)' }}
     >
-      <video
+      <LazyVideo
         src={item.src}
+        eager={eager}
+        rootMargin="400px"
         autoPlay
         muted
         loop
         playsInline
-        preload="metadata"
-        className="w-full h-full object-cover pointer-events-none"
+        className="absolute inset-0 w-full h-full object-cover pointer-events-none"
       />
       <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent pointer-events-none" />
       <div className="absolute top-2 left-2 pointer-events-none">
@@ -38,8 +43,8 @@ export default function ScrollingResultsStrip() {
   const x1 = useTransform(scrollYProgress, [0, 1], ['0%', '-12%']);
   const x2 = useTransform(scrollYProgress, [0, 1], ['-6%', '6%']);
 
-  const doubled = [...RESULTS_VIDEOS, ...RESULTS_VIDEOS];
-  const reversed = [...RESULTS_VIDEOS].reverse().concat([...RESULTS_VIDEOS].reverse());
+  const row1 = [...STRIP_VIDEOS, ...STRIP_VIDEOS];
+  const row2 = [...STRIP_VIDEOS].reverse().concat([...STRIP_VIDEOS].reverse());
 
   return (
     <section ref={ref} className="relative py-20 overflow-hidden select-none">
@@ -59,15 +64,15 @@ export default function ScrollingResultsStrip() {
 
       {/* Row 1 */}
       <motion.div style={{ x: x1 }} className="flex gap-3 mb-3 px-8">
-        {doubled.map((item, i) => (
-          <ResultCard key={`r1-${i}`} item={item} />
+        {row1.map((item, i) => (
+          <ResultCard key={`r1-${i}`} item={item} eager={i < 4} />
         ))}
       </motion.div>
 
       {/* Row 2 */}
       <motion.div style={{ x: x2 }} className="flex gap-3 px-8" initial={{ x: '-4%' }}>
-        {reversed.map((item, i) => (
-          <ResultCard key={`r2-${i}`} item={item} />
+        {row2.map((item, i) => (
+          <ResultCard key={`r2-${i}`} item={item} eager={false} />
         ))}
       </motion.div>
 
