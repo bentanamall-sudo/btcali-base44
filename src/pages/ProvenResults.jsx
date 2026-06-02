@@ -57,12 +57,8 @@ function VideoCard({ video, index }) {
   useEffect(() => {
     const el = cardRef.current;
     if (!el) return;
-    const obs = new IntersectionObserver(
-      ([entry]) => { if (entry.intersectionRatio >= 0.5) setPlaying(true); },
-      { threshold: 0.5 }
-    );
-    obs.observe(el);
-    return () => obs.disconnect();
+    // Auto-set playing immediately so iframes load on render
+    setPlaying(true);
   }, []);
 
   const handleClick = () => {

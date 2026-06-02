@@ -1,12 +1,13 @@
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, Zap, BookOpen, Trophy, DollarSign, ScanLine, Bot } from 'lucide-react';
+import { Menu, X, Zap, BookOpen, Trophy, DollarSign, ScanLine, Crown } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { NavbarLogo } from './Logo';
 import CodeUnlock from './CodeUnlock';
 import { cn } from '@/lib/utils';
+import { useAccessCodes } from '@/lib/useAccessCodes';
 
-const navLinks = [
+const BASE_NAV = [
   { to: '/', label: 'Home', icon: Zap },
   { to: '/skills', label: 'Skill Library', icon: BookOpen },
   { to: '/results', label: 'Results', icon: Trophy },
@@ -17,6 +18,11 @@ const navLinks = [
 export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const location = useLocation();
+  const { isMember } = useAccessCodes();
+
+  const navLinks = isMember
+    ? [...BASE_NAV, { to: '/members', label: 'BTCALI Members', icon: Crown }]
+    : BASE_NAV;
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 glass-strong">
@@ -37,9 +43,13 @@ export default function Navbar() {
                   to={link.to}
                   className={cn(
                     'px-3 py-2 rounded-lg text-sm font-body font-medium transition-all duration-200 flex items-center gap-1.5',
-                    active
-                      ? 'text-primary bg-primary/10'
-                      : 'text-muted-foreground hover:text-foreground hover:bg-muted/30'
+                    link.to === '/members'
+                      ? active
+                        ? 'text-primary bg-primary/15 font-semibold'
+                        : 'text-primary/80 hover:text-primary hover:bg-primary/10 font-semibold'
+                      : active
+                        ? 'text-primary bg-primary/10'
+                        : 'text-muted-foreground hover:text-foreground hover:bg-muted/30'
                   )}
                 >
                   <Icon className="w-4 h-4" />
@@ -51,9 +61,6 @@ export default function Navbar() {
 
           <div className="hidden lg:flex items-center gap-4">
             <CodeUnlock />
-            <Link to="/ai-coach" className="text-muted-foreground hover:text-foreground transition-colors">
-              <Bot className="w-5 h-5" />
-            </Link>
           </div>
 
           {/* Mobile menu button */}
@@ -86,9 +93,11 @@ export default function Navbar() {
                     onClick={() => setMobileOpen(false)}
                     className={cn(
                       'flex items-center gap-3 px-4 py-3 rounded-xl text-base font-body transition-all',
-                      active
-                        ? 'text-primary bg-primary/10 glow-border'
-                        : 'text-muted-foreground hover:text-foreground hover:bg-muted/20'
+                      link.to === '/members'
+                        ? 'text-primary font-semibold hover:bg-primary/10'
+                        : active
+                          ? 'text-primary bg-primary/10 glow-border'
+                          : 'text-muted-foreground hover:text-foreground hover:bg-muted/20'
                     )}
                   >
                     <Icon className="w-5 h-5" />
@@ -96,14 +105,9 @@ export default function Navbar() {
                   </Link>
                 );
               })}
-              <Link
-                to="/ai-coach"
-                onClick={() => setMobileOpen(false)}
-                className="flex items-center gap-3 px-4 py-3 rounded-xl text-base font-body text-muted-foreground hover:text-foreground hover:bg-muted/20"
-              >
-                <Bot className="w-5 h-5" />
-                AI Coach
-              </Link>
+              <div className="pt-2">
+                <CodeUnlock />
+              </div>
             </div>
           </motion.div>
         )}

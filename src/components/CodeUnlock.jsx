@@ -1,13 +1,15 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { KeyRound, ChevronRight, X, ShieldCheck } from 'lucide-react';
+import { KeyRound, ChevronRight, X, ShieldCheck, Crown } from 'lucide-react';
 import { useAccessCodes } from '@/lib/useAccessCodes';
+import { useNavigate } from 'react-router-dom';
 
 export default function CodeUnlock() {
   const [open, setOpen] = useState(false);
   const [code, setCode] = useState('');
-  const [status, setStatus] = useState(null); // null | 'success-admin' | 'success-user' | 'error'
-  const { isAdmin, unlockCode } = useAccessCodes();
+  const [status, setStatus] = useState(null);
+  const { isAdmin, isMember, unlockCode } = useAccessCodes();
+  const navigate = useNavigate();
 
   const handleUnlock = () => {
     if (!code.trim()) return;
@@ -15,11 +17,17 @@ export default function CodeUnlock() {
     if (result === 'admin') {
       setStatus('success-admin');
       setCode('');
-      setTimeout(() => setOpen(false), 1800);
+      setTimeout(() => {
+        setOpen(false);
+        navigate('/members');
+      }, 1200);
     } else if (result === 'user') {
       setStatus('success-user');
       setCode('');
-      setTimeout(() => setOpen(false), 1800);
+      setTimeout(() => {
+        setOpen(false);
+        navigate('/members');
+      }, 1200);
     } else {
       setStatus('error');
       setTimeout(() => setStatus(null), 2000);
@@ -35,6 +43,15 @@ export default function CodeUnlock() {
     );
   }
 
+  if (isMember) {
+    return (
+      <div className="flex items-center gap-1.5 glass px-3 py-1.5 rounded-full">
+        <Crown className="w-3.5 h-3.5 text-primary" />
+        <span className="text-xs font-heading font-semibold gradient-text">Member</span>
+      </div>
+    );
+  }
+
   return (
     <div className="relative">
       <motion.button
@@ -44,7 +61,7 @@ export default function CodeUnlock() {
         className="flex items-center gap-1.5 glass px-3 py-1.5 rounded-full text-muted-foreground hover:text-foreground transition-colors"
       >
         <KeyRound className="w-3.5 h-3.5" />
-        <span className="text-xs font-heading">Code</span>
+        <span className="text-xs font-heading">Member Code</span>
       </motion.button>
 
       <AnimatePresence>
@@ -54,20 +71,20 @@ export default function CodeUnlock() {
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.9, y: -8 }}
             transition={{ duration: 0.18 }}
-            className="absolute right-0 top-10 z-50 w-64 glass-strong rounded-2xl p-4 border border-border/30"
+            className="absolute right-0 top-10 z-50 w-72 glass-strong rounded-2xl p-4 border border-border/30"
             style={{ boxShadow: '0 0 30px hsl(var(--glow-primary) / 0.15)' }}
           >
             <div className="flex items-center justify-between mb-3">
               <div className="flex items-center gap-2">
                 <KeyRound className="w-4 h-4 text-primary" />
-                <span className="text-sm font-heading font-semibold text-foreground">Access Code</span>
+                <span className="text-sm font-heading font-semibold text-foreground">Member Access Code</span>
               </div>
               <button onClick={() => setOpen(false)} className="text-muted-foreground hover:text-foreground transition-colors">
                 <X className="w-4 h-4" />
               </button>
             </div>
 
-            <p className="text-xs text-muted-foreground font-body mb-3">Enter your program or admin access code.</p>
+            <p className="text-xs text-muted-foreground font-body mb-3">Enter your BTCALI member code to unlock exclusive content.</p>
 
             <div className={`flex gap-2 rounded-xl overflow-hidden transition-all duration-300 ${
               status === 'error' ? 'ring-1 ring-destructive/60' :
@@ -109,7 +126,7 @@ export default function CodeUnlock() {
                   exit={{ opacity: 0 }}
                   className="text-xs text-primary font-body mt-2 text-center flex items-center justify-center gap-1"
                 >
-                  <ShieldCheck className="w-3.5 h-3.5" /> Admin mode unlocked!
+                  <ShieldCheck className="w-3.5 h-3.5" /> Admin access unlocked! Redirecting...
                 </motion.p>
               )}
               {status === 'success-user' && (
@@ -119,7 +136,7 @@ export default function CodeUnlock() {
                   exit={{ opacity: 0 }}
                   className="text-xs text-primary font-body mt-2 text-center"
                 >
-                  ✓ Program access granted!
+                  ✓ Member access granted! Redirecting...
                 </motion.p>
               )}
             </AnimatePresence>

@@ -56,20 +56,18 @@ function BulletList({ items }) {
   );
 }
 
-function AccessGate({ onUnlocked }) {
+function AccessGate() {
   const [code, setCode] = useState('');
   const [error, setError] = useState(false);
   const { unlockCode } = useAccessCodes();
 
   const handleUnlock = () => {
     const result = unlockCode(code);
-    if (result) {
-      setError(false);
-      onUnlocked();
-    } else {
+    if (!result) {
       setError(true);
       setTimeout(() => setError(false), 2500);
     }
+    // On success, context updates globally → isMember becomes true → Members re-renders
   };
 
   return (
@@ -122,13 +120,11 @@ function AccessGate({ onUnlocked }) {
 }
 
 export default function Members() {
-  const { isAdmin, unlockedPrograms } = useAccessCodes();
-  const isMember = isAdmin || (unlockedPrograms && unlockedPrograms.length > 0);
-  const [unlocked, setUnlocked] = useState(isMember);
+  const { isMember } = useAccessCodes();
 
   // Show gate if not yet a member
-  if (!unlocked) {
-    return <AccessGate onUnlocked={() => setUnlocked(true)} />;
+  if (!isMember) {
+    return <AccessGate />;
   }
 
   return (
