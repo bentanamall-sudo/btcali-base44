@@ -22,42 +22,107 @@ export const RESULTS_VIDEOS = [
   { src: 'https://media.base44.com/videos/public/69fd635623a9368c153045ad/8062fad09_5fed1466edd6499c94832fcfc468d25c.mov' },
 ];
 
-// ── Warm dark placeholder shown while video metadata loads ────────────────────
+// ── Warm placeholder shown while media is loading ─────────────────────────────
 function WarmPlaceholder() {
   return (
     <div
       className="absolute inset-0"
-      style={{ background: 'linear-gradient(160deg, #1e1a12 0%, #141210 50%, #0d0d0d 100%)' }}
+      style={{ background: 'linear-gradient(160deg,#2a2116 0%,#1a150e 40%,#111 100%)' }}
     />
   );
 }
 
-// ── Orbit thumbnail — uses a video element at currentTime=0 for first frame ───
-// This avoids canvas CORS issues entirely. The video is muted, not playing,
-// just sitting at frame 0 to show the first frame as a native poster.
-function OrbitalThumb({ src, angleDeg, orbitRadiusX, orbitRadiusY, isActive, onClick }) {
-  const videoRef = useRef(null);
+// ── Thumbnail: a tiny muted video frozen at first frame — no canvas, no CORS ──
+// Browser renders the first decoded frame natively.
+function VideoThumb({ src, style = {}, className = '' }) {
+  const ref = useRef(null);
   const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
-    setLoaded(false);
-    const v = videoRef.current;
+    const v = ref.current;
     if (!v) return;
-    v.currentTime = 0;
+    setLoaded(false);
+    v.src = src;
+    v.currentTime = 0.01;
+
+    const onSeeked = () => setLoaded(true);
+    const onLoaded = () => { v.currentTime = 0.01; };
+    v.addEventListener('loadedmetadata', onLoaded, { once: true });
+    v.addEventListener('seeked', onSeeked, { once: true });
+
+    return () => {
+      v.removeEventListener('loadedmetadata', onLoaded);
+      v.removeEventListener('seeked', onSeeked);
+      v.src = '';
+    };
   }, [src]);
 
-  const handleLoadedData = useCallback(() => {
+  return (
+    <>
+      {!loaded && <WarmPlaceholder />}
+      <video
+        ref={ref}
+        muted
+        playsInline
+        preload="metadata"
+        className={`absolute inset-0 w-full h-full object-cover ${className}`}
+        style={{ opacity: loaded ? 1 : 0, transition: 'opacity 0.3s', ...style }}
+      />
+    </>
+  );
+}
+
+// ── Centre video: thumbnail-first, fades to playing video on canplay ──────────
+function CentreVideo({ src }) {
+  const [videoReady, setVideoReady] = useState(false);
+  const videoRef = useRef(null);
+
+  useEffect(() => {
+    setVideoReady(false);
     const v = videoRef.current;
-    if (v) { v.currentTime = 0.01; }
-  }, []);
+    if (!v) return;
+    v.src = src;
+    v.load();
+    const onCanPlay = () => {
+      setVideoReady(true);
+      v.play().catch(() => {});
+    };
+    v.addEventListener('canplay', onCanPlay, { once: true });
+    return () => {
+      v.removeEventListener('canplay', onCanPlay);
+      v.pause();
+      v.src = '';
+    };
+  }, [src]);
 
-  const handleSeeked = useCallback(() => {
-    setLoaded(true);
-  }, []);
+  return (
+    <div className="absolute inset-0 overflow-hidden rounded-3xl">
+      {/* Thumbnail always shown until video ready */}
+      <div style={{ opacity: videoReady ? 0 : 1, transition: 'opacity 0.5s', position: 'absolute', inset: 0, zIndex: 1 }}>
+        <VideoThumb src={src} />
+      </div>
 
+      {/* Active playing video */}
+      <video
+        ref={videoRef}
+        muted
+        loop
+        playsInline
+        preload="auto"
+        className="absolute inset-0 w-full h-full object-cover"
+        style={{ opacity: videoReady ? 1 : 0, transition: 'opacity 0.5s', zIndex: 2 }}
+      />
+
+      <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-transparent to-transparent pointer-events-none" style={{ zIndex: 3 }} />
+    </div>
+  );
+}
+
+// ── Orbit thumbnail tile — static first-frame video, no playback ──────────────
+function OrbitalThumb({ src, angleDeg, orbitRadiusX, orbitRadiusY, isActive, onClick }) {
   const rad = ((angleDeg - 90) * Math.PI) / 180;
   const sinVal = Math.sin(rad);
-  const depth = (sinVal + 1) / 2; // 0=back, 1=front
+  const depth = (sinVal + 1) / 2;
 
   const baseScale = 0.78 + depth * 0.28;
   const opacity   = isActive ? 0 : 0.72 + depth * 0.28;
@@ -87,114 +152,16 @@ function OrbitalThumb({ src, angleDeg, orbitRadiusX, orbitRadiusY, isActive, onC
         scale: baseScale * 1.18,
         opacity: 1,
         filter: 'blur(0px)',
-        boxShadow: '0 0 20px hsl(var(--glow-primary)/0.7), 0 4px 20px rgba(0,0,0,0.6)',
+        boxShadow: '0 0 20px hsl(var(--glow-primary)/0.7),0 4px 20px rgba(0,0,0,0.6)',
         zIndex: 30,
       }}
       transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
       onClick={onClick}
     >
-      {!loaded && <WarmPlaceholder />}
-      <video
-        ref={videoRef}
-        src={src}
-        muted
-        playsInline
-        preload="metadata"
-        onLoadedData={handleLoadedData}
-        onSeeked={handleSeeked}
-        className="absolute inset-0 w-full h-full object-cover"
-        style={{ opacity: loaded ? 1 : 0 }}
-      />
+      <VideoThumb src={src} />
       <div className="absolute inset-x-0 bottom-0 h-1/3 pointer-events-none"
-        style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.3), transparent)' }} />
+        style={{ background: 'linear-gradient(to top,rgba(0,0,0,0.3),transparent)' }} />
     </motion.div>
-  );
-}
-
-// ── Centre video — shows first frame instantly, then plays ────────────────────
-function CentreVideo({ src }) {
-  const videoRef = useRef(null);
-  const [videoReady, setVideoReady] = useState(false);
-
-  useEffect(() => {
-    setVideoReady(false);
-    const v = videoRef.current;
-    if (!v) return;
-    v.load();
-  }, [src]);
-
-  const handleCanPlay = useCallback(() => {
-    setVideoReady(true);
-    videoRef.current?.play().catch(() => {});
-  }, []);
-
-  return (
-    <div className="absolute inset-0 overflow-hidden rounded-3xl bg-[#141210]">
-      <video
-        ref={videoRef}
-        key={src}
-        src={src}
-        muted
-        loop
-        playsInline
-        preload="auto"
-        onCanPlay={handleCanPlay}
-        className="absolute inset-0 w-full h-full object-cover"
-        style={{
-          opacity: videoReady ? 1 : 0,
-          transition: 'opacity 0.5s ease',
-        }}
-      />
-      {/* Shown until video is ready */}
-      {!videoReady && (
-        <div className="absolute inset-0 flex items-center justify-center">
-          <WarmPlaceholder />
-          <div className="relative z-10 w-6 h-6 border-2 border-primary/50 border-t-primary rounded-full animate-spin" />
-        </div>
-      )}
-      <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-transparent to-transparent pointer-events-none" />
-    </div>
-  );
-}
-
-// ── Mobile thumbnail tile ──────────────────────────────────────────────────────
-function MobileThumbTile({ src, isActive, onClick }) {
-  const videoRef = useRef(null);
-  const [loaded, setLoaded] = useState(false);
-
-  const handleLoadedData = useCallback(() => {
-    const v = videoRef.current;
-    if (v) v.currentTime = 0.01;
-  }, []);
-
-  const handleSeeked = useCallback(() => setLoaded(true), []);
-
-  return (
-    <div
-      className="relative flex-shrink-0 overflow-hidden rounded-xl cursor-pointer"
-      style={{
-        width: '52px', height: '92px',
-        border: isActive ? '2px solid hsl(var(--primary))' : '1.5px solid hsl(var(--glow-primary)/0.3)',
-        boxShadow: isActive ? '0 0 10px hsl(var(--glow-primary)/0.5)' : 'none',
-        background: '#141210',
-        transition: 'border-color 0.2s, box-shadow 0.2s',
-      }}
-      onClick={onClick}
-    >
-      {!loaded && <WarmPlaceholder />}
-      <video
-        ref={videoRef}
-        src={src}
-        muted
-        playsInline
-        preload="metadata"
-        onLoadedData={handleLoadedData}
-        onSeeked={handleSeeked}
-        className="absolute inset-0 w-full h-full object-cover"
-        style={{ opacity: loaded ? 1 : 0 }}
-      />
-      {!isActive && <div className="absolute inset-0 bg-black/25 pointer-events-none" />}
-    </div>
   );
 }
 
@@ -244,11 +211,7 @@ export default function ProvenResults() {
   const orbitRadiusY = 210;
 
   return (
-    <div
-      className="min-h-screen py-8 px-4"
-      onTouchStart={onTouchStart}
-      onTouchEnd={onTouchEnd}
-    >
+    <div className="min-h-screen py-8 px-4" onTouchStart={onTouchStart} onTouchEnd={onTouchEnd}>
       {/* Header */}
       <motion.div
         initial={{ opacity: 0, y: 14 }}
@@ -273,7 +236,7 @@ export default function ProvenResults() {
           <div className="absolute pointer-events-none" style={{
             width: '440px', height: '440px',
             left: 'calc(50% - 220px)', top: 'calc(50% - 220px)',
-            background: 'radial-gradient(circle, hsl(var(--glow-primary)/0.12) 0%, transparent 70%)',
+            background: 'radial-gradient(circle,hsl(var(--glow-primary)/0.12) 0%,transparent 70%)',
             filter: 'blur(50px)',
           }} />
 
@@ -297,7 +260,7 @@ export default function ProvenResults() {
           }}>
             <div className="absolute pointer-events-none" style={{
               inset: '-24px', borderRadius: '36px',
-              boxShadow: '0 0 80px hsl(var(--glow-primary)/0.5), 0 0 160px hsl(var(--glow-primary)/0.18)',
+              boxShadow: '0 0 80px hsl(var(--glow-primary)/0.5),0 0 160px hsl(var(--glow-primary)/0.18)',
             }} />
             <AnimatePresence mode="wait">
               <motion.div
@@ -319,11 +282,13 @@ export default function ProvenResults() {
           </div>
 
           {/* Arrows */}
-          <button onClick={prev} className="absolute z-30 w-14 h-14 rounded-full glass border border-primary/40 flex items-center justify-center hover:border-primary transition-all"
+          <button onClick={prev}
+            className="absolute z-30 w-14 h-14 rounded-full glass border border-primary/40 flex items-center justify-center hover:border-primary transition-all"
             style={{ left: 'calc(50% - 390px)', top: 'calc(50% - 28px)' }}>
             <ChevronLeft className="w-6 h-6 text-foreground" />
           </button>
-          <button onClick={next} className="absolute z-30 w-14 h-14 rounded-full glass border border-primary/40 flex items-center justify-center hover:border-primary transition-all"
+          <button onClick={next}
+            className="absolute z-30 w-14 h-14 rounded-full glass border border-primary/40 flex items-center justify-center hover:border-primary transition-all"
             style={{ right: 'calc(50% - 390px)', top: 'calc(50% - 28px)' }}>
             <ChevronRight className="w-6 h-6 text-foreground" />
           </button>
@@ -348,7 +313,7 @@ export default function ProvenResults() {
 
       {/* ══ MOBILE: Swipe card + strip ══════════════════════════════════════════ */}
       <div className="lg:hidden">
-        <div className="relative mx-auto mb-5" style={{ width: 'min(310px, 88vw)', aspectRatio: '9/16' }}>
+        <div className="relative mx-auto mb-5" style={{ width: 'min(310px,88vw)', aspectRatio: '9/16' }}>
           <div className="absolute pointer-events-none" style={{
             inset: '-12px', borderRadius: '28px',
             boxShadow: '0 0 60px hsl(var(--glow-primary)/0.35)',
@@ -366,11 +331,13 @@ export default function ProvenResults() {
             </motion.div>
           </AnimatePresence>
           <div className="absolute inset-0 rounded-3xl pointer-events-none" style={{ border: '1.5px solid hsl(var(--glow-primary)/0.6)' }} />
-          <button onClick={prev} className="absolute left-2 top-1/2 -translate-y-1/2 z-20 w-9 h-9 rounded-full flex items-center justify-center"
+          <button onClick={prev}
+            className="absolute left-2 top-1/2 -translate-y-1/2 z-20 w-9 h-9 rounded-full flex items-center justify-center"
             style={{ background: 'rgba(0,0,0,0.55)', border: '1px solid hsl(var(--glow-primary)/0.35)' }}>
             <ChevronLeft className="w-4 h-4 text-white" />
           </button>
-          <button onClick={next} className="absolute right-2 top-1/2 -translate-y-1/2 z-20 w-9 h-9 rounded-full flex items-center justify-center"
+          <button onClick={next}
+            className="absolute right-2 top-1/2 -translate-y-1/2 z-20 w-9 h-9 rounded-full flex items-center justify-center"
             style={{ background: 'rgba(0,0,0,0.55)', border: '1px solid hsl(var(--glow-primary)/0.35)' }}>
             <ChevronRight className="w-4 h-4 text-white" />
           </button>
@@ -405,14 +372,29 @@ export default function ProvenResults() {
           Join athletes already training with BTCALI. Apply for coaching or start free today.
         </p>
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4 relative z-10">
-          <Link to="/apply">
-            <GlowButton size="lg">Apply for Coaching <ArrowRight className="w-4 h-4" /></GlowButton>
-          </Link>
-          <Link to="/tutorials">
-            <GlowButton variant="secondary" size="lg">Start Free Tutorials</GlowButton>
-          </Link>
+          <Link to="/apply"><GlowButton size="lg">Apply for Coaching <ArrowRight className="w-4 h-4" /></GlowButton></Link>
+          <Link to="/tutorials"><GlowButton variant="secondary" size="lg">Start Free Tutorials</GlowButton></Link>
         </div>
       </motion.div>
+    </div>
+  );
+}
+
+// ── Mobile thumbnail strip tile ────────────────────────────────────────────────
+function MobileThumbTile({ src, isActive, onClick }) {
+  return (
+    <div
+      className="relative flex-shrink-0 overflow-hidden rounded-xl cursor-pointer"
+      style={{
+        width: '52px', height: '92px',
+        border: isActive ? '2px solid hsl(var(--primary))' : '1.5px solid hsl(var(--glow-primary)/0.3)',
+        boxShadow: isActive ? '0 0 10px hsl(var(--glow-primary)/0.5)' : 'none',
+        transition: 'border-color 0.2s,box-shadow 0.2s',
+      }}
+      onClick={onClick}
+    >
+      <VideoThumb src={src} />
+      {!isActive && <div className="absolute inset-0 bg-black/25 pointer-events-none" />}
     </div>
   );
 }
