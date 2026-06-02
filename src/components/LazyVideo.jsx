@@ -11,6 +11,11 @@ import { useRef, useEffect, useState } from 'react';
  *   poster      — placeholder image shown before video loads
  *   [rest]      — any other <video> props (autoPlay, muted, loop, playsInline…)
  */
+// Dark gradient data-URI — shows instantly, zero network cost
+const DARK_POSTER = 'data:image/svg+xml;base64,' + btoa(
+  '<svg xmlns="http://www.w3.org/2000/svg" width="9" height="16"><defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#111"/><stop offset="1" stop-color="#0a0a0a"/></linearGradient></defs><rect width="9" height="16" fill="url(#g)"/></svg>'
+);
+
 export default function LazyVideo({
   src,
   eager = false,
@@ -22,6 +27,8 @@ export default function LazyVideo({
 }) {
   const videoRef = useRef(null);
   const [shouldLoad, setShouldLoad] = useState(eager);
+  // Use provided poster, or fall back to instant dark placeholder
+  const effectivePoster = poster || DARK_POSTER;
 
   useEffect(() => {
     if (eager) return;
@@ -54,7 +61,7 @@ export default function LazyVideo({
   return (
     <video
       ref={videoRef}
-      poster={poster}
+      poster={effectivePoster}
       preload={eager ? 'auto' : 'none'}
       className={className}
       style={style}

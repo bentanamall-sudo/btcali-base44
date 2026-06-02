@@ -22,8 +22,8 @@ export const RESULTS_VIDEOS = [
   { src: 'https://media.base44.com/videos/public/69fd635623a9368c153045ad/8062fad09_5fed1466edd6499c94832fcfc468d25c.mov', label: 'Progress', labelColor: 'text-amber-400 bg-amber-400/15' },
 ];
 
-// First 4 are above-the-fold on the results grid — load eagerly
-const EAGER_COUNT = 4;
+// Only first 2 are truly above-the-fold — load eagerly, rest lazy
+const EAGER_COUNT = 2;
 
 function VideoCard({ video, index }) {
   const eager = index < EAGER_COUNT;
@@ -45,7 +45,7 @@ function VideoCard({ video, index }) {
       <LazyVideo
         src={video.src}
         eager={eager}
-        rootMargin="300px"
+        rootMargin="150px"
         autoPlay
         muted
         loop

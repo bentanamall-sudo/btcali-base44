@@ -4,8 +4,8 @@ import { useNavigate } from 'react-router-dom';
 import { RESULTS_VIDEOS } from '../../pages/ProvenResults';
 import LazyVideo from '../LazyVideo';
 
-// Use only first 7 videos for the strip — fewer simultaneous loads
-const STRIP_VIDEOS = RESULTS_VIDEOS.slice(0, 7);
+// Use only first 5 videos for the strip — minimise simultaneous loads
+const STRIP_VIDEOS = RESULTS_VIDEOS.slice(0, 5);
 
 function ResultCard({ item, eager }) {
   const navigate = useNavigate();
@@ -19,7 +19,7 @@ function ResultCard({ item, eager }) {
       <LazyVideo
         src={item.src}
         eager={eager}
-        rootMargin="400px"
+        rootMargin="150px"
         autoPlay
         muted
         loop
@@ -65,7 +65,7 @@ export default function ScrollingResultsStrip() {
       {/* Row 1 */}
       <motion.div style={{ x: x1 }} className="flex gap-3 mb-3 px-8">
         {row1.map((item, i) => (
-          <ResultCard key={`r1-${i}`} item={item} eager={i < 4} />
+          <ResultCard key={`r1-${i}`} item={item} eager={i < 2} />
         ))}
       </motion.div>
 
