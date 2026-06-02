@@ -3,7 +3,6 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { ChevronLeft, ChevronRight, Users, ArrowRight, Trophy } from 'lucide-react';
 import GlowButton from '../components/GlowButton';
-import { PageHeaderLogo } from '../components/Logo';
 
 // ── Video list ─────────────────────────────────────────────────────────────────
 export const RESULTS_VIDEOS = [
@@ -23,7 +22,7 @@ export const RESULTS_VIDEOS = [
   { src: 'https://media.base44.com/videos/public/69fd635623a9368c153045ad/8062fad09_5fed1466edd6499c94832fcfc468d25c.mov' },
 ];
 
-// ── Thumbnail hook ─────────────────────────────────────────────────────────────
+// ── Thumbnail generator hook ───────────────────────────────────────────────────
 function useThumb(src) {
   const [thumb, setThumb] = useState(null);
   const done = useRef(false);
@@ -40,9 +39,10 @@ function useThumb(src) {
     v.addEventListener('seeked', () => {
       try {
         const c = document.createElement('canvas');
-        c.width = v.videoWidth || 360; c.height = v.videoHeight || 640;
+        c.width = v.videoWidth || 360;
+        c.height = v.videoHeight || 640;
         c.getContext('2d').drawImage(v, 0, 0, c.width, c.height);
-        setThumb(c.toDataURL('image/jpeg', 0.72));
+        setThumb(c.toDataURL('image/jpeg', 0.7));
       } catch { setThumb('__fb__'); }
       v.src = '';
     }, { once: true });
@@ -51,37 +51,59 @@ function useThumb(src) {
   return thumb;
 }
 
-// ── Thumbnail tile (outer ring + strip) ───────────────────────────────────────
-function ThumbTile({ src, isActive, onClick, style, className = '' }) {
+// ── Shimmer placeholder ────────────────────────────────────────────────────────
+function Shimmer({ className = '', style = {} }) {
+  return (
+    <div
+      className={`absolute inset-0 ${className}`}
+      style={{
+        background: 'linear-gradient(135deg,#1a1a1a 0%,#111 50%,#1a1a1a 100%)',
+        backgroundSize: '200% 200%',
+        animation: 'shimmer-bg 1.8s ease infinite',
+        ...style,
+      }}
+    />
+  );
+}
+
+// ── Thumbnail-only tile ────────────────────────────────────────────────────────
+function ThumbTile({ src, isActive, onClick, className = '', style = {} }) {
   const thumb = useThumb(src);
   return (
     <div
-      className={`relative overflow-hidden rounded-xl cursor-pointer transition-all duration-300 ${className}`}
+      className={`relative overflow-hidden cursor-pointer ${className}`}
       style={style}
       onClick={onClick}
     >
       {thumb && thumb !== '__fb__'
         ? <img src={thumb} alt="" className="absolute inset-0 w-full h-full object-cover" />
-        : <div className="absolute inset-0" style={{ background: 'linear-gradient(135deg,#1c1c1c,#111,#1c1c1c)', backgroundSize: '200% 200%', animation: 'shimmer-bg 1.8s ease infinite' }} />
+        : <Shimmer />
       }
-      {!isActive && <div className="absolute inset-0 bg-black/50 pointer-events-none" />}
+      {/* Dim overlay for inactive */}
+      <div
+        className="absolute inset-0 pointer-events-none transition-opacity duration-300"
+        style={{ background: 'rgba(0,0,0,0.45)', opacity: isActive ? 0 : 1 }}
+      />
+      {/* Active gold border */}
       {isActive && (
-        <div className="absolute inset-0 rounded-xl pointer-events-none" style={{ border: '2px solid hsl(var(--primary))' }} />
+        <div
+          className="absolute inset-0 pointer-events-none rounded-xl"
+          style={{ border: '2px solid hsl(var(--primary))', boxShadow: '0 0 12px hsl(var(--glow-primary)/0.6)' }}
+        />
       )}
     </div>
   );
 }
 
-// ── Active centre video ────────────────────────────────────────────────────────
+// ── Large centre video card ────────────────────────────────────────────────────
 function CentreVideo({ src }) {
   const thumb = useThumb(src);
   const [ready, setReady] = useState(false);
-
   return (
-    <div className="absolute inset-0 overflow-hidden rounded-2xl sm:rounded-3xl">
+    <div className="absolute inset-0 overflow-hidden rounded-3xl">
       {thumb && thumb !== '__fb__'
-        ? <img src={thumb} alt="" className="absolute inset-0 w-full h-full object-cover" style={{ opacity: ready ? 0 : 1, transition: 'opacity 0.35s' }} />
-        : <div className="absolute inset-0" style={{ background: 'linear-gradient(135deg,#1c1c1c,#111,#1c1c1c)', backgroundSize: '200% 200%', animation: 'shimmer-bg 1.8s ease infinite' }} />
+        ? <img src={thumb} alt="" className="absolute inset-0 w-full h-full object-cover" style={{ opacity: ready ? 0 : 1, transition: 'opacity 0.4s' }} />
+        : <Shimmer />
       }
       <video
         key={src}
@@ -89,34 +111,46 @@ function CentreVideo({ src }) {
         autoPlay muted loop playsInline preload="auto"
         onCanPlay={() => setReady(true)}
         className="absolute inset-0 w-full h-full object-cover"
-        style={{ opacity: ready ? 1 : 0, transition: 'opacity 0.35s' }}
+        style={{ opacity: ready ? 1 : 0, transition: 'opacity 0.4s' }}
       />
       <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
     </div>
   );
 }
 
-// ── Orbital item — positioned on a circle ─────────────────────────────────────
-function OrbitalItem({ src, angle, isActive, onClick }) {
-  const radius = 300; // px from centre
-  const rad = (angle * Math.PI) / 180;
-  const x = Math.cos(rad) * radius;
-  const y = Math.sin(rad) * radius;
-  const size = isActive ? 0 : 72; // active slot is empty (centre occupies it)
+// ── Orbital thumbnail — positioned by angle with depth scale ──────────────────
+// Angles go 0–360, items at the "back" (top of circle) are smaller/dimmer
+function OrbitalThumb({ src, angleDeg, orbitRadiusX, orbitRadiusY, isActive, onClick }) {
+  const rad = ((angleDeg - 90) * Math.PI) / 180;
+  // depth: items at top (angle=0 after offset) are behind, bottom are in front
+  const depth = (Math.sin(rad) + 1) / 2; // 0 = back, 1 = front
+  const scale = 0.72 + depth * 0.34; // 0.72 → 1.06
+  const opacity = isActive ? 0.15 : 0.5 + depth * 0.45; // active slot fades out
+  const blur = isActive ? 4 : (1 - depth) * 2;
+  const zIndex = isActive ? 0 : Math.round(depth * 10) + 1;
 
-  if (size === 0) return null;
+  const thumbW = 68;
+  const thumbH = thumbW * (16 / 9);
+  const x = Math.cos(rad) * orbitRadiusX;
+  const y = Math.sin(rad) * orbitRadiusY;
+
   return (
     <motion.div
-      className="absolute"
+      className="absolute cursor-pointer"
       style={{
-        width: size, height: size * (16 / 9),
-        left: `calc(50% + ${x}px - ${size / 2}px)`,
-        top: `calc(50% + ${y}px - ${(size * 16 / 9) / 2}px)`,
+        width: thumbW,
+        height: thumbH,
+        left: `calc(50% + ${x}px - ${thumbW / 2}px)`,
+        top: `calc(50% + ${y}px - ${thumbH / 2}px)`,
+        zIndex,
+        transformOrigin: 'center',
       }}
-      animate={{ opacity: 1, scale: 1 }}
-      transition={{ duration: 0.4 }}
+      animate={{ scale, opacity, filter: `blur(${blur}px)` }}
+      transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+      onClick={onClick}
+      whileHover={isActive ? {} : { scale: scale * 1.15, opacity: 1, filter: 'blur(0px)' }}
     >
-      <ThumbTile src={src} isActive={false} onClick={onClick} className="w-full h-full" />
+      <ThumbTile src={src} isActive={false} className="w-full h-full rounded-xl" />
     </motion.div>
   );
 }
@@ -124,171 +158,264 @@ function OrbitalItem({ src, angle, isActive, onClick }) {
 // ── Main page ──────────────────────────────────────────────────────────────────
 export default function ProvenResults() {
   const [active, setActive] = useState(0);
+  const [rotationOffset, setRotationOffset] = useState(0);
   const total = RESULTS_VIDEOS.length;
 
-  const prev = useCallback(() => setActive(i => (i - 1 + total) % total), [total]);
-  const next = useCallback(() => setActive(i => (i + 1) % total), [total]);
+  const prev = useCallback(() => {
+    setActive(i => (i - 1 + total) % total);
+    setRotationOffset(r => r - 360 / total);
+  }, [total]);
 
-  // Orbital: spread all videos evenly on a circle
-  const angleStep = 360 / total;
+  const next = useCallback(() => {
+    setActive(i => (i + 1) % total);
+    setRotationOffset(r => r + 360 / total);
+  }, [total]);
+
+  const goTo = useCallback((idx) => {
+    const diff = idx - active;
+    const shortDiff = ((diff + total / 2) % total) - total / 2;
+    setRotationOffset(r => r + (shortDiff * 360 / total));
+    setActive(idx);
+  }, [active, total]);
+
+  // Keyboard + wheel navigation
+  useEffect(() => {
+    const onKey = (e) => {
+      if (e.key === 'ArrowLeft') prev();
+      if (e.key === 'ArrowRight') next();
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [prev, next]);
+
+  // Touch swipe
+  const touchStart = useRef(null);
+  const onTouchStart = (e) => { touchStart.current = e.touches[0].clientX; };
+  const onTouchEnd = (e) => {
+    if (touchStart.current === null) return;
+    const diff = touchStart.current - e.changedTouches[0].clientX;
+    if (Math.abs(diff) > 40) { diff > 0 ? next() : prev(); }
+    touchStart.current = null;
+  };
+
+  const orbitRadiusX = 340;
+  const orbitRadiusY = 210;
 
   return (
-    <div className="min-h-screen py-10 px-4 sm:px-6 max-w-7xl mx-auto">
-
-      {/* Header */}
-      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-10">
-        <div className="flex justify-start mb-5">
-          <PageHeaderLogo />
-        </div>
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-          <div>
-            <div className="inline-flex items-center gap-2 glass px-4 py-2 rounded-full mb-3">
-              <Trophy className="w-4 h-4 text-primary" />
-              <span className="text-sm font-body text-muted-foreground">Student Results</span>
-            </div>
-            <h1 className="font-heading font-bold text-3xl sm:text-4xl md:text-5xl">
-              Student <span className="gradient-text">Results</span>
-            </h1>
-            <p className="text-muted-foreground font-body mt-2 max-w-md">
-              Real BTCALI student progress — shown through actual training videos.
-            </p>
-          </div>
-          <div className="text-right">
-            <span className="font-heading font-bold text-4xl gradient-text">{active + 1}</span>
-            <span className="text-muted-foreground font-body text-lg"> / {total}</span>
-          </div>
-        </div>
+    <div
+      className="min-h-screen py-8 px-4"
+      onTouchStart={onTouchStart}
+      onTouchEnd={onTouchEnd}
+    >
+      {/* ── Page Header ── */}
+      <motion.div
+        initial={{ opacity: 0, y: 16 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="text-center mb-8"
+      >
+        <p className="text-xs font-heading font-bold text-muted-foreground/50 uppercase tracking-[0.25em] mb-2">
+          Real Athletes · Real Results
+        </p>
+        <h1 className="font-heading font-bold text-3xl sm:text-5xl mb-2">
+          Student <span className="gradient-text">Results</span>
+        </h1>
+        <p className="text-muted-foreground font-body text-sm max-w-sm mx-auto">
+          Real BTCALI athlete transformations and progress.
+        </p>
       </motion.div>
 
-      {/* ── DESKTOP: Orbital carousel ───────────────────────────────────────── */}
+      {/* ══════════════════════════════════════════════════════════════════════
+          DESKTOP: Orbital + large centre video
+      ══════════════════════════════════════════════════════════════════════ */}
       <div className="hidden lg:block">
-        <div className="relative mx-auto" style={{ width: '800px', height: '680px' }}>
-          {/* Orbital ring hint */}
-          <div className="absolute inset-0 rounded-full pointer-events-none" style={{
-            left: 'calc(50% - 300px)', top: 'calc(50% - 300px)',
-            width: '600px', height: '600px',
-            border: '1px solid hsl(var(--glow-primary)/0.1)',
-            borderRadius: '50%',
-          }} />
+        {/* Orbital arena — fixed size container centred on page */}
+        <div className="relative mx-auto" style={{ width: '900px', height: '780px' }}>
 
-          {/* Orbital thumbnails */}
-          {RESULTS_VIDEOS.map((v, i) => (
-            <OrbitalItem
-              key={i}
-              src={v.src}
-              angle={i * angleStep - 90}
-              isActive={i === active}
-              onClick={() => setActive(i)}
-            />
-          ))}
+          {/* Ambient glow */}
+          <div
+            className="absolute pointer-events-none"
+            style={{
+              width: '500px', height: '500px',
+              left: 'calc(50% - 250px)', top: 'calc(50% - 250px)',
+              background: 'radial-gradient(circle, hsl(var(--glow-primary)/0.18) 0%, transparent 70%)',
+              filter: 'blur(40px)',
+            }}
+          />
 
-          {/* Centre video */}
+          {/* Orbital thumbnails — rotated by rotationOffset */}
+          {RESULTS_VIDEOS.map((v, i) => {
+            const baseAngle = (i / total) * 360;
+            const displayAngle = baseAngle + rotationOffset;
+            return (
+              <OrbitalThumb
+                key={i}
+                src={v.src}
+                angleDeg={displayAngle}
+                orbitRadiusX={orbitRadiusX}
+                orbitRadiusY={orbitRadiusY}
+                isActive={i === active}
+                onClick={() => goTo(i)}
+              />
+            );
+          })}
+
+          {/* ── Centre video — large, dominant ── */}
           <div
             className="absolute"
             style={{
-              width: '260px', aspectRatio: '9/16',
-              left: 'calc(50% - 130px)',
-              top: 'calc(50% - 231px)',
-              zIndex: 10,
+              width: '300px',
+              aspectRatio: '9/16',
+              left: 'calc(50% - 150px)',
+              top: 'calc(50% - 267px)',
+              zIndex: 20,
             }}
           >
-            <div className="absolute inset-0 rounded-3xl pointer-events-none" style={{ boxShadow: '0 0 80px hsl(var(--glow-primary)/0.4), 0 0 160px hsl(var(--glow-primary)/0.12)', zIndex: 0 }} />
+            {/* Glow behind card */}
+            <div
+              className="absolute pointer-events-none"
+              style={{
+                inset: '-20px',
+                borderRadius: '32px',
+                boxShadow: '0 0 80px hsl(var(--glow-primary)/0.5), 0 0 160px hsl(var(--glow-primary)/0.18)',
+                zIndex: 0,
+              }}
+            />
             <AnimatePresence mode="wait">
               <motion.div
                 key={active}
-                initial={{ opacity: 0, scale: 0.85 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.88 }}
-                transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+                initial={{ opacity: 0, scale: 0.82, y: 16 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.88, y: -10 }}
+                transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
                 className="absolute inset-0"
+                style={{ zIndex: 1 }}
               >
                 <CentreVideo src={RESULTS_VIDEOS[active].src} />
               </motion.div>
             </AnimatePresence>
-            {/* Border ring */}
-            <div className="absolute inset-0 rounded-3xl pointer-events-none" style={{ border: '1.5px solid hsl(var(--glow-primary)/0.6)', zIndex: 11 }} />
+            {/* Gold border */}
+            <div
+              className="absolute inset-0 rounded-3xl pointer-events-none"
+              style={{ border: '1.5px solid hsl(var(--glow-primary)/0.65)', zIndex: 2 }}
+            />
           </div>
 
-          {/* Arrows overlaid on the orbital ring */}
+          {/* ── Arrows ── */}
           <button
             onClick={prev}
-            className="absolute z-20 w-11 h-11 rounded-full glass border border-primary/30 flex items-center justify-center hover:border-primary/70 transition-all"
-            style={{ left: 'calc(50% - 340px)', top: 'calc(50% - 22px)' }}
+            className="absolute z-30 w-14 h-14 rounded-full glass border border-primary/40 flex items-center justify-center hover:border-primary hover:glow-primary transition-all"
+            style={{ left: 'calc(50% - 390px)', top: 'calc(50% - 28px)' }}
           >
-            <ChevronLeft className="w-5 h-5 text-foreground" />
+            <ChevronLeft className="w-6 h-6 text-foreground" />
           </button>
           <button
             onClick={next}
-            className="absolute z-20 w-11 h-11 rounded-full glass border border-primary/30 flex items-center justify-center hover:border-primary/70 transition-all"
-            style={{ right: 'calc(50% - 340px)', top: 'calc(50% - 22px)' }}
+            className="absolute z-30 w-14 h-14 rounded-full glass border border-primary/40 flex items-center justify-center hover:border-primary hover:glow-primary transition-all"
+            style={{ right: 'calc(50% - 390px)', top: 'calc(50% - 28px)' }}
           >
-            <ChevronRight className="w-5 h-5 text-foreground" />
+            <ChevronRight className="w-6 h-6 text-foreground" />
           </button>
+        </div>
+
+        {/* Counter + dots */}
+        <div className="flex flex-col items-center gap-3 mt-2">
+          <p className="font-heading font-bold text-lg">
+            <span className="gradient-text">{active + 1}</span>
+            <span className="text-muted-foreground/50"> / {total}</span>
+          </p>
+          <div className="flex gap-1.5">
+            {RESULTS_VIDEOS.map((_, i) => (
+              <button
+                key={i}
+                onClick={() => goTo(i)}
+                className="transition-all rounded-full"
+                style={{
+                  width: i === active ? '22px' : '6px',
+                  height: '6px',
+                  background: i === active ? 'hsl(var(--primary))' : 'hsl(var(--muted-foreground)/0.3)',
+                }}
+              />
+            ))}
+          </div>
         </div>
       </div>
 
-      {/* ── MOBILE: Large swipeable card + thumbnail strip ──────────────────── */}
+      {/* ══════════════════════════════════════════════════════════════════════
+          MOBILE: Large swipeable card + thumbnail strip
+      ══════════════════════════════════════════════════════════════════════ */}
       <div className="lg:hidden">
         {/* Main card */}
-        <div className="relative mx-auto mb-5" style={{ width: 'min(300px, 84vw)', aspectRatio: '9/16' }}>
-          <div className="absolute inset-0 rounded-3xl pointer-events-none" style={{ boxShadow: '0 0 60px hsl(var(--glow-primary)/0.3)', zIndex: 0 }} />
+        <div
+          className="relative mx-auto mb-5"
+          style={{ width: 'min(310px, 88vw)', aspectRatio: '9/16' }}
+        >
+          <div
+            className="absolute pointer-events-none"
+            style={{ inset: '-12px', borderRadius: '28px', boxShadow: '0 0 60px hsl(var(--glow-primary)/0.35)' }}
+          />
           <AnimatePresence mode="wait">
             <motion.div
               key={active}
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.92 }}
-              transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
+              initial={{ opacity: 0, scale: 0.9, x: 30 }}
+              animate={{ opacity: 1, scale: 1, x: 0 }}
+              exit={{ opacity: 0, scale: 0.92, x: -30 }}
+              transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
               className="absolute inset-0"
             >
               <CentreVideo src={RESULTS_VIDEOS[active].src} />
             </motion.div>
           </AnimatePresence>
-          {/* Mobile arrows */}
-          <button onClick={prev} className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-14 z-20 w-10 h-10 rounded-full glass border border-primary/30 flex items-center justify-center">
-            <ChevronLeft className="w-4 h-4 text-foreground" />
+          {/* Gold border */}
+          <div
+            className="absolute inset-0 rounded-3xl pointer-events-none"
+            style={{ border: '1.5px solid hsl(var(--glow-primary)/0.6)' }}
+          />
+          {/* Mobile arrows — inside card edges */}
+          <button
+            onClick={prev}
+            className="absolute left-2 top-1/2 -translate-y-1/2 z-20 w-9 h-9 rounded-full"
+            style={{ background: 'rgba(0,0,0,0.5)', border: '1px solid hsl(var(--glow-primary)/0.3)' }}
+          >
+            <ChevronLeft className="w-4 h-4 text-white mx-auto" />
           </button>
-          <button onClick={next} className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-14 z-20 w-10 h-10 rounded-full glass border border-primary/30 flex items-center justify-center">
-            <ChevronRight className="w-4 h-4 text-foreground" />
+          <button
+            onClick={next}
+            className="absolute right-2 top-1/2 -translate-y-1/2 z-20 w-9 h-9 rounded-full"
+            style={{ background: 'rgba(0,0,0,0.5)', border: '1px solid hsl(var(--glow-primary)/0.3)' }}
+          >
+            <ChevronRight className="w-4 h-4 text-white mx-auto" />
           </button>
+          {/* Counter badge */}
+          <div
+            className="absolute bottom-3 left-1/2 -translate-x-1/2 z-20 px-3 py-1 rounded-full"
+            style={{ background: 'rgba(0,0,0,0.6)', border: '1px solid hsl(var(--glow-primary)/0.3)' }}
+          >
+            <span className="font-heading font-bold text-xs gradient-text">{active + 1}</span>
+            <span className="text-white/50 text-xs"> / {total}</span>
+          </div>
         </div>
 
         {/* Thumbnail strip */}
-        <div className="flex gap-2 overflow-x-auto pb-2 px-2 justify-center">
+        <div className="flex gap-2 overflow-x-auto px-4 pb-2" style={{ scrollbarWidth: 'none' }}>
           {RESULTS_VIDEOS.map((v, i) => (
             <ThumbTile
               key={i}
               src={v.src}
               isActive={i === active}
-              onClick={() => setActive(i)}
-              style={{ width: '52px', height: '92px', flexShrink: 0 }}
+              onClick={() => goTo(i)}
+              className="flex-shrink-0 rounded-xl"
+              style={{ width: '52px', height: '92px' }}
             />
           ))}
         </div>
       </div>
 
-      {/* Dots */}
-      <div className="flex items-center justify-center gap-1.5 mt-6">
-        {RESULTS_VIDEOS.map((_, i) => (
-          <button
-            key={i}
-            onClick={() => setActive(i)}
-            className="transition-all rounded-full"
-            style={{
-              width: i === active ? '22px' : '6px',
-              height: '6px',
-              background: i === active ? 'hsl(var(--primary))' : 'hsl(var(--muted-foreground)/0.3)',
-            }}
-          />
-        ))}
-      </div>
-
-      {/* CTA */}
+      {/* ── CTA ── */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
-        className="rounded-2xl glass text-center py-12 px-6 glow-border relative overflow-hidden mt-12"
+        className="rounded-2xl glass text-center py-12 px-6 glow-border relative overflow-hidden mt-12 max-w-3xl mx-auto"
       >
         <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-accent/5 pointer-events-none" />
         <Users className="w-10 h-10 text-primary mx-auto mb-4 relative z-10" />
@@ -296,7 +423,7 @@ export default function ProvenResults() {
           Your Transformation <span className="gradient-text">Starts Now</span>
         </h2>
         <p className="text-muted-foreground font-body max-w-md mx-auto mb-6 relative z-10">
-          Join athletes who are already training with BTCALI. Apply for coaching or start free today.
+          Join athletes already training with BTCALI. Apply for coaching or start free today.
         </p>
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4 relative z-10">
           <Link to="/apply">
