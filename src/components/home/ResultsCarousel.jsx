@@ -6,27 +6,47 @@ import { RESULTS_VIDEOS } from '../../pages/ProvenResults';
 
 const VIDEOS = RESULTS_VIDEOS.slice(0, 8);
 
-// ── Thumbnail hook ─────────────────────────────────────────────────────────────
+// ── Thumbnail hook — reads from the global cache populated by ProvenResults ────
+// The cache (thumbCache / thumbListeners / requestThumb) is module-level in
+// ProvenResults. We re-implement a lightweight local version here that mirrors
+// the same interface so the homepage carousel also benefits.
+const _hpCache = {};
+const _hpListeners = {};
+
+function _hpRequest(src) {
+  if (_hpCache[src]) return;
+  _hpCache[src] = '__loading__';
+  const v = document.createElement('video');
+  v.crossOrigin = 'anonymous';
+  v.muted = true; v.playsInline = true; v.preload = 'metadata'; v.src = src;
+  const finish = (r) => {
+    _hpCache[src] = r; v.src = '';
+    if (_hpListeners[src]) { _hpListeners[src].forEach(fn => fn(r)); _hpListeners[src].clear(); }
+  };
+  v.addEventListener('loadedmetadata', () => { v.currentTime = 0.01; }, { once: true });
+  v.addEventListener('seeked', () => {
+    try {
+      const c = document.createElement('canvas');
+      c.width = v.videoWidth || 360; c.height = v.videoHeight || 640;
+      c.getContext('2d').drawImage(v, 0, 0, c.width, c.height);
+      finish(c.toDataURL('image/jpeg', 0.72));
+    } catch { finish('__fb__'); }
+  }, { once: true });
+  v.addEventListener('error', () => finish('__fb__'), { once: true });
+}
+
+// Pre-kick all carousel thumbs on module load
+VIDEOS.forEach(v => _hpRequest(v.src));
+
 function useThumb(src) {
-  const [thumb, setThumb] = useState(null);
-  const done = useRef(false);
+  const cached = _hpCache[src];
+  const [thumb, setThumb] = useState(cached && cached !== '__loading__' ? cached : null);
   useEffect(() => {
-    if (done.current) return;
-    done.current = true;
-    const v = document.createElement('video');
-    v.crossOrigin = 'anonymous';
-    v.muted = true; v.playsInline = true; v.preload = 'metadata'; v.src = src;
-    v.addEventListener('loadedmetadata', () => { v.currentTime = 0.01; }, { once: true });
-    v.addEventListener('seeked', () => {
-      try {
-        const c = document.createElement('canvas');
-        c.width = v.videoWidth || 360; c.height = v.videoHeight || 640;
-        c.getContext('2d').drawImage(v, 0, 0, c.width, c.height);
-        setThumb(c.toDataURL('image/jpeg', 0.7));
-      } catch { setThumb('__fb__'); }
-      v.src = '';
-    }, { once: true });
-    v.addEventListener('error', () => setThumb('__fb__'), { once: true });
+    if (_hpCache[src] && _hpCache[src] !== '__loading__') { setThumb(_hpCache[src]); return; }
+    if (!_hpListeners[src]) _hpListeners[src] = new Set();
+    _hpListeners[src].add(setThumb);
+    _hpRequest(src);
+    return () => { if (_hpListeners[src]) _hpListeners[src].delete(setThumb); };
   }, [src]);
   return thumb;
 }
@@ -73,21 +93,31 @@ function GhostCard({ src, onClick, side }) {
 function ActiveCard({ src }) {
   const thumb = useThumb(src);
   const [ready, setReady] = useState(false);
+
+  useEffect(() => { setReady(false); }, [src]);
+
   return (
     <div className="absolute inset-0 overflow-hidden rounded-2xl lg:rounded-3xl">
-      {thumb && thumb !== '__fb__'
-        ? <img src={thumb} alt="" className="absolute inset-0 w-full h-full object-cover" style={{ opacity: ready ? 0 : 1, transition: 'opacity 0.4s' }} />
-        : <Shimmer />
-      }
+      {/* Thumbnail always present — never hidden until video is truly ready */}
+      {thumb && thumb !== '__fb__' ? (
+        <img
+          src={thumb} alt=""
+          className="absolute inset-0 w-full h-full object-cover"
+          style={{ opacity: ready ? 0 : 1, transition: 'opacity 0.5s', zIndex: 1 }}
+        />
+      ) : (
+        <Shimmer />
+      )}
       <video
         key={src}
         src={src}
         autoPlay muted loop playsInline preload="auto"
         onCanPlay={() => setReady(true)}
+        onCanPlayThrough={() => setReady(true)}
         className="absolute inset-0 w-full h-full object-cover"
-        style={{ opacity: ready ? 1 : 0, transition: 'opacity 0.4s' }}
+        style={{ opacity: ready ? 1 : 0, transition: 'opacity 0.5s', zIndex: 2 }}
       />
-      <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-transparent to-transparent pointer-events-none" />
+      <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-transparent to-transparent pointer-events-none" style={{ zIndex: 3 }} />
     </div>
   );
 }
