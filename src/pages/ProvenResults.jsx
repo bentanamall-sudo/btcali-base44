@@ -41,9 +41,10 @@ function requestThumb(src, cb) {
 
   const finish = (result) => {
     thumbCache[src] = result;
-    thumbCallbacks[src].forEach(fn => fn(result));
-    delete thumbCallbacks[src];
     v.src = '';
+    const cbs = thumbCallbacks[src] || [];
+    delete thumbCallbacks[src];
+    cbs.forEach(fn => fn(result));
   };
 
   v.addEventListener('loadedmetadata', () => { v.currentTime = 0.01; }, { once: true });
