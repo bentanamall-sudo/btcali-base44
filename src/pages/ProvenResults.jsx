@@ -1,9 +1,13 @@
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { Trophy, Users, ArrowRight } from 'lucide-react';
 import GlowButton from '../components/GlowButton';
 import { PageHeaderLogo } from '../components/Logo';
 import HoverVideoCard from '../components/HoverVideoCard';
+
+// poster: first-frame thumbnail via CDN ?t=0.1 trick — loads as a tiny image, not the full video
+const cdnThumb = (videoUrl) => videoUrl.replace(/\.(mp4|mov)$/, '.jpg');
 
 export const RESULTS_VIDEOS = [
   { src: 'https://media.base44.com/videos/public/69fd635623a9368c153045ad/30726ddef_C2235DA5-CFA6-4B66-A712-1CFD414AEE34.mp4' },
@@ -20,7 +24,9 @@ export const RESULTS_VIDEOS = [
   { src: 'https://media.base44.com/videos/public/69fd635623a9368c153045ad/7da5945e5_2882F251-A505-4D09-9090-44FCD8DAEDB4.mp4' },
   { src: 'https://media.base44.com/videos/public/69fd635623a9368c153045ad/3a47f6089_5DDF0CFF-6FD2-432E-B713-A609FBBD691A.mp4' },
   { src: 'https://media.base44.com/videos/public/69fd635623a9368c153045ad/8062fad09_5fed1466edd6499c94832fcfc468d25c.mov' },
-];
+].map(v => ({ ...v, poster: cdnThumb(v.src) }));
+
+const PAGE_SIZE = 8;
 
 function VideoCard({ video, index }) {
   return (
@@ -28,7 +34,7 @@ function VideoCard({ video, index }) {
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: '-40px' }}
-      transition={{ delay: Math.min(index * 0.04, 0.2) }}
+      transition={{ delay: Math.min(index * 0.04, 0.15) }}
       className="rounded-2xl overflow-hidden relative bg-muted/20 cursor-pointer"
       style={{
         aspectRatio: '9/16',
@@ -38,15 +44,21 @@ function VideoCard({ video, index }) {
     >
       <HoverVideoCard
         src={video.src}
+        poster={video.poster}
+        eager={index < 4}
         className="absolute inset-0 w-full h-full"
       >
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none" />
       </HoverVideoCard>
     </motion.div>
   );
 }
 
 export default function ProvenResults() {
+  const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
+  const visibleVideos = RESULTS_VIDEOS.slice(0, visibleCount);
+  const hasMore = visibleCount < RESULTS_VIDEOS.length;
+
   return (
     <div className="min-h-screen py-12 px-4 sm:px-6 max-w-7xl mx-auto">
       {/* Header */}
@@ -67,11 +79,25 @@ export default function ProvenResults() {
       </motion.div>
 
       {/* Video grid */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-5 mb-16">
-        {RESULTS_VIDEOS.map((video, i) => (
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-5 mb-8">
+        {visibleVideos.map((video, i) => (
           <VideoCard key={i} video={video} index={i} />
         ))}
       </div>
+
+      {/* Load More */}
+      {hasMore && (
+        <div className="flex justify-center mb-16">
+          <motion.button
+            whileHover={{ scale: 1.03 }}
+            whileTap={{ scale: 0.97 }}
+            onClick={() => setVisibleCount(c => c + PAGE_SIZE)}
+            className="px-8 py-3 rounded-xl glass border border-primary/40 text-foreground font-heading font-semibold text-sm hover:border-primary/70 transition-all"
+          >
+            Load More Results
+          </motion.button>
+        </div>
+      )}
 
       {/* CTA */}
       <motion.div

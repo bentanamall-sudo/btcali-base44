@@ -1,67 +1,90 @@
-import { useRef, useCallback } from 'react';
-
-const DARK_POSTER = 'data:image/svg+xml;base64,' + btoa(
-  '<svg xmlns="http://www.w3.org/2000/svg" width="9" height="16"><defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1a1a1a"/><stop offset="1" stop-color="#0a0a0a"/></linearGradient></defs><rect width="9" height="16" fill="url(#g)"/></svg>'
-);
+import { useState, useRef, useCallback } from 'react';
 
 /**
- * HoverVideoCard — plays on hover (desktop) or tap (mobile), pauses+resets on leave.
+ * HoverVideoCard
+ * - Shows a real <img> thumbnail at all times (instant load, no blank cards)
+ * - On hover/tap: mounts <video>, loads + plays it over the thumbnail
+ * - On leave: unmounts the video entirely (frees memory, resets to thumbnail)
+ *
  * Props:
  *   src        — video URL
- *   poster     — optional poster image URL (falls back to dark gradient)
- *   className  — wrapper div className
- *   children   — overlay content (badges, gradients, etc.)
+ *   poster     — thumbnail image URL (must be a real image, not a data-URI)
+ *   className  — wrapper className
+ *   eager      — if true, loads thumbnail eagerly (for first visible row)
+ *   children   — overlay elements
+ *   onClick    — optional click handler
  */
-export default function HoverVideoCard({ src, poster, className = '', children, onClick }) {
+export default function HoverVideoCard({
+  src,
+  poster,
+  className = '',
+  eager = false,
+  children,
+  onClick,
+}) {
+  const [videoActive, setVideoActive] = useState(false);
   const videoRef = useRef(null);
-  const loadedRef = useRef(false);
+  const isMobile = useRef(typeof window !== 'undefined' && window.matchMedia('(hover: none)').matches);
 
-  const play = useCallback(() => {
-    const v = videoRef.current;
-    if (!v) return;
-    if (!loadedRef.current) {
-      v.src = src;
-      v.load();
-      loadedRef.current = true;
-    }
-    v.play().catch(() => {});
-  }, [src]);
-
-  const pause = useCallback(() => {
-    const v = videoRef.current;
-    if (!v) return;
-    v.pause();
-    v.currentTime = 0;
+  // Desktop: mouseenter → mount video + play
+  const handleMouseEnter = useCallback(() => {
+    if (isMobile.current) return;
+    setVideoActive(true);
   }, []);
 
-  // Mobile: toggle on tap
-  const handleTap = useCallback((e) => {
-    const v = videoRef.current;
-    if (!v) return;
-    if (v.paused) {
-      play();
-    } else {
-      pause();
+  // Desktop: mouseleave → unmount video
+  const handleMouseLeave = useCallback(() => {
+    if (isMobile.current) return;
+    setVideoActive(false);
+  }, []);
+
+  // Mobile: tap toggles
+  const handleClick = useCallback((e) => {
+    if (isMobile.current) {
+      setVideoActive(v => !v);
     }
     if (onClick) onClick(e);
-  }, [play, pause, onClick]);
+  }, [onClick]);
+
+  // Once video mounts, play it
+  const handleVideoRef = useCallback((el) => {
+    videoRef.current = el;
+    if (!el) return;
+    el.play().catch(() => {});
+  }, []);
 
   return (
     <div
-      className={className}
-      onMouseEnter={play}
-      onMouseLeave={pause}
-      onClick={handleTap}
+      className={`relative overflow-hidden ${className}`}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+      onClick={handleClick}
     >
-      <video
-        ref={videoRef}
-        poster={poster || DARK_POSTER}
-        preload="none"
-        muted
-        loop
-        playsInline
+      {/* Always-visible thumbnail — instant, no network delay */}
+      <img
+        src={poster}
+        alt=""
+        loading={eager ? 'eager' : 'lazy'}
+        decoding="async"
         className="absolute inset-0 w-full h-full object-cover"
+        style={{ transition: 'opacity 0.2s', opacity: videoActive ? 0 : 1 }}
       />
+
+      {/* Video only mounts on hover — destroyed on leave */}
+      {videoActive && (
+        <video
+          ref={handleVideoRef}
+          src={src}
+          preload="auto"
+          muted
+          loop
+          playsInline
+          autoPlay
+          className="absolute inset-0 w-full h-full object-cover"
+          style={{ opacity: 1 }}
+        />
+      )}
+
       {children}
     </div>
   );
