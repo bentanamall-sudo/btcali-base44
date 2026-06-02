@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect, useCallback } from 'react';
+import { useState, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { ChevronLeft, ChevronRight, ArrowRight } from 'lucide-react';
@@ -6,63 +6,28 @@ import { RESULTS_VIDEOS } from '../../pages/ProvenResults';
 
 const VIDEOS = RESULTS_VIDEOS.slice(0, 8);
 
-// ── Thumbnail hook — reads from the global cache populated by ProvenResults ────
-// The cache (thumbCache / thumbListeners / requestThumb) is module-level in
-// ProvenResults. We re-implement a lightweight local version here that mirrors
-// the same interface so the homepage carousel also benefits.
-const _hpCache = {};
-const _hpListeners = {};
-
-function _hpRequest(src) {
-  if (_hpCache[src]) return;
-  _hpCache[src] = '__loading__';
-  const v = document.createElement('video');
-  v.crossOrigin = 'anonymous';
-  v.muted = true; v.playsInline = true; v.preload = 'metadata'; v.src = src;
-  const finish = (r) => {
-    _hpCache[src] = r; v.src = '';
-    if (_hpListeners[src]) { _hpListeners[src].forEach(fn => fn(r)); _hpListeners[src].clear(); }
-  };
-  v.addEventListener('loadedmetadata', () => { v.currentTime = 0.01; }, { once: true });
-  v.addEventListener('seeked', () => {
-    try {
-      const c = document.createElement('canvas');
-      c.width = v.videoWidth || 360; c.height = v.videoHeight || 640;
-      c.getContext('2d').drawImage(v, 0, 0, c.width, c.height);
-      finish(c.toDataURL('image/jpeg', 0.72));
-    } catch { finish('__fb__'); }
-  }, { once: true });
-  v.addEventListener('error', () => finish('__fb__'), { once: true });
-}
-
-// Pre-kick all carousel thumbs on module load
-VIDEOS.forEach(v => _hpRequest(v.src));
-
-function useThumb(src) {
-  const cached = _hpCache[src];
-  const [thumb, setThumb] = useState(cached && cached !== '__loading__' ? cached : null);
-  useEffect(() => {
-    if (_hpCache[src] && _hpCache[src] !== '__loading__') { setThumb(_hpCache[src]); return; }
-    if (!_hpListeners[src]) _hpListeners[src] = new Set();
-    _hpListeners[src].add(setThumb);
-    _hpRequest(src);
-    return () => { if (_hpListeners[src]) _hpListeners[src].delete(setThumb); };
-  }, [src]);
-  return thumb;
-}
-
-function Shimmer() {
+// ── Warm dark placeholder ─────────────────────────────────────────────────────
+function WarmPlaceholder() {
   return (
     <div
       className="absolute inset-0"
-      style={{ background: 'linear-gradient(135deg,#1a1a1a,#111,#1a1a1a)', backgroundSize: '200% 200%', animation: 'shimmer-bg 1.8s ease infinite' }}
+      style={{ background: 'linear-gradient(160deg, #1e1a12 0%, #141210 50%, #0d0d0d 100%)' }}
     />
   );
 }
 
-// ── Side ghost card — thumbnail only, dimmed ───────────────────────────────────
+// ── Side ghost card — video at frame 0 as thumbnail ───────────────────────────
 function GhostCard({ src, onClick, side }) {
-  const thumb = useThumb(src);
+  const videoRef = useRef(null);
+  const [loaded, setLoaded] = useState(false);
+
+  const handleLoadedData = useCallback(() => {
+    const v = videoRef.current;
+    if (v) v.currentTime = 0.01;
+  }, []);
+
+  const handleSeeked = useCallback(() => setLoaded(true), []);
+
   return (
     <motion.div
       className="hidden lg:block absolute cursor-pointer overflow-hidden rounded-2xl"
@@ -71,53 +36,64 @@ function GhostCard({ src, onClick, side }) {
         aspectRatio: '9/16',
         [side]: 'calc(50% - 330px)',
         top: '50%',
-        transform: `translateY(-50%) ${side === 'right' ? 'translateX(0)' : 'translateX(0)'}`,
+        transform: 'translateY(-50%)',
         zIndex: 1,
         opacity: 0.45,
         filter: 'blur(1.5px)',
         border: '1px solid hsl(var(--glow-primary)/0.15)',
+        background: '#141210',
       }}
       whileHover={{ opacity: 0.7, filter: 'blur(0.5px)' }}
       onClick={onClick}
     >
-      {thumb && thumb !== '__fb__'
-        ? <img src={thumb} alt="" className="absolute inset-0 w-full h-full object-cover" />
-        : <Shimmer />
-      }
+      {!loaded && <WarmPlaceholder />}
+      <video
+        ref={videoRef}
+        src={src}
+        muted
+        playsInline
+        preload="metadata"
+        onLoadedData={handleLoadedData}
+        onSeeked={handleSeeked}
+        className="absolute inset-0 w-full h-full object-cover"
+        style={{ opacity: loaded ? 1 : 0 }}
+      />
       <div className="absolute inset-0 bg-black/40 pointer-events-none" />
     </motion.div>
   );
 }
 
-// ── Active card with autoplay video ───────────────────────────────────────────
+// ── Active card — video plays, shows first frame until canplay ────────────────
 function ActiveCard({ src }) {
-  const thumb = useThumb(src);
+  const videoRef = useRef(null);
   const [ready, setReady] = useState(false);
 
-  useEffect(() => { setReady(false); }, [src]);
+  const handleCanPlay = useCallback(() => {
+    setReady(true);
+    videoRef.current?.play().catch(() => {});
+  }, []);
 
   return (
-    <div className="absolute inset-0 overflow-hidden rounded-2xl lg:rounded-3xl">
-      {/* Thumbnail always present — never hidden until video is truly ready */}
-      {thumb && thumb !== '__fb__' ? (
-        <img
-          src={thumb} alt=""
-          className="absolute inset-0 w-full h-full object-cover"
-          style={{ opacity: ready ? 0 : 1, transition: 'opacity 0.5s', zIndex: 1 }}
-        />
-      ) : (
-        <Shimmer />
-      )}
+    <div className="absolute inset-0 overflow-hidden rounded-2xl lg:rounded-3xl bg-[#141210]">
       <video
+        ref={videoRef}
         key={src}
         src={src}
-        autoPlay muted loop playsInline preload="auto"
-        onCanPlay={() => setReady(true)}
-        onCanPlayThrough={() => setReady(true)}
+        muted
+        loop
+        playsInline
+        preload="auto"
+        onCanPlay={handleCanPlay}
         className="absolute inset-0 w-full h-full object-cover"
-        style={{ opacity: ready ? 1 : 0, transition: 'opacity 0.5s', zIndex: 2 }}
+        style={{ opacity: ready ? 1 : 0, transition: 'opacity 0.5s' }}
       />
-      <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-transparent to-transparent pointer-events-none" style={{ zIndex: 3 }} />
+      {!ready && (
+        <div className="absolute inset-0 flex items-center justify-center">
+          <WarmPlaceholder />
+          <div className="relative z-10 w-5 h-5 border-2 border-primary/50 border-t-primary rounded-full animate-spin" />
+        </div>
+      )}
+      <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-transparent to-transparent pointer-events-none" style={{ zIndex: 2 }} />
     </div>
   );
 }
@@ -131,7 +107,6 @@ export default function ResultsCarousel() {
   const prevIdx = (active - 1 + total) % total;
   const nextIdx = (active + 1) % total;
 
-  // Touch swipe
   const touchStart = useRef(null);
   const onTouchStart = (e) => { touchStart.current = e.touches[0].clientX; };
   const onTouchEnd = (e) => {
@@ -147,10 +122,8 @@ export default function ResultsCarousel() {
       onTouchStart={onTouchStart}
       onTouchEnd={onTouchEnd}
     >
-      {/* Ambient glow */}
       <div className="absolute inset-0 pointer-events-none" style={{ background: 'radial-gradient(ellipse 50% 60% at 50% 50%, hsl(var(--glow-primary)/0.08) 0%, transparent 70%)' }} />
 
-      {/* Header */}
       <div className="text-center mb-6 px-4">
         <p className="text-xs font-heading font-bold text-muted-foreground/50 uppercase tracking-[0.25em] mb-1">
           Real Athletes · Real Results
@@ -160,16 +133,10 @@ export default function ResultsCarousel() {
         </h2>
       </div>
 
-      {/* Carousel arena */}
       <div className="relative flex items-center justify-center" style={{ height: 'calc(min(380px, 88vw) * 16 / 9)' }}>
-
-        {/* Ghost left */}
         <GhostCard src={VIDEOS[prevIdx].src} onClick={prev} side="right" />
-
-        {/* Ghost right */}
         <GhostCard src={VIDEOS[nextIdx].src} onClick={next} side="left" />
 
-        {/* Arrow left */}
         <button
           onClick={prev}
           className="absolute left-4 lg:left-[calc(50%-310px)] z-30 w-11 h-11 rounded-full glass border border-primary/35 flex items-center justify-center hover:border-primary transition-all"
@@ -178,24 +145,15 @@ export default function ResultsCarousel() {
           <ChevronLeft className="w-5 h-5 text-foreground" />
         </button>
 
-        {/* Main active card */}
         <div
           className="relative flex-shrink-0 z-10"
-          style={{
-            width: 'min(340px, 72vw)',
-            aspectRatio: '9/16',
-          }}
+          style={{ width: 'min(340px, 72vw)', aspectRatio: '9/16' }}
         >
-          {/* Gold glow halo */}
-          <div
-            className="absolute pointer-events-none"
-            style={{
-              inset: '-16px',
-              borderRadius: '32px',
-              boxShadow: '0 0 80px hsl(var(--glow-primary)/0.45), 0 0 160px hsl(var(--glow-primary)/0.15)',
-              zIndex: 0,
-            }}
-          />
+          <div className="absolute pointer-events-none" style={{
+            inset: '-16px', borderRadius: '32px',
+            boxShadow: '0 0 80px hsl(var(--glow-primary)/0.45), 0 0 160px hsl(var(--glow-primary)/0.15)',
+            zIndex: 0,
+          }} />
           <AnimatePresence mode="wait">
             <motion.div
               key={active}
@@ -209,14 +167,12 @@ export default function ResultsCarousel() {
               <ActiveCard src={VIDEOS[active].src} />
             </motion.div>
           </AnimatePresence>
-          {/* Gold border */}
           <div
             className="absolute inset-0 rounded-2xl lg:rounded-3xl pointer-events-none"
             style={{ border: '1.5px solid hsl(var(--glow-primary)/0.6)', zIndex: 2 }}
           />
         </div>
 
-        {/* Arrow right */}
         <button
           onClick={next}
           className="absolute right-4 lg:right-[calc(50%-310px)] z-30 w-11 h-11 rounded-full glass border border-primary/35 flex items-center justify-center hover:border-primary transition-all"
@@ -226,7 +182,6 @@ export default function ResultsCarousel() {
         </button>
       </div>
 
-      {/* Dots + counter */}
       <div className="flex flex-col items-center gap-2.5 mt-5">
         <div className="flex gap-1.5">
           {VIDEOS.map((_, i) => (
@@ -245,7 +200,6 @@ export default function ResultsCarousel() {
         <span className="text-xs text-muted-foreground/50 font-body">{active + 1} / {total}</span>
       </div>
 
-      {/* View All */}
       <div className="flex justify-center mt-5">
         <Link to="/results">
           <motion.button

@@ -11,7 +11,7 @@ const logoStyle = {
 
 export function NavbarLogo() {
   return (
-    <img src={LOGO_URL} alt="BTCALI" style={{ ...logoStyle, height: '48px', width: 'auto' }} fetchpriority="high" />
+    <img src={LOGO_URL} alt="BTCALI" loading="eager" fetchpriority="high" width="160" height="48" style={{ ...logoStyle, height: '48px', width: 'auto' }} />
   );
 }
 
