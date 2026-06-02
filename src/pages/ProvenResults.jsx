@@ -6,9 +6,7 @@ import GlowButton from '../components/GlowButton';
 import { PageHeaderLogo } from '../components/Logo';
 import HoverVideoCard from '../components/HoverVideoCard';
 
-// poster: first-frame thumbnail via CDN ?t=0.1 trick — loads as a tiny image, not the full video
-const cdnThumb = (videoUrl) => videoUrl.replace(/\.(mp4|mov)$/, '.jpg');
-
+// Thumbnails are generated client-side from the video's first frame via HoverVideoCard
 export const RESULTS_VIDEOS = [
   { src: 'https://media.base44.com/videos/public/69fd635623a9368c153045ad/30726ddef_C2235DA5-CFA6-4B66-A712-1CFD414AEE34.mp4' },
   { src: 'https://media.base44.com/videos/public/69fd635623a9368c153045ad/ab40f3e73_3DBD7B8B-0985-4366-803A-6BF5FE6E16DA.mp4' },
@@ -24,7 +22,7 @@ export const RESULTS_VIDEOS = [
   { src: 'https://media.base44.com/videos/public/69fd635623a9368c153045ad/7da5945e5_2882F251-A505-4D09-9090-44FCD8DAEDB4.mp4' },
   { src: 'https://media.base44.com/videos/public/69fd635623a9368c153045ad/3a47f6089_5DDF0CFF-6FD2-432E-B713-A609FBBD691A.mp4' },
   { src: 'https://media.base44.com/videos/public/69fd635623a9368c153045ad/8062fad09_5fed1466edd6499c94832fcfc468d25c.mov' },
-].map(v => ({ ...v, poster: cdnThumb(v.src) }));
+];
 
 const PAGE_SIZE = 8;
 

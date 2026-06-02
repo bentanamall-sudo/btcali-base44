@@ -18,7 +18,6 @@ function ResultCard({ item, eager }) {
     >
       <HoverVideoCard
         src={item.src}
-        poster={item.poster}
         eager={eager}
         className="absolute inset-0 w-full h-full"
         onClick={() => navigate('/results')}
