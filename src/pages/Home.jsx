@@ -1,13 +1,13 @@
 import HeroSection from '../components/home/HeroSection';
 import FreeTutorialsBanner from '../components/home/FreeTutorialsBanner';
 import FooterSection from '../components/home/FooterSection';
-import ResultsCarousel from '../components/home/ResultsCarousel';
+import ResultsTeaser from '../components/home/ResultsTeaser';
 
 export default function Home() {
   return (
     <div>
       <HeroSection />
-      <ResultsCarousel />
+      <ResultsTeaser />
       <FreeTutorialsBanner />
       <FooterSection />
     </div>
