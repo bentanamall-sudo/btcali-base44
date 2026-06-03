@@ -4,106 +4,67 @@ import { Link } from 'react-router-dom';
 import { ChevronLeft, ChevronRight, Users, ArrowRight } from 'lucide-react';
 import GlowButton from '../components/GlowButton';
 
-// ── Video list with thumbnail extraction ──────────────────────────────────
+// ── Video list with real uploaded thumbnails (matched by upload order) ────
 export const RESULTS_VIDEOS = [
-  { src: 'https://media.base44.com/videos/public/69fd635623a9368c153045ad/30726ddef_C2235DA5-CFA6-4B66-A712-1CFD414AEE34.mp4' },
-  { src: 'https://media.base44.com/videos/public/69fd635623a9368c153045ad/ab40f3e73_3DBD7B8B-0985-4366-803A-6BF5FE6E16DA.mp4' },
-  { src: 'https://media.base44.com/videos/public/69fd635623a9368c153045ad/d03b8e901_87AA93C8-C62D-44CB-92B4-25DE7D6EB9EF.mp4' },
-  { src: 'https://media.base44.com/videos/public/69fd635623a9368c153045ad/33e465fb1_8FB2940B-72DC-4171-B5BD-3B262CA0230A.mp4' },
-  { src: 'https://media.base44.com/videos/public/69fd635623a9368c153045ad/9bce54fa0_F8C3EC32-6F28-43F9-9274-5DCA2E4AD3AE.mp4' },
-  { src: 'https://media.base44.com/videos/public/69fd635623a9368c153045ad/b29797e50_C52B9D44-CCC6-4C11-B563-D29E72D5E742.mp4' },
-  { src: 'https://media.base44.com/videos/public/69fd635623a9368c153045ad/a7025db1d_C88E406D-F072-4021-9F9D-376E1AE850BA.mp4' },
-  { src: 'https://media.base44.com/videos/public/69fd635623a9368c153045ad/acb324d63_D9DC1424-7087-4C6F-BC4C-83A843896E19.mp4' },
-  { src: 'https://media.base44.com/videos/public/69fd635623a9368c153045ad/7c2816870_BF734FD2-A5B6-4EA6-9DFC-3725ABB1BAAD.mp4' },
-  { src: 'https://media.base44.com/videos/public/69fd635623a9368c153045ad/3a0d49733_D05272AD-F171-4C80-8119-90847BFEFB36.mp4' },
-  { src: 'https://media.base44.com/videos/public/69fd635623a9368c153045ad/bb51770b0_61F09AF3-D0FC-44CC-8EC6-6037B4540D78.mp4' },
-  { src: 'https://media.base44.com/videos/public/69fd635623a9368c153045ad/7da5945e5_2882F251-A505-4D09-9090-44FCD8DAEDB4.mp4' },
-  { src: 'https://media.base44.com/videos/public/69fd635623a9368c153045ad/3a47f6089_5DDF0CFF-6FD2-432E-B713-A609FBBD691A.mp4' },
-  { src: 'https://media.base44.com/videos/public/69fd635623a9368c153045ad/8062fad09_5fed1466edd6499c94832fcfc468d25c.mov' },
+  { src: 'https://media.base44.com/videos/public/69fd635623a9368c153045ad/ca23c8035_1A1AF447-0FC4-4CBD-8F32-7070E68FAF81.mp4',   thumbnailSrc: 'https://media.base44.com/images/public/69fd635623a9368c153045ad/bcc2e219f_Screenshot2026-06-03at51732pm.png' },
+  { src: 'https://media.base44.com/videos/public/69fd635623a9368c153045ad/8587eecf9_5DDF0CFF-6FD2-432E-B713-A609FBBD691A.mp4',   thumbnailSrc: 'https://media.base44.com/images/public/69fd635623a9368c153045ad/cf260e6a6_Screenshot2026-06-03at51745pm.png' },
+  { src: 'https://media.base44.com/videos/public/69fd635623a9368c153045ad/753c2ae4e_03246CBA-6320-4FEC-8025-85BBE3E3C17F.mp4',   thumbnailSrc: 'https://media.base44.com/images/public/69fd635623a9368c153045ad/7b9df4871_Screenshot2026-06-03at51801pm.png' },
+  { src: 'https://media.base44.com/videos/public/69fd635623a9368c153045ad/a9f5d1c68_2882F251-A505-4D09-9090-44FCD8DAEDB4.mp4',   thumbnailSrc: 'https://media.base44.com/images/public/69fd635623a9368c153045ad/f5abcd0de_Screenshot2026-06-03at51814pm.png' },
+  { src: 'https://media.base44.com/videos/public/69fd635623a9368c153045ad/808191968_61F09AF3-D0FC-44CC-8EC6-6037B4540D78.mp4',   thumbnailSrc: 'https://media.base44.com/images/public/69fd635623a9368c153045ad/99aa4c0b5_Screenshot2026-06-03at51828pm.png' },
+  { src: 'https://media.base44.com/videos/public/69fd635623a9368c153045ad/815783111_D05272AD-F171-4C80-8119-90847BFEFB36.mp4',   thumbnailSrc: 'https://media.base44.com/images/public/69fd635623a9368c153045ad/38d2730e1_Screenshot2026-06-03at51840pm.png' },
+  { src: 'https://media.base44.com/videos/public/69fd635623a9368c153045ad/58554d21d_F8C3EC32-6F28-43F9-9274-5DCA2E4AD3AE.mp4',   thumbnailSrc: 'https://media.base44.com/images/public/69fd635623a9368c153045ad/becb3ec96_Screenshot2026-06-03at51852pm.png' },
+  { src: 'https://media.base44.com/videos/public/69fd635623a9368c153045ad/813b0ba42_C52B9D44-CCC6-4C11-B563-D29E72D5E742.mp4',   thumbnailSrc: 'https://media.base44.com/images/public/69fd635623a9368c153045ad/776fb17d2_Screenshot2026-06-03at51904pm.png' },
+  { src: 'https://media.base44.com/videos/public/69fd635623a9368c153045ad/ef3563e72_C88E406D-F072-4021-9F9D-376E1AE850BA.mp4',   thumbnailSrc: 'https://media.base44.com/images/public/69fd635623a9368c153045ad/6ce8ea7e0_Screenshot2026-06-03at51921pm.png' },
+  { src: 'https://media.base44.com/videos/public/69fd635623a9368c153045ad/da381e74b_D9DC1424-7087-4C6F-BC4C-83A843896E19.mp4',   thumbnailSrc: 'https://media.base44.com/images/public/69fd635623a9368c153045ad/c1ecbf16f_Screenshot2026-06-03at51936pm.png' },
+  { src: 'https://media.base44.com/videos/public/69fd635623a9368c153045ad/d1e1f786f_BF734FD2-A5B6-4EA6-9DFC-3725ABB1BAAD.mp4',   thumbnailSrc: 'https://media.base44.com/images/public/69fd635623a9368c153045ad/ea11ec65c_Screenshot2026-06-03at51948pm.png' },
+  { src: 'https://media.base44.com/videos/public/69fd635623a9368c153045ad/a13a2b724_8FB2940B-72DC-4171-B5BD-3B262CA0230A.mp4',   thumbnailSrc: 'https://media.base44.com/images/public/69fd635623a9368c153045ad/4436461af_Screenshot2026-06-03at52008pm.png' },
+  { src: 'https://media.base44.com/videos/public/69fd635623a9368c153045ad/3b339ab9b_87AA93C8-C62D-44CB-92B4-25DE7D6EB9EF.mp4',   thumbnailSrc: 'https://media.base44.com/images/public/69fd635623a9368c153045ad/be0afd109_Screenshot2026-06-03at52026pm.png' },
+  { src: 'https://media.base44.com/videos/public/69fd635623a9368c153045ad/f5dd79d17_3DBD7B8B-0985-4366-803A-6BF5FE6E16DA.mp4',   thumbnailSrc: 'https://media.base44.com/images/public/69fd635623a9368c153045ad/f2b89c68b_Screenshot2026-06-03at52046pm.png' },
 ];
 
 const TOTAL = RESULTS_VIDEOS.length;
 
-// Generate video thumbnails on demand
-function generateVideoThumbnail(videoSrc) {
-  return new Promise((resolve) => {
-    const video = document.createElement('video');
-    video.src = videoSrc;
-    video.crossOrigin = 'anonymous';
-    video.muted = true;
-    video.playsInline = true;
-    
-    const handleLoadedMetadata = () => {
-      video.currentTime = 0.1; // Capture at 0.1 seconds
-    };
-    
-    const handleSeeked = () => {
-      const canvas = document.createElement('canvas');
-      canvas.width = video.videoWidth;
-      canvas.height = video.videoHeight;
-      const ctx = canvas.getContext('2d');
-      ctx.drawImage(video, 0, 0);
-      resolve(canvas.toDataURL('image/jpeg', 0.8));
-      video.pause();
-    };
-    
-    video.addEventListener('loadedmetadata', handleLoadedMetadata);
-    video.addEventListener('seeked', handleSeeked, { once: true });
-    video.load();
-  });
-}
-
-// Warm placeholder shown while video loads
-function WarmPlaceholder() {
-  return (
-    <div className="absolute inset-0" style={{
-      background: 'linear-gradient(160deg,#2a2116 0%,#1a150e 50%,#111 100%)',
-    }}>
-      <div className="absolute inset-0 flex items-center justify-center">
-        <div className="w-8 h-8 rounded-full border-2 border-primary/40 border-t-primary animate-spin" />
-      </div>
-    </div>
-  );
-}
-
-// ── ONE active video - only plays when clicked
-function ActiveVideo({ src, shouldPlay }) {
-  const [ready, setReady] = useState(false);
+// ── Active video with real thumbnail shown instantly, fades to video on canplay
+function ActiveVideo({ src, thumbnailSrc }) {
+  const [videoReady, setVideoReady] = useState(false);
   const videoRef = useRef(null);
 
   useEffect(() => {
+    setVideoReady(false);
     const v = videoRef.current;
     if (!v) return;
-    
-    if (shouldPlay) {
-      setReady(false);
-      v.src = src;
-      v.load();
-      const onCanPlay = () => { 
-        setReady(true); 
-        v.play().catch(() => {}); 
-      };
-      v.addEventListener('canplay', onCanPlay, { once: true });
-      return () => { v.pause(); };
-    } else {
+    v.src = src;
+    v.load();
+    const onCanPlay = () => {
+      setVideoReady(true);
+      v.play().catch(() => {});
+    };
+    v.addEventListener('canplay', onCanPlay, { once: true });
+    return () => {
       v.pause();
       v.removeAttribute('src');
       v.load();
-      setReady(false);
-    }
-  }, [src, shouldPlay]);
+    };
+  }, [src]);
 
   return (
     <div className="absolute inset-0 overflow-hidden rounded-3xl">
-      {!ready && <WarmPlaceholder />}
+      {/* Thumbnail — always rendered, instantly visible */}
+      <img
+        src={thumbnailSrc}
+        alt=""
+        className="absolute inset-0 w-full h-full object-cover"
+        style={{ opacity: videoReady ? 0 : 1, transition: 'opacity 0.3s', zIndex: 1 }}
+      />
+      {/* Video — fades in only after canplay fires */}
       <video
         ref={videoRef}
         muted loop playsInline
         preload="none"
         className="absolute inset-0 w-full h-full object-cover"
-        style={{ opacity: ready ? 1 : 0, transition: 'opacity 0.3s' }}
+        style={{ opacity: videoReady ? 1 : 0, transition: 'opacity 0.3s', zIndex: 2 }}
       />
-      <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent pointer-events-none" style={{ zIndex: 1 }} />
+      <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent pointer-events-none" style={{ zIndex: 3 }} />
     </div>
   );
 }
@@ -183,18 +144,6 @@ const MobileThumbTile = memo(function MobileThumbTile({ index, isActive, onClick
 export default function ProvenResults() {
   const [active, setActive] = useState(0);
   const [rotationOffset, setRotationOffset] = useState(0);
-  const [thumbnails, setThumbnails] = useState(Array(TOTAL).fill(null));
-
-  // Generate all thumbnails on mount
-  useEffect(() => {
-    const generateThumbnails = async () => {
-      const thumbs = await Promise.all(
-        RESULTS_VIDEOS.map(v => generateVideoThumbnail(v.src))
-      );
-      setThumbnails(thumbs);
-    };
-    generateThumbnails();
-  }, []);
 
   // Memoize computed values
   const orbitalPositions = useMemo(() => {
@@ -274,7 +223,7 @@ export default function ProvenResults() {
               index={index}
               isActive={index === active}
               onClick={() => goTo(index)}
-              thumbnail={thumbnails[index]}
+              thumbnail={RESULTS_VIDEOS[index].thumbnailSrc}
             />
           ))}
 
@@ -293,7 +242,7 @@ export default function ProvenResults() {
                 transition={{ duration: 0.25 }}
                 className="absolute inset-0"
               >
-                <ActiveVideo src={RESULTS_VIDEOS[active].src} shouldPlay={true} />
+                <ActiveVideo src={RESULTS_VIDEOS[active].src} thumbnailSrc={RESULTS_VIDEOS[active].thumbnailSrc} />
               </motion.div>
             </AnimatePresence>
             <div className="absolute inset-0 rounded-3xl pointer-events-none" style={{
@@ -343,7 +292,7 @@ export default function ProvenResults() {
               transition={{ duration: 0.22 }}
               className="absolute inset-0"
             >
-              <ActiveVideo src={RESULTS_VIDEOS[active].src} shouldPlay={true} />
+              <ActiveVideo src={RESULTS_VIDEOS[active].src} thumbnailSrc={RESULTS_VIDEOS[active].thumbnailSrc} />
             </motion.div>
           </AnimatePresence>
           <div className="absolute inset-0 rounded-3xl pointer-events-none" style={{
@@ -367,8 +316,8 @@ export default function ProvenResults() {
         </div>
 
         <div className="flex gap-2 overflow-x-auto px-4 pb-2" style={{ scrollbarWidth: 'none' }}>
-          {RESULTS_VIDEOS.map((_, i) => (
-            <MobileThumbTile key={i} index={i} isActive={i === active} onClick={() => goTo(i)} thumbnail={thumbnails[i]} />
+          {RESULTS_VIDEOS.map((v, i) => (
+            <MobileThumbTile key={i} index={i} isActive={i === active} onClick={() => goTo(i)} thumbnail={v.thumbnailSrc} />
           ))}
         </div>
       </div>

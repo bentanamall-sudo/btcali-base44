@@ -257,26 +257,39 @@ export default function AthleteDiagnostic() {
     // 5 — Coaching Fit
     <div key="s5" className="space-y-0">
       <Field>
-        <Label>Are you willing to invest in BTCALI coaching?</Label>
-        {yesNo('coaching_investment')}
-      </Field>
-      <Field>
-        <Label>Which payment option interests you most?</Label>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          {['AUD $39.99/week (special offer)','AUD $150/month'].map(v => (
-            <motion.button
-              key={v}
-              whileTap={{ scale: 0.97 }}
-              onClick={() => set('payment_option', v)}
-              className={`p-4 rounded-xl border text-center transition-all ${data.payment_option === v ? 'gradient-bg-strong glow-primary border-primary/60 text-primary-foreground' : 'glass border-border/40 text-foreground hover:border-primary/40'}`}
-            >
-              <div className="font-heading font-bold text-xl">{v}</div>
-              {v === 'AUD $39.99/week (special offer)' && <div className="text-xs mt-1 font-body opacity-80">Normally AUD $49.99/week</div>}
-              {v === 'AUD $150/month' && <div className="text-xs mt-1 font-body opacity-80">Normally AUD $200/month</div>}
-            </motion.button>
+        <Label>BTCALI 1-on-1 coaching is a paid coaching service starting from AUD $39.99/week. Are you willing to invest in coaching to accelerate your progress?</Label>
+        <div className="grid grid-cols-1 gap-2">
+          {[
+            'Yes, I am willing to invest in BTCALI coaching',
+            'I would like more information first',
+            'No, I am not interested in paid coaching',
+          ].map(v => (
+            <OptionBtn key={v} label={v} selected={data.coaching_investment === v} onClick={() => set('coaching_investment', v)} />
           ))}
         </div>
       </Field>
+      {data.coaching_investment === 'Yes, I am willing to invest in BTCALI coaching' && (
+        <Field>
+          <Label>Which paid 1-on-1 coaching option interests you most?</Label>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            {[
+              { label: 'AUD $39.99/week', sub: 'Less than AUD $6/day' },
+              { label: 'AUD $150/month', sub: 'Save approximately AUD $50/month' },
+            ].map(({ label, sub }) => (
+              <motion.button
+                key={label}
+                whileTap={{ scale: 0.97 }}
+                onClick={() => set('payment_option', label)}
+                className={`p-4 rounded-xl border text-center transition-all ${data.payment_option === label ? 'gradient-bg-strong glow-primary border-primary/60 text-primary-foreground' : 'glass border-border/40 text-foreground hover:border-primary/40'}`}
+              >
+                <div className="font-heading font-bold text-xl">{label}</div>
+                <div className="text-xs mt-1 font-body opacity-80">{sub}</div>
+              </motion.button>
+            ))}
+          </div>
+          <p className="text-xs text-muted-foreground font-body mt-2">Selecting an option above means you are interested in paid BTCALI 1-on-1 coaching.</p>
+        </Field>
+      )}
       <Field>
         <Label>Are you willing to stay consistent for multiple months to reach your goals?</Label>
         {yesNo('consistency_answer')}
