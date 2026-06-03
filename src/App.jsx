@@ -17,7 +17,7 @@ import Programs from './pages/Programs';
 import CoachingApply from './pages/CoachingApply';
 import AdminAnalytics from './pages/AdminAnalytics';
 import Dashboard from './pages/Dashboard';
-import ProvenResults from './pages/ProvenResults';
+import ProvenResults from './pages/ProvenResults.jsx';
 import Pricing from './pages/Pricing';
 import AICoach from './pages/AICoach';
 import CoachDashboard from './pages/CoachDashboard';
