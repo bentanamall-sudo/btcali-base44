@@ -4,26 +4,39 @@ import { Link } from 'react-router-dom';
 import { ChevronLeft, ChevronRight, Users, ArrowRight } from 'lucide-react';
 import GlowButton from '../components/GlowButton';
 
-// ── Video + thumbnail list ─────────────────────────────────────────────────────
+// ── Video list ─────────────────────────────────────────────────────────────────
 export const RESULTS_VIDEOS = [
-  { src: 'https://media.base44.com/videos/public/69fd635623a9368c153045ad/30726ddef_C2235DA5-CFA6-4B66-A712-1CFD414AEE34.mp4', thumb: 'https://media.base44.com/images/public/69fd635623a9368c153045ad/13036ca1b_generated_image.png' },
-  { src: 'https://media.base44.com/videos/public/69fd635623a9368c153045ad/ab40f3e73_3DBD7B8B-0985-4366-803A-6BF5FE6E16DA.mp4', thumb: 'https://media.base44.com/images/public/69fd635623a9368c153045ad/560b41a4e_generated_image.png' },
-  { src: 'https://media.base44.com/videos/public/69fd635623a9368c153045ad/d03b8e901_87AA93C8-C62D-44CB-92B4-25DE7D6EB9EF.mp4', thumb: 'https://media.base44.com/images/public/69fd635623a9368c153045ad/8f772d440_generated_image.png' },
-  { src: 'https://media.base44.com/videos/public/69fd635623a9368c153045ad/33e465fb1_8FB2940B-72DC-4171-B5BD-3B262CA0230A.mp4', thumb: 'https://media.base44.com/images/public/69fd635623a9368c153045ad/4d080a500_generated_image.png' },
-  { src: 'https://media.base44.com/videos/public/69fd635623a9368c153045ad/9bce54fa0_F8C3EC32-6F28-43F9-9274-5DCA2E4AD3AE.mp4', thumb: 'https://media.base44.com/images/public/69fd635623a9368c153045ad/b4ca08603_generated_image.png' },
-  { src: 'https://media.base44.com/videos/public/69fd635623a9368c153045ad/b29797e50_C52B9D44-CCC6-4C11-B563-D29E72D5E742.mp4', thumb: 'https://media.base44.com/images/public/69fd635623a9368c153045ad/9294d6e8c_generated_image.png' },
-  { src: 'https://media.base44.com/videos/public/69fd635623a9368c153045ad/a7025db1d_C88E406D-F072-4021-9F9D-376E1AE850BA.mp4', thumb: 'https://media.base44.com/images/public/69fd635623a9368c153045ad/a96d52273_generated_image.png' },
-  { src: 'https://media.base44.com/videos/public/69fd635623a9368c153045ad/acb324d63_D9DC1424-7087-4C6F-BC4C-83A843896E19.mp4', thumb: 'https://media.base44.com/images/public/69fd635623a9368c153045ad/334bed7ab_generated_image.png' },
-  { src: 'https://media.base44.com/videos/public/69fd635623a9368c153045ad/7c2816870_BF734FD2-A5B6-4EA6-9DFC-3725ABB1BAAD.mp4', thumb: 'https://media.base44.com/images/public/69fd635623a9368c153045ad/e70ea0b67_generated_image.png' },
-  { src: 'https://media.base44.com/videos/public/69fd635623a9368c153045ad/3a0d49733_D05272AD-F171-4C80-8119-90847BFEFB36.mp4', thumb: 'https://media.base44.com/images/public/69fd635623a9368c153045ad/3042f6aad_generated_image.png' },
-  { src: 'https://media.base44.com/videos/public/69fd635623a9368c153045ad/bb51770b0_61F09AF3-D0FC-44CC-8EC6-6037B4540D78.mp4', thumb: 'https://media.base44.com/images/public/69fd635623a9368c153045ad/562d9cce6_generated_image.png' },
-  { src: 'https://media.base44.com/videos/public/69fd635623a9368c153045ad/7da5945e5_2882F251-A505-4D09-9090-44FCD8DAEDB4.mp4', thumb: 'https://media.base44.com/images/public/69fd635623a9368c153045ad/752deea19_generated_image.png' },
-  { src: 'https://media.base44.com/videos/public/69fd635623a9368c153045ad/3a47f6089_5DDF0CFF-6FD2-432E-B713-A609FBBD691A.mp4', thumb: 'https://media.base44.com/images/public/69fd635623a9368c153045ad/54583ecb0_generated_image.png' },
-  { src: 'https://media.base44.com/videos/public/69fd635623a9368c153045ad/8062fad09_5fed1466edd6499c94832fcfc468d25c.mov', thumb: 'https://media.base44.com/images/public/69fd635623a9368c153045ad/0bc012989_generated_image.png' },
+  { src: 'https://media.base44.com/videos/public/69fd635623a9368c153045ad/30726ddef_C2235DA5-CFA6-4B66-A712-1CFD414AEE34.mp4' },
+  { src: 'https://media.base44.com/videos/public/69fd635623a9368c153045ad/ab40f3e73_3DBD7B8B-0985-4366-803A-6BF5FE6E16DA.mp4' },
+  { src: 'https://media.base44.com/videos/public/69fd635623a9368c153045ad/d03b8e901_87AA93C8-C62D-44CB-92B4-25DE7D6EB9EF.mp4' },
+  { src: 'https://media.base44.com/videos/public/69fd635623a9368c153045ad/33e465fb1_8FB2940B-72DC-4171-B5BD-3B262CA0230A.mp4' },
+  { src: 'https://media.base44.com/videos/public/69fd635623a9368c153045ad/9bce54fa0_F8C3EC32-6F28-43F9-9274-5DCA2E4AD3AE.mp4' },
+  { src: 'https://media.base44.com/videos/public/69fd635623a9368c153045ad/b29797e50_C52B9D44-CCC6-4C11-B563-D29E72D5E742.mp4' },
+  { src: 'https://media.base44.com/videos/public/69fd635623a9368c153045ad/a7025db1d_C88E406D-F072-4021-9F9D-376E1AE850BA.mp4' },
+  { src: 'https://media.base44.com/videos/public/69fd635623a9368c153045ad/acb324d63_D9DC1424-7087-4C6F-BC4C-83A843896E19.mp4' },
+  { src: 'https://media.base44.com/videos/public/69fd635623a9368c153045ad/7c2816870_BF734FD2-A5B6-4EA6-9DFC-3725ABB1BAAD.mp4' },
+  { src: 'https://media.base44.com/videos/public/69fd635623a9368c153045ad/3a0d49733_D05272AD-F171-4C80-8119-90847BFEFB36.mp4' },
+  { src: 'https://media.base44.com/videos/public/69fd635623a9368c153045ad/bb51770b0_61F09AF3-D0FC-44CC-8EC6-6037B4540D78.mp4' },
+  { src: 'https://media.base44.com/videos/public/69fd635623a9368c153045ad/7da5945e5_2882F251-A505-4D09-9090-44FCD8DAEDB4.mp4' },
+  { src: 'https://media.base44.com/videos/public/69fd635623a9368c153045ad/3a47f6089_5DDF0CFF-6FD2-432E-B713-A609FBBD691A.mp4' },
+  { src: 'https://media.base44.com/videos/public/69fd635623a9368c153045ad/8062fad09_5fed1466edd6499c94832fcfc468d25c.mov' },
 ];
 
-// ── Active video — thumbnail shown instantly, video fades in ──────────────────
-function ActiveVideo({ src, thumb }) {
+// Warm placeholder shown while video loads — instant, no network
+function WarmPlaceholder() {
+  return (
+    <div className="absolute inset-0" style={{
+      background: 'linear-gradient(160deg,#2a2116 0%,#1a150e 50%,#111 100%)',
+    }}>
+      <div className="absolute inset-0 flex items-center justify-center">
+        <div className="w-8 h-8 rounded-full border-2 border-primary/40 border-t-primary animate-spin" />
+      </div>
+    </div>
+  );
+}
+
+// ── ONE active video ──────────────────────────────────────────────────────────
+function ActiveVideo({ src }) {
   const [ready, setReady] = useState(false);
   const videoRef = useRef(null);
 
@@ -40,18 +53,21 @@ function ActiveVideo({ src, thumb }) {
 
   return (
     <div className="absolute inset-0 overflow-hidden rounded-3xl">
-      <img src={thumb} alt="" className="absolute inset-0 w-full h-full object-cover"
-        style={{ opacity: ready ? 0 : 1, transition: 'opacity 0.3s', zIndex: 1 }} />
-      <video ref={videoRef} muted loop playsInline preload="auto"
+      {!ready && <WarmPlaceholder />}
+      <video
+        ref={videoRef}
+        muted loop playsInline
+        preload="auto"
         className="absolute inset-0 w-full h-full object-cover"
-        style={{ opacity: ready ? 1 : 0, transition: 'opacity 0.3s', zIndex: 2 }} />
-      <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent pointer-events-none" style={{ zIndex: 3 }} />
+        style={{ opacity: ready ? 1 : 0, transition: 'opacity 0.3s' }}
+      />
+      <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent pointer-events-none" style={{ zIndex: 1 }} />
     </div>
   );
 }
 
-// ── Orbit thumbnail — real <img>, zero video ──────────────────────────────────
-function OrbitalThumb({ thumb, angleDeg, orbitRadiusX, orbitRadiusY, isActive, onClick }) {
+// ── Orbit thumbnail — STATIC warm gradient only, zero network cost ─────────────
+function OrbitalThumb({ src, angleDeg, orbitRadiusX, orbitRadiusY, isActive, onClick, index }) {
   const rad = ((angleDeg - 90) * Math.PI) / 180;
   const sin = Math.sin(rad);
   const depth = (sin + 1) / 2;
@@ -62,35 +78,45 @@ function OrbitalThumb({ thumb, angleDeg, orbitRadiusX, orbitRadiusY, isActive, o
   const opacity = isActive ? 0 : 0.75 + depth * 0.25;
   const zIndex = isActive ? 0 : Math.round(depth * 12) + 2;
 
+  // Rotate hue slightly per index for visual variety without network cost
+  const hue = 30 + (index * 7) % 25;
+
   return (
-    <div className="absolute cursor-pointer overflow-hidden" onClick={onClick}
+    <div
+      className="absolute cursor-pointer overflow-hidden"
       style={{
         width: w, height: h,
         left: `calc(50% + ${x}px - ${w / 2}px)`,
         top: `calc(50% + ${y}px - ${h / 2}px)`,
-        zIndex, borderRadius: '10px',
+        zIndex,
+        borderRadius: '10px',
         border: '1.5px solid hsl(var(--glow-primary)/0.5)',
-        transform: `scale(${scale})`, opacity,
+        transform: `scale(${scale})`,
+        opacity,
         transition: 'transform 0.4s ease, opacity 0.4s ease',
-      }}>
-      <img src={thumb} alt="" className="w-full h-full object-cover" loading="lazy" />
-    </div>
+        background: `linear-gradient(160deg, hsl(${hue} 40% 16%) 0%, hsl(${hue} 30% 10%) 60%, #111 100%)`,
+      }}
+      onClick={onClick}
+    />
   );
 }
 
-// ── Mobile thumbnail tile — real <img> ────────────────────────────────────────
-function MobileThumbTile({ thumb, isActive, onClick }) {
+// ── Mobile thumbnail tile — static warm gradient ──────────────────────────────
+function MobileThumbTile({ index, isActive, onClick }) {
+  const hue = 30 + (index * 7) % 25;
   return (
-    <div className="relative flex-shrink-0 rounded-xl cursor-pointer overflow-hidden" onClick={onClick}
+    <div
+      className="relative flex-shrink-0 rounded-xl cursor-pointer"
       style={{
         width: '54px', height: '96px',
         border: isActive ? '2px solid hsl(var(--primary))' : '1.5px solid hsl(var(--glow-primary)/0.3)',
-        opacity: isActive ? 1 : 0.65,
+        opacity: isActive ? 1 : 0.6,
         transition: 'border-color 0.2s, opacity 0.2s',
+        background: `linear-gradient(160deg, hsl(${hue} 40% 16%) 0%, #111 100%)`,
         flexShrink: 0,
-      }}>
-      <img src={thumb} alt="" className="absolute inset-0 w-full h-full object-cover" loading="lazy" />
-    </div>
+      }}
+      onClick={onClick}
+    />
   );
 }
 
@@ -138,6 +164,7 @@ export default function ProvenResults() {
 
   return (
     <div className="min-h-screen py-8 px-4" onTouchStart={onTouchStart} onTouchEnd={onTouchEnd}>
+      {/* Header */}
       <div className="text-center mb-8">
         <p className="text-xs font-heading font-bold text-muted-foreground/50 uppercase tracking-[0.25em] mb-2">
           Real Athletes · Real Results
@@ -150,33 +177,60 @@ export default function ProvenResults() {
         </p>
       </div>
 
-      {/* ══ DESKTOP ══ */}
+      {/* ══ DESKTOP ══════════════════════════════════════════════════════════════ */}
       <div className="hidden lg:block">
         <div className="relative mx-auto" style={{ width: '900px', height: '780px' }}>
+
           {RESULTS_VIDEOS.map((v, i) => (
-            <OrbitalThumb key={i} thumb={v.thumb}
+            <OrbitalThumb
+              key={i}
+              src={v.src}
+              index={i}
               angleDeg={(i / total) * 360 + rotationOffset}
-              orbitRadiusX={340} orbitRadiusY={210}
-              isActive={i === active} onClick={() => goTo(i)} />
+              orbitRadiusX={340}
+              orbitRadiusY={210}
+              isActive={i === active}
+              onClick={() => goTo(i)}
+            />
           ))}
-          <div className="absolute" style={{ width: '300px', aspectRatio: '9/16', left: 'calc(50% - 150px)', top: 'calc(50% - 267px)', zIndex: 20 }}>
+
+          {/* Centre — ONE video element total */}
+          <div className="absolute" style={{
+            width: '300px', aspectRatio: '9/16',
+            left: 'calc(50% - 150px)', top: 'calc(50% - 267px)',
+            zIndex: 20,
+          }}>
             <AnimatePresence mode="wait">
-              <motion.div key={active} initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.95 }} transition={{ duration: 0.25 }} className="absolute inset-0">
-                <ActiveVideo src={RESULTS_VIDEOS[active].src} thumb={RESULTS_VIDEOS[active].thumb} />
+              <motion.div
+                key={active}
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.95 }}
+                transition={{ duration: 0.25 }}
+                className="absolute inset-0"
+              >
+                <ActiveVideo src={RESULTS_VIDEOS[active].src} />
               </motion.div>
             </AnimatePresence>
-            <div className="absolute inset-0 rounded-3xl pointer-events-none" style={{ border: '1.5px solid hsl(var(--glow-primary)/0.7)', zIndex: 30 }} />
+            <div className="absolute inset-0 rounded-3xl pointer-events-none" style={{
+              border: '1.5px solid hsl(var(--glow-primary)/0.7)', zIndex: 30,
+            }} />
           </div>
-          <button onClick={prev} className="absolute z-30 w-14 h-14 rounded-full glass border border-primary/40 flex items-center justify-center hover:border-primary transition-colors"
+
+          {/* Arrows */}
+          <button onClick={prev}
+            className="absolute z-30 w-14 h-14 rounded-full glass border border-primary/40 flex items-center justify-center hover:border-primary transition-colors"
             style={{ left: 'calc(50% - 390px)', top: 'calc(50% - 28px)' }}>
             <ChevronLeft className="w-6 h-6 text-foreground" />
           </button>
-          <button onClick={next} className="absolute z-30 w-14 h-14 rounded-full glass border border-primary/40 flex items-center justify-center hover:border-primary transition-colors"
+          <button onClick={next}
+            className="absolute z-30 w-14 h-14 rounded-full glass border border-primary/40 flex items-center justify-center hover:border-primary transition-colors"
             style={{ right: 'calc(50% - 390px)', top: 'calc(50% - 28px)' }}>
             <ChevronRight className="w-6 h-6 text-foreground" />
           </button>
         </div>
+
+        {/* Counter + dots */}
         <div className="flex flex-col items-center gap-3 mt-2">
           <p className="font-heading font-bold text-lg">
             <span className="gradient-text">{active + 1}</span>
@@ -193,21 +247,31 @@ export default function ProvenResults() {
         </div>
       </div>
 
-      {/* ══ MOBILE ══ */}
+      {/* ══ MOBILE ═══════════════════════════════════════════════════════════════ */}
       <div className="lg:hidden">
         <div className="relative mx-auto mb-5" style={{ width: 'min(310px,88vw)', aspectRatio: '9/16' }}>
           <AnimatePresence mode="wait">
-            <motion.div key={active} initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -30 }} transition={{ duration: 0.22 }} className="absolute inset-0">
-              <ActiveVideo src={RESULTS_VIDEOS[active].src} thumb={RESULTS_VIDEOS[active].thumb} />
+            <motion.div
+              key={active}
+              initial={{ opacity: 0, x: 30 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -30 }}
+              transition={{ duration: 0.22 }}
+              className="absolute inset-0"
+            >
+              <ActiveVideo src={RESULTS_VIDEOS[active].src} />
             </motion.div>
           </AnimatePresence>
-          <div className="absolute inset-0 rounded-3xl pointer-events-none" style={{ border: '1.5px solid hsl(var(--glow-primary)/0.6)', zIndex: 10 }} />
-          <button onClick={prev} className="absolute left-2 top-1/2 -translate-y-1/2 z-20 w-9 h-9 rounded-full flex items-center justify-center"
+          <div className="absolute inset-0 rounded-3xl pointer-events-none" style={{
+            border: '1.5px solid hsl(var(--glow-primary)/0.6)', zIndex: 10,
+          }} />
+          <button onClick={prev}
+            className="absolute left-2 top-1/2 -translate-y-1/2 z-20 w-9 h-9 rounded-full flex items-center justify-center"
             style={{ background: 'rgba(0,0,0,0.55)', border: '1px solid hsl(var(--glow-primary)/0.35)' }}>
             <ChevronLeft className="w-4 h-4 text-white" />
           </button>
-          <button onClick={next} className="absolute right-2 top-1/2 -translate-y-1/2 z-20 w-9 h-9 rounded-full flex items-center justify-center"
+          <button onClick={next}
+            className="absolute right-2 top-1/2 -translate-y-1/2 z-20 w-9 h-9 rounded-full flex items-center justify-center"
             style={{ background: 'rgba(0,0,0,0.55)', border: '1px solid hsl(var(--glow-primary)/0.35)' }}>
             <ChevronRight className="w-4 h-4 text-white" />
           </button>
@@ -217,9 +281,10 @@ export default function ProvenResults() {
             <span className="text-white/50 text-xs"> / {total}</span>
           </div>
         </div>
+
         <div className="flex gap-2 overflow-x-auto px-4 pb-2" style={{ scrollbarWidth: 'none' }}>
-          {RESULTS_VIDEOS.map((v, i) => (
-            <MobileThumbTile key={i} thumb={v.thumb} isActive={i === active} onClick={() => goTo(i)} />
+          {RESULTS_VIDEOS.map((_, i) => (
+            <MobileThumbTile key={i} index={i} isActive={i === active} onClick={() => goTo(i)} />
           ))}
         </div>
       </div>

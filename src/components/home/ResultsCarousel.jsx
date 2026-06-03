@@ -2,12 +2,26 @@ import { useState, useRef, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { ChevronLeft, ChevronRight, ArrowRight } from 'lucide-react';
-import { RESULTS_VIDEOS } from '../../pages/ProvenResults.jsx';
+import { RESULTS_VIDEOS } from '../../pages/ProvenResults';
 
 const VIDEOS = RESULTS_VIDEOS.slice(0, 8);
 
-// Active card — thumbnail shown instantly, video fades in
-function ActiveCard({ src, thumb }) {
+// Static warm placeholder — zero network cost
+function WarmCard({ index }) {
+  const hue = 30 + (index * 9) % 22;
+  return (
+    <div className="absolute inset-0" style={{
+      background: `linear-gradient(160deg, hsl(${hue} 45% 14%) 0%, hsl(${hue} 30% 9%) 60%, #111 100%)`,
+    }}>
+      <div className="absolute inset-0 flex items-center justify-center">
+        <div className="w-6 h-6 rounded-full border-2 border-primary/30 border-t-primary animate-spin" />
+      </div>
+    </div>
+  );
+}
+
+// Active video — loads only when src changes
+function ActiveCard({ src, index }) {
   const [ready, setReady] = useState(false);
   const videoRef = useRef(null);
 
@@ -17,40 +31,51 @@ function ActiveCard({ src, thumb }) {
     if (!v) return;
     v.src = src;
     v.load();
-    const onCanPlay = () => { setReady(true); v.play().catch(() => {}); };
+    const onCanPlay = () => {
+      setReady(true);
+      v.play().catch(() => {});
+    };
     v.addEventListener('canplay', onCanPlay, { once: true });
-    return () => { v.pause(); v.removeAttribute('src'); v.load(); };
+    return () => {
+      v.pause();
+      v.removeAttribute('src');
+      v.load();
+    };
   }, [src]);
 
   return (
     <div className="absolute inset-0 overflow-hidden rounded-2xl lg:rounded-3xl">
-      <img src={thumb} alt="" className="absolute inset-0 w-full h-full object-cover"
-        style={{ opacity: ready ? 0 : 1, transition: 'opacity 0.3s', zIndex: 1 }} />
-      <video ref={videoRef} muted loop playsInline preload="auto"
+      {!ready && <WarmCard index={index} />}
+      <video
+        ref={videoRef}
+        muted loop playsInline preload="none"
         className="absolute inset-0 w-full h-full object-cover"
-        style={{ opacity: ready ? 1 : 0, transition: 'opacity 0.3s', zIndex: 2 }} />
-      <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent pointer-events-none" style={{ zIndex: 3 }} />
+        style={{ opacity: ready ? 1 : 0, transition: 'opacity 0.3s' }}
+      />
+      <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent pointer-events-none" style={{ zIndex: 1 }} />
     </div>
   );
 }
 
-// Ghost side card — real thumbnail image, no video
-function GhostCard({ thumb, onClick, side }) {
+// Ghost card — pure CSS, zero network
+function GhostCard({ index, onClick, side }) {
+  const hue = 30 + (index * 9) % 22;
   return (
-    <div className="hidden lg:block absolute cursor-pointer overflow-hidden rounded-2xl"
+    <div
+      className="hidden lg:block absolute cursor-pointer overflow-hidden rounded-2xl"
       style={{
         width: '130px', aspectRatio: '9/16',
         [side]: 'calc(50% - 330px)',
         top: '50%', transform: 'translateY(-50%)',
         zIndex: 1, opacity: 0.4,
         border: '1px solid hsl(var(--glow-primary)/0.2)',
+        background: `linear-gradient(160deg, hsl(${hue} 40% 12%) 0%, #111 100%)`,
         transition: 'opacity 0.2s',
       }}
       onMouseEnter={e => e.currentTarget.style.opacity = '0.65'}
       onMouseLeave={e => e.currentTarget.style.opacity = '0.4'}
-      onClick={onClick}>
-      <img src={thumb} alt="" className="w-full h-full object-cover" loading="lazy" />
-    </div>
+      onClick={onClick}
+    />
   );
 }
 
@@ -83,8 +108,8 @@ export default function ResultsCarousel() {
       </div>
 
       <div className="relative flex items-center justify-center" style={{ height: 'calc(min(380px,88vw) * 16 / 9)' }}>
-        <GhostCard thumb={VIDEOS[prevIdx].thumb} onClick={prev} side="right" />
-        <GhostCard thumb={VIDEOS[nextIdx].thumb} onClick={next} side="left" />
+        <GhostCard index={prevIdx} onClick={prev} side="right" />
+        <GhostCard index={nextIdx} onClick={next} side="left" />
 
         <button onClick={prev}
           className="absolute left-4 lg:left-[calc(50%-310px)] z-30 w-11 h-11 rounded-full glass border border-primary/35 flex items-center justify-center hover:border-primary transition-colors"
@@ -94,9 +119,15 @@ export default function ResultsCarousel() {
 
         <div className="relative flex-shrink-0 z-10" style={{ width: 'min(340px,72vw)', aspectRatio: '9/16' }}>
           <AnimatePresence mode="wait">
-            <motion.div key={active} initial={{ opacity: 0, scale: 0.92 }} animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.95 }} transition={{ duration: 0.25 }} className="absolute inset-0">
-              <ActiveCard src={VIDEOS[active].src} thumb={VIDEOS[active].thumb} />
+            <motion.div
+              key={active}
+              initial={{ opacity: 0, scale: 0.92 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              transition={{ duration: 0.25 }}
+              className="absolute inset-0"
+            >
+              <ActiveCard src={VIDEOS[active].src} index={active} />
             </motion.div>
           </AnimatePresence>
           <div className="absolute inset-0 rounded-2xl lg:rounded-3xl pointer-events-none"
@@ -110,7 +141,7 @@ export default function ResultsCarousel() {
         </button>
       </div>
 
-      <div className="flex justify-center mt-4">
+      <div className="flex flex-col items-center gap-2.5 mt-5">
         <div className="flex gap-1.5">
           {VIDEOS.map((_, i) => (
             <button key={i} onClick={() => setActive(i)} className="rounded-full transition-all" style={{
@@ -123,8 +154,10 @@ export default function ResultsCarousel() {
 
       <div className="flex justify-center mt-5">
         <Link to="/results">
-          <motion.button whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.97 }}
-            className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl glass border border-primary/40 text-foreground font-heading font-semibold text-sm hover:border-primary/70 transition-colors">
+          <motion.button
+            whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.97 }}
+            className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl glass border border-primary/40 text-foreground font-heading font-semibold text-sm hover:border-primary/70 transition-colors"
+          >
             View All Results <ArrowRight className="w-4 h-4 text-primary" />
           </motion.button>
         </Link>
