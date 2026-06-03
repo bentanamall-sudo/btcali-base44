@@ -24,17 +24,49 @@ export const RESULTS_VIDEOS = [
 
 const TOTAL = RESULTS_VIDEOS.length;
 
+// ── Preload next video silently after idle
+function useNextPreload(nextSrc) {
+  useEffect(() => {
+    if (!nextSrc) return;
+    let link;
+    const schedule = () => {
+      // Use a hidden video element to preload — more reliable than <link rel=preload> for video
+      const v = document.createElement('video');
+      v.src = nextSrc;
+      v.preload = 'auto';
+      v.muted = true;
+      v.style.display = 'none';
+      document.body.appendChild(v);
+      v.load();
+      // Remove after a few seconds — enough to prime the browser cache
+      setTimeout(() => { v.pause(); v.removeAttribute('src'); v.load(); document.body.removeChild(v); }, 5000);
+    };
+    if ('requestIdleCallback' in window) {
+      link = window.requestIdleCallback(schedule, { timeout: 2000 });
+    } else {
+      link = setTimeout(schedule, 800);
+    }
+    return () => {
+      if ('cancelIdleCallback' in window && typeof link === 'number') window.cancelIdleCallback(link);
+      else clearTimeout(link);
+    };
+  }, [nextSrc]);
+}
+
 // ── Active video — thumbnail always visible underneath, tap to pause/resume, gold glow when playing
-function ActiveVideo({ src, thumbnailSrc }) {
+function ActiveVideo({ src, thumbnailSrc, nextSrc }) {
   const [videoReady, setVideoReady] = useState(false);
   const [playing, setPlaying] = useState(false);
   const videoRef = useRef(null);
+  useNextPreload(nextSrc);
 
   useEffect(() => {
     setVideoReady(false);
     setPlaying(false);
     const v = videoRef.current;
     if (!v) return;
+    // Set preload=auto so browser aggressively buffers the active video
+    v.preload = 'auto';
     v.src = src;
     v.load();
     const onCanPlay = () => {
@@ -43,6 +75,7 @@ function ActiveVideo({ src, thumbnailSrc }) {
     };
     v.addEventListener('canplay', onCanPlay, { once: true });
     return () => {
+      v.removeEventListener('canplay', onCanPlay);
       v.pause();
       v.removeAttribute('src');
       v.load();
@@ -51,7 +84,7 @@ function ActiveVideo({ src, thumbnailSrc }) {
 
   const handleToggle = () => {
     const v = videoRef.current;
-    if (!v) return;
+    if (!v || !videoReady) return;
     if (v.paused) {
       v.play().then(() => setPlaying(true)).catch(() => {});
     } else {
@@ -71,7 +104,7 @@ function ActiveVideo({ src, thumbnailSrc }) {
         transition: 'box-shadow 0.4s ease',
       }}
     >
-      {/* Thumbnail — ALWAYS rendered at full opacity underneath */}
+      {/* Thumbnail — ALWAYS rendered, never hidden, never removed */}
       <img
         src={thumbnailSrc}
         alt=""
@@ -79,12 +112,12 @@ function ActiveVideo({ src, thumbnailSrc }) {
         style={{ zIndex: 1 }}
         draggable={false}
       />
-      {/* Video — overlaid on top, fades in only after canplay fires */}
+      {/* Video — fades in ONLY after canplay, sits on top of thumbnail */}
       <video
         ref={videoRef}
-        muted loop playsInline preload="none"
+        muted loop playsInline
         className="absolute inset-0 w-full h-full object-cover"
-        style={{ opacity: videoReady ? 1 : 0, transition: 'opacity 0.4s', zIndex: 2 }}
+        style={{ opacity: videoReady ? 1 : 0, transition: 'opacity 0.35s ease', zIndex: 2 }}
       />
       <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent pointer-events-none" style={{ zIndex: 3 }} />
     </div>
@@ -264,7 +297,11 @@ export default function ProvenResults() {
                 transition={{ duration: 0.25 }}
                 className="absolute inset-0"
               >
-                <ActiveVideo src={RESULTS_VIDEOS[active].src} thumbnailSrc={RESULTS_VIDEOS[active].thumbnailSrc} />
+                <ActiveVideo
+                  src={RESULTS_VIDEOS[active].src}
+                  thumbnailSrc={RESULTS_VIDEOS[active].thumbnailSrc}
+                  nextSrc={RESULTS_VIDEOS[(active + 1) % TOTAL].src}
+                />
               </motion.div>
             </AnimatePresence>
             <div className="absolute inset-0 rounded-3xl pointer-events-none" style={{
@@ -314,7 +351,11 @@ export default function ProvenResults() {
               transition={{ duration: 0.22 }}
               className="absolute inset-0"
             >
-              <ActiveVideo src={RESULTS_VIDEOS[active].src} thumbnailSrc={RESULTS_VIDEOS[active].thumbnailSrc} />
+              <ActiveVideo
+                src={RESULTS_VIDEOS[active].src}
+                thumbnailSrc={RESULTS_VIDEOS[active].thumbnailSrc}
+                nextSrc={RESULTS_VIDEOS[(active + 1) % TOTAL].src}
+              />
             </motion.div>
           </AnimatePresence>
           <div className="absolute inset-0 rounded-3xl pointer-events-none" style={{
