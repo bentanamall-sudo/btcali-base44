@@ -1,10 +1,10 @@
-import { useState, useRef, useEffect, useCallback } from 'react';
+import { useState, useRef, useEffect, useCallback, useMemo, memo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { ChevronLeft, ChevronRight, Users, ArrowRight } from 'lucide-react';
 import GlowButton from '../components/GlowButton';
 
-// ── Video list ─────────────────────────────────────────────────────────────────
+// ── Video list ──────────────────────────────────────────────────────────
 export const RESULTS_VIDEOS = [
   { src: 'https://media.base44.com/videos/public/69fd635623a9368c153045ad/30726ddef_C2235DA5-CFA6-4B66-A712-1CFD414AEE34.mp4' },
   { src: 'https://media.base44.com/videos/public/69fd635623a9368c153045ad/ab40f3e73_3DBD7B8B-0985-4366-803A-6BF5FE6E16DA.mp4' },
@@ -22,7 +22,9 @@ export const RESULTS_VIDEOS = [
   { src: 'https://media.base44.com/videos/public/69fd635623a9368c153045ad/8062fad09_5fed1466edd6499c94832fcfc468d25c.mov' },
 ];
 
-// Warm placeholder shown while video loads — instant, no network
+const TOTAL = RESULTS_VIDEOS.length;
+
+// Warm placeholder shown while video loads
 function WarmPlaceholder() {
   return (
     <div className="absolute inset-0" style={{
@@ -35,7 +37,7 @@ function WarmPlaceholder() {
   );
 }
 
-// ── ONE active video ──────────────────────────────────────────────────────────
+// ── ONE active video with optimized preloading
 function ActiveVideo({ src }) {
   const [ready, setReady] = useState(false);
   const videoRef = useRef(null);
@@ -66,19 +68,17 @@ function ActiveVideo({ src }) {
   );
 }
 
-// ── Orbit thumbnail — STATIC warm gradient only, zero network cost ─────────────
-function OrbitalThumb({ src, angleDeg, orbitRadiusX, orbitRadiusY, isActive, onClick, index }) {
+// ── Memoized orbital thumbnail - prevents re-renders
+const OrbitalThumb = memo(function OrbitalThumb({ angleDeg, index, isActive, onClick }) {
   const rad = ((angleDeg - 90) * Math.PI) / 180;
   const sin = Math.sin(rad);
   const depth = (sin + 1) / 2;
   const w = 72, h = Math.round(w * 16 / 9);
-  const x = Math.cos(rad) * orbitRadiusX;
-  const y = sin * orbitRadiusY;
+  const x = Math.cos(rad) * 340;
+  const y = sin * 210;
   const scale = isActive ? 0 : 0.82 + depth * 0.24;
   const opacity = isActive ? 0 : 0.75 + depth * 0.25;
   const zIndex = isActive ? 0 : Math.round(depth * 12) + 2;
-
-  // Rotate hue slightly per index for visual variety without network cost
   const hue = 30 + (index * 7) % 25;
 
   return (
@@ -95,14 +95,15 @@ function OrbitalThumb({ src, angleDeg, orbitRadiusX, orbitRadiusY, isActive, onC
         opacity,
         transition: 'transform 0.4s ease, opacity 0.4s ease',
         background: `linear-gradient(160deg, hsl(${hue} 40% 16%) 0%, hsl(${hue} 30% 10%) 60%, #111 100%)`,
+        willChange: 'transform, opacity',
       }}
       onClick={onClick}
     />
   );
-}
+});
 
-// ── Mobile thumbnail tile — static warm gradient ──────────────────────────────
-function MobileThumbTile({ index, isActive, onClick }) {
+// ── Memoized mobile thumbnail
+const MobileThumbTile = memo(function MobileThumbTile({ index, isActive, onClick }) {
   const hue = 30 + (index * 7) % 25;
   return (
     <div
@@ -114,53 +115,69 @@ function MobileThumbTile({ index, isActive, onClick }) {
         transition: 'border-color 0.2s, opacity 0.2s',
         background: `linear-gradient(160deg, hsl(${hue} 40% 16%) 0%, #111 100%)`,
         flexShrink: 0,
+        willChange: 'opacity, border-color',
       }}
       onClick={onClick}
     />
   );
-}
+});
 
-// ── Main page ──────────────────────────────────────────────────────────────────
+// ── Main page with performance optimizations
 export default function ProvenResults() {
   const [active, setActive] = useState(0);
   const [rotationOffset, setRotationOffset] = useState(0);
-  const total = RESULTS_VIDEOS.length;
+
+  // Memoize computed values
+  const orbitalPositions = useMemo(() => {
+    return RESULTS_VIDEOS.map((_, i) => ({
+      angleDeg: (i / TOTAL) * 360 + rotationOffset,
+      index: i,
+    }));
+  }, [rotationOffset]);
 
   const prev = useCallback(() => {
-    setActive(i => (i - 1 + total) % total);
-    setRotationOffset(r => r - 360 / total);
-  }, [total]);
+    setActive(i => (i - 1 + TOTAL) % TOTAL);
+    setRotationOffset(r => r - 360 / TOTAL);
+  }, []);
 
   const next = useCallback(() => {
-    setActive(i => (i + 1) % total);
-    setRotationOffset(r => r + 360 / total);
-  }, [total]);
+    setActive(i => (i + 1) % TOTAL);
+    setRotationOffset(r => r + 360 / TOTAL);
+  }, []);
 
   const goTo = useCallback((idx) => {
     if (idx === active) return;
     const diff = idx - active;
-    const shortDiff = ((diff + total / 2) % total) - total / 2;
-    setRotationOffset(r => r + (shortDiff * 360 / total));
+    const shortDiff = ((diff + TOTAL / 2) % TOTAL) - TOTAL / 2;
+    setRotationOffset(r => r + (shortDiff * 360 / TOTAL));
     setActive(idx);
-  }, [active, total]);
+  }, [active]);
 
+  // Debounced keyboard handler
   useEffect(() => {
+    let timeout;
     const onKey = (e) => {
-      if (e.key === 'ArrowLeft') prev();
-      if (e.key === 'ArrowRight') next();
+      if (timeout) clearTimeout(timeout);
+      timeout = setTimeout(() => {
+        if (e.key === 'ArrowLeft') prev();
+        if (e.key === 'ArrowRight') next();
+      }, 0);
     };
     window.addEventListener('keydown', onKey);
-    return () => window.removeEventListener('keydown', onKey);
+    return () => {
+      window.removeEventListener('keydown', onKey);
+      if (timeout) clearTimeout(timeout);
+    };
   }, [prev, next]);
 
   const touchStart = useRef(null);
-  const onTouchStart = (e) => { touchStart.current = e.touches[0].clientX; };
-  const onTouchEnd = (e) => {
+  const onTouchStart = useCallback((e) => { touchStart.current = e.touches[0].clientX; }, []);
+  const onTouchEnd = useCallback((e) => {
     if (touchStart.current === null) return;
     const diff = touchStart.current - e.changedTouches[0].clientX;
     if (Math.abs(diff) > 44) diff > 0 ? next() : prev();
     touchStart.current = null;
-  };
+  }, [next, prev]);
 
   return (
     <div className="min-h-screen py-8 px-4" onTouchStart={onTouchStart} onTouchEnd={onTouchEnd}>
@@ -177,20 +194,17 @@ export default function ProvenResults() {
         </p>
       </div>
 
-      {/* ══ DESKTOP ══════════════════════════════════════════════════════════════ */}
+      {/* ══ DESKTOP ════════════════════════════════════════════════════════ */}
       <div className="hidden lg:block">
         <div className="relative mx-auto" style={{ width: '900px', height: '780px' }}>
 
-          {RESULTS_VIDEOS.map((v, i) => (
+          {orbitalPositions.map(({ angleDeg, index }) => (
             <OrbitalThumb
-              key={i}
-              src={v.src}
-              index={i}
-              angleDeg={(i / total) * 360 + rotationOffset}
-              orbitRadiusX={340}
-              orbitRadiusY={210}
-              isActive={i === active}
-              onClick={() => goTo(i)}
+              key={index}
+              angleDeg={angleDeg}
+              index={index}
+              isActive={index === active}
+              onClick={() => goTo(index)}
             />
           ))}
 
@@ -234,7 +248,7 @@ export default function ProvenResults() {
         <div className="flex flex-col items-center gap-3 mt-2">
           <p className="font-heading font-bold text-lg">
             <span className="gradient-text">{active + 1}</span>
-            <span className="text-muted-foreground/50"> / {total}</span>
+            <span className="text-muted-foreground/50"> / {TOTAL}</span>
           </p>
           <div className="flex gap-1.5">
             {RESULTS_VIDEOS.map((_, i) => (
@@ -247,7 +261,7 @@ export default function ProvenResults() {
         </div>
       </div>
 
-      {/* ══ MOBILE ═══════════════════════════════════════════════════════════════ */}
+      {/* ══ MOBILE ═════════════════════════════════════════════════════════ */}
       <div className="lg:hidden">
         <div className="relative mx-auto mb-5" style={{ width: 'min(310px,88vw)', aspectRatio: '9/16' }}>
           <AnimatePresence mode="wait">
@@ -278,7 +292,7 @@ export default function ProvenResults() {
           <div className="absolute bottom-3 left-1/2 -translate-x-1/2 z-20 px-3 py-1 rounded-full"
             style={{ background: 'rgba(0,0,0,0.6)', border: '1px solid hsl(var(--glow-primary)/0.3)' }}>
             <span className="font-heading font-bold text-xs gradient-text">{active + 1}</span>
-            <span className="text-white/50 text-xs"> / {total}</span>
+            <span className="text-white/50 text-xs"> / {TOTAL}</span>
           </div>
         </div>
 
