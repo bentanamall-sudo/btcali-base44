@@ -2,13 +2,10 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from '@/App.jsx'
 import '@/index.css'
-import { prewarm } from '@/lib/thumbCache'
-import { RESULTS_VIDEOS } from '@/pages/ProvenResults'
 
-// Start capturing thumbnails for ALL result videos immediately on app boot.
-// By the time the user navigates to /results or sees the homepage carousel,
-// most thumbnails will already be cached in memory.
-prewarm(RESULTS_VIDEOS.map(v => v.src))
+// DO NOT prewarm all videos at boot — that floods network with 14 concurrent
+// video streams and causes severe lag. Thumbnails are extracted on-demand,
+// staggered via the queue in thumbCache.js.
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <App />
