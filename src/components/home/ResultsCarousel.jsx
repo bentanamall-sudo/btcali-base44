@@ -3,103 +3,47 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { ChevronLeft, ChevronRight, ArrowRight } from 'lucide-react';
 import { RESULTS_VIDEOS } from '../../pages/ProvenResults';
+import { useThumb } from '../../lib/thumbCache';
 
-// Use same thumb cache exported from ProvenResults module
-// (module-level loadThumb already kicked off for all videos there)
 const VIDEOS = RESULTS_VIDEOS.slice(0, 8);
 
-// ── Inline thumb cache (mirrors ProvenResults, same module-load kick) ──────────
-const _cache = {};
-const _subs = {};
-
-function _load(src) {
-  if (_cache[src] && _cache[src] !== 'loading') return;
-  if (_cache[src] === 'loading') return;
-  _cache[src] = 'loading';
-
-  const v = document.createElement('video');
-  v.muted = true; v.playsInline = true; v.preload = 'auto'; v.crossOrigin = 'anonymous';
-
-  const notify = (val) => {
-    _cache[src] = val;
-    _subs[src]?.forEach(fn => fn(val));
-  };
-
-  const tryCapture = () => {
-    try {
-      const c = document.createElement('canvas');
-      c.width = v.videoWidth || 360; c.height = v.videoHeight || 640;
-      c.getContext('2d').drawImage(v, 0, 0, c.width, c.height);
-      notify(c.toDataURL('image/webp', 0.6));
-    } catch {
-      notify(src + '#thumb');
-    }
-    v.src = ''; v.load();
-  };
-
-  v.addEventListener('loadedmetadata', () => {
-    if (v.readyState >= 2) { tryCapture(); return; }
-    v.addEventListener('loadeddata', tryCapture, { once: true });
-  }, { once: true });
-  v.addEventListener('error', () => notify(null), { once: true });
-  v.src = src;
-}
-
-VIDEOS.forEach(v => _load(v.src));
-
-function useCarouselThumb(src) {
-  const cached = _cache[src];
-  const [thumb, setThumb] = useState(cached && cached !== 'loading' ? cached : null);
-  useEffect(() => {
-    const c = _cache[src];
-    if (c && c !== 'loading') { setThumb(c); return; }
-    if (!_subs[src]) _subs[src] = new Set();
-    _subs[src].add(setThumb);
-    _load(src);
-    return () => _subs[src]?.delete(setThumb);
-  }, [src]);
-  return thumb;
-}
-
-function WarmBg() {
-  return <div className="absolute inset-0" style={{ background: 'linear-gradient(160deg,#2a2116 0%,#1a150e 50%,#111 100%)' }} />;
-}
-
-function FrozenVideo({ src }) {
-  const ref = useRef(null);
-  const [ready, setReady] = useState(false);
-  useEffect(() => {
-    const v = ref.current; if (!v) return;
-    setReady(false); v.src = src; v.currentTime = 0.01;
-    const onData = () => { v.currentTime = 0.01; };
-    const onSeeked = () => setReady(true);
-    v.addEventListener('loadeddata', onData, { once: true });
-    v.addEventListener('seeked', onSeeked, { once: true });
-    return () => { v.src = ''; };
-  }, [src]);
+// ── Warm placeholder ───────────────────────────────────────────────────────────
+function WarmPlaceholder() {
   return (
-    <>
-      {!ready && <WarmBg />}
-      <video ref={ref} muted playsInline preload="auto"
-        className="absolute inset-0 w-full h-full object-cover"
-        style={{ opacity: ready ? 1 : 0, transition: 'opacity 0.25s' }} />
-    </>
+    <div className="absolute inset-0"
+      style={{ background: 'linear-gradient(160deg,#2a2116 0%,#1a150e 40%,#111 100%)' }} />
   );
 }
 
-function ThumbDisplay({ src }) {
-  const thumb = useCarouselThumb(src);
-  if (thumb && thumb !== src + '#thumb') {
+// ── Thumbnail image from global cache ─────────────────────────────────────────
+function ThumbImg({ src, priority = false }) {
+  const url = useThumb(src);
+
+  if (!url) return <WarmPlaceholder />;
+
+  if (url === '__video__') {
     return (
-      <>
-        {!thumb && <WarmBg />}
-        <img src={thumb} alt="" loading="eager" className="absolute inset-0 w-full h-full object-cover" />
-      </>
+      <video
+        src={src}
+        muted playsInline preload="metadata"
+        className="absolute inset-0 w-full h-full object-cover"
+        ref={el => { if (el) el.currentTime = 0.01; }}
+      />
     );
   }
-  return <FrozenVideo src={src} />;
+
+  return (
+    <img
+      src={url}
+      alt=""
+      loading={priority ? 'eager' : 'lazy'}
+      {...(priority ? { fetchpriority: 'high' } : {})}
+      className="absolute inset-0 w-full h-full object-cover"
+    />
+  );
 }
 
+// ── Side ghost card — thumbnail only ──────────────────────────────────────────
 function GhostCard({ src, onClick, side }) {
   return (
     <motion.div
@@ -108,39 +52,56 @@ function GhostCard({ src, onClick, side }) {
         width: '130px', aspectRatio: '9/16',
         [side]: 'calc(50% - 330px)',
         top: '50%', transform: 'translateY(-50%)',
-        zIndex: 1, opacity: 0.45, filter: 'blur(1.5px)',
-        border: '1px solid hsl(var(--glow-primary)/0.2)',
+        zIndex: 1,
+        opacity: 0.5,
+        filter: 'blur(1px)',
+        border: '1.5px solid hsl(var(--glow-primary)/0.2)',
       }}
-      whileHover={{ opacity: 0.72, filter: 'blur(0.5px)' }}
+      whileHover={{ opacity: 0.75, filter: 'blur(0px)' }}
       onClick={onClick}
     >
-      <ThumbDisplay src={src} />
+      <ThumbImg src={src} />
       <div className="absolute inset-0 bg-black/35 pointer-events-none" />
     </motion.div>
   );
 }
 
+// ── Active card: thumbnail-first, fades to playing video ──────────────────────
 function ActiveCard({ src }) {
-  const [playing, setPlaying] = useState(false);
+  const [videoReady, setVideoReady] = useState(false);
   const videoRef = useRef(null);
 
   useEffect(() => {
-    setPlaying(false);
-    const v = videoRef.current; if (!v) return;
-    v.src = src; v.load();
-    const onCanPlay = () => { setPlaying(true); v.play().catch(() => {}); };
+    setVideoReady(false);
+    const v = videoRef.current;
+    if (!v) return;
+    v.src = src;
+    v.load();
+    const onCanPlay = () => {
+      setVideoReady(true);
+      v.play().catch(() => {});
+    };
     v.addEventListener('canplay', onCanPlay, { once: true });
-    return () => { v.removeEventListener('canplay', onCanPlay); v.pause(); v.src = ''; };
+    return () => {
+      v.removeEventListener('canplay', onCanPlay);
+      v.pause();
+      v.src = '';
+    };
   }, [src]);
 
   return (
     <div className="absolute inset-0 overflow-hidden rounded-2xl lg:rounded-3xl">
-      <div className="absolute inset-0" style={{ zIndex: 1, opacity: playing ? 0 : 1, transition: 'opacity 0.4s', pointerEvents: 'none' }}>
-        <ThumbDisplay src={src} />
+      {/* Thumbnail layer — always visible until video ready */}
+      <div className="absolute inset-0" style={{ zIndex: 1, opacity: videoReady ? 0 : 1, transition: 'opacity 0.5s' }}>
+        <ThumbImg src={src} priority />
       </div>
-      <video ref={videoRef} muted loop playsInline preload="auto"
+      {/* Playing video */}
+      <video
+        ref={videoRef}
+        muted loop playsInline preload="auto"
         className="absolute inset-0 w-full h-full object-cover"
-        style={{ zIndex: 2, opacity: playing ? 1 : 0, transition: 'opacity 0.4s' }} />
+        style={{ zIndex: 2, opacity: videoReady ? 1 : 0, transition: 'opacity 0.5s' }}
+      />
       <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-transparent to-transparent pointer-events-none" style={{ zIndex: 3 }} />
     </div>
   );
@@ -151,6 +112,7 @@ export default function ResultsCarousel() {
   const total = VIDEOS.length;
   const prev = useCallback(() => setActive(i => (i - 1 + total) % total), [total]);
   const next = useCallback(() => setActive(i => (i + 1) % total), [total]);
+
   const prevIdx = (active - 1 + total) % total;
   const nextIdx = (active + 1) % total;
 
@@ -200,7 +162,8 @@ export default function ResultsCarousel() {
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.9, y: -10 }}
               transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-              className="absolute inset-0" style={{ zIndex: 1 }}
+              className="absolute inset-0"
+              style={{ zIndex: 1 }}
             >
               <ActiveCard src={VIDEOS[active].src} />
             </motion.div>

@@ -3,33 +3,39 @@ import { motion, useScroll, useTransform } from 'framer-motion';
 import { Link, useNavigate } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
 import { RESULTS_VIDEOS } from '../../pages/ProvenResults';
-import HoverVideoCard from '../HoverVideoCard';
+import { useThumb } from '../../lib/thumbCache';
 
-// Exactly 6 for the homepage strip
 const STRIP_VIDEOS = RESULTS_VIDEOS.slice(0, 6);
 
-function ResultCard({ item, eager }) {
-  const navigate = useNavigate();
+function ResultCard({ item, onClick }) {
+  const url = useThumb(item.src);
 
   return (
     <div
       className="flex-shrink-0 w-32 h-48 sm:w-36 sm:h-52 rounded-2xl overflow-hidden relative cursor-pointer bg-muted/20"
-      style={{ border: '1px solid hsl(var(--glow-primary)/0.2)' }}
+      style={{ border: '1px solid hsl(var(--glow-primary)/0.25)' }}
+      onClick={onClick}
     >
-      <HoverVideoCard
-        src={item.src}
-        eager={eager}
-        className="absolute inset-0 w-full h-full"
-        onClick={() => navigate('/results')}
-      >
-        <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent pointer-events-none" />
-      </HoverVideoCard>
+      {url && url !== '__video__' ? (
+        <img src={url} alt="" className="absolute inset-0 w-full h-full object-cover" loading="lazy" />
+      ) : url === '__video__' ? (
+        <video
+          src={item.src}
+          muted playsInline preload="metadata"
+          className="absolute inset-0 w-full h-full object-cover"
+          ref={el => { if (el) el.currentTime = 0.01; }}
+        />
+      ) : (
+        <div className="absolute inset-0" style={{ background: 'linear-gradient(160deg,#2a2116 0%,#1a150e 40%,#111 100%)' }} />
+      )}
+      <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent pointer-events-none" />
     </div>
   );
 }
 
 export default function ScrollingResultsStrip() {
   const ref = useRef(null);
+  const navigate = useNavigate();
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start end', 'end start'] });
 
   const x1 = useTransform(scrollYProgress, [0, 1], ['0%', '-12%']);
@@ -40,38 +46,32 @@ export default function ScrollingResultsStrip() {
 
   return (
     <section ref={ref} className="relative py-20 overflow-hidden select-none">
-      {/* Fade edges */}
       <div className="absolute inset-y-0 left-0 w-24 z-10 pointer-events-none"
         style={{ background: 'linear-gradient(to right, hsl(var(--background)), transparent)' }} />
       <div className="absolute inset-y-0 right-0 w-24 z-10 pointer-events-none"
         style={{ background: 'linear-gradient(to left, hsl(var(--background)), transparent)' }} />
 
-      {/* Section label */}
       <div className="text-center mb-8 relative z-10">
         <p className="text-xs font-heading font-bold text-muted-foreground/50 uppercase tracking-[0.25em]">
           Real Athletes · Real Results
         </p>
-        <p className="text-xs text-muted-foreground/40 font-body mt-1">Hover or tap any video to preview</p>
       </div>
 
-      {/* Row 1 — first 6 eager since they're visible on load */}
       <motion.div style={{ x: x1 }} className="flex gap-3 mb-3 px-8">
         {row1.map((item, i) => (
-          <ResultCard key={`r1-${i}`} item={item} eager={i < 6} />
+          <ResultCard key={`r1-${i}`} item={item} onClick={() => navigate('/results')} />
         ))}
       </motion.div>
 
-      {/* Row 2 — lazy */}
       <motion.div style={{ x: x2 }} className="flex gap-3 px-8" initial={{ x: '-4%' }}>
         {row2.map((item, i) => (
-          <ResultCard key={`r2-${i}`} item={item} eager={false} />
+          <ResultCard key={`r2-${i}`} item={item} onClick={() => navigate('/results')} />
         ))}
       </motion.div>
 
       <div className="absolute inset-0 pointer-events-none"
         style={{ background: 'radial-gradient(ellipse at center, hsl(var(--glow-primary)/0.04) 0%, transparent 70%)' }} />
 
-      {/* View All button */}
       <div className="flex justify-center mt-10 relative z-10">
         <Link to="/results">
           <motion.button
