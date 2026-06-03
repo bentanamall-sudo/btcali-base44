@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { ChevronLeft, ChevronRight, Users, ArrowRight } from 'lucide-react';
 import GlowButton from '../components/GlowButton';
 
-// ── Video list ──────────────────────────────────────────────────────────
+// ── Video list with thumbnail extraction ──────────────────────────────────
 export const RESULTS_VIDEOS = [
   { src: 'https://media.base44.com/videos/public/69fd635623a9368c153045ad/30726ddef_C2235DA5-CFA6-4B66-A712-1CFD414AEE34.mp4' },
   { src: 'https://media.base44.com/videos/public/69fd635623a9368c153045ad/ab40f3e73_3DBD7B8B-0985-4366-803A-6BF5FE6E16DA.mp4' },
@@ -24,6 +24,35 @@ export const RESULTS_VIDEOS = [
 
 const TOTAL = RESULTS_VIDEOS.length;
 
+// Generate video thumbnails on demand
+function generateVideoThumbnail(videoSrc) {
+  return new Promise((resolve) => {
+    const video = document.createElement('video');
+    video.src = videoSrc;
+    video.crossOrigin = 'anonymous';
+    video.muted = true;
+    video.playsInline = true;
+    
+    const handleLoadedMetadata = () => {
+      video.currentTime = 0.1; // Capture at 0.1 seconds
+    };
+    
+    const handleSeeked = () => {
+      const canvas = document.createElement('canvas');
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(video, 0, 0);
+      resolve(canvas.toDataURL('image/jpeg', 0.8));
+      video.pause();
+    };
+    
+    video.addEventListener('loadedmetadata', handleLoadedMetadata);
+    video.addEventListener('seeked', handleSeeked, { once: true });
+    video.load();
+  });
+}
+
 // Warm placeholder shown while video loads
 function WarmPlaceholder() {
   return (
@@ -37,21 +66,32 @@ function WarmPlaceholder() {
   );
 }
 
-// ── ONE active video with optimized preloading
-function ActiveVideo({ src }) {
+// ── ONE active video - only plays when clicked
+function ActiveVideo({ src, shouldPlay }) {
   const [ready, setReady] = useState(false);
   const videoRef = useRef(null);
 
   useEffect(() => {
-    setReady(false);
     const v = videoRef.current;
     if (!v) return;
-    v.src = src;
-    v.load();
-    const onCanPlay = () => { setReady(true); v.play().catch(() => {}); };
-    v.addEventListener('canplay', onCanPlay, { once: true });
-    return () => { v.pause(); v.removeAttribute('src'); v.load(); };
-  }, [src]);
+    
+    if (shouldPlay) {
+      setReady(false);
+      v.src = src;
+      v.load();
+      const onCanPlay = () => { 
+        setReady(true); 
+        v.play().catch(() => {}); 
+      };
+      v.addEventListener('canplay', onCanPlay, { once: true });
+      return () => { v.pause(); };
+    } else {
+      v.pause();
+      v.removeAttribute('src');
+      v.load();
+      setReady(false);
+    }
+  }, [src, shouldPlay]);
 
   return (
     <div className="absolute inset-0 overflow-hidden rounded-3xl">
@@ -59,7 +99,7 @@ function ActiveVideo({ src }) {
       <video
         ref={videoRef}
         muted loop playsInline
-        preload="auto"
+        preload="none"
         className="absolute inset-0 w-full h-full object-cover"
         style={{ opacity: ready ? 1 : 0, transition: 'opacity 0.3s' }}
       />
@@ -68,8 +108,8 @@ function ActiveVideo({ src }) {
   );
 }
 
-// ── Memoized orbital thumbnail - prevents re-renders
-const OrbitalThumb = memo(function OrbitalThumb({ angleDeg, index, isActive, onClick }) {
+// ── Memoized orbital thumbnail with image
+const OrbitalThumb = memo(function OrbitalThumb({ angleDeg, index, isActive, onClick, thumbnail }) {
   const rad = ((angleDeg - 90) * Math.PI) / 180;
   const sin = Math.sin(rad);
   const depth = (sin + 1) / 2;
@@ -79,7 +119,6 @@ const OrbitalThumb = memo(function OrbitalThumb({ angleDeg, index, isActive, onC
   const scale = isActive ? 0 : 0.82 + depth * 0.24;
   const opacity = isActive ? 0 : 0.75 + depth * 0.25;
   const zIndex = isActive ? 0 : Math.round(depth * 12) + 2;
-  const hue = 30 + (index * 7) % 25;
 
   return (
     <div
@@ -94,31 +133,49 @@ const OrbitalThumb = memo(function OrbitalThumb({ angleDeg, index, isActive, onC
         transform: `scale(${scale})`,
         opacity,
         transition: 'transform 0.4s ease, opacity 0.4s ease',
-        background: `linear-gradient(160deg, hsl(${hue} 40% 16%) 0%, hsl(${hue} 30% 10%) 60%, #111 100%)`,
+        background: `linear-gradient(160deg, hsl(30 40% 16%) 0%, hsl(30 30% 10%) 60%, #111 100%)`,
         willChange: 'transform, opacity',
       }}
       onClick={onClick}
-    />
+    >
+      {thumbnail && (
+        <img 
+          src={thumbnail} 
+          alt={`Video ${index + 1}`}
+          className="w-full h-full object-cover"
+          loading="lazy"
+          decoding="async"
+        />
+      )}
+    </div>
   );
 });
 
-// ── Memoized mobile thumbnail
-const MobileThumbTile = memo(function MobileThumbTile({ index, isActive, onClick }) {
-  const hue = 30 + (index * 7) % 25;
+// ── Memoized mobile thumbnail with image
+const MobileThumbTile = memo(function MobileThumbTile({ index, isActive, onClick, thumbnail }) {
   return (
     <div
-      className="relative flex-shrink-0 rounded-xl cursor-pointer"
+      className="relative flex-shrink-0 rounded-xl cursor-pointer overflow-hidden"
       style={{
         width: '54px', height: '96px',
         border: isActive ? '2px solid hsl(var(--primary))' : '1.5px solid hsl(var(--glow-primary)/0.3)',
         opacity: isActive ? 1 : 0.6,
         transition: 'border-color 0.2s, opacity 0.2s',
-        background: `linear-gradient(160deg, hsl(${hue} 40% 16%) 0%, #111 100%)`,
         flexShrink: 0,
         willChange: 'opacity, border-color',
       }}
       onClick={onClick}
-    />
+    >
+      {thumbnail && (
+        <img 
+          src={thumbnail} 
+          alt={`Video ${index + 1}`}
+          className="w-full h-full object-cover"
+          loading="lazy"
+          decoding="async"
+        />
+      )}
+    </div>
   );
 });
 
@@ -126,6 +183,18 @@ const MobileThumbTile = memo(function MobileThumbTile({ index, isActive, onClick
 export default function ProvenResults() {
   const [active, setActive] = useState(0);
   const [rotationOffset, setRotationOffset] = useState(0);
+  const [thumbnails, setThumbnails] = useState(Array(TOTAL).fill(null));
+
+  // Generate all thumbnails on mount
+  useEffect(() => {
+    const generateThumbnails = async () => {
+      const thumbs = await Promise.all(
+        RESULTS_VIDEOS.map(v => generateVideoThumbnail(v.src))
+      );
+      setThumbnails(thumbs);
+    };
+    generateThumbnails();
+  }, []);
 
   // Memoize computed values
   const orbitalPositions = useMemo(() => {
@@ -205,6 +274,7 @@ export default function ProvenResults() {
               index={index}
               isActive={index === active}
               onClick={() => goTo(index)}
+              thumbnail={thumbnails[index]}
             />
           ))}
 
@@ -223,7 +293,7 @@ export default function ProvenResults() {
                 transition={{ duration: 0.25 }}
                 className="absolute inset-0"
               >
-                <ActiveVideo src={RESULTS_VIDEOS[active].src} />
+                <ActiveVideo src={RESULTS_VIDEOS[active].src} shouldPlay={true} />
               </motion.div>
             </AnimatePresence>
             <div className="absolute inset-0 rounded-3xl pointer-events-none" style={{
@@ -273,7 +343,7 @@ export default function ProvenResults() {
               transition={{ duration: 0.22 }}
               className="absolute inset-0"
             >
-              <ActiveVideo src={RESULTS_VIDEOS[active].src} />
+              <ActiveVideo src={RESULTS_VIDEOS[active].src} shouldPlay={true} />
             </motion.div>
           </AnimatePresence>
           <div className="absolute inset-0 rounded-3xl pointer-events-none" style={{
@@ -298,7 +368,7 @@ export default function ProvenResults() {
 
         <div className="flex gap-2 overflow-x-auto px-4 pb-2" style={{ scrollbarWidth: 'none' }}>
           {RESULTS_VIDEOS.map((_, i) => (
-            <MobileThumbTile key={i} index={i} isActive={i === active} onClick={() => goTo(i)} />
+            <MobileThumbTile key={i} index={i} isActive={i === active} onClick={() => goTo(i)} thumbnail={thumbnails[i]} />
           ))}
         </div>
       </div>
