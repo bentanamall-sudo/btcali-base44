@@ -4,112 +4,113 @@ import { Link } from 'react-router-dom';
 import { ChevronLeft, ChevronRight, Users, ArrowRight } from 'lucide-react';
 import GlowButton from '../components/GlowButton';
 
-// ── Video list with thumbnail extraction ──────────────────────────────────
-export const RESULTS_VIDEOS = [
-  { src: 'https://media.base44.com/videos/public/69fd635623a9368c153045ad/30726ddef_C2235DA5-CFA6-4B66-A712-1CFD414AEE34.mp4' },
-  { src: 'https://media.base44.com/videos/public/69fd635623a9368c153045ad/ab40f3e73_3DBD7B8B-0985-4366-803A-6BF5FE6E16DA.mp4' },
-  { src: 'https://media.base44.com/videos/public/69fd635623a9368c153045ad/d03b8e901_87AA93C8-C62D-44CB-92B4-25DE7D6EB9EF.mp4' },
-  { src: 'https://media.base44.com/videos/public/69fd635623a9368c153045ad/33e465fb1_8FB2940B-72DC-4171-B5BD-3B262CA0230A.mp4' },
-  { src: 'https://media.base44.com/videos/public/69fd635623a9368c153045ad/9bce54fa0_F8C3EC32-6F28-43F9-9274-5DCA2E4AD3AE.mp4' },
-  { src: 'https://media.base44.com/videos/public/69fd635623a9368c153045ad/b29797e50_C52B9D44-CCC6-4C11-B563-D29E72D5E742.mp4' },
-  { src: 'https://media.base44.com/videos/public/69fd635623a9368c153045ad/a7025db1d_C88E406D-F072-4021-9F9D-376E1AE850BA.mp4' },
-  { src: 'https://media.base44.com/videos/public/69fd635623a9368c153045ad/acb324d63_D9DC1424-7087-4C6F-BC4C-83A843896E19.mp4' },
-  { src: 'https://media.base44.com/videos/public/69fd635623a9368c153045ad/7c2816870_BF734FD2-A5B6-4EA6-9DFC-3725ABB1BAAD.mp4' },
-  { src: 'https://media.base44.com/videos/public/69fd635623a9368c153045ad/3a0d49733_D05272AD-F171-4C80-8119-90847BFEFB36.mp4' },
-  { src: 'https://media.base44.com/videos/public/69fd635623a9368c153045ad/bb51770b0_61F09AF3-D0FC-44CC-8EC6-6037B4540D78.mp4' },
-  { src: 'https://media.base44.com/videos/public/69fd635623a9368c153045ad/7da5945e5_2882F251-A505-4D09-9090-44FCD8DAEDB4.mp4' },
-  { src: 'https://media.base44.com/videos/public/69fd635623a9368c153045ad/3a47f6089_5DDF0CFF-6FD2-432E-B713-A609FBBD691A.mp4' },
-  { src: 'https://media.base44.com/videos/public/69fd635623a9368c153045ad/8062fad09_5fed1466edd6499c94832fcfc468d25c.mov' },
+const BASE = 'https://media.base44.com';
+
+export const RESULTS = [
+  {
+    videoSrc: `${BASE}/videos/public/69fd635623a9368c153045ad/b3784dddf_1A1AF447-0FC4-4CBD-8F32-7070E68FAF81.mp4`,
+    thumbnailSrc: `${BASE}/images/public/69fd635623a9368c153045ad/bcc2e219f_Screenshot2026-06-03at51732pm.png`,
+  },
+  {
+    videoSrc: `${BASE}/videos/public/69fd635623a9368c153045ad/c86dcadd0_5DDF0CFF-6FD2-432E-B713-A609FBBD691A.mp4`,
+    thumbnailSrc: `${BASE}/images/public/69fd635623a9368c153045ad/cf260e6a6_Screenshot2026-06-03at51745pm.png`,
+  },
+  {
+    videoSrc: `${BASE}/videos/public/69fd635623a9368c153045ad/b59e6e927_03246CBA-6320-4FEC-8025-85BBE3E3C17F.mp4`,
+    thumbnailSrc: `${BASE}/images/public/69fd635623a9368c153045ad/7b9df4871_Screenshot2026-06-03at51801pm.png`,
+  },
+  {
+    videoSrc: `${BASE}/videos/public/69fd635623a9368c153045ad/33e465fb1_8FB2940B-72DC-4171-B5BD-3B262CA0230A.mp4`,
+    thumbnailSrc: `${BASE}/images/public/69fd635623a9368c153045ad/f5abcd0de_Screenshot2026-06-03at51814pm.png`,
+  },
+  {
+    videoSrc: `${BASE}/videos/public/69fd635623a9368c153045ad/9bce54fa0_F8C3EC32-6F28-43F9-9274-5DCA2E4AD3AE.mp4`,
+    thumbnailSrc: `${BASE}/images/public/69fd635623a9368c153045ad/99aa4c0b5_Screenshot2026-06-03at51828pm.png`,
+  },
+  {
+    videoSrc: `${BASE}/videos/public/69fd635623a9368c153045ad/b29797e50_C52B9D44-CCC6-4C11-B563-D29E72D5E742.mp4`,
+    thumbnailSrc: `${BASE}/images/public/69fd635623a9368c153045ad/38d2730e1_Screenshot2026-06-03at51840pm.png`,
+  },
+  {
+    videoSrc: `${BASE}/videos/public/69fd635623a9368c153045ad/a7025db1d_C88E406D-F072-4021-9F9D-376E1AE850BA.mp4`,
+    thumbnailSrc: `${BASE}/images/public/69fd635623a9368c153045ad/becb3ec96_Screenshot2026-06-03at51852pm.png`,
+  },
+  {
+    videoSrc: `${BASE}/videos/public/69fd635623a9368c153045ad/acb324d63_D9DC1424-7087-4C6F-BC4C-83A843896E19.mp4`,
+    thumbnailSrc: `${BASE}/images/public/69fd635623a9368c153045ad/776fb17d2_Screenshot2026-06-03at51904pm.png`,
+  },
+  {
+    videoSrc: `${BASE}/videos/public/69fd635623a9368c153045ad/7c2816870_BF734FD2-A5B6-4EA6-9DFC-3725ABB1BAAD.mp4`,
+    thumbnailSrc: `${BASE}/images/public/69fd635623a9368c153045ad/6ce8ea7e0_Screenshot2026-06-03at51921pm.png`,
+  },
+  {
+    videoSrc: `${BASE}/videos/public/69fd635623a9368c153045ad/3a0d49733_D05272AD-F171-4C80-8119-90847BFEFB36.mp4`,
+    thumbnailSrc: `${BASE}/images/public/69fd635623a9368c153045ad/c1ecbf16f_Screenshot2026-06-03at51936pm.png`,
+  },
+  {
+    videoSrc: `${BASE}/videos/public/69fd635623a9368c153045ad/bb51770b0_61F09AF3-D0FC-44CC-8EC6-6037B4540D78.mp4`,
+    thumbnailSrc: `${BASE}/images/public/69fd635623a9368c153045ad/ea11ec65c_Screenshot2026-06-03at51948pm.png`,
+  },
+  {
+    videoSrc: `${BASE}/videos/public/69fd635623a9368c153045ad/7da5945e5_2882F251-A505-4D09-9090-44FCD8DAEDB4.mp4`,
+    thumbnailSrc: `${BASE}/images/public/69fd635623a9368c153045ad/4436461af_Screenshot2026-06-03at52008pm.png`,
+  },
+  {
+    videoSrc: `${BASE}/videos/public/69fd635623a9368c153045ad/3a47f6089_5DDF0CFF-6FD2-432E-B713-A609FBBD691A.mp4`,
+    thumbnailSrc: `${BASE}/images/public/69fd635623a9368c153045ad/be0afd109_Screenshot2026-06-03at52026pm.png`,
+  },
+  {
+    videoSrc: `${BASE}/videos/public/69fd635623a9368c153045ad/8062fad09_5fed1466edd6499c94832fcfc468d25c.mov`,
+    thumbnailSrc: `${BASE}/images/public/69fd635623a9368c153045ad/f2b89c68b_Screenshot2026-06-03at52046pm.png`,
+  },
 ];
 
-const TOTAL = RESULTS_VIDEOS.length;
+const TOTAL = RESULTS.length;
 
-// Generate video thumbnails on demand
-function generateVideoThumbnail(videoSrc) {
-  return new Promise((resolve) => {
-    const video = document.createElement('video');
-    video.src = videoSrc;
-    video.crossOrigin = 'anonymous';
-    video.muted = true;
-    video.playsInline = true;
-    
-    const handleLoadedMetadata = () => {
-      video.currentTime = 0.1; // Capture at 0.1 seconds
-    };
-    
-    const handleSeeked = () => {
-      const canvas = document.createElement('canvas');
-      canvas.width = video.videoWidth;
-      canvas.height = video.videoHeight;
-      const ctx = canvas.getContext('2d');
-      ctx.drawImage(video, 0, 0);
-      resolve(canvas.toDataURL('image/jpeg', 0.8));
-      video.pause();
-    };
-    
-    video.addEventListener('loadedmetadata', handleLoadedMetadata);
-    video.addEventListener('seeked', handleSeeked, { once: true });
-    video.load();
-  });
-}
-
-// Warm placeholder shown while video loads
-function WarmPlaceholder() {
-  return (
-    <div className="absolute inset-0" style={{
-      background: 'linear-gradient(160deg,#2a2116 0%,#1a150e 50%,#111 100%)',
-    }}>
-      <div className="absolute inset-0 flex items-center justify-center">
-        <div className="w-8 h-8 rounded-full border-2 border-primary/40 border-t-primary animate-spin" />
-      </div>
-    </div>
-  );
-}
-
-// ── ONE active video - only plays when clicked
-function ActiveVideo({ src, shouldPlay }) {
-  const [ready, setReady] = useState(false);
+// Active video: thumbnail shown until canplay
+function ActiveVideo({ videoSrc, thumbnailSrc }) {
+  const [videoReady, setVideoReady] = useState(false);
   const videoRef = useRef(null);
 
   useEffect(() => {
+    setVideoReady(false);
     const v = videoRef.current;
     if (!v) return;
-    
-    if (shouldPlay) {
-      setReady(false);
-      v.src = src;
-      v.load();
-      const onCanPlay = () => { 
-        setReady(true); 
-        v.play().catch(() => {}); 
-      };
-      v.addEventListener('canplay', onCanPlay, { once: true });
-      return () => { v.pause(); };
-    } else {
+    v.src = videoSrc;
+    v.load();
+    const onCanPlay = () => {
+      setVideoReady(true);
+      v.play().catch(() => {});
+    };
+    v.addEventListener('canplay', onCanPlay, { once: true });
+    return () => {
       v.pause();
       v.removeAttribute('src');
       v.load();
-      setReady(false);
-    }
-  }, [src, shouldPlay]);
+    };
+  }, [videoSrc]);
 
   return (
     <div className="absolute inset-0 overflow-hidden rounded-3xl">
-      {!ready && <WarmPlaceholder />}
+      <img
+        src={thumbnailSrc}
+        alt="Result"
+        className="absolute inset-0 w-full h-full object-cover"
+        loading="eager"
+      />
       <video
         ref={videoRef}
-        muted loop playsInline
-        preload="none"
+        muted loop playsInline preload="none"
         className="absolute inset-0 w-full h-full object-cover"
-        style={{ opacity: ready ? 1 : 0, transition: 'opacity 0.3s' }}
+        style={{ opacity: videoReady ? 1 : 0, transition: 'opacity 0.4s' }}
       />
       <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent pointer-events-none" style={{ zIndex: 1 }} />
     </div>
   );
 }
 
-// ── Memoized orbital thumbnail with image
-const OrbitalThumb = memo(function OrbitalThumb({ angleDeg, index, isActive, onClick, thumbnail }) {
+// Orbital thumbnail — image only
+const OrbitalThumb = memo(function OrbitalThumb({ angleDeg, index, isActive, onClick, thumbnailSrc }) {
   const rad = ((angleDeg - 90) * Math.PI) / 180;
   const sin = Math.sin(rad);
   const depth = (sin + 1) / 2;
@@ -133,26 +134,23 @@ const OrbitalThumb = memo(function OrbitalThumb({ angleDeg, index, isActive, onC
         transform: `scale(${scale})`,
         opacity,
         transition: 'transform 0.4s ease, opacity 0.4s ease',
-        background: `linear-gradient(160deg, hsl(30 40% 16%) 0%, hsl(30 30% 10%) 60%, #111 100%)`,
         willChange: 'transform, opacity',
       }}
       onClick={onClick}
     >
-      {thumbnail && (
-        <img 
-          src={thumbnail} 
-          alt={`Video ${index + 1}`}
-          className="w-full h-full object-cover"
-          loading="lazy"
-          decoding="async"
-        />
-      )}
+      <img
+        src={thumbnailSrc}
+        alt={`Result ${index + 1}`}
+        className="w-full h-full object-cover"
+        loading="lazy"
+        decoding="async"
+      />
     </div>
   );
 });
 
-// ── Memoized mobile thumbnail with image
-const MobileThumbTile = memo(function MobileThumbTile({ index, isActive, onClick, thumbnail }) {
+// Mobile thumbnail tile — image only
+const MobileThumbTile = memo(function MobileThumbTile({ index, isActive, onClick, thumbnailSrc }) {
   return (
     <div
       className="relative flex-shrink-0 rounded-xl cursor-pointer overflow-hidden"
@@ -161,48 +159,30 @@ const MobileThumbTile = memo(function MobileThumbTile({ index, isActive, onClick
         border: isActive ? '2px solid hsl(var(--primary))' : '1.5px solid hsl(var(--glow-primary)/0.3)',
         opacity: isActive ? 1 : 0.6,
         transition: 'border-color 0.2s, opacity 0.2s',
-        flexShrink: 0,
-        willChange: 'opacity, border-color',
       }}
       onClick={onClick}
     >
-      {thumbnail && (
-        <img 
-          src={thumbnail} 
-          alt={`Video ${index + 1}`}
-          className="w-full h-full object-cover"
-          loading="lazy"
-          decoding="async"
-        />
-      )}
+      <img
+        src={thumbnailSrc}
+        alt={`Result ${index + 1}`}
+        className="w-full h-full object-cover"
+        loading="lazy"
+        decoding="async"
+      />
     </div>
   );
 });
 
-// ── Main page with performance optimizations
 export default function ProvenResults() {
   const [active, setActive] = useState(0);
   const [rotationOffset, setRotationOffset] = useState(0);
-  const [thumbnails, setThumbnails] = useState(Array(TOTAL).fill(null));
 
-  // Generate all thumbnails on mount
-  useEffect(() => {
-    const generateThumbnails = async () => {
-      const thumbs = await Promise.all(
-        RESULTS_VIDEOS.map(v => generateVideoThumbnail(v.src))
-      );
-      setThumbnails(thumbs);
-    };
-    generateThumbnails();
-  }, []);
-
-  // Memoize computed values
-  const orbitalPositions = useMemo(() => {
-    return RESULTS_VIDEOS.map((_, i) => ({
+  const orbitalPositions = useMemo(() => (
+    RESULTS.map((_, i) => ({
       angleDeg: (i / TOTAL) * 360 + rotationOffset,
       index: i,
-    }));
-  }, [rotationOffset]);
+    }))
+  ), [rotationOffset]);
 
   const prev = useCallback(() => {
     setActive(i => (i - 1 + TOTAL) % TOTAL);
@@ -222,21 +202,13 @@ export default function ProvenResults() {
     setActive(idx);
   }, [active]);
 
-  // Debounced keyboard handler
   useEffect(() => {
-    let timeout;
     const onKey = (e) => {
-      if (timeout) clearTimeout(timeout);
-      timeout = setTimeout(() => {
-        if (e.key === 'ArrowLeft') prev();
-        if (e.key === 'ArrowRight') next();
-      }, 0);
+      if (e.key === 'ArrowLeft') prev();
+      if (e.key === 'ArrowRight') next();
     };
     window.addEventListener('keydown', onKey);
-    return () => {
-      window.removeEventListener('keydown', onKey);
-      if (timeout) clearTimeout(timeout);
-    };
+    return () => window.removeEventListener('keydown', onKey);
   }, [prev, next]);
 
   const touchStart = useRef(null);
@@ -250,7 +222,6 @@ export default function ProvenResults() {
 
   return (
     <div className="min-h-screen py-8 px-4" onTouchStart={onTouchStart} onTouchEnd={onTouchEnd}>
-      {/* Header */}
       <div className="text-center mb-8">
         <p className="text-xs font-heading font-bold text-muted-foreground/50 uppercase tracking-[0.25em] mb-2">
           Real Athletes · Real Results
@@ -263,10 +234,9 @@ export default function ProvenResults() {
         </p>
       </div>
 
-      {/* ══ DESKTOP ════════════════════════════════════════════════════════ */}
+      {/* DESKTOP */}
       <div className="hidden lg:block">
         <div className="relative mx-auto" style={{ width: '900px', height: '780px' }}>
-
           {orbitalPositions.map(({ angleDeg, index }) => (
             <OrbitalThumb
               key={index}
@@ -274,11 +244,10 @@ export default function ProvenResults() {
               index={index}
               isActive={index === active}
               onClick={() => goTo(index)}
-              thumbnail={thumbnails[index]}
+              thumbnailSrc={RESULTS[index].thumbnailSrc}
             />
           ))}
 
-          {/* Centre — ONE video element total */}
           <div className="absolute" style={{
             width: '300px', aspectRatio: '9/16',
             left: 'calc(50% - 150px)', top: 'calc(50% - 267px)',
@@ -293,7 +262,7 @@ export default function ProvenResults() {
                 transition={{ duration: 0.25 }}
                 className="absolute inset-0"
               >
-                <ActiveVideo src={RESULTS_VIDEOS[active].src} shouldPlay={true} />
+                <ActiveVideo videoSrc={RESULTS[active].videoSrc} thumbnailSrc={RESULTS[active].thumbnailSrc} />
               </motion.div>
             </AnimatePresence>
             <div className="absolute inset-0 rounded-3xl pointer-events-none" style={{
@@ -301,7 +270,6 @@ export default function ProvenResults() {
             }} />
           </div>
 
-          {/* Arrows */}
           <button onClick={prev}
             className="absolute z-30 w-14 h-14 rounded-full glass border border-primary/40 flex items-center justify-center hover:border-primary transition-colors"
             style={{ left: 'calc(50% - 390px)', top: 'calc(50% - 28px)' }}>
@@ -314,14 +282,13 @@ export default function ProvenResults() {
           </button>
         </div>
 
-        {/* Counter + dots */}
         <div className="flex flex-col items-center gap-3 mt-2">
           <p className="font-heading font-bold text-lg">
             <span className="gradient-text">{active + 1}</span>
             <span className="text-muted-foreground/50"> / {TOTAL}</span>
           </p>
           <div className="flex gap-1.5">
-            {RESULTS_VIDEOS.map((_, i) => (
+            {RESULTS.map((_, i) => (
               <button key={i} onClick={() => goTo(i)} className="rounded-full transition-all" style={{
                 width: i === active ? '22px' : '6px', height: '6px',
                 background: i === active ? 'hsl(var(--primary))' : 'hsl(var(--muted-foreground)/0.3)',
@@ -331,7 +298,7 @@ export default function ProvenResults() {
         </div>
       </div>
 
-      {/* ══ MOBILE ═════════════════════════════════════════════════════════ */}
+      {/* MOBILE */}
       <div className="lg:hidden">
         <div className="relative mx-auto mb-5" style={{ width: 'min(310px,88vw)', aspectRatio: '9/16' }}>
           <AnimatePresence mode="wait">
@@ -343,7 +310,7 @@ export default function ProvenResults() {
               transition={{ duration: 0.22 }}
               className="absolute inset-0"
             >
-              <ActiveVideo src={RESULTS_VIDEOS[active].src} shouldPlay={true} />
+              <ActiveVideo videoSrc={RESULTS[active].videoSrc} thumbnailSrc={RESULTS[active].thumbnailSrc} />
             </motion.div>
           </AnimatePresence>
           <div className="absolute inset-0 rounded-3xl pointer-events-none" style={{
@@ -367,8 +334,8 @@ export default function ProvenResults() {
         </div>
 
         <div className="flex gap-2 overflow-x-auto px-4 pb-2" style={{ scrollbarWidth: 'none' }}>
-          {RESULTS_VIDEOS.map((_, i) => (
-            <MobileThumbTile key={i} index={i} isActive={i === active} onClick={() => goTo(i)} thumbnail={thumbnails[i]} />
+          {RESULTS.map((r, i) => (
+            <MobileThumbTile key={i} index={i} isActive={i === active} onClick={() => goTo(i)} thumbnailSrc={r.thumbnailSrc} />
           ))}
         </div>
       </div>
