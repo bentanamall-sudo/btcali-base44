@@ -24,20 +24,22 @@ export const RESULTS_VIDEOS = [
 
 const TOTAL = RESULTS_VIDEOS.length;
 
-// ── Active video with real thumbnail shown instantly, fades to video on canplay
+// ── Active video — thumbnail always visible underneath, tap to pause/resume, gold glow when playing
 function ActiveVideo({ src, thumbnailSrc }) {
   const [videoReady, setVideoReady] = useState(false);
+  const [playing, setPlaying] = useState(false);
   const videoRef = useRef(null);
 
   useEffect(() => {
     setVideoReady(false);
+    setPlaying(false);
     const v = videoRef.current;
     if (!v) return;
     v.src = src;
     v.load();
     const onCanPlay = () => {
       setVideoReady(true);
-      v.play().catch(() => {});
+      v.play().then(() => setPlaying(true)).catch(() => {});
     };
     v.addEventListener('canplay', onCanPlay, { once: true });
     return () => {
@@ -47,22 +49,42 @@ function ActiveVideo({ src, thumbnailSrc }) {
     };
   }, [src]);
 
+  const handleToggle = () => {
+    const v = videoRef.current;
+    if (!v) return;
+    if (v.paused) {
+      v.play().then(() => setPlaying(true)).catch(() => {});
+    } else {
+      v.pause();
+      setPlaying(false);
+    }
+  };
+
   return (
-    <div className="absolute inset-0 overflow-hidden rounded-3xl">
-      {/* Thumbnail — always rendered, instantly visible */}
+    <div
+      className="absolute inset-0 overflow-hidden rounded-3xl cursor-pointer"
+      onClick={handleToggle}
+      style={{
+        boxShadow: playing
+          ? '0 0 0 2px hsl(var(--primary)/0.8), 0 0 30px hsl(var(--primary)/0.4), 0 0 60px hsl(var(--primary)/0.15)'
+          : undefined,
+        transition: 'box-shadow 0.4s ease',
+      }}
+    >
+      {/* Thumbnail — ALWAYS rendered at full opacity underneath */}
       <img
         src={thumbnailSrc}
         alt=""
         className="absolute inset-0 w-full h-full object-cover"
-        style={{ opacity: videoReady ? 0 : 1, transition: 'opacity 0.3s', zIndex: 1 }}
+        style={{ zIndex: 1 }}
+        draggable={false}
       />
-      {/* Video — fades in only after canplay fires */}
+      {/* Video — overlaid on top, fades in only after canplay fires */}
       <video
         ref={videoRef}
-        muted loop playsInline
-        preload="none"
+        muted loop playsInline preload="none"
         className="absolute inset-0 w-full h-full object-cover"
-        style={{ opacity: videoReady ? 1 : 0, transition: 'opacity 0.3s', zIndex: 2 }}
+        style={{ opacity: videoReady ? 1 : 0, transition: 'opacity 0.4s', zIndex: 2 }}
       />
       <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent pointer-events-none" style={{ zIndex: 3 }} />
     </div>

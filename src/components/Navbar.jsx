@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, Zap, BookOpen, Trophy, DollarSign, ScanLine, Crown } from 'lucide-react';
+import { Menu, X, Zap, BookOpen, Trophy, Users, ScanLine, Crown } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { NavbarLogo } from './Logo';
 import CodeUnlock from './CodeUnlock';
@@ -11,7 +11,7 @@ const BASE_NAV = [
   { to: '/', label: 'Home', icon: Zap },
   { to: '/skills', label: 'Skill Library', icon: BookOpen },
   { to: '/results', label: 'Results', icon: Trophy },
-  { to: '/pricing', label: '1-on-1 Coaching', icon: DollarSign },
+  { to: '/pricing', label: '1-on-1 Coaching', icon: Users },
   { to: '/diagnostic', label: 'Athlete Scan', icon: ScanLine },
 ];
 

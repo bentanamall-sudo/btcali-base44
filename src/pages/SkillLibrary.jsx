@@ -1,7 +1,19 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import { Search, Lock, BookOpen, Crown } from 'lucide-react';
+import { Search, BookOpen, Crown } from 'lucide-react';
+
+const TRIDENT_ICON_URL = 'https://media.base44.com/images/public/69fd635623a9368c153045ad/668f24dc5_ChatGPTImageJun2202609_27_21AM.png';
+
+function TridentIcon({ size = 20 }) {
+  return (
+    <img
+      src={TRIDENT_ICON_URL}
+      alt="Premium"
+      style={{ width: size, height: size, objectFit: 'contain' }}
+    />
+  );
+}
 import { PageHeaderLogo } from '../components/Logo';
 
 const CATEGORIES = [
@@ -78,7 +90,7 @@ function AccessBadge({ access }) {
   }
   return (
     <span className="flex items-center gap-1 text-xs font-heading font-bold px-2.5 py-1 rounded-full bg-amber-500/10 text-amber-400 border border-amber-500/25">
-      <Crown className="w-3 h-3" /> Members
+      <TridentIcon size={14} /> Members
     </span>
   );
 }
@@ -231,7 +243,7 @@ export default function SkillLibrary() {
             onClick={() => navigate('/pricing')}
             className="inline-flex items-center gap-2 px-8 py-3.5 rounded-xl gradient-bg-strong text-primary-foreground font-heading font-bold text-sm glow-primary"
           >
-            <Crown className="w-4 h-4" /> View 1-on-1 Coaching
+            <TridentIcon size={16} /> View 1-on-1 Coaching
           </button>
         </div>
       </motion.div>

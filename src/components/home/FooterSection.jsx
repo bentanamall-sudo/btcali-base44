@@ -1,15 +1,10 @@
-import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Logo from '../Logo';
-import { Mail } from 'lucide-react';
-import CoachingInquiryModal from './CoachingInquiryModal';
+import { ScanLine } from 'lucide-react';
 
 export default function FooterSection() {
-  const [modalOpen, setModalOpen] = useState(false);
-
   return (
     <>
-      <CoachingInquiryModal open={modalOpen} onClose={() => setModalOpen(false)} />
 
       <footer className="border-t border-border/30 py-12 px-4 sm:px-6">
         <div className="max-w-5xl mx-auto">
@@ -86,12 +81,12 @@ export default function FooterSection() {
               </a>
             </div>
 
-            <button
-              onClick={() => setModalOpen(true)}
+            <Link
+              to="/diagnostic"
               className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl gradient-bg-strong text-primary-foreground font-heading font-bold text-sm glow-primary hover:scale-105 transition-transform"
             >
-              <Mail className="w-4 h-4" /> Inquire About Coaching
-            </button>
+              <ScanLine className="w-4 h-4" /> Start Athlete Scan
+            </Link>
 
             <p className="text-xs text-muted-foreground font-body text-center">
               © {new Date().getFullYear()} BTCALI. All rights reserved. Built for elite athletes.

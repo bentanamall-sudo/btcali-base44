@@ -517,8 +517,11 @@ Weaknesses: ${(report?.weaknesses || []).join(', ')}`
           <span className="text-sm font-body text-muted-foreground">Athlete Diagnostic</span>
         </div>
         <h1 className="font-heading font-bold text-2xl sm:text-3xl gradient-text">BTCALI Athlete Scan</h1>
-        <p className="text-sm font-body text-muted-foreground mt-3 max-w-sm mx-auto leading-relaxed">
-          Please answer every question carefully so BTCALI can accurately analyse your level and build the best recommendations possible.
+        <p className="text-sm font-body text-foreground/90 font-semibold mt-3 max-w-sm mx-auto leading-relaxed">
+          Complete the Athlete Scan to inquire about BTCALI coaching.
+        </p>
+        <p className="text-sm font-body text-muted-foreground mt-2 max-w-md mx-auto leading-relaxed">
+          This helps BTCALI understand your current level, goals, strengths, weaknesses and commitment so we can determine how best to help you progress.
         </p>
       </motion.div>
 
