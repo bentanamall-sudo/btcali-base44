@@ -3,32 +3,26 @@ import { motion, useScroll, useTransform } from 'framer-motion';
 import { Link, useNavigate } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
 import { RESULTS_VIDEOS } from '../../pages/ProvenResults';
-import { useThumb } from '../../lib/thumbCache';
 
 const STRIP_VIDEOS = RESULTS_VIDEOS.slice(0, 6);
 
-function ResultCard({ item, onClick }) {
-  const url = useThumb(item.src);
-
+// Pure CSS card — zero network, instant render
+function ResultCard({ index, onClick }) {
+  const hue = 30 + (index * 11) % 24;
   return (
     <div
-      className="flex-shrink-0 w-32 h-48 sm:w-36 sm:h-52 rounded-2xl overflow-hidden relative cursor-pointer bg-muted/20"
-      style={{ border: '1px solid hsl(var(--glow-primary)/0.25)' }}
+      className="flex-shrink-0 w-32 h-48 sm:w-36 sm:h-52 rounded-2xl overflow-hidden relative cursor-pointer"
+      style={{
+        border: '1px solid hsl(var(--glow-primary)/0.25)',
+        background: `linear-gradient(160deg, hsl(${hue} 45% 14%) 0%, hsl(${hue} 25% 9%) 60%, #0f0f0f 100%)`,
+      }}
       onClick={onClick}
     >
-      {url && url !== '__video__' ? (
-        <img src={url} alt="" className="absolute inset-0 w-full h-full object-cover" loading="lazy" />
-      ) : url === '__video__' ? (
-        <video
-          src={item.src}
-          muted playsInline preload="metadata"
-          className="absolute inset-0 w-full h-full object-cover"
-          ref={el => { if (el) el.currentTime = 0.01; }}
-        />
-      ) : (
-        <div className="absolute inset-0" style={{ background: 'linear-gradient(160deg,#2a2116 0%,#1a150e 40%,#111 100%)' }} />
-      )}
-      <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent pointer-events-none" />
+      <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none" />
+      {/* Subtle logo-ish shape for visual interest */}
+      <div className="absolute inset-0 flex items-end justify-start p-3 pointer-events-none">
+        <div className="w-2 h-2 rounded-full" style={{ background: 'hsl(var(--primary)/0.5)' }} />
+      </div>
     </div>
   );
 }
@@ -59,13 +53,13 @@ export default function ScrollingResultsStrip() {
 
       <motion.div style={{ x: x1 }} className="flex gap-3 mb-3 px-8">
         {row1.map((item, i) => (
-          <ResultCard key={`r1-${i}`} item={item} onClick={() => navigate('/results')} />
+          <ResultCard key={`r1-${i}`} index={i % STRIP_VIDEOS.length} onClick={() => navigate('/results')} />
         ))}
       </motion.div>
 
       <motion.div style={{ x: x2 }} className="flex gap-3 px-8" initial={{ x: '-4%' }}>
         {row2.map((item, i) => (
-          <ResultCard key={`r2-${i}`} item={item} onClick={() => navigate('/results')} />
+          <ResultCard key={`r2-${i}`} index={(i + 3) % STRIP_VIDEOS.length} onClick={() => navigate('/results')} />
         ))}
       </motion.div>
 
