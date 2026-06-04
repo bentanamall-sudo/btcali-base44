@@ -1,5 +1,4 @@
 import { useState, useRef, useEffect, useCallback, useMemo, memo } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { ChevronLeft, ChevronRight, Users, ArrowRight } from 'lucide-react';
 import GlowButton from '../components/GlowButton';
@@ -24,87 +23,63 @@ export const RESULTS_VIDEOS = [
 
 const TOTAL = RESULTS_VIDEOS.length;
 
-// ── Preload next video silently after idle
-function useNextPreload(nextSrc) {
-  useEffect(() => {
-    if (!nextSrc) return;
-    let link;
-    const schedule = () => {
-      // Use a hidden video element to preload — more reliable than <link rel=preload> for video
-      const v = document.createElement('video');
-      v.src = nextSrc;
-      v.preload = 'auto';
-      v.muted = true;
-      v.style.display = 'none';
-      document.body.appendChild(v);
-      v.load();
-      // Remove after a few seconds — enough to prime the browser cache
-      setTimeout(() => { v.pause(); v.removeAttribute('src'); v.load(); document.body.removeChild(v); }, 5000);
-    };
-    if ('requestIdleCallback' in window) {
-      link = window.requestIdleCallback(schedule, { timeout: 2000 });
-    } else {
-      link = setTimeout(schedule, 800);
-    }
-    return () => {
-      if ('cancelIdleCallback' in window && typeof link === 'number') window.cancelIdleCallback(link);
-      else clearTimeout(link);
-    };
-  }, [nextSrc]);
+// ── Silently prime a video URL into the browser cache
+function primeVideo(src) {
+  if (!src) return;
+  const v = document.createElement('video');
+  v.src = src;
+  v.preload = 'auto';
+  v.muted = true;
+  v.style.cssText = 'position:absolute;width:0;height:0;opacity:0;pointer-events:none;';
+  document.body.appendChild(v);
+  v.load();
+  setTimeout(() => {
+    try { v.pause(); v.removeAttribute('src'); v.load(); document.body.removeChild(v); } catch {}
+  }, 8000);
 }
 
-// ── Active video — thumbnail always visible underneath, tap to pause/resume, gold glow when playing
-function ActiveVideo({ src, thumbnailSrc, nextSrc }) {
+// ── Persistent video player — single element, src swapped in-place, thumbnail always under
+// This avoids ANY blank frame: thumbnail is always visible until the video overlays it
+function ActiveVideo({ src, thumbnailSrc, playing, onToggle }) {
   const [videoReady, setVideoReady] = useState(false);
-  const [playing, setPlaying] = useState(false);
   const videoRef = useRef(null);
-  useNextPreload(nextSrc);
+  const currentSrc = useRef(null);
 
   useEffect(() => {
+    if (currentSrc.current === src) return;
+    currentSrc.current = src;
+
     setVideoReady(false);
-    setPlaying(false);
     const v = videoRef.current;
     if (!v) return;
-    // Set preload=auto so browser aggressively buffers the active video
+
+    v.pause();
+    v.removeAttribute('src');
+    v.load();
+
     v.preload = 'auto';
     v.src = src;
     v.load();
+
     const onCanPlay = () => {
       setVideoReady(true);
-      v.play().then(() => setPlaying(true)).catch(() => {});
+      v.play().catch(() => {});
     };
     v.addEventListener('canplay', onCanPlay, { once: true });
-    return () => {
-      v.removeEventListener('canplay', onCanPlay);
-      v.pause();
-      v.removeAttribute('src');
-      v.load();
-    };
+    return () => v.removeEventListener('canplay', onCanPlay);
   }, [src]);
 
-  const handleToggle = () => {
+  // Sync external pause/play
+  useEffect(() => {
     const v = videoRef.current;
     if (!v || !videoReady) return;
-    if (v.paused) {
-      v.play().then(() => setPlaying(true)).catch(() => {});
-    } else {
-      v.pause();
-      setPlaying(false);
-    }
-  };
+    if (playing) v.play().catch(() => {});
+    else v.pause();
+  }, [playing, videoReady]);
 
   return (
-    <div
-      className="absolute inset-0 overflow-hidden rounded-3xl cursor-pointer"
-      onClick={handleToggle}
-      style={{
-        boxShadow: playing
-          ? '0 0 0 2px hsl(var(--primary)/0.8), 0 0 30px hsl(var(--primary)/0.4), 0 0 60px hsl(var(--primary)/0.15)'
-          : undefined,
-        transition: 'box-shadow 0.4s ease',
-      }}
-    >
-      {/* Thumbnail — ALWAYS rendered, never hidden, never removed */}
+    <div className="absolute inset-0 overflow-hidden rounded-3xl cursor-pointer" onClick={onToggle}>
+      {/* Thumbnail — permanent base layer, never removed */}
       <img
         src={thumbnailSrc}
         alt=""
@@ -114,12 +89,12 @@ function ActiveVideo({ src, thumbnailSrc, nextSrc }) {
         fetchPriority="high"
         onError={(e) => { e.target.style.opacity = '0'; }}
       />
-      {/* Video — fades in ONLY after canplay, sits on top of thumbnail */}
+      {/* Video — single persistent element, fades in after canplay */}
       <video
         ref={videoRef}
         muted loop playsInline
         className="absolute inset-0 w-full h-full object-cover"
-        style={{ opacity: videoReady ? 1 : 0, transition: 'opacity 0.35s ease', zIndex: 2 }}
+        style={{ opacity: videoReady ? 1 : 0, transition: 'opacity 0.3s ease', zIndex: 2 }}
       />
       <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent pointer-events-none" style={{ zIndex: 3 }} />
     </div>
@@ -201,10 +176,37 @@ const MobileThumbTile = memo(function MobileThumbTile({ index, isActive, onClick
   );
 });
 
-// ── Main page with performance optimizations
+// ── Main page
 export default function ProvenResults() {
   const [active, setActive] = useState(0);
   const [rotationOffset, setRotationOffset] = useState(0);
+  const [playing, setPlaying] = useState(true);
+
+  // Pre-warm first 3 videos immediately on mount, rest during idle
+  useEffect(() => {
+    // First video: immediate
+    primeVideo(RESULTS_VIDEOS[0].src);
+    // Next two: short delay
+    const t1 = setTimeout(() => primeVideo(RESULTS_VIDEOS[1].src), 1500);
+    const t2 = setTimeout(() => primeVideo(RESULTS_VIDEOS[2].src), 3000);
+    // Rest: idle
+    const schedule = () => {
+      RESULTS_VIDEOS.slice(3).forEach((v, i) => {
+        setTimeout(() => primeVideo(v.src), i * 2000);
+      });
+    };
+    let idleId;
+    if ('requestIdleCallback' in window) {
+      idleId = window.requestIdleCallback(schedule, { timeout: 5000 });
+    } else {
+      idleId = setTimeout(schedule, 4000);
+    }
+    return () => {
+      clearTimeout(t1); clearTimeout(t2);
+      if ('cancelIdleCallback' in window) window.cancelIdleCallback(idleId);
+      else clearTimeout(idleId);
+    };
+  }, []);
 
   // Memoize computed values
   const orbitalPositions = useMemo(() => {
@@ -215,11 +217,13 @@ export default function ProvenResults() {
   }, [rotationOffset]);
 
   const prev = useCallback(() => {
+    setPlaying(true);
     setActive(i => (i - 1 + TOTAL) % TOTAL);
     setRotationOffset(r => r - 360 / TOTAL);
   }, []);
 
   const next = useCallback(() => {
+    setPlaying(true);
     setActive(i => (i + 1) % TOTAL);
     setRotationOffset(r => r + 360 / TOTAL);
   }, []);
@@ -230,7 +234,10 @@ export default function ProvenResults() {
     const shortDiff = ((diff + TOTAL / 2) % TOTAL) - TOTAL / 2;
     setRotationOffset(r => r + (shortDiff * 360 / TOTAL));
     setActive(idx);
+    setPlaying(true);
   }, [active]);
+
+  const handleToggle = useCallback(() => setPlaying(p => !p), []);
 
   // Debounced keyboard handler
   useEffect(() => {
@@ -288,30 +295,27 @@ export default function ProvenResults() {
             />
           ))}
 
-          {/* Centre — ONE video element total */}
+          {/* Centre — persistent single video, src swapped in-place */}
           <div className="absolute" style={{
             width: '300px', aspectRatio: '9/16',
             left: 'calc(50% - 150px)', top: 'calc(50% - 267px)',
             zIndex: 20,
           }}>
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={active}
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.95 }}
-                transition={{ duration: 0.25 }}
-                className="absolute inset-0"
-              >
-                <ActiveVideo
-                  src={RESULTS_VIDEOS[active].src}
-                  thumbnailSrc={RESULTS_VIDEOS[active].thumbnailSrc}
-                  nextSrc={RESULTS_VIDEOS[(active + 1) % TOTAL].src}
-                />
-              </motion.div>
-            </AnimatePresence>
+            <div className="absolute inset-0">
+              <ActiveVideo
+                src={RESULTS_VIDEOS[active].src}
+                thumbnailSrc={RESULTS_VIDEOS[active].thumbnailSrc}
+                playing={playing}
+                onToggle={handleToggle}
+              />
+            </div>
             <div className="absolute inset-0 rounded-3xl pointer-events-none" style={{
-              border: '1.5px solid hsl(var(--glow-primary)/0.7)', zIndex: 30,
+              boxShadow: playing
+                ? '0 0 0 2px hsl(var(--primary)/0.8), 0 0 30px hsl(var(--primary)/0.4), 0 0 60px hsl(var(--primary)/0.15)'
+                : undefined,
+              border: '1.5px solid hsl(var(--glow-primary)/0.7)',
+              transition: 'box-shadow 0.4s ease',
+              zIndex: 30,
             }} />
           </div>
 
@@ -348,22 +352,14 @@ export default function ProvenResults() {
       {/* ══ MOBILE ═════════════════════════════════════════════════════════ */}
       <div className="lg:hidden">
         <div className="relative mx-auto mb-5" style={{ width: 'min(310px,88vw)', aspectRatio: '9/16' }}>
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={active}
-              initial={{ opacity: 0, x: 30 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -30 }}
-              transition={{ duration: 0.22 }}
-              className="absolute inset-0"
-            >
-              <ActiveVideo
-                src={RESULTS_VIDEOS[active].src}
-                thumbnailSrc={RESULTS_VIDEOS[active].thumbnailSrc}
-                nextSrc={RESULTS_VIDEOS[(active + 1) % TOTAL].src}
-              />
-            </motion.div>
-          </AnimatePresence>
+          <div className="absolute inset-0">
+            <ActiveVideo
+              src={RESULTS_VIDEOS[active].src}
+              thumbnailSrc={RESULTS_VIDEOS[active].thumbnailSrc}
+              playing={playing}
+              onToggle={handleToggle}
+            />
+          </div>
           <div className="absolute inset-0 rounded-3xl pointer-events-none" style={{
             border: '1.5px solid hsl(var(--glow-primary)/0.6)', zIndex: 10,
           }} />
