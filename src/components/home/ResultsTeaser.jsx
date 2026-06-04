@@ -65,8 +65,10 @@ export default function ResultsTeaser() {
             src={THUMBS[i]}
             alt=""
             className="w-full h-full object-cover"
-            loading="lazy"
+            loading={i < 4 ? 'eager' : 'lazy'}
             decoding="async"
+            fetchPriority={i < 2 ? 'high' : 'auto'}
+            onError={(e) => { e.target.style.opacity = '0'; }}
           />
         </motion.div>
       ))}

@@ -109,8 +109,10 @@ function ActiveVideo({ src, thumbnailSrc, nextSrc }) {
         src={thumbnailSrc}
         alt=""
         className="absolute inset-0 w-full h-full object-cover"
-        style={{ zIndex: 1 }}
+        style={{ zIndex: 1, background: '#1a1a1a' }}
         draggable={false}
+        fetchPriority="high"
+        onError={(e) => { e.target.style.opacity = '0'; }}
       />
       {/* Video — fades in ONLY after canplay, sits on top of thumbnail */}
       <video
@@ -159,8 +161,10 @@ const OrbitalThumb = memo(function OrbitalThumb({ angleDeg, index, isActive, onC
           src={thumbnail} 
           alt={`Video ${index + 1}`}
           className="w-full h-full object-cover"
+          style={{ background: '#1a1a1a' }}
           loading="lazy"
           decoding="async"
+          onError={(e) => { e.target.style.opacity = '0'; }}
         />
       )}
     </div>
@@ -179,6 +183,7 @@ const MobileThumbTile = memo(function MobileThumbTile({ index, isActive, onClick
         transition: 'border-color 0.2s, opacity 0.2s',
         flexShrink: 0,
         willChange: 'opacity, border-color',
+        background: '#1a1a1a',
       }}
       onClick={onClick}
     >
@@ -189,6 +194,7 @@ const MobileThumbTile = memo(function MobileThumbTile({ index, isActive, onClick
           className="w-full h-full object-cover"
           loading="lazy"
           decoding="async"
+          onError={(e) => { e.target.style.opacity = '0'; }}
         />
       )}
     </div>
