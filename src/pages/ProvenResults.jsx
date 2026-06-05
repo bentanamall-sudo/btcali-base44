@@ -5,20 +5,20 @@ import GlowButton from '../components/GlowButton';
 
 // ── Video list with real uploaded thumbnails (matched by upload order) ────
 export const RESULTS_VIDEOS = [
-  { src: 'https://media.base44.com/videos/public/69fd635623a9368c153045ad/ca23c8035_1A1AF447-0FC4-4CBD-8F32-7070E68FAF81.mp4',   thumbnailSrc: 'https://media.base44.com/images/public/69fd635623a9368c153045ad/bcc2e219f_Screenshot2026-06-03at51732pm.png' },
-  { src: 'https://media.base44.com/videos/public/69fd635623a9368c153045ad/8587eecf9_5DDF0CFF-6FD2-432E-B713-A609FBBD691A.mp4',   thumbnailSrc: 'https://media.base44.com/images/public/69fd635623a9368c153045ad/cf260e6a6_Screenshot2026-06-03at51745pm.png' },
-  { src: 'https://media.base44.com/videos/public/69fd635623a9368c153045ad/753c2ae4e_03246CBA-6320-4FEC-8025-85BBE3E3C17F.mp4',   thumbnailSrc: 'https://media.base44.com/images/public/69fd635623a9368c153045ad/7b9df4871_Screenshot2026-06-03at51801pm.png' },
-  { src: 'https://media.base44.com/videos/public/69fd635623a9368c153045ad/a9f5d1c68_2882F251-A505-4D09-9090-44FCD8DAEDB4.mp4',   thumbnailSrc: 'https://media.base44.com/images/public/69fd635623a9368c153045ad/f5abcd0de_Screenshot2026-06-03at51814pm.png' },
-  { src: 'https://media.base44.com/videos/public/69fd635623a9368c153045ad/808191968_61F09AF3-D0FC-44CC-8EC6-6037B4540D78.mp4',   thumbnailSrc: 'https://media.base44.com/images/public/69fd635623a9368c153045ad/99aa4c0b5_Screenshot2026-06-03at51828pm.png' },
-  { src: 'https://media.base44.com/videos/public/69fd635623a9368c153045ad/815783111_D05272AD-F171-4C80-8119-90847BFEFB36.mp4',   thumbnailSrc: 'https://media.base44.com/images/public/69fd635623a9368c153045ad/38d2730e1_Screenshot2026-06-03at51840pm.png' },
-  { src: 'https://media.base44.com/videos/public/69fd635623a9368c153045ad/58554d21d_F8C3EC32-6F28-43F9-9274-5DCA2E4AD3AE.mp4',   thumbnailSrc: 'https://media.base44.com/images/public/69fd635623a9368c153045ad/becb3ec96_Screenshot2026-06-03at51852pm.png' },
-  { src: 'https://media.base44.com/videos/public/69fd635623a9368c153045ad/813b0ba42_C52B9D44-CCC6-4C11-B563-D29E72D5E742.mp4',   thumbnailSrc: 'https://media.base44.com/images/public/69fd635623a9368c153045ad/776fb17d2_Screenshot2026-06-03at51904pm.png' },
-  { src: 'https://media.base44.com/videos/public/69fd635623a9368c153045ad/ef3563e72_C88E406D-F072-4021-9F9D-376E1AE850BA.mp4',   thumbnailSrc: 'https://media.base44.com/images/public/69fd635623a9368c153045ad/6ce8ea7e0_Screenshot2026-06-03at51921pm.png' },
-  { src: 'https://media.base44.com/videos/public/69fd635623a9368c153045ad/da381e74b_D9DC1424-7087-4C6F-BC4C-83A843896E19.mp4',   thumbnailSrc: 'https://media.base44.com/images/public/69fd635623a9368c153045ad/c1ecbf16f_Screenshot2026-06-03at51936pm.png' },
-  { src: 'https://media.base44.com/videos/public/69fd635623a9368c153045ad/d1e1f786f_BF734FD2-A5B6-4EA6-9DFC-3725ABB1BAAD.mp4',   thumbnailSrc: 'https://media.base44.com/images/public/69fd635623a9368c153045ad/ea11ec65c_Screenshot2026-06-03at51948pm.png' },
-  { src: 'https://media.base44.com/videos/public/69fd635623a9368c153045ad/a13a2b724_8FB2940B-72DC-4171-B5BD-3B262CA0230A.mp4',   thumbnailSrc: 'https://media.base44.com/images/public/69fd635623a9368c153045ad/4436461af_Screenshot2026-06-03at52008pm.png' },
-  { src: 'https://media.base44.com/videos/public/69fd635623a9368c153045ad/3b339ab9b_87AA93C8-C62D-44CB-92B4-25DE7D6EB9EF.mp4',   thumbnailSrc: 'https://media.base44.com/images/public/69fd635623a9368c153045ad/be0afd109_Screenshot2026-06-03at52026pm.png' },
-  { src: 'https://media.base44.com/videos/public/69fd635623a9368c153045ad/f5dd79d17_3DBD7B8B-0985-4366-803A-6BF5FE6E16DA.mp4',   thumbnailSrc: 'https://media.base44.com/images/public/69fd635623a9368c153045ad/f2b89c68b_Screenshot2026-06-03at52046pm.png' },
+  { src: 'https://BTCALI.b-cdn.net/Videos/1A1AF447-0FC4-4CBD-8F32-7070E68FAF81.mp4',   thumbnailSrc: 'https://BTCALI.b-cdn.net/Thumbnails/IMG_6627.png' },
+  { src: 'https://BTCALI.b-cdn.net/Videos/5DDF0CFF-6FD2-432E-B713-A609FBBD691A.mp4',   thumbnailSrc: 'https://BTCALI.b-cdn.net/Thumbnails/IMG_6628.png' },
+  { src: 'https://BTCALI.b-cdn.net/Videos/D05272AD-F171-4C80-8119-90847BFEFB36.mp4',   thumbnailSrc: 'https://BTCALI.b-cdn.net/Thumbnails/IMG_6633.png' },
+  { src: 'https://BTCALI.b-cdn.net/Videos/2882F251-A505-4D09-9090-44FCD8DAEDB4.mp4',   thumbnailSrc: 'https://BTCALI.b-cdn.net/Thumbnails/IMG_6631.png' },
+  { src: 'https://BTCALI.b-cdn.net/Videos/61F09AF3-D0FC-44CC-8EC6-6037B4540D78.mp4',   thumbnailSrc: 'https://BTCALI.b-cdn.net/Thumbnails/IMG_6632.png' },
+  { src: 'https://BTCALI.b-cdn.net/Videos/03246CBA-6320-4FEC-8025-85BBE3E3C17F.mp4',   thumbnailSrc: 'https://BTCALI.b-cdn.net/Thumbnails/IMG_6629.png' },
+  { src: 'https://BTCALI.b-cdn.net/Videos/F8C3EC32-6F28-43F9-9274-5DCA2E4AD3AE.mp4',   thumbnailSrc: 'https://BTCALI.b-cdn.net/Thumbnails/IMG_6634.png' },
+  { src: 'https://BTCALI.b-cdn.net/Videos/C52B9D44-CCC6-4C11-B563-D29E72D5E742.mp4',   thumbnailSrc: 'https://BTCALI.b-cdn.net/Thumbnails/IMG_6635.png' },
+  { src: 'https://BTCALI.b-cdn.net/Videos/3DBD7B8B-0985-4366-803A-6BF5FE6E16DA.mp4',   thumbnailSrc: 'https://BTCALI.b-cdn.net/Thumbnails/IMG_6636.png' },
+  { src: 'https://BTCALI.b-cdn.net/Videos/D9DC1424-7087-4C6F-BC4C-83A843896E19.mp4',   thumbnailSrc: 'https://BTCALI.b-cdn.net/Thumbnails/IMG_6637.png' },
+  { src: 'https://BTCALI.b-cdn.net/Videos/BF734FD2-A5B6-4EA6-9DFC-3725ABB1BAAD.mp4',   thumbnailSrc: 'https://BTCALI.b-cdn.net/Thumbnails/IMG_6638.png' },
+  { src: 'https://BTCALI.b-cdn.net/Videos/8FB2940B-72DC-4171-B5BD-3B262CA0230A.mp4',   thumbnailSrc: 'https://BTCALI.b-cdn.net/Thumbnails/IMG_6639.png' },
+  { src: 'https://BTCALI.b-cdn.net/Videos/87AA93C8-C62D-44CB-92B4-25DE7D6EB9EF.mp4',   thumbnailSrc: 'https://BTCALI.b-cdn.net/Thumbnails/IMG_6640.png' },
+  { src: 'https://BTCALI.b-cdn.net/Videos/C88E406D-F072-4021-9F9D-376E1AE850BA.mp4',   thumbnailSrc: 'https://BTCALI.b-cdn.net/Thumbnails/IMG_6641.png' },
 ];
 
 const TOTAL = RESULTS_VIDEOS.length;
