@@ -1,10 +1,11 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
-import { RESULTS_VIDEOS } from '../../pages/ProvenResults';
+import { WINS_VIDEOS } from '../../pages/ProvenResults';
+import ResultsVideoPreview from './ResultsVideoPreview';
 
-// Pick 10 thumbnails to scatter around the heading
-const THUMBS = RESULTS_VIDEOS.slice(0, 10).map(v => v.thumbnailSrc);
+// Pick 10 items to scatter around the heading (use thumb for static scattered bg)
+const THUMBS = WINS_VIDEOS.slice(0, 10).map(v => v.thumb);
 
 // Pre-defined scattered positions (left/right halves, varied rotation/opacity/scale)
 const POSITIONS = [
@@ -106,14 +107,19 @@ export default function ResultsTeaser() {
           initial={{ opacity: 0, y: 14 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.22 }}
+          className="w-full"
         >
-          <Link to="/results">
+          {/* Live video previews — click any to go to /results */}
+          <div className="mb-6">
+            <ResultsVideoPreview />
+          </div>
+          <Link to="/results" className="flex justify-center">
             <motion.button
               whileHover={{ scale: 1.04 }}
               whileTap={{ scale: 0.97 }}
               className="inline-flex items-center gap-2.5 px-8 py-3.5 rounded-xl gradient-bg-strong glow-primary text-primary-foreground font-heading font-bold text-base"
             >
-              View Student Results <ArrowRight className="w-4 h-4" />
+              View All Results <ArrowRight className="w-4 h-4" />
             </motion.button>
           </Link>
         </motion.div>

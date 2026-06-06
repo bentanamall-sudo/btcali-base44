@@ -1,6 +1,7 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronRight, ChevronLeft, Zap, CheckCircle, Trophy } from 'lucide-react';
+import { ChevronRight, ChevronLeft, Zap, CheckCircle, Trophy, BookOpen } from 'lucide-react';
 import { PageHeaderLogo } from '@/components/Logo';
 import { base44 } from '@/api/base44Client';
 import { generateReport, buildEmailBody } from '@/lib/reportGenerator';
@@ -114,6 +115,8 @@ function Field({ children }) {
 }
 
 export default function AthleteDiagnostic() {
+  const navigate = useNavigate();
+  const [gateAccepted, setGateAccepted] = useState(false);
   const [step, setStep] = useState(0);
   const [data, setData] = useState({
     full_name: '', email: '', age: '', height: '', weight: '', country: '', instagram: '',
@@ -365,6 +368,15 @@ export default function AthleteDiagnostic() {
     return true;
   };
 
+  // Payment filter — redirect non-interested users immediately when they try to continue
+  const handleNext = () => {
+    if (step === 5 && data.coaching_investment === 'No, I am not interested in paid coaching') {
+      navigate('/skills');
+      return;
+    }
+    if (canNext()) setStep(s => s + 1);
+  };
+
   const handleSubmit = async () => {
     setSubmitting(true);
     const snapshot = { ...data }; // capture full data snapshot before any state changes
@@ -447,6 +459,56 @@ Weaknesses: ${(report?.weaknesses || []).join(', ')}`
       setTimeout(() => setCopied(false), 3000);
     }
   };
+
+  // ── Gate screen ─────────────────────────────────────────────────────────
+  if (!gateAccepted) {
+    return (
+      <div className="min-h-screen flex items-center justify-center px-4 py-12">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="max-w-lg w-full glass rounded-2xl p-8 glow-border text-center"
+        >
+          <div className="flex justify-center mb-6">
+            <PageHeaderLogo />
+          </div>
+          <div className="inline-flex items-center gap-2 glass px-4 py-2 rounded-full mb-4">
+            <Zap className="w-4 h-4 text-primary" />
+            <span className="text-sm font-body text-muted-foreground">Athlete Diagnostic</span>
+          </div>
+          <h1 className="font-heading font-bold text-2xl sm:text-3xl gradient-text mb-4">BTCALI Athlete Scan</h1>
+          <div className="glass rounded-xl p-5 border border-primary/20 mb-6 text-left space-y-3">
+            <p className="font-heading font-semibold text-foreground text-sm">
+              BTCALI Athlete Scan is only for serious applicants interested in BTCALI 1-on-1 coaching.
+            </p>
+            <p className="font-body text-sm text-muted-foreground">
+              Current coaching starts from <span className="text-primary font-semibold">AUD $40/week</span>.
+            </p>
+            <p className="font-body text-sm text-muted-foreground">
+              If you are not interested in investing in coaching, please do not continue this application.
+              Instead enjoy the free tutorials available inside the Skill Library.
+            </p>
+          </div>
+          <div className="flex flex-col gap-3">
+            <motion.button
+              whileTap={{ scale: 0.97 }}
+              onClick={() => setGateAccepted(true)}
+              className="w-full py-4 rounded-xl gradient-bg-strong glow-primary text-primary-foreground font-heading font-bold text-base"
+            >
+              I am a serious applicant — Continue
+            </motion.button>
+            <motion.button
+              whileTap={{ scale: 0.97 }}
+              onClick={() => navigate('/skills')}
+              className="w-full py-3 rounded-xl glass border border-border/40 text-muted-foreground font-heading font-semibold text-sm flex items-center justify-center gap-2 hover:border-primary/30 transition-all"
+            >
+              <BookOpen className="w-4 h-4" /> Browse Free Tutorials Instead
+            </motion.button>
+          </div>
+        </motion.div>
+      </div>
+    );
+  }
 
   if (report) {
     return (
@@ -578,7 +640,7 @@ Weaknesses: ${(report?.weaknesses || []).join(', ')}`
         {step < sections.length - 1 ? (
           <motion.button
             whileTap={{ scale: 0.97 }}
-            onClick={() => { if (canNext()) setStep(s => s + 1); }}
+            onClick={handleNext}
             disabled={!canNext()}
             className="flex-1 flex items-center justify-center gap-2 py-3 rounded-xl gradient-bg-strong text-primary-foreground font-heading font-semibold text-sm glow-primary disabled:opacity-40"
           >

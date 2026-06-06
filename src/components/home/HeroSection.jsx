@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { ArrowRight, Zap, Target, Play, ChevronRight } from 'lucide-react';
+import { ArrowRight, Zap, Target, Play, ChevronRight, BookOpen } from 'lucide-react';
 import GlowButton from '../GlowButton';
 import { HeroLogo } from '../Logo';
 
@@ -97,8 +97,9 @@ export default function HeroSection() {
               </GlowButton>
             </Link>
             <Link to="/skills">
-              <GlowButton variant="secondary" size="lg">
-                Explore Skill Library
+              <GlowButton size="lg">
+                <BookOpen className="w-5 h-5" />
+                Free Tutorials
               </GlowButton>
             </Link>
           </motion.div>

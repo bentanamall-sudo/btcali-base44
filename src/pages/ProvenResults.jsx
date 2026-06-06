@@ -20,7 +20,6 @@ export const WINS_VIDEOS = [
   { src: 'https://BTCALI.b-cdn.net/Results/377B6423-A5E3-4608-A64C-E66750032938.mp4',   thumb: 'https://BTCALI.b-cdn.net/Results/Screenshot%202026-06-06%20at%201.58.33%E2%80%AFpm.jpeg' },
 ];
 
-// ── Transformations ──────────────────────────────────────────────────────────
 export const TRANSFORM_VIDEOS = [
   { src: 'https://BTCALI.b-cdn.net/Transformations/648DC970-AF08-43AB-AC8E-E7A919D7B25A.mp4',   thumb: 'https://BTCALI.b-cdn.net/Transformations/Screenshot%202026-06-06%20at%201.15.31%E2%80%AFpm.jpeg' },
   { src: 'https://BTCALI.b-cdn.net/Transformations/F1DEC7F9-9337-4BC7-989B-0DDDB969B7C7.mp4',   thumb: 'https://BTCALI.b-cdn.net/Transformations/Screenshot%202026-06-06%20at%201.16.59%E2%80%AFpm.jpeg' },
@@ -34,26 +33,22 @@ export const TRANSFORM_VIDEOS = [
   { src: 'https://BTCALI.b-cdn.net/Transformations/E4449B10-7664-47B4-91B7-108A836C7281.mp4',   thumb: 'https://BTCALI.b-cdn.net/Transformations/Screenshot%202026-06-06%20at%201.18.38%E2%80%AFpm.jpeg' },
 ];
 
-// Keep legacy export so ResultsTeaser still works
+// Legacy export for ResultsTeaser compatibility
 export const RESULTS_VIDEOS = WINS_VIDEOS.map(v => ({ src: v.src, thumbnailSrc: v.thumb }));
 
-// ── Silently prime a video into the browser cache ────────────────────────────
+// ── Silently prime video into browser cache ──────────────────────────────────
 function primeVideo(src) {
   if (!src || typeof document === 'undefined') return;
   const v = document.createElement('video');
-  v.src = src;
-  v.preload = 'auto';
-  v.muted = true;
+  v.src = src; v.preload = 'auto'; v.muted = true;
   v.style.cssText = 'position:absolute;width:0;height:0;opacity:0;pointer-events:none;';
   document.body.appendChild(v);
   v.load();
-  setTimeout(() => {
-    try { v.pause(); v.removeAttribute('src'); v.load(); document.body.removeChild(v); } catch {}
-  }, 10000);
+  setTimeout(() => { try { v.pause(); v.removeAttribute('src'); v.load(); document.body.removeChild(v); } catch {} }, 10000);
 }
 
-// ── Persistent video player — thumbnail always underneath, video fades in ────
-function ActiveVideo({ src, thumb }) {
+// ── Centre active video — thumbnail base + video overlay + audio control ─────
+function ActiveVideo({ src, thumb, audioActive, onActivateAudio }) {
   const [ready, setReady] = useState(false);
   const videoRef = useRef(null);
   const prevSrc = useRef(null);
@@ -65,6 +60,7 @@ function ActiveVideo({ src, thumb }) {
     const v = videoRef.current;
     if (!v) return;
     v.pause();
+    v.muted = true;
     v.removeAttribute('src');
     v.load();
     v.preload = 'auto';
@@ -75,16 +71,20 @@ function ActiveVideo({ src, thumb }) {
     return () => v.removeEventListener('canplay', onCanPlay);
   }, [src]);
 
+  // Sync audio
+  useEffect(() => {
+    const v = videoRef.current;
+    if (!v || !ready) return;
+    v.muted = !audioActive;
+  }, [audioActive, ready]);
+
+  const handleClick = () => {
+    onActivateAudio();
+  };
+
   return (
-    <div className="absolute inset-0 overflow-hidden rounded-3xl">
-      <img
-        src={thumb}
-        alt=""
-        className="absolute inset-0 w-full h-full object-cover"
-        style={{ zIndex: 1, background: '#111' }}
-        draggable={false}
-        fetchPriority="high"
-      />
+    <div className="absolute inset-0 overflow-hidden rounded-3xl cursor-pointer" onClick={handleClick}>
+      <img src={thumb} alt="" className="absolute inset-0 w-full h-full object-cover" style={{ zIndex: 1, background: '#111' }} draggable={false} fetchPriority="high" />
       <video
         ref={videoRef}
         muted loop playsInline autoPlay
@@ -92,23 +92,64 @@ function ActiveVideo({ src, thumb }) {
         style={{ opacity: ready ? 1 : 0, transition: 'opacity 0.25s ease', zIndex: 2 }}
       />
       <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none" style={{ zIndex: 3 }} />
+      {/* Audio hint */}
+      {!audioActive && ready && (
+        <div className="absolute bottom-3 left-1/2 -translate-x-1/2 z-10 px-3 py-1 rounded-full text-xs font-heading font-semibold text-white/70"
+          style={{ background: 'rgba(0,0,0,0.55)', border: '1px solid rgba(255,255,255,0.15)' }}>
+          Tap for audio
+        </div>
+      )}
     </div>
   );
 }
 
-// ── Thumb strip tile ─────────────────────────────────────────────────────────
-const ThumbTile = memo(function ThumbTile({ thumb, isActive, onClick, w = 54, h = 96 }) {
+// ── Orbital thumbnail (desktop) ───────────────────────────────────────────────
+const OrbitalThumb = memo(function OrbitalThumb({ angleDeg, index, isActive, onClick, thumb }) {
+  const rad = ((angleDeg - 90) * Math.PI) / 180;
+  const sin = Math.sin(rad);
+  const depth = (sin + 1) / 2;
+  const w = 68, h = Math.round(w * 16 / 9);
+  const x = Math.cos(rad) * 330;
+  const y = sin * 200;
+  const scale = isActive ? 0 : 0.80 + depth * 0.26;
+  const opacity = isActive ? 0 : 0.65 + depth * 0.35;
+  const blur = isActive ? 0 : Math.max(0, (1 - depth) * 3);
+  const zIndex = isActive ? 0 : Math.round(depth * 12) + 2;
+
   return (
     <div
+      className="absolute cursor-pointer overflow-hidden"
+      style={{
+        width: w, height: h,
+        left: `calc(50% + ${x}px - ${w / 2}px)`,
+        top: `calc(50% + ${y}px - ${h / 2}px)`,
+        zIndex,
+        borderRadius: '10px',
+        border: '1.5px solid hsl(var(--glow-primary)/0.5)',
+        transform: `scale(${scale})`,
+        opacity,
+        filter: blur > 0 ? `blur(${blur}px)` : 'none',
+        transition: 'transform 0.4s ease, opacity 0.4s ease, filter 0.4s ease',
+        background: '#111',
+        willChange: 'transform, opacity',
+      }}
       onClick={onClick}
-      className="flex-shrink-0 rounded-xl cursor-pointer overflow-hidden"
+    >
+      <img src={thumb} alt={`Video ${index + 1}`} className="w-full h-full object-cover" loading="lazy" decoding="async" />
+    </div>
+  );
+});
+
+// ── Mobile thumb tile ─────────────────────────────────────────────────────────
+const ThumbTile = memo(function ThumbTile({ thumb, isActive, onClick, w = 54, h = 96 }) {
+  return (
+    <div onClick={onClick} className="flex-shrink-0 rounded-xl cursor-pointer overflow-hidden"
       style={{
         width: w, height: h,
         border: isActive ? '2px solid hsl(var(--primary))' : '1.5px solid hsl(var(--glow-primary)/0.3)',
         opacity: isActive ? 1 : 0.55,
         transition: 'border-color 0.2s, opacity 0.2s',
-        background: '#111',
-        flexShrink: 0,
+        background: '#111', flexShrink: 0,
       }}
     >
       <img src={thumb} alt="" className="w-full h-full object-cover" loading="lazy" decoding="async" />
@@ -116,28 +157,50 @@ const ThumbTile = memo(function ThumbTile({ thumb, isActive, onClick, w = 54, h 
   );
 });
 
-// ── Reusable Carousel ────────────────────────────────────────────────────────
+// ── Reusable carousel with orbital desktop + simple mobile ────────────────────
 function VideoCarousel({ videos, label, icon: Icon }) {
   const [active, setActive] = useState(0);
+  const [rotationOffset, setRotationOffset] = useState(0);
+  const [audioIdx, setAudioIdx] = useState(null); // which index has audio
   const total = videos.length;
   const touchStart = useRef(null);
 
-  // Prime all videos aggressively on mount
+  // Aggressive pre-warming
   useEffect(() => {
-    // First 2 immediately
     primeVideo(videos[0]?.src);
-    const t1 = setTimeout(() => primeVideo(videos[1]?.src), 800);
-    const t2 = setTimeout(() => primeVideo(videos[2]?.src), 1800);
-    // Rest staggered
-    const timers = videos.slice(3).map((v, i) =>
-      setTimeout(() => primeVideo(v.src), 2800 + i * 1200)
-    );
+    const t1 = setTimeout(() => primeVideo(videos[1]?.src), 600);
+    const t2 = setTimeout(() => primeVideo(videos[2]?.src), 1400);
+    const timers = videos.slice(3).map((v, i) => setTimeout(() => primeVideo(v.src), 2200 + i * 900));
     return () => { clearTimeout(t1); clearTimeout(t2); timers.forEach(clearTimeout); };
   }, []);
 
-  const prev = useCallback(() => setActive(i => (i - 1 + total) % total), [total]);
-  const next = useCallback(() => setActive(i => (i + 1) % total), [total]);
-  const goTo = useCallback((i) => setActive(i), []);
+  const orbitalPositions = videos.map((_, i) => ({
+    angleDeg: (i / total) * 360 + rotationOffset,
+    index: i,
+  }));
+
+  const goTo = useCallback((idx) => {
+    if (idx === active) return;
+    const diff = idx - active;
+    const shortDiff = ((diff + total / 2) % total) - total / 2;
+    setRotationOffset(r => r + (shortDiff * 360 / total));
+    setActive(idx);
+    setAudioIdx(idx); // activate audio on selected
+  }, [active, total]);
+
+  const prev = useCallback(() => {
+    const next = (active - 1 + total) % total;
+    setRotationOffset(r => r - 360 / total);
+    setActive(next);
+    setAudioIdx(next);
+  }, [active, total]);
+
+  const next = useCallback(() => {
+    const nx = (active + 1) % total;
+    setRotationOffset(r => r + 360 / total);
+    setActive(nx);
+    setAudioIdx(nx);
+  }, [active, total]);
 
   const onTouchStart = useCallback((e) => { touchStart.current = e.touches[0].clientX; }, []);
   const onTouchEnd = useCallback((e) => {
@@ -155,56 +218,79 @@ function VideoCarousel({ videos, label, icon: Icon }) {
         <h2 className="font-heading font-bold text-xl sm:text-2xl gradient-text">{label}</h2>
       </div>
 
-      {/* ── DESKTOP ── */}
-      <div className="hidden lg:flex flex-col items-center gap-6">
-        {/* Main player */}
-        <div className="relative" style={{ width: '300px', aspectRatio: '9/16' }}>
-          <ActiveVideo src={videos[active].src} thumb={videos[active].thumb} />
-          <div className="absolute inset-0 rounded-3xl pointer-events-none" style={{
-            border: '1.5px solid hsl(var(--glow-primary)/0.7)',
-            boxShadow: '0 0 0 2px hsl(var(--primary)/0.6), 0 0 30px hsl(var(--primary)/0.25)',
-            zIndex: 10,
-          }} />
+      {/* ── DESKTOP: Premium 3D orbital carousel ── */}
+      <div className="hidden lg:block">
+        <div className="relative mx-auto" style={{ width: '860px', height: '760px' }}>
+          {/* Orbital thumbnails */}
+          {orbitalPositions.map(({ angleDeg, index }) => (
+            <OrbitalThumb
+              key={index}
+              angleDeg={angleDeg}
+              index={index}
+              isActive={index === active}
+              onClick={() => goTo(index)}
+              thumb={videos[index].thumb}
+            />
+          ))}
 
-          {/* Arrow buttons */}
+          {/* Centre active video */}
+          <div className="absolute" style={{
+            width: '290px', aspectRatio: '9/16',
+            left: 'calc(50% - 145px)', top: 'calc(50% - 258px)',
+            zIndex: 20,
+          }}>
+            <ActiveVideo
+              src={videos[active].src}
+              thumb={videos[active].thumb}
+              audioActive={audioIdx === active}
+              onActivateAudio={() => setAudioIdx(active)}
+            />
+            <div className="absolute inset-0 rounded-3xl pointer-events-none" style={{
+              border: '1.5px solid hsl(var(--glow-primary)/0.8)',
+              boxShadow: '0 0 0 2px hsl(var(--primary)/0.7), 0 0 40px hsl(var(--primary)/0.3), 0 0 80px hsl(var(--primary)/0.1)',
+              zIndex: 30,
+            }} />
+          </div>
+
+          {/* Arrows */}
           <button onClick={prev}
-            className="absolute -left-16 top-1/2 -translate-y-1/2 z-20 w-12 h-12 rounded-full glass border border-primary/40 flex items-center justify-center hover:border-primary transition-colors">
-            <ChevronLeft className="w-5 h-5 text-foreground" />
+            className="absolute z-30 w-14 h-14 rounded-full glass border border-primary/40 flex items-center justify-center hover:border-primary transition-colors"
+            style={{ left: 'calc(50% - 380px)', top: 'calc(50% - 28px)' }}>
+            <ChevronLeft className="w-6 h-6 text-foreground" />
           </button>
           <button onClick={next}
-            className="absolute -right-16 top-1/2 -translate-y-1/2 z-20 w-12 h-12 rounded-full glass border border-primary/40 flex items-center justify-center hover:border-primary transition-colors">
-            <ChevronRight className="w-5 h-5 text-foreground" />
+            className="absolute z-30 w-14 h-14 rounded-full glass border border-primary/40 flex items-center justify-center hover:border-primary transition-colors"
+            style={{ right: 'calc(50% - 380px)', top: 'calc(50% - 28px)' }}>
+            <ChevronRight className="w-6 h-6 text-foreground" />
           </button>
         </div>
 
-        {/* Counter */}
-        <p className="font-heading font-bold text-base">
-          <span className="gradient-text">{active + 1}</span>
-          <span className="text-muted-foreground/40"> / {total}</span>
-        </p>
-
-        {/* Thumb strip */}
-        <div className="flex gap-2 overflow-x-auto pb-1 max-w-2xl" style={{ scrollbarWidth: 'none' }}>
-          {videos.map((v, i) => (
-            <ThumbTile key={i} thumb={v.thumb} isActive={i === active} onClick={() => goTo(i)} w={48} h={85} />
-          ))}
-        </div>
-
-        {/* Dot indicators */}
-        <div className="flex gap-1.5">
-          {videos.map((_, i) => (
-            <button key={i} onClick={() => goTo(i)} className="rounded-full transition-all" style={{
-              width: i === active ? '20px' : '5px', height: '5px',
-              background: i === active ? 'hsl(var(--primary))' : 'hsl(var(--muted-foreground)/0.3)',
-            }} />
-          ))}
+        {/* Counter + dots */}
+        <div className="flex flex-col items-center gap-3 mt-0">
+          <p className="font-heading font-bold text-base">
+            <span className="gradient-text">{active + 1}</span>
+            <span className="text-muted-foreground/40"> / {total}</span>
+          </p>
+          <div className="flex gap-1.5">
+            {videos.map((_, i) => (
+              <button key={i} onClick={() => goTo(i)} className="rounded-full transition-all" style={{
+                width: i === active ? '20px' : '5px', height: '5px',
+                background: i === active ? 'hsl(var(--primary))' : 'hsl(var(--muted-foreground)/0.3)',
+              }} />
+            ))}
+          </div>
         </div>
       </div>
 
-      {/* ── MOBILE ── */}
+      {/* ── MOBILE: Simple clean carousel ── */}
       <div className="lg:hidden flex flex-col items-center gap-4">
         <div className="relative" style={{ width: 'min(300px, 86vw)', aspectRatio: '9/16' }}>
-          <ActiveVideo src={videos[active].src} thumb={videos[active].thumb} />
+          <ActiveVideo
+            src={videos[active].src}
+            thumb={videos[active].thumb}
+            audioActive={audioIdx === active}
+            onActivateAudio={() => setAudioIdx(active)}
+          />
           <div className="absolute inset-0 rounded-3xl pointer-events-none" style={{
             border: '1.5px solid hsl(var(--glow-primary)/0.6)', zIndex: 10,
           }} />
@@ -224,7 +310,6 @@ function VideoCarousel({ videos, label, icon: Icon }) {
             <span className="text-white/50 text-xs"> / {total}</span>
           </div>
         </div>
-
         <div className="flex gap-2 overflow-x-auto px-4 pb-1 w-full" style={{ scrollbarWidth: 'none' }}>
           {videos.map((v, i) => (
             <ThumbTile key={i} thumb={v.thumb} isActive={i === active} onClick={() => goTo(i)} />
@@ -235,7 +320,7 @@ function VideoCarousel({ videos, label, icon: Icon }) {
   );
 }
 
-// ── Main Page ────────────────────────────────────────────────────────────────
+// ── Main Page ─────────────────────────────────────────────────────────────────
 export default function ProvenResults() {
   return (
     <div className="min-h-screen py-8 px-4">
@@ -252,13 +337,10 @@ export default function ProvenResults() {
         </p>
       </div>
 
-      {/* Carousel 1: Student Wins */}
       <VideoCarousel videos={WINS_VIDEOS} label="Student Wins" icon={Trophy} />
 
-      {/* Divider */}
       <div className="max-w-2xl mx-auto mb-16 border-t border-border/30" />
 
-      {/* Carousel 2: Transformations */}
       <VideoCarousel videos={TRANSFORM_VIDEOS} label="Transformations" icon={Zap} />
 
       {/* CTA */}
