@@ -92,14 +92,125 @@ export default function CoachingApply() {
     <div className="min-h-screen py-12 px-4 sm:px-6 max-w-3xl mx-auto">
 
       {/* Header */}
-      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-12">
+      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
         <div className="inline-flex items-center gap-2 glass px-4 py-2 rounded-full mb-4">
           <Crown className="w-4 h-4 text-primary" />
           <span className="text-sm font-body text-muted-foreground">Elite Coaching</span>
         </div>
         <h1 className="font-heading font-bold text-3xl sm:text-5xl mb-5 leading-tight">
-          BTCALI <span className="gradient-text">1-1 Coaching</span>
+          Apply For BTCALI <span className="gradient-text">1-on-1 Coaching</span>
         </h1>
+      </motion.div>
+
+      {/* IMPORTANT READ notice */}
+      <motion.div
+        initial={{ opacity: 0, y: 16 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.07 }}
+        className="glass rounded-2xl p-6 border border-amber-500/40 mb-8 relative overflow-hidden"
+        style={{ background: 'rgba(217,119,6,0.05)' }}
+      >
+        <div className="flex items-start gap-3">
+          <div className="w-8 h-8 rounded-full bg-amber-500/20 border border-amber-500/40 flex items-center justify-center flex-shrink-0 mt-0.5">
+            <span className="text-amber-400 font-heading font-bold text-sm">!</span>
+          </div>
+          <div>
+            <p className="font-heading font-bold text-amber-400 text-sm uppercase tracking-wider mb-2">
+              Important — Please Read All Information Below Before Applying
+            </p>
+            <p className="font-body text-sm text-foreground/80 mb-3">This page explains:</p>
+            <div className="space-y-1.5 mb-3">
+              {['How coaching works','What is included','Pricing','Expected commitment','Student results','Whether coaching is right for you'].map(item => (
+                <div key={item} className="flex items-center gap-2">
+                  <div className="w-1.5 h-1.5 rounded-full bg-amber-400/60 flex-shrink-0" />
+                  <span className="text-sm font-body text-foreground/75">{item}</span>
+                </div>
+              ))}
+            </div>
+            <p className="font-body text-sm text-foreground/70 leading-relaxed">
+              Please read everything carefully before submitting an application.
+            </p>
+          </div>
+        </div>
+      </motion.div>
+
+      {/* Application CTA — MOVED TO TOP */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
+        className="glass rounded-2xl p-8 glow-border relative overflow-hidden mb-8"
+      >
+        <div className="absolute inset-0 gradient-bg pointer-events-none" />
+        <div className="relative text-center">
+          <div className="inline-flex items-center gap-2 glass px-4 py-2 rounded-full mb-5">
+            <Target className="w-4 h-4 text-primary" />
+            <span className="text-sm font-body text-muted-foreground">Application</span>
+          </div>
+
+          <h2 className="font-heading font-bold text-2xl sm:text-3xl text-foreground mb-3">
+            Apply for $40 Coaching a Week
+          </h2>
+
+          <p className="font-heading font-extrabold text-xl sm:text-2xl gradient-text mb-3 tracking-wide uppercase">
+            SERIOUS ATHLETES ONLY
+          </p>
+
+          <p className="text-sm font-body text-muted-foreground mb-5 max-w-md mx-auto">
+            Please read everything on this page in depth before applying or enquiring with BTCALI.
+          </p>
+
+          <div className="glass rounded-xl p-5 mb-6 text-left">
+            <p className="font-body text-foreground/85 text-sm mb-4">
+              Complete the BTCALI Athlete Diagnostic first so I can properly analyse:
+            </p>
+            <div className="space-y-2">
+              {DIAGNOSTIC_REASONS.map(r => (
+                <div key={r} className="flex items-center gap-2">
+                  <div className="w-1.5 h-1.5 rounded-full bg-primary flex-shrink-0" />
+                  <span className="text-sm font-body text-foreground/80">{r}</span>
+                </div>
+              ))}
+            </div>
+            <p className="font-body text-foreground/70 text-sm mt-4 leading-relaxed">
+              The Athlete Diagnostic helps me understand exactly how to structure your coaching for the fastest progress possible.
+            </p>
+          </div>
+
+          <div className="mb-5">
+            <label className="block font-heading font-semibold text-foreground text-sm mb-2 text-left">
+              Your Instagram Username <span className="text-primary">*</span>
+            </label>
+            <input
+              type="text"
+              value={instagram}
+              onChange={e => setInstagram(e.target.value)}
+              placeholder="@yourhandle"
+              className="w-full glass rounded-xl px-4 py-3 text-foreground font-body text-sm border border-border/40 focus:border-primary/60 focus:outline-none focus:ring-1 focus:ring-primary/40 bg-transparent"
+            />
+          </div>
+
+          <div className="flex flex-col sm:flex-row gap-3 justify-center">
+            <motion.button
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.97 }}
+              onClick={handleEmail}
+              disabled={!instagram.trim()}
+              className="flex items-center justify-center gap-2 px-6 py-4 rounded-xl gradient-bg-strong text-primary-foreground font-heading font-bold text-base glow-primary disabled:opacity-50"
+            >
+              <Mail className="w-5 h-5" />
+              Apply for $40 Coaching a Week
+            </motion.button>
+            <Link to="/scan">
+              <motion.button
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.97 }}
+                className="flex items-center justify-center gap-2 px-6 py-4 rounded-xl glass border border-primary/40 text-foreground font-heading font-bold text-base hover:border-primary/70 transition-all w-full"
+              >
+                <ArrowRight className="w-5 h-5 text-primary" />
+                Start Athlete Diagnostic
+              </motion.button>
+            </Link>
+          </div>
+        </div>
       </motion.div>
 
       {/* Pricing — Special Offer */}
@@ -250,85 +361,6 @@ export default function CoachingApply() {
               {s}
             </span>
           ))}
-        </div>
-      </motion.div>
-
-      {/* Application CTA */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
-        className="glass rounded-2xl p-8 glow-border relative overflow-hidden"
-      >
-        <div className="absolute inset-0 gradient-bg pointer-events-none" />
-        <div className="relative text-center">
-          <div className="inline-flex items-center gap-2 glass px-4 py-2 rounded-full mb-5">
-            <Target className="w-4 h-4 text-primary" />
-            <span className="text-sm font-body text-muted-foreground">Application</span>
-          </div>
-
-          <h2 className="font-heading font-bold text-2xl sm:text-3xl text-foreground mb-3">
-            Apply for $40 Coaching a Week
-          </h2>
-
-          <p className="font-heading font-extrabold text-xl sm:text-2xl gradient-text mb-3 tracking-wide uppercase">
-            SERIOUS ATHLETES ONLY
-          </p>
-
-          <p className="text-sm font-body text-muted-foreground mb-5 max-w-md mx-auto">
-            Please read everything on this page in depth before applying or enquiring with BTCALI.
-          </p>
-
-          <div className="glass rounded-xl p-5 mb-6 text-left">
-            <p className="font-body text-foreground/85 text-sm mb-4">
-              Complete the BTCALI Athlete Diagnostic first so I can properly analyse:
-            </p>
-            <div className="space-y-2">
-              {DIAGNOSTIC_REASONS.map(r => (
-                <div key={r} className="flex items-center gap-2">
-                  <div className="w-1.5 h-1.5 rounded-full bg-primary flex-shrink-0" />
-                  <span className="text-sm font-body text-foreground/80">{r}</span>
-                </div>
-              ))}
-            </div>
-            <p className="font-body text-foreground/70 text-sm mt-4 leading-relaxed">
-              The Athlete Diagnostic helps me understand exactly how to structure your coaching for the fastest progress possible.
-            </p>
-          </div>
-
-          <div className="mb-5">
-            <label className="block font-heading font-semibold text-foreground text-sm mb-2 text-left">
-              Your Instagram Username <span className="text-primary">*</span>
-            </label>
-            <input
-              type="text"
-              value={instagram}
-              onChange={e => setInstagram(e.target.value)}
-              placeholder="@yourhandle"
-              className="w-full glass rounded-xl px-4 py-3 text-foreground font-body text-sm border border-border/40 focus:border-primary/60 focus:outline-none focus:ring-1 focus:ring-primary/40 bg-transparent"
-            />
-          </div>
-
-          <div className="flex flex-col sm:flex-row gap-3 justify-center">
-            <motion.button
-              whileHover={{ scale: 1.03 }}
-              whileTap={{ scale: 0.97 }}
-              onClick={handleEmail}
-              disabled={!instagram.trim()}
-              className="flex items-center justify-center gap-2 px-6 py-4 rounded-xl gradient-bg-strong text-primary-foreground font-heading font-bold text-base glow-primary disabled:opacity-50"
-            >
-              <Mail className="w-5 h-5" />
-              Apply for $40 Coaching a Week
-            </motion.button>
-            <Link to="/scan">
-              <motion.button
-                whileHover={{ scale: 1.03 }}
-                whileTap={{ scale: 0.97 }}
-                className="flex items-center justify-center gap-2 px-6 py-4 rounded-xl glass border border-primary/40 text-foreground font-heading font-bold text-base hover:border-primary/70 transition-all w-full"
-              >
-                <ArrowRight className="w-5 h-5 text-primary" />
-                Start Athlete Diagnostic
-              </motion.button>
-            </Link>
-          </div>
         </div>
       </motion.div>
 

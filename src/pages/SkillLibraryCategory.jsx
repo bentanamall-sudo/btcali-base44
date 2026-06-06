@@ -12,10 +12,11 @@ const CATEGORY_DATA = {
     tutorials: [
       // Push Basics
       { id: 'push-pushup-tutorial', title: 'Push-Up Tutorial', level: 'Beginner', sub: 'Push Basics', free: true, comingSoon: true },
-      { id: 'push-dip-tutorial', title: 'Dip Tutorial', level: 'Beginner', sub: 'Push Basics', free: true, comingSoon: true },
+      { id: 'push-dip-form', title: 'Dip Form', level: 'Beginner', sub: 'Push Basics', videoId: 'qG4dnoWpr94', free: true },
       { id: 'push-bent-knee-pike', title: 'Bent Knee Pike Push-Ups', level: 'Beginner', sub: 'Push Basics', videoId: '5HRq7xpcBkw', free: true },
       { id: 'push-pike-pushup', title: 'Pike Push-Ups', level: 'Beginner', sub: 'Push Basics', videoId: 'PSHF4b99J0Q', free: true },
       // Pull Basics
+      { id: 'pull-form', title: 'Pull-Up Form', level: 'Beginner', sub: 'Pull Basics', videoId: 'DzU28xYSCjU', free: true },
       { id: 'pull-pullups', title: 'Pull-Ups', level: 'Beginner', sub: 'Pull Basics', free: true, comingSoon: true },
       { id: 'pull-scapular', title: 'Scapular Pull-Ups', level: 'Beginner', sub: 'Pull Basics', free: true, comingSoon: true },
       { id: 'pull-partial-top', title: 'Partial Rep Pull-Ups — Top ROM', level: 'Beginner', sub: 'Pull Basics', free: true, comingSoon: true },
@@ -42,13 +43,15 @@ const CATEGORY_DATA = {
       // Intermediate
       { id: 'lshs-decline-pike', title: 'Decline Pike Push-Ups', level: 'Intermediate', sub: 'Intermediate', videoId: '3OfR0Kd1u-Q', free: true },
       { id: 'lshs-toe-taps', title: 'Handstand Toe Taps', level: 'Intermediate', sub: 'Intermediate', videoId: 'yDYk7w7uqTA', free: true },
-      { id: 'lshs-dolphin-press', title: 'Dolphin Press', level: 'Intermediate', sub: 'Intermediate', videoId: 'SWJn6e7Kc50', free: true },
       { id: 'lshs-floating-pike', title: 'Floating Pike Push-Ups', level: 'Intermediate', sub: 'Intermediate', videoId: 'AfLQJ-cCF2I', free: true },
+      { id: 'lshs-bent-arm-raise', title: 'Bent Arm Press Raise', level: 'Intermediate', sub: 'Intermediate', videoId: 'jUYGq7sBxI0', free: true },
       { id: 'lshs-bent-arm-cues', title: 'Bent Arm Press Cues', level: 'Intermediate', sub: 'Intermediate', videoId: 'jD7JOlacCgg', free: true },
       { id: 'lshs-bent-arm-tuck-pos', title: 'Bent Arm Tuck Planche Positions', level: 'Intermediate', sub: 'Intermediate', videoId: 'WRflJHXBIrA', free: true },
       { id: 'lshs-bent-arm-quick', title: 'Bent Arm Press Quick Tutorial', level: 'Intermediate', sub: 'Intermediate', videoId: '6MpY6iLDtQM', free: true },
-      { id: 'lshs-momentum-press', title: 'Momentum Bent Arm Press', level: 'Intermediate', sub: 'Intermediate', free: true, comingSoon: true },
-      { id: 'lshs-clean-press', title: 'Clean Form Bent Arm Press', level: 'Intermediate', sub: 'Intermediate', free: true, comingSoon: true },
+      { id: 'lshs-momentum-press', title: 'Momentum Bent Arm Press', level: 'Intermediate', sub: 'Intermediate', videoId: 'cIZRmKLMlQ4', free: true },
+      { id: 'lshs-momentum-press-exp', title: 'Momentum Bent Arm Press Explanation', level: 'Intermediate', sub: 'Intermediate', videoId: 'yLn96dEdHWE', free: true },
+      { id: 'lshs-clean-press', title: 'Clean Form Bent Arm Press', level: 'Intermediate', sub: 'Intermediate', videoId: 'BouVt_LNI7k', free: true },
+      { id: 'lshs-bent-arm-raise-prog', title: 'Bent Arm Press Raise Progressions', level: 'Intermediate', sub: 'Intermediate', videoId: 'qAuVf2KGFUI', free: true },
       { id: 'lshs-chest-wall-hold', title: 'Handstand Chest to Wall Hold', level: 'Intermediate', sub: 'Intermediate', free: true, comingSoon: true },
       // Advanced
       { id: 'lshs-indepth-press', title: 'In-Depth Bent Arm Press Tutorial', level: 'Advanced', sub: 'Advanced', videoId: 'UO7pBH4FnOI', free: true },
@@ -70,6 +73,7 @@ const CATEGORY_DATA = {
       { id: 'pc-lean-press', title: 'Planche Lean Press', level: 'Beginner', sub: 'Planche Lean & Conditioning', videoId: 'pAn5RJZCvR0', free: true },
       { id: 'pc-zanettis', title: "Zanetti's", level: 'Beginner', sub: 'Planche Lean & Conditioning', videoId: 'IsiqiYLuVdA', free: true },
       { id: 'pc-pbars-grip', title: 'How to Properly Grip P-Bars', level: 'Beginner', sub: 'Planche Lean & Conditioning', videoId: 'boazomcMT7c', free: true },
+      { id: 'pc-dolphin-press', title: 'Dolphin Press', level: 'Intermediate', sub: 'Planche Lean & Conditioning', videoId: 'SWJn6e7Kc50', free: true },
     ],
   },
 
@@ -96,8 +100,8 @@ const CATEGORY_DATA = {
       // Beginner — all members only
       { id: 'fl-hollow-body', title: 'Hollow Body Hold', level: 'Beginner', sub: 'Beginner', videoId: 'DQu4UNPY8BU', free: false },
       { id: 'fl-activations', title: 'Front Lever Activations', level: 'Beginner', sub: 'Beginner', videoId: 'QVqbRvkFlx0', free: false },
-      { id: 'fl-tuck', title: 'Tuck Front Lever', level: 'Beginner', sub: 'Beginner', free: false, comingSoon: true },
-      { id: 'fl-adv-tuck', title: 'Advanced Tuck Front Lever', level: 'Beginner', sub: 'Beginner', free: false, comingSoon: true },
+      { id: 'fl-tuck', title: 'Tuck Front Lever', level: 'Beginner', sub: 'Beginner', videoId: '08DECfSNf8Y', free: false },
+      { id: 'fl-adv-tuck', title: 'Advanced Tuck Front Lever', level: 'Intermediate', sub: 'Intermediate', videoId: '9FBurAs5q58', free: false },
       // Intermediate — all members only
       { id: 'fl-full-banded-entry', title: 'Full Banded FL Entry', level: 'Intermediate', sub: 'Intermediate', videoId: 'xeNxL7ygiHg', free: false },
       { id: 'fl-band-raises', title: 'Band Assisted Front Lever Raises', level: 'Intermediate', sub: 'Intermediate', videoId: 'aku6BVmhuck', free: false },
