@@ -47,12 +47,18 @@ function primeVideo(src) {
   setTimeout(() => { try { v.pause(); v.removeAttribute('src'); v.load(); document.body.removeChild(v); } catch {} }, 10000);
 }
 
-// ── Centre active video — thumbnail base + video overlay + audio control ─────
-function ActiveVideo({ src, thumb, audioActive, onActivateAudio }) {
+// ── Global audio key: { carouselId, index } — only one video ever plays audio ─
+// Passed as { globalAudio, setGlobalAudio } from page level
+
+// ── Centre active video ───────────────────────────────────────────────────────
+// isPlaying: whether THIS video currently plays audio
+// onToggle: called when user taps — toggles play/pause for this video globally
+function ActiveVideo({ src, thumb, isPlaying, onToggle }) {
   const [ready, setReady] = useState(false);
   const videoRef = useRef(null);
   const prevSrc = useRef(null);
 
+  // Load new src
   useEffect(() => {
     if (prevSrc.current === src) return;
     prevSrc.current = src;
@@ -66,37 +72,46 @@ function ActiveVideo({ src, thumb, audioActive, onActivateAudio }) {
     v.preload = 'auto';
     v.src = src;
     v.load();
-    const onCanPlay = () => { setReady(true); v.play().catch(() => {}); };
+    const onCanPlay = () => {
+      setReady(true);
+      v.muted = !isPlaying;
+      v.play().catch(() => {});
+    };
     v.addEventListener('canplay', onCanPlay, { once: true });
     return () => v.removeEventListener('canplay', onCanPlay);
   }, [src]);
 
-  // Sync audio
+  // Sync play/pause & mute whenever isPlaying changes
   useEffect(() => {
     const v = videoRef.current;
     if (!v || !ready) return;
-    v.muted = !audioActive;
-  }, [audioActive, ready]);
-
-  const handleClick = () => {
-    onActivateAudio();
-  };
+    if (isPlaying) {
+      v.muted = false;
+      v.play().catch(() => {});
+    } else {
+      v.muted = true;
+      v.pause();
+    }
+  }, [isPlaying, ready]);
 
   return (
-    <div className="absolute inset-0 overflow-hidden rounded-3xl cursor-pointer" onClick={handleClick}>
-      <img src={thumb} alt="" className="absolute inset-0 w-full h-full object-cover" style={{ zIndex: 1, background: '#111' }} draggable={false} fetchPriority="high" />
+    <div className="absolute inset-0 overflow-hidden rounded-3xl cursor-pointer" onClick={onToggle}>
+      {/* Thumbnail base */}
+      <img src={thumb} alt="" className="absolute inset-0 w-full h-full object-cover"
+        style={{ zIndex: 1, background: '#111' }} draggable={false} fetchPriority="high" />
+      {/* Video overlay */}
       <video
         ref={videoRef}
-        muted loop playsInline autoPlay
+        muted loop playsInline
         className="absolute inset-0 w-full h-full object-cover"
         style={{ opacity: ready ? 1 : 0, transition: 'opacity 0.25s ease', zIndex: 2 }}
       />
       <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none" style={{ zIndex: 3 }} />
-      {/* Audio hint */}
-      {!audioActive && ready && (
+      {/* Tap hint */}
+      {ready && (
         <div className="absolute bottom-3 left-1/2 -translate-x-1/2 z-10 px-3 py-1 rounded-full text-xs font-heading font-semibold text-white/70"
-          style={{ background: 'rgba(0,0,0,0.55)', border: '1px solid rgba(255,255,255,0.15)' }}>
-          Tap for audio
+          style={{ background: 'rgba(0,0,0,0.55)', border: '1px solid rgba(255,255,255,0.15)', whiteSpace: 'nowrap' }}>
+          {isPlaying ? '⏸ Tap to pause' : '▶ Tap to play'}
         </div>
       )}
     </div>
@@ -123,15 +138,13 @@ const OrbitalThumb = memo(function OrbitalThumb({ angleDeg, index, isActive, onC
         width: w, height: h,
         left: `calc(50% + ${x}px - ${w / 2}px)`,
         top: `calc(50% + ${y}px - ${h / 2}px)`,
-        zIndex,
-        borderRadius: '10px',
+        zIndex, borderRadius: '10px',
         border: '1.5px solid hsl(var(--glow-primary)/0.5)',
         transform: `scale(${scale})`,
         opacity,
         filter: blur > 0 ? `blur(${blur}px)` : 'none',
         transition: 'transform 0.4s ease, opacity 0.4s ease, filter 0.4s ease',
-        background: '#111',
-        willChange: 'transform, opacity',
+        background: '#111', willChange: 'transform, opacity',
       }}
       onClick={onClick}
     >
@@ -157,15 +170,17 @@ const ThumbTile = memo(function ThumbTile({ thumb, isActive, onClick, w = 54, h 
   );
 });
 
-// ── Reusable carousel with orbital desktop + simple mobile ────────────────────
-function VideoCarousel({ videos, label, icon: Icon }) {
+// ── VideoCarousel — receives globalAudio state from page ─────────────────────
+function VideoCarousel({ videos, label, icon: Icon, carouselId, globalAudio, setGlobalAudio }) {
   const [active, setActive] = useState(0);
   const [rotationOffset, setRotationOffset] = useState(0);
-  const [audioIdx, setAudioIdx] = useState(null); // which index has audio
   const total = videos.length;
   const touchStart = useRef(null);
 
-  // Aggressive pre-warming
+  // isPlaying: this carousel's active video is the global playing one
+  const isPlaying = globalAudio?.carouselId === carouselId && globalAudio?.index === active;
+
+  // Pre-warming
   useEffect(() => {
     primeVideo(videos[0]?.src);
     const t1 = setTimeout(() => primeVideo(videos[1]?.src), 600);
@@ -179,28 +194,41 @@ function VideoCarousel({ videos, label, icon: Icon }) {
     index: i,
   }));
 
+  // Switch to a different video in this carousel — auto-play with audio
   const goTo = useCallback((idx) => {
     if (idx === active) return;
     const diff = idx - active;
     const shortDiff = ((diff + total / 2) % total) - total / 2;
     setRotationOffset(r => r + (shortDiff * 360 / total));
     setActive(idx);
-    setAudioIdx(idx); // activate audio on selected
-  }, [active, total]);
+    // auto-play new selection with audio, pausing the other carousel
+    setGlobalAudio({ carouselId, index: idx });
+  }, [active, total, carouselId, setGlobalAudio]);
 
   const prev = useCallback(() => {
-    const next = (active - 1 + total) % total;
+    const nx = (active - 1 + total) % total;
     setRotationOffset(r => r - 360 / total);
-    setActive(next);
-    setAudioIdx(next);
-  }, [active, total]);
+    setActive(nx);
+    setGlobalAudio({ carouselId, index: nx });
+  }, [active, total, carouselId, setGlobalAudio]);
 
   const next = useCallback(() => {
     const nx = (active + 1) % total;
     setRotationOffset(r => r + 360 / total);
     setActive(nx);
-    setAudioIdx(nx);
-  }, [active, total]);
+    setGlobalAudio({ carouselId, index: nx });
+  }, [active, total, carouselId, setGlobalAudio]);
+
+  // Toggle play/pause for the active video
+  const handleToggle = useCallback(() => {
+    if (isPlaying) {
+      // currently playing → pause (clear global audio)
+      setGlobalAudio(null);
+    } else {
+      // currently paused → play (set as global audio, pausing other carousel)
+      setGlobalAudio({ carouselId, index: active });
+    }
+  }, [isPlaying, carouselId, active, setGlobalAudio]);
 
   const onTouchStart = useCallback((e) => { touchStart.current = e.touches[0].clientX; }, []);
   const onTouchEnd = useCallback((e) => {
@@ -209,6 +237,14 @@ function VideoCarousel({ videos, label, icon: Icon }) {
     if (Math.abs(diff) > 44) diff > 0 ? next() : prev();
     touchStart.current = null;
   }, [next, prev]);
+
+  // Glow border style — only when playing
+  const glowStyle = isPlaying ? {
+    border: '2px solid hsl(var(--primary))',
+    boxShadow: '0 0 0 2px hsl(var(--primary)/0.7), 0 0 40px hsl(var(--primary)/0.5), 0 0 80px hsl(var(--primary)/0.2)',
+  } : {
+    border: '1.5px solid hsl(var(--glow-primary)/0.5)',
+  };
 
   return (
     <div className="mb-16" onTouchStart={onTouchStart} onTouchEnd={onTouchEnd}>
@@ -221,35 +257,23 @@ function VideoCarousel({ videos, label, icon: Icon }) {
       {/* ── DESKTOP: Premium 3D orbital carousel ── */}
       <div className="hidden lg:block">
         <div className="relative mx-auto" style={{ width: '860px', height: '760px' }}>
-          {/* Orbital thumbnails */}
           {orbitalPositions.map(({ angleDeg, index }) => (
-            <OrbitalThumb
-              key={index}
-              angleDeg={angleDeg}
-              index={index}
-              isActive={index === active}
-              onClick={() => goTo(index)}
-              thumb={videos[index].thumb}
-            />
+            <OrbitalThumb key={index} angleDeg={angleDeg} index={index} isActive={index === active}
+              onClick={() => goTo(index)} thumb={videos[index].thumb} />
           ))}
 
           {/* Centre active video */}
           <div className="absolute" style={{
             width: '290px', aspectRatio: '9/16',
-            left: 'calc(50% - 145px)', top: 'calc(50% - 258px)',
-            zIndex: 20,
+            left: 'calc(50% - 145px)', top: 'calc(50% - 258px)', zIndex: 20,
           }}>
             <ActiveVideo
               src={videos[active].src}
               thumb={videos[active].thumb}
-              audioActive={audioIdx === active}
-              onActivateAudio={() => setAudioIdx(active)}
+              isPlaying={isPlaying}
+              onToggle={handleToggle}
             />
-            <div className="absolute inset-0 rounded-3xl pointer-events-none" style={{
-              border: '1.5px solid hsl(var(--glow-primary)/0.8)',
-              boxShadow: '0 0 0 2px hsl(var(--primary)/0.7), 0 0 40px hsl(var(--primary)/0.3), 0 0 80px hsl(var(--primary)/0.1)',
-              zIndex: 30,
-            }} />
+            <div className="absolute inset-0 rounded-3xl pointer-events-none" style={{ ...glowStyle, zIndex: 30, transition: 'box-shadow 0.3s ease, border-color 0.3s ease' }} />
           </div>
 
           {/* Arrows */}
@@ -288,12 +312,10 @@ function VideoCarousel({ videos, label, icon: Icon }) {
           <ActiveVideo
             src={videos[active].src}
             thumb={videos[active].thumb}
-            audioActive={audioIdx === active}
-            onActivateAudio={() => setAudioIdx(active)}
+            isPlaying={isPlaying}
+            onToggle={handleToggle}
           />
-          <div className="absolute inset-0 rounded-3xl pointer-events-none" style={{
-            border: '1.5px solid hsl(var(--glow-primary)/0.6)', zIndex: 10,
-          }} />
+          <div className="absolute inset-0 rounded-3xl pointer-events-none" style={{ ...glowStyle, zIndex: 10, transition: 'box-shadow 0.3s ease, border-color 0.3s ease' }} />
           <button onClick={prev}
             className="absolute left-2 top-1/2 -translate-y-1/2 z-20 w-9 h-9 rounded-full flex items-center justify-center"
             style={{ background: 'rgba(0,0,0,0.55)', border: '1px solid hsl(var(--glow-primary)/0.35)' }}>
@@ -320,8 +342,11 @@ function VideoCarousel({ videos, label, icon: Icon }) {
   );
 }
 
-// ── Main Page ─────────────────────────────────────────────────────────────────
+// ── Main Page — owns global audio state ───────────────────────────────────────
+// globalAudio = null (nothing playing) | { carouselId: 'wins'|'transforms', index: number }
 export default function ProvenResults() {
+  const [globalAudio, setGlobalAudio] = useState(null);
+
   return (
     <div className="min-h-screen py-8 px-4">
       {/* Page header */}
@@ -337,11 +362,25 @@ export default function ProvenResults() {
         </p>
       </div>
 
-      <VideoCarousel videos={WINS_VIDEOS} label="Student Wins" icon={Trophy} />
+      <VideoCarousel
+        videos={WINS_VIDEOS}
+        label="Student Wins"
+        icon={Trophy}
+        carouselId="wins"
+        globalAudio={globalAudio}
+        setGlobalAudio={setGlobalAudio}
+      />
 
       <div className="max-w-2xl mx-auto mb-16 border-t border-border/30" />
 
-      <VideoCarousel videos={TRANSFORM_VIDEOS} label="Transformations" icon={Zap} />
+      <VideoCarousel
+        videos={TRANSFORM_VIDEOS}
+        label="Transformations"
+        icon={Zap}
+        carouselId="transforms"
+        globalAudio={globalAudio}
+        setGlobalAudio={setGlobalAudio}
+      />
 
       {/* CTA */}
       <div className="rounded-2xl glass text-center py-12 px-6 glow-border relative overflow-hidden mt-4 max-w-3xl mx-auto">

@@ -260,39 +260,21 @@ export default function AthleteDiagnostic() {
     // 5 — Coaching Fit
     <div key="s5" className="space-y-0">
       <Field>
-        <Label>BTCALI 1-on-1 coaching is a paid coaching service starting from AUD $39.99/week. Are you willing to invest in coaching to accelerate your progress?</Label>
+        <Label>Which coaching option would you realistically consider?</Label>
         <div className="grid grid-cols-1 gap-2">
           {[
-            'Yes, I am willing to invest in BTCALI coaching',
+            'AUD $40/week',
+            'AUD $150/month',
             'I would like more information first',
-            'No, I am not interested in paid coaching',
+            'I am not interested in coaching',
           ].map(v => (
             <OptionBtn key={v} label={v} selected={data.coaching_investment === v} onClick={() => set('coaching_investment', v)} />
           ))}
         </div>
+        {!data.coaching_investment && (
+          <p className="text-xs text-muted-foreground/60 font-body mt-2">Please select a coaching option before continuing.</p>
+        )}
       </Field>
-      {data.coaching_investment === 'Yes, I am willing to invest in BTCALI coaching' && (
-        <Field>
-          <Label>Which paid 1-on-1 coaching option interests you most?</Label>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            {[
-              { label: 'AUD $39.99/week', sub: 'Less than AUD $6/day' },
-              { label: 'AUD $150/month', sub: 'Save approximately AUD $50/month' },
-            ].map(({ label, sub }) => (
-              <motion.button
-                key={label}
-                whileTap={{ scale: 0.97 }}
-                onClick={() => set('payment_option', label)}
-                className={`p-4 rounded-xl border text-center transition-all ${data.payment_option === label ? 'gradient-bg-strong glow-primary border-primary/60 text-primary-foreground' : 'glass border-border/40 text-foreground hover:border-primary/40'}`}
-              >
-                <div className="font-heading font-bold text-xl">{label}</div>
-                <div className="text-xs mt-1 font-body opacity-80">{sub}</div>
-              </motion.button>
-            ))}
-          </div>
-          <p className="text-xs text-muted-foreground font-body mt-2">Selecting an option above means you are interested in paid BTCALI 1-on-1 coaching.</p>
-        </Field>
-      )}
       <Field>
         <Label>Are you willing to stay consistent for multiple months to reach your goals?</Label>
         {yesNo('consistency_answer')}
@@ -364,13 +346,14 @@ export default function AthleteDiagnostic() {
   const canNext = () => {
     if (step === 0) return data.full_name && data.email;
     if (step === 3) return data.goals.length > 0;
+    if (step === 5) return !!data.coaching_investment;
     if (step === 7) return data.serious_applicant;
     return true;
   };
 
   // Payment filter — redirect non-interested users immediately when they try to continue
   const handleNext = () => {
-    if (step === 5 && data.coaching_investment === 'No, I am not interested in paid coaching') {
+    if (step === 5 && data.coaching_investment === 'I am not interested in coaching') {
       navigate('/skills');
       return;
     }
