@@ -1,4 +1,4 @@
-const LOGO_URL = 'https://BTCALI.b-cdn.net/logos/ChatGPT%20Image%20Jun%205%2C%202026%2C%2006_00_36%20PM.png';
+const LOGO_URL = 'https://BTCALI.b-cdn.net/logos/ChatGPT%20Image%20Jun%205%2C%202026%2C%2006_00_36%20PM.jpeg';
 
 const logoStyle = {
   objectFit: 'contain',
