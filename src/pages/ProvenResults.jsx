@@ -326,11 +326,7 @@ function VideoCarousel({ videos, label, icon: Icon, carouselId, globalAudio, set
             style={{ background: 'rgba(0,0,0,0.55)', border: '1px solid hsl(var(--glow-primary)/0.35)' }}>
             <ChevronRight className="w-4 h-4 text-white" />
           </button>
-          <div className="absolute bottom-3 left-1/2 -translate-x-1/2 z-20 px-3 py-1 rounded-full"
-            style={{ background: 'rgba(0,0,0,0.6)', border: '1px solid hsl(var(--glow-primary)/0.3)' }}>
-            <span className="font-heading font-bold text-xs gradient-text">{active + 1}</span>
-            <span className="text-white/50 text-xs"> / {total}</span>
-          </div>
+          {/* page number removed on mobile to avoid overlapping tap hint */}
         </div>
         <div className="flex gap-2 overflow-x-auto px-4 pb-1 w-full" style={{ scrollbarWidth: 'none' }}>
           {videos.map((v, i) => (

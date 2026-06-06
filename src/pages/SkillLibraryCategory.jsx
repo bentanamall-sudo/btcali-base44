@@ -58,26 +58,30 @@ const CATEGORY_DATA = {
     ],
   },
 
-  planche: {
-    title: 'Planche Library',
-    description: 'From conditioning and planche lean to tuck, straddle, and full planche.',
-    subcategories: ['Free Conditioning', 'Beginner', 'Intermediate', 'Advanced'],
+  'planche-conditioning': {
+    title: 'FREE Planche Conditioning',
+    description: 'Essential conditioning before any planche work — wrist prep, scapular strength, straight arm conditioning, and injury prevention.',
+    subcategories: ['Wrist & Warm-Up', 'Scapular Strength', 'Planche Lean & Conditioning'],
     tutorials: [
-      // Free Conditioning
-      { id: 'p-wrist-warmup', title: 'Wrist Warmup', level: 'Beginner', sub: 'Free Conditioning', videoId: 'A1YPZdLyXPI', free: true },
-      { id: 'p-scap-protract', title: 'Scapular Protraction & Retraction', level: 'Beginner', sub: 'Free Conditioning', videoId: 'QppuGF94PLc', free: true },
-      { id: 'p-scap-to-normal', title: 'Scapular to Normal Push-Ups', level: 'Beginner', sub: 'Free Conditioning', videoId: 'D_8_yzV6Jdk', free: true },
-      { id: 'p-lean', title: 'The Planche Lean', level: 'Beginner', sub: 'Free Conditioning', videoId: '-cGOxgIccqU', free: true },
-      { id: 'p-lean-press', title: 'Planche Lean Press', level: 'Beginner', sub: 'Free Conditioning', videoId: 'pAn5RJZCvR0', free: true },
-      { id: 'p-zanettis', title: "Zanetti's", level: 'Beginner', sub: 'Free Conditioning', videoId: 'IsiqiYLuVdA', free: true },
-      { id: 'p-pbars-grip', title: 'How to Properly Grip P-Bars', level: 'Beginner', sub: 'Free Conditioning', videoId: 'boazomcMT7c', free: true },
-      // Beginner
+      { id: 'pc-wrist-warmup', title: 'Wrist Warmup', level: 'Beginner', sub: 'Wrist & Warm-Up', videoId: 'A1YPZdLyXPI', free: true },
+      { id: 'pc-scap-protract', title: 'Scapular Protraction & Retraction', level: 'Beginner', sub: 'Scapular Strength', videoId: 'QppuGF94PLc', free: true },
+      { id: 'pc-scap-to-normal', title: 'Scapular to Normal Push-Ups', level: 'Beginner', sub: 'Scapular Strength', videoId: 'D_8_yzV6Jdk', free: true },
+      { id: 'pc-lean', title: 'The Planche Lean', level: 'Beginner', sub: 'Planche Lean & Conditioning', videoId: '-cGOxgIccqU', free: true },
+      { id: 'pc-lean-press', title: 'Planche Lean Press', level: 'Beginner', sub: 'Planche Lean & Conditioning', videoId: 'pAn5RJZCvR0', free: true },
+      { id: 'pc-zanettis', title: "Zanetti's", level: 'Beginner', sub: 'Planche Lean & Conditioning', videoId: 'IsiqiYLuVdA', free: true },
+      { id: 'pc-pbars-grip', title: 'How to Properly Grip P-Bars', level: 'Beginner', sub: 'Planche Lean & Conditioning', videoId: 'boazomcMT7c', free: true },
+    ],
+  },
+
+  planche: {
+    title: 'Planche Progressions',
+    description: 'Tuck, straddle, and full planche — structured progressions beyond the conditioning foundations.',
+    subcategories: ['Beginner', 'Intermediate', 'Advanced'],
+    tutorials: [
       { id: 'p-tuck', title: 'Tuck Planche', level: 'Beginner', sub: 'Beginner', free: false, comingSoon: true },
-      // Intermediate
       { id: 'p-straddle', title: 'Straddle Planche', level: 'Intermediate', sub: 'Intermediate', free: false, comingSoon: true },
       { id: 'p-straddle-press', title: 'Straddle Planche Banded Press', level: 'Intermediate', sub: 'Intermediate', free: false, comingSoon: true },
       { id: 'p-banded-pushups', title: 'Banded Straddle Planche Push-Ups', level: 'Intermediate', sub: 'Intermediate', free: false, comingSoon: true },
-      // Advanced
       { id: 'p-full', title: 'Full Planche', level: 'Advanced', sub: 'Advanced', free: false, comingSoon: true },
       { id: 'p-deadstop-press', title: 'Deadstop Straddle Press', level: 'Advanced', sub: 'Advanced', free: false, comingSoon: true },
       { id: 'p-straddle-neg', title: 'Straddle Negative', level: 'Advanced', sub: 'Advanced', free: false, comingSoon: true },
@@ -303,6 +307,7 @@ function TutorialCard({ tutorial, onPlay }) {
 
 const PREMIUM_CATEGORIES = ['planche', 'front-lever', 'handstand-pushups', 'muscle-up'];
 const PLANCHE_FREE_SUBS = ['Free Conditioning'];
+const PLANCHE_CONDITIONING_INTRO = true; // show intro card for planche-conditioning category
 
 function PremiumGate({ cat }) {
   const [showCode, setShowCode] = useState(false);
@@ -426,6 +431,47 @@ export default function SkillLibraryCategory() {
         </h1>
         <p className="text-muted-foreground font-body text-base">{cat.description}</p>
       </motion.div>
+
+      {/* Planche Conditioning intro card */}
+      {categoryId === 'planche-conditioning' && (
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.05 }}
+          className="glass rounded-2xl p-7 border border-primary/30 mb-8 relative overflow-hidden"
+        >
+          <div className="absolute inset-0 gradient-bg pointer-events-none" />
+          <div className="relative space-y-4">
+            <h2 className="font-heading font-bold text-lg gradient-text">Why Planche Conditioning Matters</h2>
+            <p className="font-body text-sm text-foreground/85 leading-relaxed">
+              Planche is one of the most demanding and injury-prone skills in calisthenics. Many athletes rush straight into planche training without preparing their joints, tendons, connective tissue, and movement patterns.
+            </p>
+            <div className="grid sm:grid-cols-2 gap-4">
+              <div className="glass rounded-xl p-4 border border-border/30">
+                <p className="font-heading font-semibold text-foreground text-xs mb-2">This often leads to:</p>
+                {['Wrist pain','Elbow pain','Bicep strain','Shoulder injuries','Poor technique','Plateaus'].map(item => (
+                  <div key={item} className="flex items-center gap-2 mt-1.5">
+                    <div className="w-1.5 h-1.5 rounded-full bg-amber-400/60 flex-shrink-0" />
+                    <span className="text-xs font-body text-foreground/75">{item}</span>
+                  </div>
+                ))}
+              </div>
+              <div className="glass rounded-xl p-4 border border-primary/20">
+                <p className="font-heading font-semibold text-primary text-xs mb-2">Conditioning teaches:</p>
+                {['Proper engagement','Scapula positioning','Straight arm strength','Tendon conditioning','Wrist preparation','Lean mechanics','Body awareness'].map(item => (
+                  <div key={item} className="flex items-center gap-2 mt-1.5">
+                    <div className="w-1.5 h-1.5 rounded-full bg-primary flex-shrink-0" />
+                    <span className="text-xs font-body text-foreground/80">{item}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <p className="font-body text-sm text-foreground/75 leading-relaxed">
+              Many athletes unknowingly overlean, lose engagement, and use inefficient technique. These conditioning drills help correct those mistakes, improve form, increase hold times, reduce injury risk, and dramatically improve long-term progress.
+            </p>
+          </div>
+        </motion.div>
+      )}
 
       {/* Search */}
       <div className="relative max-w-md mb-6">

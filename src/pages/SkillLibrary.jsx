@@ -1,20 +1,16 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import { Search, BookOpen, Crown } from 'lucide-react';
+import { Search, BookOpen, Crown, Zap } from 'lucide-react';
+import { PageHeaderLogo } from '../components/Logo';
 
 const TRIDENT_ICON_URL = 'https://media.base44.com/images/public/69fd635623a9368c153045ad/668f24dc5_ChatGPTImageJun2202609_27_21AM.png';
 
 function TridentIcon({ size = 20 }) {
   return (
-    <img
-      src={TRIDENT_ICON_URL}
-      alt="Premium"
-      style={{ width: size, height: size, objectFit: 'contain' }}
-    />
+    <img src={TRIDENT_ICON_URL} alt="Premium" style={{ width: size, height: size, objectFit: 'contain' }} />
   );
 }
-import { PageHeaderLogo } from '../components/Logo';
 
 const CATEGORIES = [
   {
@@ -36,9 +32,19 @@ const CATEGORIES = [
     accentColor: '#B8860B',
   },
   {
+    id: 'planche-conditioning',
+    title: 'FREE Planche Conditioning',
+    description: 'Wrist prep, scapular strength, planche lean, straight arm conditioning and injury prevention — essential before any planche work.',
+    level: 'Beginner → Intermediate',
+    icon: '🔥',
+    access: 'free',
+    accentColor: '#D4AF37',
+    featured: true,
+  },
+  {
     id: 'planche',
-    title: 'Planche',
-    description: 'From conditioning and planche lean to tuck, straddle, and full planche.',
+    title: 'Planche Progressions',
+    description: 'Tuck, straddle, and full planche — structured progressions beyond the conditioning foundations.',
     level: 'Intermediate → Elite',
     icon: '💪',
     access: 'mixed',
@@ -107,7 +113,7 @@ export default function SkillLibrary() {
   return (
     <div className="min-h-screen py-14 px-4 sm:px-6 max-w-6xl mx-auto">
       {/* Header */}
-      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-14">
+      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-10">
         <div className="flex justify-start mb-6">
           <PageHeaderLogo />
         </div>
@@ -123,12 +129,48 @@ export default function SkillLibrary() {
         </p>
       </motion.div>
 
+      {/* Build The Foundation First — premium info banner */}
+      <motion.div
+        initial={{ opacity: 0, y: 16 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.08 }}
+        className="glass rounded-2xl p-7 border border-primary/25 mb-10 relative overflow-hidden"
+      >
+        <div className="absolute inset-0 gradient-bg pointer-events-none" />
+        <div className="relative">
+          <div className="flex items-center gap-2 mb-3">
+            <Zap className="w-5 h-5 text-primary" />
+            <h2 className="font-heading font-bold text-lg gradient-text">Build The Foundation First</h2>
+          </div>
+          <p className="font-body text-sm text-foreground/80 leading-relaxed mb-4">
+            One of the biggest mistakes athletes make is trying advanced skills too early without building the foundations required to support them.
+          </p>
+          <p className="font-body text-sm text-muted-foreground leading-relaxed mb-4">
+            That is why the BTCALI Skill Library focuses heavily on the things most athletes skip:
+          </p>
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-y-2 gap-x-4 mb-4">
+            {[
+              'Straight arm strength','Tendon conditioning','Scapula control','Wrist strength and mobility',
+              'Shoulder stability','Serratus and pressing engagement','Skill-specific activations','Proper body positioning',
+            ].map(item => (
+              <div key={item} className="flex items-start gap-2">
+                <div className="w-1.5 h-1.5 rounded-full bg-primary flex-shrink-0 mt-1.5" />
+                <span className="text-xs font-body text-foreground/75">{item}</span>
+              </div>
+            ))}
+          </div>
+          <p className="font-body text-sm text-muted-foreground leading-relaxed">
+            These foundations are often the difference between getting stuck for months and progressing safely and efficiently. Mastering them helps reduce injury risk, improve technique, increase hold times, and accelerate overall skill development.
+          </p>
+        </div>
+      </motion.div>
+
       {/* Search */}
       <motion.div
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.1 }}
-        className="relative max-w-md mx-auto mb-12"
+        transition={{ delay: 0.12 }}
+        className="relative max-w-md mx-auto mb-10"
       >
         <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
         <input
@@ -152,23 +194,29 @@ export default function SkillLibrary() {
             onClick={() => navigate(`/skills/${cat.id}`)}
             className="cursor-pointer group rounded-2xl overflow-hidden relative card-3d"
             style={{
-              background: `linear-gradient(145deg, hsl(var(--card)), hsl(var(--surface-2)))`,
-              border: `1px solid hsl(var(--border)/0.5)`,
+              background: cat.featured
+                ? `linear-gradient(145deg, hsl(var(--card)), hsl(42 78% 12%))`
+                : `linear-gradient(145deg, hsl(var(--card)), hsl(var(--surface-2)))`,
+              border: cat.featured ? `1.5px solid hsl(var(--primary)/0.5)` : `1px solid hsl(var(--border)/0.5)`,
+              boxShadow: cat.featured ? '0 0 30px hsl(var(--glow-primary)/0.15)' : undefined,
             }}
           >
+            {cat.featured && (
+              <div className="absolute top-0 left-0 right-0 h-px" style={{ background: 'linear-gradient(90deg, transparent, hsl(var(--primary)), transparent)' }} />
+            )}
             {/* Top shimmer line */}
             <div
               className="h-px w-full transition-opacity duration-300 opacity-40 group-hover:opacity-90"
               style={{ background: `linear-gradient(90deg, transparent, ${cat.accentColor}, transparent)` }}
             />
 
-            {/* Inner top-edge light */}
-            <div
-              className="h-[1px] w-full opacity-10 group-hover:opacity-20 transition-opacity duration-300"
-              style={{ background: 'linear-gradient(90deg,transparent,hsl(0 0% 100%/0.6),transparent)' }}
-            />
-
             <div className="p-6">
+              {/* Featured badge */}
+              {cat.featured && (
+                <div className="inline-flex items-center gap-1.5 bg-primary/20 border border-primary/40 rounded-full px-3 py-1 mb-3 text-xs font-heading font-bold text-primary uppercase tracking-wider">
+                  <Zap className="w-3 h-3" /> Start Here
+                </div>
+              )}
               {/* Icon + badge row */}
               <div className="flex items-start justify-between mb-5">
                 <div
@@ -184,9 +232,8 @@ export default function SkillLibrary() {
                 <AccessBadge access={cat.access} />
               </div>
 
-              {/* Text */}
-              <h3 className="font-heading font-bold text-base text-foreground mb-2 transition-all duration-200 group-hover:gradient-text"
-                style={{ transition: 'color 0.2s' }}
+              <h3 className="font-heading font-bold text-base text-foreground mb-2"
+                style={{ color: cat.featured ? 'hsl(var(--primary))' : undefined }}
               >
                 {cat.title}
               </h3>
@@ -194,7 +241,6 @@ export default function SkillLibrary() {
                 {cat.description}
               </p>
 
-              {/* Footer row */}
               <div className="flex items-center justify-between pt-4 border-t border-border/30">
                 <span className="text-xs font-body text-muted-foreground/50">{cat.level}</span>
                 <span

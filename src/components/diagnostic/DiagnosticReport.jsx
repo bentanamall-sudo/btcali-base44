@@ -1,6 +1,5 @@
 import { motion } from 'framer-motion';
-import { Trophy, Target, CheckCircle, AlertCircle, ArrowRight } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Trophy, Target } from 'lucide-react';
 
 const LEVEL_COLORS = {
   'Beginner Foundation': 'text-slate-400 bg-slate-400/15',
@@ -18,9 +17,31 @@ const LEVEL_GLOW = {
   'Advanced Foundation': 'border-amber-400/50',
 };
 
-export default function DiagnosticReport({ data, report, compact }) {
+// Derive skill focuses from report data
+function getSkillFocuses(data, report) {
+  const focuses = [];
+  const goals = data?.goals || [];
+  if (goals.includes('Handstand') || goals.includes('Handstand Push-Up')) focuses.push('Handstand');
+  if (goals.includes('L-Sit') || goals.includes('L-Sit To Handstand')) focuses.push('L-Sit');
+  if (goals.includes('Front Lever') || goals.includes('Front Lever Pull-Ups')) focuses.push('Front Lever Foundations');
+  if (goals.includes('Planche') || goals.includes('Planche Progressions')) focuses.push('Planche Foundations');
+  if (goals.includes('Muscle-Up')) focuses.push('Pull Strength');
+  if (goals.includes('Increase Push-Up Reps') || goals.includes('Build Muscle') || goals.includes('Get Stronger')) focuses.push('Push Strength');
+  if (focuses.length === 0) {
+    // fallback from recommended_programs
+    const programs = report?.recommended_programs || [];
+    if (programs.some(p => /handstand/i.test(p))) focuses.push('Handstand');
+    if (programs.some(p => /planche/i.test(p))) focuses.push('Planche Foundations');
+    if (programs.some(p => /lever/i.test(p))) focuses.push('Front Lever Foundations');
+    if (focuses.length === 0) focuses.push('Push Strength', 'Pull Strength', 'L-Sit');
+  }
+  return focuses.slice(0, 5);
+}
+
+export default function DiagnosticReport({ data, report }) {
   const levelColor = LEVEL_COLORS[report.athlete_level] || LEVEL_COLORS['Beginner Foundation'];
   const levelGlow = LEVEL_GLOW[report.athlete_level] || '';
+  const focuses = getSkillFocuses(data, report);
 
   return (
     <div className="space-y-5">
@@ -41,66 +62,44 @@ export default function DiagnosticReport({ data, report, compact }) {
         </div>
       </motion.div>
 
-      {!compact && (
-        <>
-          {/* Strengths & Weaknesses */}
-          <div className="grid sm:grid-cols-2 gap-4">
-            <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="glass rounded-2xl p-5 border border-green-400/20">
-              <div className="flex items-center gap-2 mb-3">
-                <CheckCircle className="w-4 h-4 text-green-400" />
-                <h3 className="font-heading font-bold text-sm text-green-400 uppercase tracking-wider">Strengths</h3>
-              </div>
-              <ul className="space-y-2">
-                {report.strengths.map(s => (
-                  <li key={s} className="flex items-start gap-2 text-sm font-body text-foreground/80">
-                    <div className="w-1.5 h-1.5 rounded-full bg-green-400 flex-shrink-0 mt-2" />
-                    {s}
-                  </li>
-                ))}
-              </ul>
-            </motion.div>
-
-            <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.15 }} className="glass rounded-2xl p-5 border border-amber-400/20">
-              <div className="flex items-center gap-2 mb-3">
-                <AlertCircle className="w-4 h-4 text-amber-400" />
-                <h3 className="font-heading font-bold text-sm text-amber-400 uppercase tracking-wider">Areas to Improve</h3>
-              </div>
-              <ul className="space-y-2">
-                {report.weaknesses.map(w => (
-                  <li key={w} className="flex items-start gap-2 text-sm font-body text-foreground/80">
-                    <div className="w-1.5 h-1.5 rounded-full bg-amber-400 flex-shrink-0 mt-2" />
-                    {w}
-                  </li>
-                ))}
-              </ul>
-            </motion.div>
-          </div>
-
-          {/* Recommended Focus */}
-          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="glass rounded-2xl p-5 border border-primary/25">
-            <div className="flex items-center gap-2 mb-3">
-              <Target className="w-4 h-4 text-primary" />
-              <h3 className="font-heading font-bold text-sm text-primary uppercase tracking-wider">Recommended Focus</h3>
-            </div>
-            <p className="text-sm font-body text-foreground/80">{report.recommended_focus}</p>
-          </motion.div>
-
-
-        </>
-      )}
-
-      {compact && (
-        <div className="grid sm:grid-cols-2 gap-3">
-          <div className="glass rounded-xl p-4 border border-green-400/20">
-            <p className="text-xs font-heading text-green-400 mb-2 uppercase tracking-wider">Top Strengths</p>
-            {report.strengths.slice(0, 2).map(s => <p key={s} className="text-xs text-foreground/70 font-body">· {s}</p>)}
-          </div>
-          <div className="glass rounded-xl p-4 border border-amber-400/20">
-            <p className="text-xs font-heading text-amber-400 mb-2 uppercase tracking-wider">Areas to Improve</p>
-            {report.weaknesses.slice(0, 2).map(w => <p key={w} className="text-xs text-foreground/70 font-body">· {w}</p>)}
-          </div>
+      {/* Your Next Step */}
+      <motion.div
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.1 }}
+        className="glass rounded-2xl p-6 border border-primary/25 relative overflow-hidden"
+      >
+        <div className="absolute inset-0 gradient-bg pointer-events-none" />
+        <div className="relative">
+          <p className="font-heading font-bold text-primary text-xs uppercase tracking-wider mb-3">Your Next Step</p>
+          <p className="font-body text-sm text-foreground/85 leading-relaxed mb-3">
+            Based on your answers, the biggest opportunity for improvement is following a structured progression plan.
+          </p>
+          <p className="font-body text-sm text-foreground/75 leading-relaxed">
+            Many athletes at your level struggle because they train inconsistently, lack proper programming, or do not know how to progress efficiently. BTCALI coaching helps eliminate guesswork and provides a clear path towards stronger skills, better technique, and faster progress.
+          </p>
         </div>
-      )}
+      </motion.div>
+
+      {/* Recommended Skill Focus */}
+      <motion.div
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.15 }}
+        className="glass rounded-2xl p-6 border border-border/40"
+      >
+        <div className="flex items-center gap-2 mb-4">
+          <Target className="w-4 h-4 text-primary" />
+          <h3 className="font-heading font-bold text-sm text-foreground uppercase tracking-wider">Recommended Skill Focus</h3>
+        </div>
+        <div className="flex flex-wrap gap-2">
+          {focuses.map(f => (
+            <span key={f} className="px-4 py-2 rounded-xl glass border border-primary/30 text-primary font-heading font-semibold text-sm">
+              {f}
+            </span>
+          ))}
+        </div>
+      </motion.div>
     </div>
   );
 }

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronRight, ChevronLeft, Zap, CheckCircle, Trophy, BookOpen } from 'lucide-react';
 import { PageHeaderLogo } from '@/components/Logo';
@@ -18,7 +18,7 @@ const FL_LEVELS = ['None','Tuck FL','Advanced Tuck FL','One Leg FL','Straddle FL
 const MOBILITY = ['Poor','Average','Good','Excellent'];
 const SLEEP = ['Poor (< 6hrs)','Okay (6-7hrs)','Good (7-8hrs)','Excellent (8+hrs)'];
 
-const SECTIONS = ['Personal Info','Training Background','Current Strength','Goals','Mobility & Recovery','Coaching Fit','Extra Details','Consent'];
+const SECTIONS = ['Personal Info','Coaching Fit','Training Background','Current Strength','Goals','Mobility & Recovery','Extra Details','Consent'];
 
 function OptionBtn({ label, selected, onClick, multi }) {
   return (
@@ -172,7 +172,81 @@ export default function AthleteDiagnostic() {
       <Field><Label>Instagram Username</Label><TextInput value={data.instagram} onChange={v => set('instagram', v)} placeholder="@handle" /></Field>
     </div>,
 
-    // 1 — Training Background
+    // 1 — Coaching Fit (moved to page 2)
+    <div key="s-coaching" className="space-y-0">
+      {/* Why athletes invest */}
+      <div className="glass rounded-xl p-4 border border-primary/20 mb-5">
+        <p className="font-heading font-bold text-primary text-xs uppercase tracking-wider mb-3">Why athletes invest in BTCALI coaching:</p>
+        <div className="grid grid-cols-2 gap-y-1.5 gap-x-3">
+          {['Personalised programming','Direct coach feedback','Faster skill progression','Accountability','Technique corrections','Individual support'].map(item => (
+            <div key={item} className="flex items-center gap-2">
+              <div className="w-1.5 h-1.5 rounded-full bg-primary flex-shrink-0" />
+              <span className="text-xs font-body text-foreground/80">{item}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+      {/* Student results reference */}
+      <div className="glass rounded-xl p-4 border border-border/30 mb-5">
+        <p className="font-heading font-semibold text-foreground text-xs mb-2">Many BTCALI athletes have achieved major breakthroughs including:</p>
+        <div className="flex flex-wrap gap-2">
+          {['Bent Arm Press','L-Sit to Handstand','Handstand Push-Ups','Front Lever Progressions','Planche Progressions'].map(s => (
+            <span key={s} className="text-xs font-body glass px-2.5 py-1 rounded-full border border-primary/20 text-foreground/70">{s}</span>
+          ))}
+        </div>
+        <p className="text-xs font-body text-muted-foreground mt-3 leading-relaxed">BTCALI coaching helps athletes achieve results significantly faster than training alone.</p>
+      </div>
+      <Field>
+        <Label>Which coaching option would you realistically consider?</Label>
+        <div className="grid grid-cols-1 gap-2">
+          {[
+            'AUD $40/week',
+            'AUD $150/month',
+            'I would like more information first',
+            'I am not interested in coaching',
+          ].map(v => (
+            <OptionBtn key={v} label={v} selected={data.coaching_investment === v} onClick={() => set('coaching_investment', v)} />
+          ))}
+        </div>
+        {!data.coaching_investment && (
+          <p className="text-xs text-muted-foreground/60 font-body mt-2">Please select a coaching option before continuing.</p>
+        )}
+        {data.coaching_investment === 'I am not interested in coaching' && (
+          <motion.div
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="mt-4 rounded-xl border border-amber-500/40 p-5 text-center space-y-3"
+            style={{ background: 'rgba(245,158,11,0.06)' }}
+          >
+            <p className="font-heading font-bold text-amber-400 text-base">BTCALI 1-on-1 coaching is only available for athletes willing to invest in coaching.</p>
+            <p className="font-body text-sm text-foreground/75 leading-relaxed">
+              If you are not interested in paid coaching, please return to the Skill Library where you can access free tutorials and training resources.
+            </p>
+            <motion.button
+              whileTap={{ scale: 0.97 }}
+              onClick={() => navigate('/skills')}
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl glass border border-amber-500/40 text-amber-400 font-heading font-semibold text-sm hover:border-amber-500/70 transition-all"
+            >
+              <BookOpen className="w-4 h-4" /> Go to Skill Library
+            </motion.button>
+          </motion.div>
+        )}
+      </Field>
+      <Field>
+        <Label>Are you willing to stay consistent for multiple months to reach your goals?</Label>
+        {yesNo('consistency_answer')}
+      </Field>
+      <Field>
+        <Label>How serious are you about your goals?</Label>
+        {optionRow('seriousness', ['Casual','Serious','Very Serious','All-In'])}
+      </Field>
+      <Field>
+        <Label>Why do you want BTCALI coaching?</Label>
+        <TextArea value={data.why_btcali} onChange={v => set('why_btcali', v)} placeholder="Tell BTCALI why you want to work together..." />
+      </Field>
+    </div>,
+
+    // 2 — Training Background
     <div key="s1" className="space-y-0">
       <Field>
         <Label>How long have you trained calisthenics?</Label>
@@ -257,39 +331,7 @@ export default function AthleteDiagnostic() {
       <Field><Label>Recovery quality</Label>{optionRow('recovery_quality', MOBILITY)}</Field>
     </div>,
 
-    // 5 — Coaching Fit
-    <div key="s5" className="space-y-0">
-      <Field>
-        <Label>Which coaching option would you realistically consider?</Label>
-        <div className="grid grid-cols-1 gap-2">
-          {[
-            'AUD $40/week',
-            'AUD $150/month',
-            'I would like more information first',
-            'I am not interested in coaching',
-          ].map(v => (
-            <OptionBtn key={v} label={v} selected={data.coaching_investment === v} onClick={() => set('coaching_investment', v)} />
-          ))}
-        </div>
-        {!data.coaching_investment && (
-          <p className="text-xs text-muted-foreground/60 font-body mt-2">Please select a coaching option before continuing.</p>
-        )}
-      </Field>
-      <Field>
-        <Label>Are you willing to stay consistent for multiple months to reach your goals?</Label>
-        {yesNo('consistency_answer')}
-      </Field>
-      <Field>
-        <Label>How serious are you about your goals?</Label>
-        {optionRow('seriousness', ['Casual','Serious','Very Serious','All-In'])}
-      </Field>
-      <Field>
-        <Label>Why do you want BTCALI coaching?</Label>
-        <TextArea value={data.why_btcali} onChange={v => set('why_btcali', v)} placeholder="Tell BTCALI why you want to work together..." />
-      </Field>
-    </div>,
-
-    // 6 — Extra Details
+    // 5 — Extra Details
     <div key="s6" className="space-y-0">
       <Field>
         <Label>Equipment Available</Label>
@@ -345,15 +387,15 @@ export default function AthleteDiagnostic() {
 
   const canNext = () => {
     if (step === 0) return data.full_name && data.email;
-    if (step === 3) return data.goals.length > 0;
-    if (step === 5) return !!data.coaching_investment;
+    if (step === 1) return !!data.coaching_investment && data.coaching_investment !== 'I am not interested in coaching';
+    if (step === 4) return data.goals.length > 0;
     if (step === 7) return data.serious_applicant;
     return true;
   };
 
-  // Payment filter — redirect non-interested users immediately when they try to continue
+  // Payment filter — redirect non-interested users when they try to continue
   const handleNext = () => {
-    if (step === 5 && data.coaching_investment === 'I am not interested in coaching') {
+    if (step === 1 && data.coaching_investment === 'I am not interested in coaching') {
       navigate('/skills');
       return;
     }
@@ -460,16 +502,28 @@ Weaknesses: ${(report?.weaknesses || []).join(', ')}`
             <span className="text-sm font-body text-muted-foreground">Athlete Diagnostic</span>
           </div>
           <h1 className="font-heading font-bold text-2xl sm:text-3xl gradient-text mb-4">BTCALI Athlete Scan</h1>
-          <div className="glass rounded-xl p-5 border border-primary/20 mb-6 text-left space-y-3">
+          <div className="glass rounded-xl p-5 border border-primary/30 mb-6 text-left space-y-4">
             <p className="font-heading font-semibold text-foreground text-sm">
-              BTCALI Athlete Scan is only for serious applicants interested in BTCALI 1-on-1 coaching.
+              BTCALI Athlete Scan is only for athletes genuinely interested in BTCALI 1-on-1 coaching.
+            </p>
+            <div className="rounded-xl border border-primary/40 bg-primary/8 p-4 space-y-2">
+              <p className="font-heading font-bold text-primary text-sm uppercase tracking-wide">Coaching starts from:</p>
+              <div className="flex gap-4">
+                <div className="flex items-center gap-2">
+                  <div className="w-2 h-2 rounded-full bg-primary flex-shrink-0" />
+                  <span className="font-heading font-bold text-foreground text-sm">AUD $40/week</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="w-2 h-2 rounded-full bg-primary flex-shrink-0" />
+                  <span className="font-heading font-bold text-foreground text-sm">AUD $150/month</span>
+                </div>
+              </div>
+            </div>
+            <p className="font-body text-sm text-foreground/80">
+              This application is for athletes willing to <span className="text-primary font-semibold">invest in coaching</span> to accelerate their progress.
             </p>
             <p className="font-body text-sm text-muted-foreground">
-              Current coaching starts from <span className="text-primary font-semibold">AUD $40/week</span>.
-            </p>
-            <p className="font-body text-sm text-muted-foreground">
-              If you are not interested in investing in coaching, please do not continue this application.
-              Instead enjoy the free tutorials available inside the Skill Library.
+              If you are not interested in paid coaching, please enjoy the free tutorials available in the Skill Library instead.
             </p>
           </div>
           <div className="flex flex-col gap-3">
@@ -478,7 +532,7 @@ Weaknesses: ${(report?.weaknesses || []).join(', ')}`
               onClick={() => setGateAccepted(true)}
               className="w-full py-4 rounded-xl gradient-bg-strong glow-primary text-primary-foreground font-heading font-bold text-base"
             >
-              I am a serious applicant — Continue
+              I am a serious applicant willing to invest in coaching — Continue
             </motion.button>
             <motion.button
               whileTap={{ scale: 0.97 }}
@@ -514,17 +568,13 @@ Weaknesses: ${(report?.weaknesses || []).join(', ')}`
             <Zap className="w-6 h-6" /> Submit Your Report to BTCALI
           </motion.button>
 
-          {/* Instruction under send */}
           <p className="text-center text-sm font-body text-muted-foreground px-2">
             After your email app opens, press <strong className="text-foreground">Send</strong> to complete your submission.
           </p>
-
-          {/* Fallback instruction */}
           <p className="text-center text-xs font-body text-muted-foreground/70 px-2">
             If the button does not open your email app, press <strong className="text-foreground">COPY REPORT TO SEND MANUALLY</strong>, paste the report into Gmail, and send it to <strong className="text-foreground">btcalisw@gmail.com</strong>.
           </p>
 
-          {/* Copy report button */}
           <motion.button
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.97 }}
@@ -540,9 +590,57 @@ Weaknesses: ${(report?.weaknesses || []).join(', ')}`
 
           {copied && (
             <p className="text-center text-sm font-body text-muted-foreground px-2">
-              Report copied. If the email did not open or the report has not sent, paste this report into Gmail and send it to <strong className="text-foreground">btcalisw@gmail.com</strong>.
+              Report copied. Paste into Gmail and send to <strong className="text-foreground">btcalisw@gmail.com</strong>.
             </p>
           )}
+
+          {/* HOW BTCALI CAN HELP YOU */}
+          <div className="glass rounded-2xl p-8 border border-primary/20 mt-6 relative overflow-hidden">
+            <div className="absolute inset-0 gradient-bg pointer-events-none" />
+            <div className="relative space-y-4">
+              <p className="font-heading font-bold text-primary text-xs uppercase tracking-wider">How BTCALI Can Help You</p>
+              <p className="font-body text-sm text-foreground/85 leading-relaxed">
+                Many athletes spend months or even years training hard but make very little progress because they don't know exactly what to train, when to progress, or how to fix technical mistakes.
+              </p>
+              <p className="font-body text-sm text-foreground/85 leading-relaxed">
+                The reality is that guidance changes everything. Most BTCALI athletes came into coaching feeling stuck, confused, and frustrated with slow progress. Through personalised programming, technique feedback, progress tracking, and direct coaching support, they achieved results significantly faster than they would have training alone.
+              </p>
+              <div className="glass rounded-xl p-4 border border-border/30">
+                <p className="font-heading font-semibold text-foreground text-xs mb-3">Whether your goal is:</p>
+                <div className="grid grid-cols-2 gap-y-1.5 gap-x-3">
+                  {['Handstand','Handstand Push-Up','L-Sit to Handstand','Bent Arm Press','Front Lever','Planche'].map(g => (
+                    <div key={g} className="flex items-center gap-2">
+                      <div className="w-1.5 h-1.5 rounded-full bg-primary flex-shrink-0" />
+                      <span className="text-xs font-body text-foreground/80">{g}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <p className="font-body text-sm text-foreground/75 leading-relaxed">
+                BTCALI coaching provides the structure, accountability, and expert guidance needed to accelerate progress safely and efficiently.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-3 pt-2">
+                <Link to="/results" className="flex-1">
+                  <motion.button
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.97 }}
+                    className="w-full py-4 rounded-xl gradient-bg-strong glow-primary text-primary-foreground font-heading font-bold text-sm flex items-center justify-center gap-2"
+                  >
+                    <Trophy className="w-4 h-4" /> VIEW STUDENT RESULTS
+                  </motion.button>
+                </Link>
+                <Link to="/apply" className="flex-1">
+                  <motion.button
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.97 }}
+                    className="w-full py-4 rounded-xl gradient-bg-strong glow-primary text-primary-foreground font-heading font-bold text-sm flex items-center justify-center gap-2"
+                  >
+                    <Zap className="w-4 h-4" /> APPLY FOR 1-ON-1 COACHING
+                  </motion.button>
+                </Link>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     );

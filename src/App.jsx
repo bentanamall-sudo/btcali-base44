@@ -71,7 +71,7 @@ const AuthenticatedApp = () => {
           <Route path="/admin/analytics" element={<AdminAnalytics />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/results" element={<ProvenResults />} />
-          <Route path="/pricing" element={<Pricing />} />
+          <Route path="/pricing" element={<CoachingApply />} />
           <Route path="/ai-coach" element={<AICoach />} />
           <Route path="/coach" element={<CoachDashboard />} />
           <Route path="/admin/payments" element={<AdminPayments />} />
