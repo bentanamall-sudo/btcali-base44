@@ -6,7 +6,7 @@ import { PageHeaderLogo } from '../components/Logo';
 const FREE_SECTION = {
   title: 'Free Tutorials',
   subtitle: 'Open to everyone — no code required',
-  icon: '🎯',
+  icon: null,
   accentColor: '#22c55e',
   badge: 'Free',
   badgeClass: 'bg-emerald-500/15 text-emerald-400 border-emerald-500/25',
@@ -22,7 +22,7 @@ const FREE_SECTION = {
 const PREMIUM_SECTION = {
   title: 'BTCALI Premium Tutorials',
   subtitle: 'BTCALI Members Only',
-  icon: '👑',
+  icon: null,
   accentColor: '#D4AF37',
   badge: 'Members Only',
   badgeClass: 'bg-amber-500/15 text-amber-400 border-amber-500/25',
@@ -67,17 +67,8 @@ function SectionCard({ section, onClick }) {
       />
 
       <div className="p-8 sm:p-10">
-        {/* Icon + badge row */}
-        <div className="flex items-start justify-between mb-6">
-          <div
-            className="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl"
-            style={{
-              background: `linear-gradient(135deg, ${section.accentColor}25, ${section.accentColor}08)`,
-              border: `1px solid ${section.accentColor}35`,
-            }}
-          >
-            {section.icon}
-          </div>
+        {/* Badge row */}
+        <div className="flex items-start justify-end mb-6">
           <span className={`text-xs font-heading font-bold px-3 py-1.5 rounded-full border ${section.badgeClass}`}>
             {section.badge}
           </span>
