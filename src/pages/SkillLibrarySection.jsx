@@ -218,8 +218,9 @@ function PremiumGateInline({ onUnlocked }) {
   );
 }
 
-export default function SkillLibrarySection() {
-  const { sectionId } = useParams();
+export default function SkillLibrarySection({ sectionId: propSectionId }) {
+  const { sectionId: paramSectionId } = useParams();
+  const sectionId = propSectionId || paramSectionId;
   const navigate = useNavigate();
   const { isAdmin, isMember } = useAccessCodes();
 

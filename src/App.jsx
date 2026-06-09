@@ -83,8 +83,8 @@ const AuthenticatedApp = () => {
           <Route path="/members" element={<Members />} />
           <Route path="/btcali-members" element={<Members />} />
           <Route path="/skills" element={<SkillLibrary />} />
-          <Route path="/skills/free" element={<SkillLibrarySection />} />
-          <Route path="/skills/premium" element={<SkillLibrarySection />} />
+          <Route path="/skills/free" element={<SkillLibrarySection sectionId="free" />} />
+          <Route path="/skills/premium" element={<SkillLibrarySection sectionId="premium" />} />
           <Route path="/skills/:categoryId" element={<SkillLibraryCategory />} />
           <Route path="/admin/diagnostics" element={<AdminDiagnostics />} />
           <Route path="/brand" element={<BrandIdentity />} />
