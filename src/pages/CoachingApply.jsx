@@ -188,33 +188,33 @@ export default function CoachingApply() {
 
       {/* Pricing */}
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.12 }}
-        className="glass rounded-2xl p-8 glow-border mb-6 text-center relative overflow-hidden">
+        className="glass rounded-2xl p-10 glow-border mb-4 text-center relative overflow-hidden">
         <div className="absolute inset-0 gradient-bg pointer-events-none" />
         <div className="relative">
-          <div className="inline-flex items-center gap-2 bg-primary/20 border border-primary/40 rounded-full px-4 py-1.5 mb-5">
+          <div className="inline-flex items-center gap-2 bg-primary/20 border border-primary/40 rounded-full px-4 py-1.5 mb-6">
             <Lock className="w-3.5 h-3.5 text-primary" />
             <span className="text-xs font-heading font-bold text-primary uppercase tracking-wider">Limited Monthly Special Offer</span>
           </div>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-8 mb-5">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-10 mb-6">
             <div className="text-center">
               <div className="flex items-center gap-1.5 justify-center mb-2">
                 <Zap className="w-4 h-4 text-primary" />
                 <span className="text-xs font-heading text-primary uppercase tracking-wider font-bold">Weekly</span>
               </div>
               <div className="text-sm font-body text-muted-foreground line-through mb-1">AUD $49.99/week</div>
-              <div className="font-heading font-bold text-5xl gradient-text leading-none">AUD $39.99</div>
-              <div className="text-lg text-muted-foreground font-body mt-1">/week</div>
-              <div className="mt-2 inline-flex items-center gap-1 bg-green-500/15 border border-green-500/30 rounded-full px-3 py-1">
+              <div className="font-heading font-bold text-6xl sm:text-7xl gradient-text leading-none">$39.99</div>
+              <div className="text-base text-muted-foreground font-body mt-1.5">AUD / week</div>
+              <div className="mt-3 inline-flex items-center gap-1 bg-green-500/15 border border-green-500/30 rounded-full px-3 py-1">
                 <span className="text-xs font-heading font-bold text-green-400">Save AUD $10/week</span>
               </div>
             </div>
-            <div className="text-muted-foreground font-body text-sm font-semibold uppercase tracking-wider">or</div>
+            <div className="text-muted-foreground font-body text-sm font-semibold uppercase tracking-wider px-2">or</div>
             <div className="text-center">
               <div className="text-xs font-heading text-muted-foreground uppercase tracking-wider mb-2">Monthly</div>
               <div className="text-sm font-body text-muted-foreground line-through mb-1">AUD $200/month</div>
-              <div className="font-heading font-bold text-5xl gradient-text leading-none">AUD $150</div>
-              <div className="text-lg text-muted-foreground font-body mt-1">/month</div>
-              <div className="mt-2 inline-flex items-center gap-1 bg-green-500/15 border border-green-500/30 rounded-full px-3 py-1">
+              <div className="font-heading font-bold text-6xl sm:text-7xl gradient-text leading-none">$150</div>
+              <div className="text-base text-muted-foreground font-body mt-1.5">AUD / month</div>
+              <div className="mt-3 inline-flex items-center gap-1 bg-green-500/15 border border-green-500/30 rounded-full px-3 py-1">
                 <span className="text-xs font-heading font-bold text-green-400">Save AUD $50/month</span>
               </div>
             </div>
@@ -230,39 +230,28 @@ export default function CoachingApply() {
         </div>
       </motion.div>
 
-      {/* Application Form */}
-      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.16 }}
-        className="glass rounded-2xl p-8 border border-primary/30 mb-8 relative overflow-hidden">
-        <div className="absolute inset-0 gradient-bg pointer-events-none" />
-        <div className="relative">
-          <div className="inline-flex items-center gap-2 glass px-4 py-2 rounded-full mb-5">
-            <Target className="w-4 h-4 text-primary" />
-            <span className="text-sm font-body text-muted-foreground">Application</span>
-          </div>
-          <h2 className="font-heading font-bold text-xl text-foreground mb-1">Apply for Coaching</h2>
-          <p className="text-sm font-body text-muted-foreground mb-5">Complete the Athlete Diagnostic first so BTCALI can properly analyse your level, goals, and weaknesses.</p>
-          <div className="mb-5">
-            <label className="block font-heading font-semibold text-foreground text-sm mb-2">
-              Your Instagram Username <span className="text-primary">*</span>
-            </label>
-            <input
-              type="text"
-              value={instagram}
-              onChange={e => setInstagram(e.target.value)}
-              placeholder="@yourhandle"
-              className="w-full glass rounded-xl px-4 py-3 text-foreground font-body text-sm border border-border/40 focus:border-primary/60 focus:outline-none focus:ring-1 focus:ring-primary/40 bg-transparent"
-            />
-          </div>
-          <div className="flex flex-col sm:flex-row gap-3">
-            <motion.button whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}
+      {/* Application Form — compact */}
+      <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.16 }}
+        className="glass rounded-xl px-5 py-4 border border-border/30 mb-8">
+        <p className="text-xs font-body text-muted-foreground mb-3">Enter your Instagram then apply — or complete the Athlete Diagnostic first so BTCALI can analyse your level.</p>
+        <div className="flex flex-col sm:flex-row gap-2.5 items-start">
+          <input
+            type="text"
+            value={instagram}
+            onChange={e => setInstagram(e.target.value)}
+            placeholder="@yourinstagram"
+            className="flex-1 glass rounded-lg px-3 py-2.5 text-foreground font-body text-sm border border-border/40 focus:border-primary/60 focus:outline-none bg-transparent placeholder:text-muted-foreground/40 min-w-0"
+          />
+          <div className="flex gap-2 flex-shrink-0">
+            <motion.button whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.97 }}
               onClick={handleEmail} disabled={!instagram.trim()}
-              className="flex items-center justify-center gap-2 px-6 py-4 rounded-xl gradient-bg-strong text-primary-foreground font-heading font-bold text-base glow-primary disabled:opacity-50">
-              <Mail className="w-5 h-5" /> Apply for $40/week
+              className="flex items-center gap-1.5 px-4 py-2.5 rounded-lg gradient-bg-strong text-primary-foreground font-heading font-bold text-xs glow-primary disabled:opacity-40 whitespace-nowrap">
+              <Mail className="w-3.5 h-3.5" /> Apply Now
             </motion.button>
-            <Link to="/scan" className="flex-1 sm:flex-none">
-              <motion.button whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}
-                className="w-full flex items-center justify-center gap-2 px-6 py-4 rounded-xl glass border border-primary/40 text-foreground font-heading font-bold text-base hover:border-primary/70 transition-all">
-                <ArrowRight className="w-5 h-5 text-primary" /> Start Athlete Diagnostic
+            <Link to="/scan">
+              <motion.button whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.97 }}
+                className="flex items-center gap-1.5 px-4 py-2.5 rounded-lg glass border border-primary/30 text-foreground font-heading font-semibold text-xs hover:border-primary/60 transition-all whitespace-nowrap">
+                <ArrowRight className="w-3.5 h-3.5 text-primary" /> Athlete Scan
               </motion.button>
             </Link>
           </div>
