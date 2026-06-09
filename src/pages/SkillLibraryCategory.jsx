@@ -1,8 +1,26 @@
 import { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Search, Lock, X, ChevronLeft, Crown, ArrowRight, Clock } from 'lucide-react';
+import { Search, Lock, X, ChevronLeft, Crown, ArrowRight, Clock, ChevronDown } from 'lucide-react';
 import { useAccessCodes } from '@/lib/useAccessCodes';
+
+const COMING_SOON_DATA = {
+  planche: {
+    title: 'Planche Tutorials Coming Soon',
+    text: 'We are currently building the complete BTCALI Planche System.',
+    items: ['Planche Conditioning','Tuck Planche','Advanced Tuck Planche','Straddle Planche','Full Planche','Planche Push-Up Progressions','Mobility & Injury Prevention','Programming & Training Structure'],
+  },
+  'handstand-pushups': {
+    title: 'Handstand Pushup Tutorials Coming Soon',
+    text: 'We are currently building the complete BTCALI Handstand Pushup System.',
+    items: ['Wall HSPU','Chest-To-Wall Progressions','Freestanding HSPU','Balance & Alignment','Strength Development','Advanced HSPU Variations'],
+  },
+  'muscle-up': {
+    title: 'Muscle-Up Tutorials Coming Soon',
+    text: 'We are currently building the complete BTCALI Muscle-Up System.',
+    items: ['Pull-Up Strength Standards','Explosive Pulling','Transition Mechanics','False Grip Work','Bar Muscle-Up','Ring Muscle-Up'],
+  },
+};
 
 const CATEGORY_DATA = {
   'master-basics': {
@@ -27,37 +45,57 @@ const CATEGORY_DATA = {
     ],
   },
 
-  'l-sit-to-handstand': {
-    title: 'L-Sit to Handstand Guide',
-    description: 'Wrist warmups through to the full L-sit to handstand press — all tutorials in this section are free.',
-    subcategories: ['Beginner', 'Intermediate', 'Advanced'],
+  'handstand-foundations': {
+    title: 'Handstand & Shoulder Foundations',
+    description: 'Wrist warmups, pike push-ups, kick-ups, and beginner handstand development.',
+    subcategories: ['Beginner', 'Intermediate'],
     tutorials: [
-      // Beginner
-      { id: 'lshs-wrist-warmup', title: 'Wrist Warmup', level: 'Beginner', sub: 'Beginner', videoId: 'A1YPZdLyXPI', free: true },
-      { id: 'lshs-lsit-entry', title: 'L-Sit Progressions & Entry', level: 'Beginner', sub: 'Beginner', videoId: 'JV2QPQFlpZQ', free: true },
-      { id: 'lshs-bent-knee-pike', title: 'Bent Knee Pike Push-Ups', level: 'Beginner', sub: 'Beginner', videoId: '5HRq7xpcBkw', free: true },
-      { id: 'lshs-pike-pushup', title: 'Pike Push-Ups', level: 'Beginner', sub: 'Beginner', videoId: 'PSHF4b99J0Q', free: true },
-      { id: 'lshs-where-to-look', title: 'Where to Look in a Handstand', level: 'Beginner', sub: 'Beginner', videoId: 'pgKP61v2kz8', free: true },
-      { id: 'lshs-kickup', title: 'Handstand Kick-Up Tutorial', level: 'Beginner', sub: 'Beginner', videoId: '8GLA_c0jueA', free: true },
-      { id: 'lshs-bail', title: 'Handstand Bail — Face the Fear', level: 'Beginner', sub: 'Beginner', videoId: 'rGoEHcIPeFY', free: true },
-      // Intermediate
-      { id: 'lshs-decline-pike', title: 'Decline Pike Push-Ups', level: 'Intermediate', sub: 'Intermediate', videoId: '3OfR0Kd1u-Q', free: true },
-      { id: 'lshs-toe-taps', title: 'Handstand Toe Taps', level: 'Intermediate', sub: 'Intermediate', videoId: 'yDYk7w7uqTA', free: true },
-      { id: 'lshs-floating-pike', title: 'Floating Pike Push-Ups', level: 'Intermediate', sub: 'Intermediate', videoId: 'AfLQJ-cCF2I', free: true },
-      { id: 'lshs-bent-arm-raise', title: 'Bent Arm Press Raise', level: 'Intermediate', sub: 'Intermediate', videoId: 'jUYGq7sBxI0', free: true },
-      { id: 'lshs-bent-arm-cues', title: 'Bent Arm Press Cues', level: 'Intermediate', sub: 'Intermediate', videoId: 'jD7JOlacCgg', free: true },
-      { id: 'lshs-bent-arm-tuck-pos', title: 'Bent Arm Tuck Planche Positions', level: 'Intermediate', sub: 'Intermediate', videoId: 'WRflJHXBIrA', free: true },
-      { id: 'lshs-bent-arm-quick', title: 'Bent Arm Press Quick Tutorial', level: 'Intermediate', sub: 'Intermediate', videoId: '6MpY6iLDtQM', free: true },
-      { id: 'lshs-momentum-press', title: 'Momentum Bent Arm Press', level: 'Intermediate', sub: 'Intermediate', videoId: 'cIZRmKLMlQ4', free: true },
-      { id: 'lshs-momentum-press-exp', title: 'Momentum Bent Arm Press Explanation', level: 'Intermediate', sub: 'Intermediate', videoId: 'yLn96dEdHWE', free: true },
-      { id: 'lshs-clean-press', title: 'Clean Form Bent Arm Press', level: 'Intermediate', sub: 'Intermediate', videoId: 'BouVt_LNI7k', free: true },
-      { id: 'lshs-bent-arm-raise-prog', title: 'Bent Arm Press Raise Progressions', level: 'Intermediate', sub: 'Intermediate', videoId: 'qAuVf2KGFUI', free: true },
-      { id: 'lshs-chest-wall-hold', title: 'Handstand Chest to Wall Hold', level: 'Intermediate', sub: 'Intermediate', free: true, comingSoon: true },
+      { id: 'hf-wrist-warmup', title: 'Wrist Warmup', level: 'Beginner', sub: 'Beginner', videoId: 'A1YPZdLyXPI', free: true },
+      { id: 'hf-lsit-entry', title: 'L-Sit Progressions & Entry', level: 'Beginner', sub: 'Beginner', videoId: 'JV2QPQFlpZQ', free: true },
+      { id: 'hf-bent-knee-pike', title: 'Bent Knee Pike Push-Ups', level: 'Beginner', sub: 'Beginner', videoId: '5HRq7xpcBkw', free: true },
+      { id: 'hf-pike-pushup', title: 'Pike Push-Ups', level: 'Beginner', sub: 'Beginner', videoId: 'PSHF4b99J0Q', free: true },
+      { id: 'hf-where-to-look', title: 'Where to Look in a Handstand', level: 'Beginner', sub: 'Beginner', videoId: 'pgKP61v2kz8', free: true },
+      { id: 'hf-kickup', title: 'Handstand Kick-Up Tutorial', level: 'Beginner', sub: 'Beginner', videoId: '8GLA_c0jueA', free: true },
+      { id: 'hf-bail', title: 'Handstand Bail — Face the Fear', level: 'Beginner', sub: 'Beginner', videoId: 'rGoEHcIPeFY', free: true },
+      { id: 'hf-decline-pike', title: 'Decline Pike Push-Ups', level: 'Intermediate', sub: 'Intermediate', videoId: '3OfR0Kd1u-Q', free: true },
+      { id: 'hf-toe-taps', title: 'Handstand Toe Taps', level: 'Intermediate', sub: 'Intermediate', videoId: 'yDYk7w7uqTA', free: true },
+      { id: 'hf-floating-pike', title: 'Floating Pike Push-Ups', level: 'Intermediate', sub: 'Intermediate', videoId: 'AfLQJ-cCF2I', free: true },
+      { id: 'hf-chest-wall-hold', title: 'Handstand Chest to Wall Hold', level: 'Intermediate', sub: 'Intermediate', free: true, comingSoon: true },
+    ],
+  },
+
+  'l-sit-to-handstand': {
+    title: 'L-Sit to Handstand Full Guide',
+    description: 'The complete system — all foundation tutorials plus the full bent arm press and L-sit to handstand pathway.',
+    subcategories: ['Foundation', 'Bent Arm Press', 'Advanced'],
+    premium: true,
+    tutorials: [
+      // Foundation
+      { id: 'lshs-wrist-warmup', title: 'Wrist Warmup', level: 'Beginner', sub: 'Foundation', videoId: 'A1YPZdLyXPI', free: false },
+      { id: 'lshs-lsit-entry', title: 'L-Sit Progressions & Entry', level: 'Beginner', sub: 'Foundation', videoId: 'JV2QPQFlpZQ', free: false },
+      { id: 'lshs-bent-knee-pike', title: 'Bent Knee Pike Push-Ups', level: 'Beginner', sub: 'Foundation', videoId: '5HRq7xpcBkw', free: false },
+      { id: 'lshs-pike-pushup', title: 'Pike Push-Ups', level: 'Beginner', sub: 'Foundation', videoId: 'PSHF4b99J0Q', free: false },
+      { id: 'lshs-where-to-look', title: 'Where to Look in a Handstand', level: 'Beginner', sub: 'Foundation', videoId: 'pgKP61v2kz8', free: false },
+      { id: 'lshs-kickup', title: 'Handstand Kick-Up Tutorial', level: 'Beginner', sub: 'Foundation', videoId: '8GLA_c0jueA', free: false },
+      { id: 'lshs-bail', title: 'Handstand Bail — Face the Fear', level: 'Beginner', sub: 'Foundation', videoId: 'rGoEHcIPeFY', free: false },
+      { id: 'lshs-decline-pike', title: 'Decline Pike Push-Ups', level: 'Intermediate', sub: 'Foundation', videoId: '3OfR0Kd1u-Q', free: false },
+      { id: 'lshs-toe-taps', title: 'Handstand Toe Taps', level: 'Intermediate', sub: 'Foundation', videoId: 'yDYk7w7uqTA', free: false },
+      { id: 'lshs-floating-pike', title: 'Floating Pike Push-Ups', level: 'Intermediate', sub: 'Foundation', videoId: 'AfLQJ-cCF2I', free: false },
+      // Bent Arm Press
+      { id: 'lshs-bent-arm-raise', title: 'Bent Arm Press Raise', level: 'Intermediate', sub: 'Bent Arm Press', videoId: 'jUYGq7sBxI0', free: false },
+      { id: 'lshs-bent-arm-cues', title: 'Bent Arm Press Cues', level: 'Intermediate', sub: 'Bent Arm Press', videoId: 'jD7JOlacCgg', free: false },
+      { id: 'lshs-bent-arm-tuck-pos', title: 'Bent Arm Tuck Planche Positions', level: 'Intermediate', sub: 'Bent Arm Press', videoId: 'WRflJHXBIrA', free: false },
+      { id: 'lshs-bent-arm-quick', title: 'Bent Arm Press Quick Tutorial', level: 'Intermediate', sub: 'Bent Arm Press', videoId: '6MpY6iLDtQM', free: false },
+      { id: 'lshs-momentum-press', title: 'Momentum Bent Arm Press', level: 'Intermediate', sub: 'Bent Arm Press', videoId: 'cIZRmKLMlQ4', free: false },
+      { id: 'lshs-momentum-press-exp', title: 'Momentum Bent Arm Press Explanation', level: 'Intermediate', sub: 'Bent Arm Press', videoId: 'yLn96dEdHWE', free: false },
+      { id: 'lshs-clean-press', title: 'Clean Form Bent Arm Press', level: 'Intermediate', sub: 'Bent Arm Press', videoId: 'BouVt_LNI7k', free: false },
+      { id: 'lshs-bent-arm-raise-prog', title: 'Bent Arm Press Raise Progressions', level: 'Intermediate', sub: 'Bent Arm Press', videoId: 'qAuVf2KGFUI', free: false },
+      { id: 'lshs-chest-wall-hold', title: 'Handstand Chest to Wall Hold', level: 'Intermediate', sub: 'Bent Arm Press', free: false, comingSoon: true },
       // Advanced
-      { id: 'lshs-indepth-press', title: 'In-Depth Bent Arm Press Tutorial', level: 'Advanced', sub: 'Advanced', videoId: 'UO7pBH4FnOI', free: true },
-      { id: 'lshs-lsit-to-hs', title: 'L-Sit to Handstand', level: 'Advanced', sub: 'Advanced', videoId: '8SOeZroRebI', free: true },
-      { id: 'lshs-straddle-press', title: 'Straddle Press to Handstand', level: 'Advanced', sub: 'Advanced', free: true, comingSoon: true },
-      { id: 'lshs-straight-press', title: 'Straight Press to Handstand', level: 'Elite', sub: 'Advanced', free: true, comingSoon: true },
+      { id: 'lshs-indepth-press', title: 'In-Depth Bent Arm Press Tutorial', level: 'Advanced', sub: 'Advanced', videoId: 'UO7pBH4FnOI', free: false },
+      { id: 'lshs-lsit-to-hs', title: 'L-Sit to Handstand', level: 'Advanced', sub: 'Advanced', videoId: '8SOeZroRebI', free: false },
+      { id: 'lshs-straddle-press', title: 'Straddle Press to Handstand', level: 'Advanced', sub: 'Advanced', free: false, comingSoon: true },
+      { id: 'lshs-straight-press', title: 'Straight Press to Handstand', level: 'Elite', sub: 'Advanced', free: false, comingSoon: true },
     ],
   },
 
@@ -237,7 +275,7 @@ function LockedCard({ tutorial }) {
           <span className={`text-xs font-heading font-semibold px-2 py-0.5 rounded-full border flex-shrink-0 ${LEVEL_COLORS[tutorial.level] || LEVEL_COLORS.Advanced}`}>{tutorial.level}</span>
         </div>
         <div className="space-y-2">
-          <Link to="/pricing">
+          <Link to="/1-on-1-coaching">
             <motion.button whileTap={{ scale: 0.97 }} className="w-full py-2.5 rounded-xl gradient-bg-strong text-primary-foreground font-heading font-semibold text-xs flex items-center justify-center gap-1.5 glow-primary">
               <Crown className="w-3.5 h-3.5" /> Apply for 1-on-1 Coaching
             </motion.button>
@@ -273,7 +311,7 @@ function LockedCard({ tutorial }) {
   );
 }
 
-function TutorialCard({ tutorial, onPlay }) {
+function TutorialCard({ tutorial, onPlay, memberContent = false }) {
   return (
     <motion.div
       whileHover={{ y: -2 }}
@@ -296,7 +334,13 @@ function TutorialCard({ tutorial, onPlay }) {
           </div>
         </div>
         <div className="absolute top-2 left-2">
-          <span className="text-xs font-heading font-bold px-2 py-0.5 rounded-full bg-green-500/20 text-green-400 border border-green-500/30">Free</span>
+          {memberContent ? (
+            <span className="text-xs font-heading font-bold px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-400 border border-amber-500/30 flex items-center gap-1">
+              <Crown className="w-2.5 h-2.5" /> Members
+            </span>
+          ) : (
+            <span className="text-xs font-heading font-bold px-2 py-0.5 rounded-full bg-green-500/20 text-green-400 border border-green-500/30">Free</span>
+          )}
         </div>
       </div>
       <div className="p-4">
@@ -309,9 +353,8 @@ function TutorialCard({ tutorial, onPlay }) {
   );
 }
 
-const PREMIUM_CATEGORIES = ['planche', 'front-lever', 'handstand-pushups', 'muscle-up'];
-const PLANCHE_FREE_SUBS = ['Free Conditioning'];
-const PLANCHE_CONDITIONING_INTRO = true; // show intro card for planche-conditioning category
+const PREMIUM_CATEGORIES = ['planche', 'front-lever', 'handstand-pushups', 'muscle-up', 'l-sit-to-handstand'];
+const COMING_SOON_CATEGORIES = ['planche', 'handstand-pushups', 'muscle-up'];
 
 function PremiumGate({ cat }) {
   const [showCode, setShowCode] = useState(false);
@@ -340,7 +383,7 @@ function PremiumGate({ cat }) {
           This skill library is exclusively available to BTCALI coaching members. Apply for coaching or enter your member access code below.
         </p>
 
-        <Link to="/pricing">
+        <Link to="/1-on-1-coaching">
           <motion.button
             whileHover={{ scale: 1.03 }}
             whileTap={{ scale: 0.97 }}
@@ -390,18 +433,55 @@ export default function SkillLibraryCategory() {
   const [search, setSearch] = useState('');
   const [activeVideo, setActiveVideo] = useState(null);
   const [activeSub, setActiveSub] = useState(null);
-  const { isAdmin } = useAccessCodes();
+  const { isAdmin, isMember: ctxMember } = useAccessCodes();
+  const isMember = ctxMember;
+
+  // Coming soon pages — show intentional coming soon card
+  if (COMING_SOON_CATEGORIES.includes(categoryId)) {
+    const csData = COMING_SOON_DATA[categoryId];
+    return (
+      <div className="min-h-screen py-12 px-4 sm:px-6 max-w-2xl mx-auto flex flex-col justify-center">
+        <Link to="/skills" className="inline-flex items-center gap-1.5 text-sm text-muted-foreground font-body hover:text-foreground transition-colors mb-8">
+          <ChevronLeft className="w-4 h-4" /> Back to Skill Library
+        </Link>
+        <motion.div initial={{ opacity: 0, scale: 0.97 }} animate={{ opacity: 1, scale: 1 }}
+          className="glass-strong rounded-2xl p-10 border border-primary/30 text-center glow-border relative overflow-hidden">
+          <div className="absolute inset-0 gradient-bg pointer-events-none" />
+          <div className="relative">
+            <div className="inline-flex items-center gap-2 bg-muted/40 border border-border/40 rounded-full px-4 py-1.5 mb-5">
+              <Clock className="w-3.5 h-3.5 text-muted-foreground" />
+              <span className="text-xs font-heading font-bold text-muted-foreground uppercase tracking-wider">Coming Soon</span>
+            </div>
+            <h1 className="font-heading font-bold text-2xl sm:text-3xl gradient-text mb-4">{csData.title}</h1>
+            <p className="font-body text-sm text-foreground/80 mb-6 max-w-md mx-auto leading-relaxed">{csData.text}</p>
+            <div className="glass rounded-xl p-5 border border-border/30 text-left max-w-sm mx-auto mb-7">
+              <p className="font-heading font-semibold text-foreground text-xs mb-3 uppercase tracking-wider">Will include:</p>
+              <div className="space-y-1.5">
+                {csData.items.map(item => (
+                  <div key={item} className="flex items-center gap-2">
+                    <div className="w-1.5 h-1.5 rounded-full bg-primary/60 flex-shrink-0" />
+                    <span className="text-sm font-body text-foreground/75">{item}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <Link to="/1-on-1-coaching">
+              <motion.button whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}
+                className="inline-flex items-center gap-2 px-7 py-3.5 rounded-xl gradient-bg-strong text-primary-foreground font-heading font-bold text-sm glow-primary">
+                <Crown className="w-4 h-4" /> Apply For 1-on-1 Coaching
+              </motion.button>
+            </Link>
+          </div>
+        </motion.div>
+      </div>
+    );
+  }
 
   const cat = CATEGORY_DATA[categoryId];
 
-  // For planche: show premium gate for non-free subcategories only when not admin/member
-  // For other premium categories: gate the whole page
-  const isPlanche = categoryId === 'planche';
-  const showPlancheMemberGate = isPlanche && !isAdmin && activeSub && !PLANCHE_FREE_SUBS.includes(activeSub);
-
-  if (cat && PREMIUM_CATEGORIES.includes(categoryId) && !isAdmin && !isPlanche) {
-    const allLocked = cat.tutorials.every(t => !t.free);
-    if (allLocked) return <div className="min-h-screen py-12 px-4 sm:px-6 max-w-3xl mx-auto"><PremiumGate cat={cat} /></div>;
+  // Gate premium categories for non-members
+  if (cat && PREMIUM_CATEGORIES.includes(categoryId) && !isAdmin && !isMember) {
+    return <div className="min-h-screen py-12 px-4 sm:px-6 max-w-3xl mx-auto"><PremiumGate cat={cat} /></div>;
   }
 
   if (!cat) {
@@ -506,16 +586,8 @@ export default function SkillLibraryCategory() {
         </div>
       )}
 
-      {/* Planche member gate — shown inline when a locked subcategory is selected */}
-      {showPlancheMemberGate && (
-        <div className="mb-8">
-          <PremiumGate cat={{ ...cat, title: `Planche — ${activeSub}` }} />
-        </div>
-      )}
-
       {/* Tutorials grid */}
-      {!showPlancheMemberGate && (
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
           {filtered.map((tutorial, i) => (
             <motion.div
               key={tutorial.id}
@@ -525,15 +597,14 @@ export default function SkillLibraryCategory() {
             >
               {tutorial.comingSoon ? (
                 <ComingSoonCard tutorial={tutorial} />
-              ) : tutorial.free || isAdmin ? (
-                <TutorialCard tutorial={tutorial} onPlay={() => setActiveVideo(tutorial)} />
+              ) : tutorial.free || isAdmin || isMember ? (
+                <TutorialCard tutorial={tutorial} onPlay={() => setActiveVideo(tutorial)} memberContent={!tutorial.free} />
               ) : (
                 <LockedCard tutorial={tutorial} />
               )}
             </motion.div>
           ))}
         </div>
-      )}
 
       {/* Video Modal */}
       {activeVideo && <VideoModal tutorial={activeVideo} onClose={() => setActiveVideo(null)} />}
@@ -548,7 +619,7 @@ export default function SkillLibraryCategory() {
         <p className="font-body text-muted-foreground text-base max-w-lg mx-auto mb-6">
           Want to unlock all tutorials and get personalised coaching? Apply for BTCALI 1-on-1 coaching.
         </p>
-        <Link to="/pricing">
+        <Link to="/1-on-1-coaching">
           <motion.button
             whileHover={{ scale: 1.03 }}
             whileTap={{ scale: 0.97 }}

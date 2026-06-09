@@ -1,15 +1,29 @@
 // Admin master code
-export const ADMIN_CODE = 'BTCALIADMIN';
+export const ADMIN_CODE = 'BTCALI999';
 
-// Map of custom user codes → array of program IDs they unlock
-// Add entries here when you want to grant a student access:
-// e.g. "Unlock Handstand Program for code JaydenBTCALI"
-export const PROGRAM_CODES = {
-  // 'JaydenBTCALI': ['handstand-program'],
-  // 'AlexBTCALI': ['frontlever-program'],
-};
+// All member athlete codes — case-insensitive in AccessContext
+export const MEMBER_CODES = [
+  'HENRY173',
+  'HAEJUN142',
+  'ANDREAS189',
+  'TANUSH157',
+  'RYAN128',
+  'JULIAN194',
+  'MACK136',
+  'MARCUS181',
+  'ALISTAIR149',
+  'JAYDEN165',
+  'LUKE121',
+  'GAON176',
+  'SEAN138',
+  'DANIEL192',
+  'MATHEW154',
+  'HAYDEN167',
+  'HUGO144',
+  'CEDRICK185',
+];
 
-// All program IDs that admin unlocks
+// All program IDs that unlock for members/admin
 export const ALL_PROGRAM_IDS = [
   'handstand-program',
   'planche-program',
@@ -17,4 +31,5 @@ export const ALL_PROGRAM_IDS = [
   'muscleup-program',
   'hspu-program',
   'coaching-1on1',
+  'l-sit-to-handstand-full',
 ];

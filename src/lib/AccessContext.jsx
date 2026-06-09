@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useEffect, useCallback } from 'react';
-import { ADMIN_CODE, PROGRAM_CODES, ALL_PROGRAM_IDS } from './accessCodes';
+import { ADMIN_CODE, MEMBER_CODES, ALL_PROGRAM_IDS } from './accessCodes';
 
 const STORAGE_KEY = 'btcali-access';
 
@@ -20,7 +20,6 @@ const AccessContext = createContext(null);
 export function AccessProvider({ children }) {
   const [access, setAccess] = useState(loadAccess);
 
-  // Sync across tabs
   useEffect(() => {
     const handler = () => setAccess(loadAccess());
     window.addEventListener('storage', handler);
@@ -39,24 +38,18 @@ export function AccessProvider({ children }) {
   const unlockCode = useCallback((code) => {
     const trimmed = code.trim().toUpperCase();
 
-    if (trimmed === ADMIN_CODE) {
+    if (trimmed === ADMIN_CODE.toUpperCase()) {
       const next = { ...access, isAdmin: true, unlockedPrograms: ALL_PROGRAM_IDS };
       saveAccess(next);
       setAccess(next);
       return 'admin';
     }
 
-    const matchKey = Object.keys(PROGRAM_CODES).find(
-      (k) => k.toUpperCase() === trimmed
-    );
-    if (matchKey) {
-      const programs = PROGRAM_CODES[matchKey];
-      const existing = access.unlockedPrograms || [];
-      const merged = [...new Set([...existing, ...programs])];
-      const next = { ...access, unlockedPrograms: merged };
+    if (MEMBER_CODES.map(c => c.toUpperCase()).includes(trimmed)) {
+      const next = { ...access, unlockedPrograms: ALL_PROGRAM_IDS, memberCode: trimmed };
       saveAccess(next);
       setAccess(next);
-      return 'user';
+      return 'member';
     }
 
     return null;
