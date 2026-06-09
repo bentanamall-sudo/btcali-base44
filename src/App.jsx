@@ -34,6 +34,7 @@ import PlanchePrograms from './pages/programs/PlanchePrograms';
 import FrontLeverPrograms from './pages/programs/FrontLeverPrograms';
 import BrandIdentity from './pages/BrandIdentity';
 import Members from './pages/Members';
+import SkillLibrarySection from './pages/SkillLibrarySection';
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -80,7 +81,10 @@ const AuthenticatedApp = () => {
           <Route path="/purchase" element={<Purchase />} />
           <Route path="/diagnostic" element={<AthleteDiagnostic />} />
           <Route path="/members" element={<Members />} />
+          <Route path="/btcali-members" element={<Members />} />
           <Route path="/skills" element={<SkillLibrary />} />
+          <Route path="/skills/free" element={<SkillLibrarySection />} />
+          <Route path="/skills/premium" element={<SkillLibrarySection />} />
           <Route path="/skills/:categoryId" element={<SkillLibraryCategory />} />
           <Route path="/admin/diagnostics" element={<AdminDiagnostics />} />
           <Route path="/brand" element={<BrandIdentity />} />

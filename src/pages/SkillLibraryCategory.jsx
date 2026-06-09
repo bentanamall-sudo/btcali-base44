@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Search, Lock, X, ChevronLeft, Crown, ArrowRight, Clock, ChevronDown } from 'lucide-react';
 import { useAccessCodes } from '@/lib/useAccessCodes';
@@ -255,10 +255,13 @@ function LockedCard({ tutorial }) {
   const [code, setCode] = useState('');
   const [error, setError] = useState(false);
   const { unlockCode } = useAccessCodes();
+  const navigate = useNavigate();
 
   const handleUnlock = () => {
     const result = unlockCode(code);
-    if (!result) { setError(true); setCode(''); } else setError(false);
+    if (!result) { setError(true); setCode(''); } else {
+      setTimeout(() => navigate('/members'), 500);
+    }
   };
 
   return (
@@ -361,10 +364,16 @@ function PremiumGate({ cat }) {
   const [code, setCode] = useState('');
   const [error, setError] = useState(false);
   const { unlockCode } = useAccessCodes();
+  const navigate = useNavigate();
 
   const handleUnlock = () => {
     const result = unlockCode(code);
-    if (!result) { setError(true); setTimeout(() => setError(false), 2000); }
+    if (!result) {
+      setError(true);
+      setTimeout(() => setError(false), 2000);
+    } else {
+      setTimeout(() => navigate('/members'), 500);
+    }
   };
 
   return (
