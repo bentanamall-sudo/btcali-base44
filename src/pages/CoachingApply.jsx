@@ -188,45 +188,27 @@ export default function CoachingApply() {
 
       {/* Pricing */}
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.12 }}
-        className="glass rounded-2xl p-10 glow-border mb-4 text-center relative overflow-hidden">
+        className="glass rounded-xl px-5 py-4 border border-primary/25 mb-4 relative overflow-hidden">
         <div className="absolute inset-0 gradient-bg pointer-events-none" />
-        <div className="relative">
-          <div className="inline-flex items-center gap-2 bg-primary/20 border border-primary/40 rounded-full px-4 py-1.5 mb-6">
-            <Lock className="w-3.5 h-3.5 text-primary" />
-            <span className="text-xs font-heading font-bold text-primary uppercase tracking-wider">Limited Monthly Special Offer</span>
-          </div>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-10 mb-6">
+        <div className="relative flex flex-col sm:flex-row items-center gap-4">
+          <div className="flex items-center gap-6 flex-1">
             <div className="text-center">
-              <div className="flex items-center gap-1.5 justify-center mb-2">
-                <Zap className="w-4 h-4 text-primary" />
-                <span className="text-xs font-heading text-primary uppercase tracking-wider font-bold">Weekly</span>
-              </div>
-              <div className="text-sm font-body text-muted-foreground line-through mb-1">AUD $49.99/week</div>
-              <div className="font-heading font-bold text-6xl sm:text-7xl gradient-text leading-none">$39.99</div>
-              <div className="text-base text-muted-foreground font-body mt-1.5">AUD / week</div>
-              <div className="mt-3 inline-flex items-center gap-1 bg-green-500/15 border border-green-500/30 rounded-full px-3 py-1">
-                <span className="text-xs font-heading font-bold text-green-400">Save AUD $10/week</span>
-              </div>
+              <div className="text-xs font-heading text-muted-foreground uppercase tracking-wider mb-0.5">Weekly</div>
+              <div className="text-xs font-body text-muted-foreground line-through">$49.99</div>
+              <div className="font-heading font-bold text-3xl gradient-text leading-none">$39.99</div>
+              <div className="text-xs text-muted-foreground font-body mt-0.5">AUD/week</div>
             </div>
-            <div className="text-muted-foreground font-body text-sm font-semibold uppercase tracking-wider px-2">or</div>
+            <div className="text-muted-foreground font-body text-xs font-semibold uppercase">or</div>
             <div className="text-center">
-              <div className="text-xs font-heading text-muted-foreground uppercase tracking-wider mb-2">Monthly</div>
-              <div className="text-sm font-body text-muted-foreground line-through mb-1">AUD $200/month</div>
-              <div className="font-heading font-bold text-6xl sm:text-7xl gradient-text leading-none">$150</div>
-              <div className="text-base text-muted-foreground font-body mt-1.5">AUD / month</div>
-              <div className="mt-3 inline-flex items-center gap-1 bg-green-500/15 border border-green-500/30 rounded-full px-3 py-1">
-                <span className="text-xs font-heading font-bold text-green-400">Save AUD $50/month</span>
-              </div>
+              <div className="text-xs font-heading text-muted-foreground uppercase tracking-wider mb-0.5">Monthly</div>
+              <div className="text-xs font-body text-muted-foreground line-through">$200</div>
+              <div className="font-heading font-bold text-3xl gradient-text leading-none">$150</div>
+              <div className="text-xs text-muted-foreground font-body mt-0.5">AUD/month</div>
             </div>
           </div>
-          <div className="glass rounded-xl p-4 border border-primary/25 max-w-md mx-auto">
-            <div className="flex items-start gap-2.5">
-              <Star className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />
-              <p className="text-xs font-body text-foreground/80 leading-relaxed text-left">
-                Athletes who secure a spot this month keep the discounted pricing <strong className="text-foreground">locked in for the full year</strong>. Weekly rate requires a minimum 1-month commitment. One-off single week: AUD $50.
-              </p>
-            </div>
-          </div>
+          <p className="text-xs font-body text-muted-foreground/70 max-w-xs text-center sm:text-right leading-relaxed">
+            Lock in discounted pricing for the full year. Min. 1-month commitment. One-off week: AUD $50.
+          </p>
         </div>
       </motion.div>
 
