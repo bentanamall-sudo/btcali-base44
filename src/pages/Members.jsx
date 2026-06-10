@@ -41,7 +41,7 @@ const TRAINING_RULES = [
 const CONSENT_CHECKBOXES = [
   'I agree to the BTCALI Coaching Terms & Conditions.',
   'I agree to follow the General Training Rules.',
-  'I understand BTCALI response availability is mainly 7–8 AM and 4–6 PM NSW time on weekdays.',
+  'I understand BTCALI coaching support is primarily available between 4–6 PM NSW time on weekdays. Responses outside these hours may be provided when available but are not guaranteed.',
   'I understand BTCALI will respond within these hours on weekdays whenever possible.',
   'I understand responses outside these hours are not guaranteed.',
   'I understand coaching is AUD $40/week with a minimum 1-month commitment.',
@@ -53,6 +53,9 @@ const CONSENT_CHECKBOXES = [
   'I understand I am training at my own risk.',
   'I understand BTCALI is not responsible for injuries.',
   'I understand BTCALI will guide me as safely as possible and help minimise injury risk as much as possible.',
+  'I understand BTCALI does not offer regular coaching calls. Calls may only be provided if I am consistently struggling to understand a movement after applying BTCALI coaching feedback and corrections multiple times. Any call support is provided solely at BTCALI\'s discretion.',
+  'I understand BTCALI may use my submitted videos, progress updates, training footage, screenshots, transformations, achievements, and results for educational, coaching, promotional, website, and social media purposes.',
+  'I consent to BTCALI posting my training footage, progress videos, skill achievements, and results on social media platforms, the BTCALI website, and other BTCALI content for the purpose of documenting progress, showcasing coaching results, and inspiring other athletes.',
 ];
 
 function AccordionSection({ icon: Icon, title, children }) {
