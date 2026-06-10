@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Crown, Shield, Dumbbell, Layers, ShoppingBag, ExternalLink, Lock, ChevronRight, ChevronDown, CheckCircle, Send, Clock } from 'lucide-react';
 import { useAccessCodes } from '@/lib/useAccessCodes';
@@ -277,6 +277,16 @@ export default function Members() {
       {/* Terms & Conditions */}
       <AccordionSection icon={Shield} title="BTCALI Coaching Terms & Conditions">
         <BulletList items={TERMS_ITEMS} />
+        <motion.button
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.97 }}
+          onClick={() => {
+            document.getElementById('terms-agreement-form')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }}
+          className="mt-6 w-full py-3.5 rounded-xl gradient-bg-strong text-primary-foreground font-heading font-bold text-sm glow-primary flex items-center justify-center gap-2"
+        >
+          <CheckCircle className="w-4 h-4" /> Agree to Terms & Conditions
+        </motion.button>
       </AccordionSection>
 
       {/* General Training Rules */}
@@ -303,16 +313,6 @@ export default function Members() {
         </div>
       </AccordionSection>
 
-      {/* Terms Consent Form */}
-      <AccordionSection icon={CheckCircle} title="BTCALI Coaching Terms & Conditions Agreement">
-        <div className="mb-4">
-          <p className="text-sm font-body text-muted-foreground leading-relaxed">
-            Please read the terms above, then complete and submit this agreement form.
-          </p>
-        </div>
-        <ConsentForm />
-      </AccordionSection>
-
       {/* Equipment */}
       <AccordionSection icon={ShoppingBag} title="Essential Equipment">
         <p className="text-sm font-body text-muted-foreground mb-5 leading-relaxed">
@@ -328,6 +328,29 @@ export default function Members() {
           ))}
         </div>
       </AccordionSection>
+
+      {/* Terms Agreement Form — standalone, scroll target */}
+      <div id="terms-agreement-form" className="scroll-mt-6">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="glass rounded-2xl border border-primary/30 mb-4 overflow-hidden"
+        >
+          <div className="flex items-center gap-3 p-6 border-b border-border/30">
+            <div className="w-9 h-9 rounded-xl gradient-bg-strong flex items-center justify-center flex-shrink-0">
+              <CheckCircle className="w-4 h-4 text-primary-foreground" />
+            </div>
+            <h2 className="font-heading font-bold text-base sm:text-lg text-foreground">Terms & Conditions Agreement</h2>
+          </div>
+          <div className="px-6 pb-6 pt-5">
+            <p className="text-sm font-body text-muted-foreground leading-relaxed mb-5">
+              Please read the terms above, then complete and submit this agreement form.
+            </p>
+            <ConsentForm />
+          </div>
+        </motion.div>
+      </div>
 
       {/* Skill Library CTA */}
       <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
