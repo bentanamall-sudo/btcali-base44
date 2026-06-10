@@ -305,12 +305,24 @@ export default function Members() {
 
       {/* Terms Consent Form */}
       <AccordionSection icon={CheckCircle} title="BTCALI Coaching Terms & Conditions Agreement">
-        <div className="mb-4">
-          <p className="text-sm font-body text-muted-foreground leading-relaxed">
-            Please read the terms above, then complete and submit this agreement form.
-          </p>
+        <div className="mb-5 space-y-3">
+          <BulletList items={TERMS_ITEMS} />
+          <a
+            href="https://drive.google.com/file/d/1_BTCALI_Terms_Agreement_Scan/view"
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={e => { e.preventDefault(); window.open('https://drive.google.com/file/d/1_BTCALI_Terms_Agreement_Scan/view', '_blank'); }}
+            className="inline-flex items-center gap-2 mt-2 px-4 py-2.5 rounded-xl glass border border-primary/30 text-primary font-heading font-semibold text-sm hover:border-primary/60 transition-all"
+          >
+            <ExternalLink className="w-4 h-4" /> View Signed Agreement Scan
+          </a>
         </div>
-        <ConsentForm />
+        <div className="border-t border-border/30 pt-5">
+          <p className="text-sm font-body text-muted-foreground mb-4 leading-relaxed">
+            Read the terms above, then complete and submit this agreement form.
+          </p>
+          <ConsentForm />
+        </div>
       </AccordionSection>
 
       {/* Equipment */}
