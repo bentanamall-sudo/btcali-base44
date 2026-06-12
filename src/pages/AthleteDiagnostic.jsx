@@ -553,68 +553,93 @@ Weaknesses: ${(report?.weaknesses || []).join(', ')}`
         <DiagnosticReport data={data} report={report} />
 
         <div className="mt-8 space-y-3">
-          {/* Scan complete confirmation */}
-          <motion.div initial={{ opacity: 0, scale: 0.97 }} animate={{ opacity: 1, scale: 1 }}
-            className="glass rounded-2xl p-6 border border-green-500/30 text-center mb-2" style={{ background: 'rgba(34,197,94,0.04)' }}>
-            <CheckCircle className="w-10 h-10 text-green-400 mx-auto mb-3" />
-            <p className="font-heading font-bold text-green-400 text-lg mb-1">Athlete Scan Complete</p>
-            <p className="text-sm font-body text-foreground/80 leading-relaxed max-w-sm mx-auto">
-              Thank you for completing the Athlete Scan. I will review your answers before assessing your coaching application.
-            </p>
-          </motion.div>
-
-          {/* Submit button */}
-          <div className="glass rounded-2xl p-5 border border-primary/30 text-center">
-            <p className="font-heading font-bold text-foreground text-sm mb-1">Final Step — Submit Your Report</p>
-            <p className="text-xs font-body text-muted-foreground mb-4">Your email app will open — press Send to complete your submission.</p>
-            <motion.button
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.97 }}
-              onClick={handleSend}
-              className="w-full py-4 rounded-xl gradient-bg-strong glow-primary text-primary-foreground font-heading font-bold text-base flex items-center justify-center gap-2"
-            >
-              <Zap className="w-5 h-5" /> Submit Your Report to BTCALI
-            </motion.button>
+          {/* Primary send button */}
+          <div className="glass rounded-2xl p-5 border border-primary/30 text-center mb-2">
+            <p className="font-heading font-bold text-foreground text-base mb-1">This is the final step</p>
+            <p className="text-sm font-body text-muted-foreground">Click the button below to submit your report to BTCALI. Your email app will open — press Send to complete your submission.</p>
           </div>
+
+          <motion.button
+            whileHover={{ scale: 1.03 }}
+            whileTap={{ scale: 0.97 }}
+            onClick={handleSend}
+            className="w-full py-5 rounded-2xl gradient-bg-strong glow-primary-strong text-primary-foreground font-heading font-bold text-xl flex items-center justify-center gap-3"
+          >
+            <Zap className="w-6 h-6" /> Submit Your Report to BTCALI
+          </motion.button>
+
+          <p className="text-center text-sm font-body text-muted-foreground px-2">
+            After your email app opens, press <strong className="text-foreground">Send</strong> to complete your submission.
+          </p>
+          <p className="text-center text-xs font-body text-muted-foreground/70 px-2">
+            If the button does not open your email app, press <strong className="text-foreground">COPY REPORT TO SEND MANUALLY</strong>, paste the report into Gmail, and send it to <strong className="text-foreground">btcalisw@gmail.com</strong>.
+          </p>
 
           <motion.button
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.97 }}
             onClick={handleCopy}
-            className="w-full py-3.5 rounded-xl glass border border-border/40 text-foreground font-heading font-semibold text-sm flex items-center justify-center gap-2 hover:border-primary/40 transition-all"
+            className="w-full py-4 rounded-2xl glass border border-border/40 text-foreground font-heading font-semibold text-base flex items-center justify-center gap-2 hover:border-primary/40 transition-all"
           >
             {copied ? (
-              <><CheckCircle className="w-4 h-4 text-green-400" /> Report Copied!</>
+              <><CheckCircle className="w-5 h-5 text-green-400" /> Report Copied!</>
             ) : (
-              <><Trophy className="w-4 h-4" /> Copy Report to Send Manually</>
+              <><Trophy className="w-5 h-5" /> COPY REPORT TO SEND MANUALLY</>
             )}
           </motion.button>
+
           {copied && (
-            <p className="text-center text-xs font-body text-muted-foreground">
-              Paste into Gmail and send to <strong className="text-foreground">btcalisw@gmail.com</strong>
+            <p className="text-center text-sm font-body text-muted-foreground px-2">
+              Report copied. Paste into Gmail and send to <strong className="text-foreground">btcalisw@gmail.com</strong>.
             </p>
           )}
 
-          {/* Navigation CTAs */}
-          <div className="grid sm:grid-cols-2 gap-3 pt-2">
-            <Link to="/apply">
-              <motion.button
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.97 }}
-                className="w-full py-4 rounded-xl gradient-bg-strong glow-primary text-primary-foreground font-heading font-bold text-sm flex items-center justify-center gap-2"
-              >
-                🔥 View Coaching Information
-              </motion.button>
-            </Link>
-            <Link to="/results">
-              <motion.button
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.97 }}
-                className="w-full py-4 rounded-xl glass border border-primary/30 text-primary font-heading font-bold text-sm flex items-center justify-center gap-2 hover:bg-primary/10 transition-all"
-              >
-                <Trophy className="w-4 h-4" /> View Athlete Results
-              </motion.button>
-            </Link>
+          {/* HOW BTCALI CAN HELP YOU */}
+          <div className="glass rounded-2xl p-8 border border-primary/20 mt-6 relative overflow-hidden">
+            <div className="absolute inset-0 gradient-bg pointer-events-none" />
+            <div className="relative space-y-4">
+              <p className="font-heading font-bold text-primary text-xs uppercase tracking-wider">How BTCALI Can Help You</p>
+              <p className="font-body text-sm text-foreground/85 leading-relaxed">
+                Many athletes spend months or even years training hard but make very little progress because they don't know exactly what to train, when to progress, or how to fix technical mistakes.
+              </p>
+              <p className="font-body text-sm text-foreground/85 leading-relaxed">
+                The reality is that guidance changes everything. Most BTCALI athletes came into coaching feeling stuck, confused, and frustrated with slow progress. Through personalised programming, technique feedback, progress tracking, and direct coaching support, they achieved results significantly faster than they would have training alone.
+              </p>
+              <div className="glass rounded-xl p-4 border border-border/30">
+                <p className="font-heading font-semibold text-foreground text-xs mb-3">Whether your goal is:</p>
+                <div className="grid grid-cols-2 gap-y-1.5 gap-x-3">
+                  {['Handstand','Handstand Push-Up','L-Sit to Handstand','Bent Arm Press','Front Lever','Planche'].map(g => (
+                    <div key={g} className="flex items-center gap-2">
+                      <div className="w-1.5 h-1.5 rounded-full bg-primary flex-shrink-0" />
+                      <span className="text-xs font-body text-foreground/80">{g}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <p className="font-body text-sm text-foreground/75 leading-relaxed">
+                BTCALI coaching provides the structure, accountability, and expert guidance needed to accelerate progress safely and efficiently.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-3 pt-2">
+                <Link to="/results" className="flex-1">
+                  <motion.button
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.97 }}
+                    className="w-full py-4 rounded-xl gradient-bg-strong glow-primary text-primary-foreground font-heading font-bold text-sm flex items-center justify-center gap-2"
+                  >
+                    <Trophy className="w-4 h-4" /> VIEW STUDENT RESULTS
+                  </motion.button>
+                </Link>
+                <Link to="/apply" className="flex-1">
+                  <motion.button
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.97 }}
+                    className="w-full py-4 rounded-xl gradient-bg-strong glow-primary text-primary-foreground font-heading font-bold text-sm flex items-center justify-center gap-2"
+                  >
+                    <Zap className="w-4 h-4" /> APPLY FOR 1-ON-1 COACHING
+                  </motion.button>
+                </Link>
+              </div>
+            </div>
           </div>
         </div>
       </div>

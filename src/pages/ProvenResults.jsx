@@ -1,18 +1,16 @@
 import { useState, useRef, useEffect, useCallback, memo } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { ChevronLeft, ChevronRight, Users, ArrowRight, Trophy, Zap } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Users, ArrowRight, Trophy, Zap, ChevronDown } from 'lucide-react';
 import GlowButton from '../components/GlowButton';
 
-// ── Student Wins — reordered: most impressive first ──────────────────────────
+// ── Student Wins ─────────────────────────────────────────────────────────────
 export const WINS_VIDEOS = [
-  // Top 5 — most advanced/impressive first
   { src: 'https://BTCALI.b-cdn.net/Results/9A2BD0D3-54C8-4A31-A783-4D41A28231F8.mp4',   thumb: 'https://BTCALI.b-cdn.net/Results/Screenshot%202026-06-06%20at%201.56.57%E2%80%AFpm.jpeg' },
   { src: 'https://BTCALI.b-cdn.net/Results/6788AB6E-2557-4044-A41E-04741FCEDEBD.mp4',   thumb: 'https://BTCALI.b-cdn.net/Results/Screenshot%202026-06-06%20at%201.57.07%E2%80%AFpm.jpeg' },
   { src: 'https://BTCALI.b-cdn.net/Results/1EE46107-AAE6-4CB2-BB53-E5A868222ADF.mp4',   thumb: 'https://BTCALI.b-cdn.net/Results/Screenshot%202026-06-06%20at%201.57.22%E2%80%AFpm.jpeg' },
   { src: 'https://BTCALI.b-cdn.net/Results/EF8173F4-B7EE-4543-9393-CDADD13BADA2.mp4',   thumb: 'https://BTCALI.b-cdn.net/Results/Screenshot%202026-06-06%20at%201.57.29%E2%80%AFpm.jpeg' },
   { src: 'https://BTCALI.b-cdn.net/Results/176B944E-94B7-4831-AE29-3D4DCCD2A8CE.mp4',   thumb: 'https://BTCALI.b-cdn.net/Results/Screenshot%202026-06-06%20at%201.57.36%E2%80%AFpm.jpeg' },
-  // Remaining wins
   { src: 'https://BTCALI.b-cdn.net/Results/4544DF68-9BE7-4331-B80A-AC6B771BFDBF.mp4',   thumb: 'https://BTCALI.b-cdn.net/Results/Screenshot%202026-06-06%20at%201.57.49%E2%80%AFpm.jpeg' },
   { src: 'https://BTCALI.b-cdn.net/Results/0F8509E9-7D7F-4230-A1C9-868BDD35408C.mp4',   thumb: 'https://BTCALI.b-cdn.net/Results/Screenshot%202026-06-06%20at%201.57.55%E2%80%AFpm.jpeg' },
   { src: 'https://BTCALI.b-cdn.net/Results/1FAB58FF-AB8A-408F-BBA8-DBD501995F3A.mp4',   thumb: 'https://BTCALI.b-cdn.net/Results/Screenshot%202026-06-06%20at%201.58.01%E2%80%AFpm.jpeg' },
@@ -206,7 +204,7 @@ function VideoCarousel({ videos, label, icon: Icon, carouselId, globalAudio, set
   } : { border: '1.5px solid hsl(var(--glow-primary)/0.35)' };
 
   return (
-    <div onTouchStart={onTouchStart} onTouchEnd={onTouchEnd}>
+    <div className="mb-8" onTouchStart={onTouchStart} onTouchEnd={onTouchEnd}>
       <div className="flex items-center justify-center gap-2 mb-4">
         <Icon className="w-5 h-5 text-primary" />
         <h2 className="font-heading font-bold text-xl sm:text-2xl gradient-text">{label}</h2>
@@ -272,128 +270,67 @@ function VideoCarousel({ videos, label, icon: Icon, carouselId, globalAudio, set
   );
 }
 
-// ── Main Results page — horizontal slide switcher ─────────────────────────────
 export default function ProvenResults() {
-  const [slide, setSlide] = useState(0); // 0 = wins, 1 = transformations
   const [globalAudio, setGlobalAudio] = useState(null);
-  const [direction, setDirection] = useState(1);
 
-  const goToSlide = (idx) => {
-    if (idx === slide) return;
-    setDirection(idx > slide ? 1 : -1);
-    setGlobalAudio(null);
-    setSlide(idx);
+  const scrollToTransformations = () => {
+    document.getElementById('transformations-section')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
-
-  const slides = [
-    {
-      id: 'wins',
-      label: 'Student Wins',
-      icon: Trophy,
-      videos: WINS_VIDEOS,
-      carouselId: 'wins',
-      nextLabel: 'Student Transformations',
-      nextIcon: Zap,
-    },
-    {
-      id: 'transforms',
-      label: 'Student Transformations',
-      icon: Zap,
-      videos: TRANSFORM_VIDEOS,
-      carouselId: 'transforms',
-      prevLabel: 'Student Wins',
-      prevIcon: Trophy,
-    },
-  ];
-
-  const current = slides[slide];
 
   return (
     <div className="min-h-screen py-8 px-4">
       {/* Page header */}
-      <div className="text-center mb-6">
+      <div className="text-center mb-8">
         <p className="text-xs font-heading font-bold text-muted-foreground/50 uppercase tracking-[0.25em] mb-2">
           Real Athletes · Real Results
         </p>
         <h1 className="font-heading font-bold text-3xl sm:text-5xl mb-2">
-          Athlete <span className="gradient-text">Results</span>
+          Skill <span className="gradient-text">Achievements</span>
         </h1>
+        <p className="text-muted-foreground font-body text-sm max-w-sm mx-auto">
+          Real BTCALI athlete skill wins and transformations.
+        </p>
+      </div>
 
-        {/* Slide tab switcher */}
-        <div className="inline-flex glass rounded-xl border border-border/30 p-1 mt-4 gap-1">
-          {slides.map((s, i) => {
-            const Icon = s.icon;
-            return (
-              <button
-                key={s.id}
-                onClick={() => goToSlide(i)}
-                className="flex items-center gap-2 px-4 py-2 rounded-lg font-heading font-semibold text-sm transition-all duration-200"
-                style={slide === i ? {
-                  background: 'linear-gradient(135deg, hsl(var(--gradient-start)), hsl(var(--gradient-end)))',
-                  color: 'hsl(var(--primary-foreground))',
-                  boxShadow: '0 0 12px hsl(var(--glow-primary)/0.2)',
-                } : {
-                  color: 'hsl(var(--muted-foreground))',
-                }}
-              >
-                <Icon className="w-3.5 h-3.5" />
-                {s.label}
-              </button>
-            );
-          })}
+      <VideoCarousel
+        videos={WINS_VIDEOS}
+        label="Skill Achievements"
+        icon={Trophy}
+        carouselId="wins"
+        globalAudio={globalAudio}
+        setGlobalAudio={setGlobalAudio}
+      />
+
+      {/* Bridge section — drives users to scroll to transformations */}
+      <div className="max-w-2xl mx-auto mb-10 text-center px-4">
+        <p className="font-body text-base text-muted-foreground leading-relaxed mb-6">
+          Skill achievements are only part of the story. See how athletes transformed their strength, physique and consistency below.
+        </p>
+        <button
+          onClick={scrollToTransformations}
+          className="inline-flex items-center gap-2.5 px-8 py-4 rounded-xl gradient-bg-strong text-primary-foreground font-heading font-bold text-base mb-4"
+          style={{ boxShadow: '0 0 20px hsl(var(--glow-primary)/0.2)' }}
+        >
+          📈 View Student Transformations
+        </button>
+        <div className="flex justify-center mt-2">
+          <AnimatedArrow />
         </div>
       </div>
 
-      {/* Slide content with horizontal transition */}
-      <div className="overflow-hidden">
-        <AnimatePresence mode="wait" custom={direction}>
-          <motion.div
-            key={slide}
-            custom={direction}
-            initial={{ opacity: 0, x: direction * 60 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: direction * -60 }}
-            transition={{ duration: 0.3, ease: 'easeInOut' }}
-          >
-            <VideoCarousel
-              videos={current.videos}
-              label={current.label}
-              icon={current.icon}
-              carouselId={current.carouselId}
-              globalAudio={globalAudio}
-              setGlobalAudio={setGlobalAudio}
-            />
-
-            {/* Navigation arrows between sections */}
-            <div className="flex items-center justify-center gap-4 mt-4 mb-6">
-              {slide === 1 && (
-                <button
-                  onClick={() => goToSlide(0)}
-                  className="flex items-center gap-2.5 px-6 py-3 rounded-xl glass border border-border/35 text-foreground/70 font-heading font-semibold text-sm hover:border-primary/30 hover:text-foreground transition-all"
-                >
-                  <ChevronLeft className="w-4 h-4" />
-                  <Trophy className="w-4 h-4 text-primary/70" />
-                  Student Wins
-                </button>
-              )}
-              {slide === 0 && (
-                <button
-                  onClick={() => goToSlide(1)}
-                  className="flex items-center gap-2.5 px-6 py-3 rounded-xl gradient-bg-strong text-primary-foreground font-heading font-semibold text-sm"
-                  style={{ boxShadow: '0 0 16px hsl(var(--glow-primary)/0.2)' }}
-                >
-                  <Zap className="w-4 h-4" />
-                  Student Transformations
-                  <ChevronRight className="w-4 h-4" />
-                </button>
-              )}
-            </div>
-          </motion.div>
-        </AnimatePresence>
+      <div id="transformations-section" className="scroll-mt-8">
+        <VideoCarousel
+          videos={TRANSFORM_VIDEOS}
+          label="Student Transformations"
+          icon={Zap}
+          carouselId="transforms"
+          globalAudio={globalAudio}
+          setGlobalAudio={setGlobalAudio}
+        />
       </div>
 
       {/* CTA */}
-      <div className="rounded-2xl glass text-center py-10 px-6 border border-border/30 relative overflow-hidden mt-2 max-w-3xl mx-auto">
+      <div className="rounded-2xl glass text-center py-10 px-6 border border-border/30 relative overflow-hidden mt-4 max-w-3xl mx-auto">
         <div className="absolute inset-0 bg-gradient-to-br from-primary/3 to-transparent pointer-events-none" />
         <Users className="w-8 h-8 text-primary mx-auto mb-4 relative z-10" />
         <h2 className="font-heading font-bold text-2xl sm:text-3xl text-foreground mb-3 relative z-10">
@@ -407,6 +344,15 @@ export default function ProvenResults() {
           <Link to="/skills/free"><GlowButton variant="secondary" size="lg">Start Free Tutorials</GlowButton></Link>
         </div>
       </div>
+    </div>
+  );
+}
+
+function AnimatedArrow() {
+  return (
+    <div className="flex flex-col items-center gap-1 animate-bounce">
+      <ChevronDown className="w-6 h-6 text-primary/60" />
+      <ChevronDown className="w-6 h-6 text-primary/30 -mt-3" />
     </div>
   );
 }
