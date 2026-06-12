@@ -186,16 +186,7 @@ export default function AthleteDiagnostic() {
           ))}
         </div>
       </div>
-      {/* Student results reference */}
-      <div className="glass rounded-xl p-4 border border-border/30 mb-5">
-        <p className="font-heading font-semibold text-foreground text-xs mb-2">Many BTCALI athletes have achieved major breakthroughs including:</p>
-        <div className="flex flex-wrap gap-2">
-          {['Bent Arm Press','L-Sit to Handstand','Handstand Push-Ups','Front Lever Progressions','Planche Progressions'].map(s => (
-            <span key={s} className="text-xs font-body glass px-2.5 py-1 rounded-full border border-primary/20 text-foreground/70">{s}</span>
-          ))}
-        </div>
-        <p className="text-xs font-body text-muted-foreground mt-3 leading-relaxed">BTCALI coaching helps athletes achieve results significantly faster than training alone.</p>
-      </div>
+
       <Field>
         <Label>Which coaching option would you realistically consider?</Label>
         <div className="grid grid-cols-1 gap-2">
