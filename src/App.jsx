@@ -33,7 +33,7 @@ import PlancheGuide from './pages/tutorials/PlancheGuide';
 import PlanchePrograms from './pages/programs/PlanchePrograms';
 import FrontLeverPrograms from './pages/programs/FrontLeverPrograms';
 import BrandIdentity from './pages/BrandIdentity';
-import Members from './pages/Members';
+import Members from './pages/Members.jsx';
 import SkillLibrarySection from './pages/SkillLibrarySection';
 
 function ScrollToTop() {

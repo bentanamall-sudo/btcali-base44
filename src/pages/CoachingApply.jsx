@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { Zap, CheckCircle, Crown, Target, ArrowRight, ChevronDown, Trophy } from 'lucide-react';
+import { CheckCircle, Crown, Target, ChevronDown, Trophy, Flame } from 'lucide-react';
 
 const SKILLS = [
   'Planche','Front Lever','Handstand','Handstand Push-Up','Muscle-Up',
@@ -103,6 +103,7 @@ function AccordionItem({ title, children }) {
 
 export default function CoachingApply() {
   const [detailsOpen, setDetailsOpen] = useState(false);
+  const [includedOpen, setIncludedOpen] = useState(false);
 
   return (
     <div className="min-h-screen py-12 px-4 sm:px-6 max-w-3xl mx-auto">
@@ -118,83 +119,8 @@ export default function CoachingApply() {
         </h1>
       </motion.div>
 
-      {/* Primary CTA — BTCALI Coaching Details */}
-      <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.08 }} className="flex justify-center mb-6">
-        <motion.button
-          whileHover={{ scale: 1.02 }}
-          whileTap={{ scale: 0.97 }}
-          onClick={() => setDetailsOpen(o => !o)}
-          className="flex items-center justify-center gap-3 px-10 py-4 rounded-xl gradient-bg-strong text-primary-foreground font-heading font-bold text-lg"
-          style={{ boxShadow: '0 0 20px hsl(var(--glow-primary)/0.2)', minWidth: '280px' }}
-        >
-          BTCALI Coaching Details
-          <motion.span animate={{ rotate: detailsOpen ? 180 : 0 }} transition={{ duration: 0.2 }}>
-            <ChevronDown className="w-5 h-5" />
-          </motion.span>
-        </motion.button>
-      </motion.div>
-
-      {/* Coaching Details Accordion */}
-      <AnimatePresence>
-        {detailsOpen && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.3, ease: 'easeInOut' }}
-            className="overflow-hidden mb-8"
-          >
-            <div className="glass rounded-2xl p-6 border border-border/30 space-y-4">
-              <p className="font-body text-sm text-foreground/85 leading-relaxed">
-                I have helped athletes achieve crazy skills such as bent arm press, L-sit to handstand, full front lever, front lever pull-ups, planche, muscle-ups, pike presses and much more. Then I adapt the routine specifically to each athlete to help them progress as fast as possible.
-              </p>
-              <p className="font-body text-sm text-foreground/80 leading-relaxed">
-                The question isn't whether BTCALI coaching works. The results already speak for themselves.
-              </p>
-              <p className="font-body text-sm text-foreground/75 leading-relaxed">
-                From first pull-ups and pike push-ups to advanced skills like the full planche, front lever, front lever pull-ups and L-sit to handstand, athletes have already used these methods to achieve incredible progress.
-              </p>
-
-              {/* View Results CTA */}
-              <Link to="/results">
-                <motion.div
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.97 }}
-                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl glass border border-primary/30 text-primary font-heading font-semibold text-sm hover:bg-primary/10 transition-all cursor-pointer"
-                >
-                  <Trophy className="w-4 h-4" /> View Athlete Results
-                </motion.div>
-              </Link>
-
-              <div className="glass rounded-xl p-4 border border-primary/20">
-                <p className="font-heading font-semibold text-primary text-xs uppercase tracking-wider mb-2">Main Availability</p>
-                <p className="text-sm font-body text-foreground/80">• Weekdays 4–6 PM NSW time</p>
-                <p className="text-xs font-body text-muted-foreground mt-2 leading-relaxed">
-                  I will do my best to respond before your next workout whenever possible, with most replies occurring during my availability hours.
-                </p>
-              </div>
-
-              <div className="pt-2 border-t border-border/30">
-                <p className="font-heading font-bold text-foreground text-sm mb-3">This is NOT a random copied program. I look at:</p>
-                <div className="grid grid-cols-2 gap-1.5">
-                  {WHAT_I_ANALYZE.map(item => (
-                    <div key={item} className="flex items-center gap-2">
-                      <div className="w-1.5 h-1.5 rounded-full bg-primary flex-shrink-0" />
-                      <span className="text-sm font-body text-foreground/75">{item}</span>
-                    </div>
-                  ))}
-                </div>
-                <p className="text-sm font-body text-foreground/75 mt-3 leading-relaxed">
-                  Then I adapt the routine specifically to the athlete to help them progress as fast as possible.
-                </p>
-              </div>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      {/* Pricing */}
-      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.12 }}
+      {/* 1. Pricing */}
+      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.06 }}
         className="glass rounded-xl px-5 py-4 border border-primary/20 mb-4 relative overflow-hidden">
         <div className="absolute inset-0 gradient-bg pointer-events-none" />
         <div className="relative flex flex-col sm:flex-row items-center gap-4">
@@ -219,9 +145,9 @@ export default function CoachingApply() {
         </div>
       </motion.div>
 
-      {/* Application Section */}
-      <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.16 }}
-        className="glass rounded-xl px-5 py-5 border border-border/30 mb-8">
+      {/* 2. Application Section */}
+      <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
+        className="glass rounded-xl px-5 py-5 border border-border/30 mb-6">
         <h3 className="font-heading font-bold text-lg text-foreground mb-1">Apply For 1-on-1 Coaching</h3>
         <p className="text-sm font-body text-muted-foreground mb-4 leading-relaxed">
           Complete the Athlete Scan so I can analyse your current level, goals and weaknesses before reviewing your coaching application.
@@ -233,27 +159,110 @@ export default function CoachingApply() {
             className="w-full flex items-center justify-center gap-2 py-3.5 rounded-xl gradient-bg-strong text-primary-foreground font-heading font-bold text-base"
             style={{ boxShadow: '0 0 16px hsl(var(--glow-primary)/0.18)' }}
           >
-            <Target className="w-5 h-5" /> Start Athlete Scan & Apply
+            <Flame className="w-5 h-5" /> Apply For 1-on-1 Coaching Through Athlete Scan
           </motion.button>
         </Link>
       </motion.div>
 
-      {/* What's Included */}
-      <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="mb-10">
-        <h2 className="font-heading font-bold text-2xl text-foreground mb-1">
-          What Is <span className="gradient-text">Included</span>
-        </h2>
-        <p className="text-muted-foreground font-body text-sm mb-5">Tap each item to expand</p>
-        <div className="space-y-2">
-          {INCLUSION_ITEMS.map((item, i) => (
-            <AccordionItem key={i} title={item.title}>
-              {item}
-            </AccordionItem>
-          ))}
-        </div>
+      {/* 3. BTCALI Coaching Details */}
+      <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.14 }} className="mb-6">
+        <motion.button
+          whileHover={{ scale: 1.01 }}
+          whileTap={{ scale: 0.98 }}
+          onClick={() => setDetailsOpen(o => !o)}
+          className="w-full flex items-center justify-between gap-3 glass rounded-xl px-5 py-4 border border-border/30 hover:border-primary/30 transition-all"
+        >
+          <span className="font-heading font-bold text-foreground text-base">BTCALI Coaching Details</span>
+          <motion.span animate={{ rotate: detailsOpen ? 180 : 0 }} transition={{ duration: 0.2 }}>
+            <ChevronDown className="w-5 h-5 text-muted-foreground" />
+          </motion.span>
+        </motion.button>
+
+        <AnimatePresence initial={false}>
+          {detailsOpen && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: 'auto' }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.28, ease: 'easeInOut' }}
+              className="overflow-hidden"
+            >
+              <div className="glass rounded-b-xl px-5 pb-5 pt-4 border border-t-0 border-border/30 space-y-4">
+                <p className="font-body text-sm text-foreground/85 leading-relaxed">
+                  I have helped athletes achieve crazy skills such as bent arm press, L-sit to handstand, full front lever, front lever pull-ups, planche, muscle-ups, pike presses and much more. Then I adapt the routine specifically to each athlete to help them progress as fast as possible.
+                </p>
+                <p className="font-body text-sm text-foreground/80 leading-relaxed">
+                  The question isn't whether BTCALI coaching works. The results already speak for themselves.
+                </p>
+                <p className="font-body text-sm text-foreground/75 leading-relaxed">
+                  From first pull-ups and pike push-ups to advanced skills like the full planche, front lever, front lever pull-ups and L-sit to handstand, athletes have already used these methods to achieve incredible progress.
+                </p>
+                <div className="glass rounded-xl p-4 border border-primary/20">
+                  <p className="font-heading font-semibold text-primary text-xs uppercase tracking-wider mb-2">Main Availability</p>
+                  <p className="text-sm font-body text-foreground/80">• Weekdays 4–6 PM NSW time</p>
+                  <p className="text-xs font-body text-muted-foreground mt-2 leading-relaxed">
+                    I will do my best to respond before your next workout whenever possible, with most replies occurring during my availability hours.
+                  </p>
+                </div>
+                <div className="pt-2 border-t border-border/30">
+                  <p className="font-heading font-bold text-foreground text-sm mb-3">This is NOT a random copied program. I look at:</p>
+                  <div className="grid grid-cols-2 gap-1.5">
+                    {WHAT_I_ANALYZE.map(item => (
+                      <div key={item} className="flex items-center gap-2">
+                        <div className="w-1.5 h-1.5 rounded-full bg-primary flex-shrink-0" />
+                        <span className="text-sm font-body text-foreground/75">{item}</span>
+                      </div>
+                    ))}
+                  </div>
+                  <p className="text-sm font-body text-foreground/75 mt-3 leading-relaxed">
+                    Then I adapt the routine specifically to the athlete to help them progress as fast as possible.
+                  </p>
+                </div>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </motion.div>
 
-      {/* Skills */}
+      {/* 4. What's Included — single outer dropdown */}
+      <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="mb-6">
+        <motion.button
+          whileHover={{ scale: 1.01 }}
+          whileTap={{ scale: 0.98 }}
+          onClick={() => setIncludedOpen(o => !o)}
+          className="w-full flex items-center justify-between gap-3 glass rounded-xl px-5 py-4 border border-border/30 hover:border-primary/30 transition-all"
+        >
+          <span className="font-heading font-bold text-foreground text-base">What Is Included</span>
+          <motion.span animate={{ rotate: includedOpen ? 180 : 0 }} transition={{ duration: 0.2 }}>
+            <ChevronDown className="w-5 h-5 text-muted-foreground" />
+          </motion.span>
+        </motion.button>
+
+        <AnimatePresence initial={false}>
+          {includedOpen && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: 'auto' }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.28, ease: 'easeInOut' }}
+              className="overflow-hidden"
+            >
+              <div className="glass rounded-b-xl border border-t-0 border-border/30 px-4 pb-4 pt-3">
+                <p className="text-xs text-muted-foreground font-body mb-3">Tap each item to expand</p>
+                <div className="space-y-2">
+                  {INCLUSION_ITEMS.map((item, i) => (
+                    <AccordionItem key={i} title={item.title}>
+                      {item}
+                    </AccordionItem>
+                  ))}
+                </div>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </motion.div>
+
+      {/* 5. Skills */}
       <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="mb-12">
         <h2 className="font-heading font-bold text-2xl text-foreground mb-2">
           Skills BTCALI Can <span className="gradient-text">Help You Achieve</span>

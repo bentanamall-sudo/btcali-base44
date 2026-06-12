@@ -550,6 +550,16 @@ Weaknesses: ${(report?.weaknesses || []).join(', ')}`
   if (report) {
     return (
       <div className="min-h-screen py-12 px-4 sm:px-6 max-w-4xl mx-auto">
+        {/* Completion banner */}
+        <motion.div initial={{ opacity: 0, y: -16 }} animate={{ opacity: 1, y: 0 }}
+          className="glass rounded-2xl p-6 border border-primary/30 text-center mb-8">
+          <CheckCircle className="w-10 h-10 text-green-400 mx-auto mb-3" />
+          <h2 className="font-heading font-bold text-xl text-foreground mb-1">Athlete Scan Complete</h2>
+          <p className="text-sm font-body text-muted-foreground leading-relaxed max-w-sm mx-auto">
+            Thank you for completing the Athlete Scan. I will review your answers before assessing your coaching application.
+          </p>
+        </motion.div>
+
         <DiagnosticReport data={data} report={report} />
 
         <div className="mt-8 space-y-3">
@@ -594,51 +604,28 @@ Weaknesses: ${(report?.weaknesses || []).join(', ')}`
             </p>
           )}
 
-          {/* HOW BTCALI CAN HELP YOU */}
-          <div className="glass rounded-2xl p-8 border border-primary/20 mt-6 relative overflow-hidden">
-            <div className="absolute inset-0 gradient-bg pointer-events-none" />
-            <div className="relative space-y-4">
-              <p className="font-heading font-bold text-primary text-xs uppercase tracking-wider">How BTCALI Can Help You</p>
-              <p className="font-body text-sm text-foreground/85 leading-relaxed">
-                Many athletes spend months or even years training hard but make very little progress because they don't know exactly what to train, when to progress, or how to fix technical mistakes.
-              </p>
-              <p className="font-body text-sm text-foreground/85 leading-relaxed">
-                The reality is that guidance changes everything. Most BTCALI athletes came into coaching feeling stuck, confused, and frustrated with slow progress. Through personalised programming, technique feedback, progress tracking, and direct coaching support, they achieved results significantly faster than they would have training alone.
-              </p>
-              <div className="glass rounded-xl p-4 border border-border/30">
-                <p className="font-heading font-semibold text-foreground text-xs mb-3">Whether your goal is:</p>
-                <div className="grid grid-cols-2 gap-y-1.5 gap-x-3">
-                  {['Handstand','Handstand Push-Up','L-Sit to Handstand','Bent Arm Press','Front Lever','Planche'].map(g => (
-                    <div key={g} className="flex items-center gap-2">
-                      <div className="w-1.5 h-1.5 rounded-full bg-primary flex-shrink-0" />
-                      <span className="text-xs font-body text-foreground/80">{g}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-              <p className="font-body text-sm text-foreground/75 leading-relaxed">
-                BTCALI coaching provides the structure, accountability, and expert guidance needed to accelerate progress safely and efficiently.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-3 pt-2">
-                <Link to="/results" className="flex-1">
-                  <motion.button
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.97 }}
-                    className="w-full py-4 rounded-xl gradient-bg-strong glow-primary text-primary-foreground font-heading font-bold text-sm flex items-center justify-center gap-2"
-                  >
-                    <Trophy className="w-4 h-4" /> VIEW STUDENT RESULTS
-                  </motion.button>
-                </Link>
-                <Link to="/apply" className="flex-1">
-                  <motion.button
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.97 }}
-                    className="w-full py-4 rounded-xl gradient-bg-strong glow-primary text-primary-foreground font-heading font-bold text-sm flex items-center justify-center gap-2"
-                  >
-                    <Zap className="w-4 h-4" /> APPLY FOR 1-ON-1 COACHING
-                  </motion.button>
-                </Link>
-              </div>
+          {/* Post-scan navigation */}
+          <div className="glass rounded-2xl p-6 border border-border/25 mt-6">
+            <p className="font-heading font-semibold text-foreground text-sm text-center mb-4">Explore more while you wait</p>
+            <div className="flex flex-col sm:flex-row gap-3">
+              <Link to="/apply" className="flex-1">
+                <motion.button
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.97 }}
+                  className="w-full py-4 rounded-xl gradient-bg-strong glow-primary text-primary-foreground font-heading font-bold text-sm flex items-center justify-center gap-2"
+                >
+                  🔥 View Coaching Information
+                </motion.button>
+              </Link>
+              <Link to="/results" className="flex-1">
+                <motion.button
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.97 }}
+                  className="w-full py-4 rounded-xl glass border border-primary/30 text-primary font-heading font-bold text-sm flex items-center justify-center gap-2 hover:border-primary/60 transition-all"
+                >
+                  <Trophy className="w-4 h-4" /> View Athlete Results
+                </motion.button>
+              </Link>
             </div>
           </div>
         </div>
