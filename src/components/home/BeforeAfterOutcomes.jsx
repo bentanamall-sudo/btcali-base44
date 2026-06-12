@@ -1,4 +1,17 @@
 import { motion } from 'framer-motion';
+import { CheckCircle } from 'lucide-react';
+
+const SKILL_RESULTS = [
+  'Full Planche in under a year',
+  'Full Front Lever in under a year',
+  'Handstand Push-Ups in under a year',
+  'Bent Arm Presses in weeks',
+  'L-Sit to Handstand',
+  'Front Lever Pull-Ups',
+  '90 Degree Handstand Push-Ups',
+  'Muscle-Ups',
+  'And many more',
+];
 
 const OUTCOMES = [
   {
@@ -41,6 +54,20 @@ export default function BeforeAfterOutcomes() {
           <p className="text-muted-foreground font-body text-sm text-center mb-10">
             Skills are just the surface. Here's what actually changes.
           </p>
+
+          {/* Results Achieved */}
+          <div className="glass rounded-xl border border-primary/25 px-6 py-5 mb-8"
+            style={{ background: 'linear-gradient(135deg, hsl(var(--gradient-start)/0.07), hsl(var(--gradient-end)/0.07))' }}>
+            <p className="font-heading font-bold text-foreground text-sm text-center mb-4">Results Achieved By BTCALI Athletes</p>
+            <div className="grid sm:grid-cols-2 gap-2">
+              {SKILL_RESULTS.map((r, i) => (
+                <div key={i} className="flex items-center gap-2.5">
+                  <CheckCircle className="w-3.5 h-3.5 text-primary flex-shrink-0" />
+                  <span className="font-body text-sm text-foreground/80">{r}</span>
+                </div>
+              ))}
+            </div>
+          </div>
 
           <div className="space-y-3">
             {OUTCOMES.map(({ category, before, after }, i) => (

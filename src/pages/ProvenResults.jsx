@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { ChevronLeft, ChevronRight, Users, ArrowRight, Trophy, Zap } from 'lucide-react';
 import GlowButton from '../components/GlowButton';
-import AthleteResultsSection from '../components/results/AthleteResultsSection';
+import AthleteResultCards from '../components/results/AthleteResultCards';
 
 // ── Student Wins — most impressive first ─────────────────────────────────────
 export const WINS_VIDEOS = [
@@ -401,8 +401,8 @@ export default function ProvenResults() {
         </AnimatePresence>
       </div>
 
-      {/* Real Athlete Results section */}
-      <AthleteResultsSection />
+      {/* Athlete Result Cards */}
+      <AthleteResultCards />
 
       {/* CTA */}
       <div className="rounded-2xl glass text-center py-8 px-6 border border-border/30 relative overflow-hidden mt-8 max-w-3xl mx-auto">
