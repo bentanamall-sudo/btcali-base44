@@ -43,7 +43,7 @@ export default function HeroSection() {
           >
             <Crown className="w-3.5 h-3.5 text-primary" />
             <span className="text-xs font-heading font-bold text-muted-foreground tracking-widest uppercase">
-              Elite Calisthenics Coaching
+              1-on-1 Calisthenics Coaching
             </span>
           </motion.div>
 
@@ -52,34 +52,22 @@ export default function HeroSection() {
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.35, duration: 0.65 }}
-            className="font-heading font-black text-4xl sm:text-6xl md:text-7xl leading-[1.02] mb-3 tracking-tight"
+            className="font-heading font-black text-4xl sm:text-6xl md:text-7xl leading-[1.02] mb-4 tracking-tight"
           >
-            <span className="gradient-text">Unlock Crazy</span>
+            <span className="gradient-text">Master Advanced</span>
             <br />
             <span className="text-foreground">Calisthenics Skills</span>
           </motion.h1>
-
-          <motion.p
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.45 }}
-            className="font-heading font-semibold text-xl sm:text-2xl text-muted-foreground mb-8"
-          >
-            With BTCALI Coaching
-          </motion.p>
 
           {/* Short copy */}
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.5 }}
-            className="max-w-xl mx-auto mb-3 space-y-3"
+            transition={{ delay: 0.45 }}
+            className="max-w-lg mx-auto mb-3"
           >
             <p className="font-body text-base text-muted-foreground leading-relaxed">
-              Whether you're starting from 0 pike push-ups and your first pull-up, or chasing advanced skills like the full planche, front lever, handstand push-up and front lever pull-up, BTCALI provides coaching tailored to your current level.
-            </p>
-            <p className="font-body text-sm text-muted-foreground/70 leading-relaxed">
-              No guesswork. No random tutorials. Just a proven system that works.
+              Personalised programming, video feedback, and form analysis — built around your level, your goals, and your weaknesses.
             </p>
           </motion.div>
 
@@ -87,14 +75,14 @@ export default function HeroSection() {
           <motion.div
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.55 }}
+            transition={{ delay: 0.5 }}
             className="max-w-xl mx-auto mb-10"
           >
             <button
               onClick={() => setDetailsOpen(o => !o)}
               className="flex items-center justify-center gap-2 mx-auto text-sm font-heading font-semibold text-primary hover:text-primary/80 transition-colors"
             >
-              How BTCALI Coaching Works
+              How it works
               <motion.span animate={{ rotate: detailsOpen ? 180 : 0 }} transition={{ duration: 0.2 }}>
                 <ChevronDown className="w-4 h-4" />
               </motion.span>
@@ -108,15 +96,15 @@ export default function HeroSection() {
                   transition={{ duration: 0.28, ease: 'easeInOut' }}
                   className="overflow-hidden"
                 >
-                  <div className="glass rounded-xl p-5 mt-3 border border-border/30 text-left space-y-3">
+                  <div className="glass rounded-xl p-5 mt-3 border border-border/30 text-left space-y-2.5">
                     <p className="text-sm font-body text-foreground/80 leading-relaxed">
-                      I look at your current level, goals, weaknesses, form, technique, mobility, strengths and limitations — then build a routine specifically designed to get you progressing as fast as possible.
+                      I analyse your level, goals, form, weaknesses, and mobility — then build a routine designed specifically to get you progressing as fast as possible.
                     </p>
                     <p className="text-sm font-body text-foreground/75 leading-relaxed">
-                      You send every set to me. I analyse your form, technique, strength and endurance, then provide feedback via text, voice recordings, screen recordings and personalised tutorials — before your next workout.
+                      You send every set. I provide feedback via text, voice notes, screen recordings, and personalised tutorials — before your next session.
                     </p>
                     <p className="text-sm font-body text-foreground/75 leading-relaxed">
-                      I continuously adapt your routine based on your performance so your progress never stalls.
+                      Your routine is continuously adapted as you improve.
                     </p>
                   </div>
                 </motion.div>
@@ -128,11 +116,10 @@ export default function HeroSection() {
           <motion.div
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.6 }}
-            className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-10"
+            transition={{ delay: 0.58 }}
+            className="flex flex-col sm:flex-row items-center justify-center gap-3 mb-6"
           >
-            {/* Primary — 1-on-1 Coaching */}
-            <Link to="/pricing">
+            <Link to="/scan">
               <motion.button
                 whileHover={{ scale: 1.03 }}
                 whileTap={{ scale: 0.97 }}
@@ -140,12 +127,11 @@ export default function HeroSection() {
                 style={{ boxShadow: '0 0 20px hsl(var(--glow-primary)/0.25), 0 4px 20px hsl(var(--glow-primary)/0.15)' }}
               >
                 <Crown className="w-5 h-5" />
-                1-on-1 Coaching
-                <span className="text-primary-foreground/70 font-body font-normal text-sm ml-1">AUD $40/wk</span>
+                Apply for Coaching
+                <span className="text-primary-foreground/60 font-body font-normal text-sm ml-0.5">— $40/wk</span>
               </motion.button>
             </Link>
 
-            {/* Secondary — Free Tutorials */}
             <Link to="/skills/free">
               <motion.button
                 whileHover={{ scale: 1.02 }}
@@ -162,7 +148,7 @@ export default function HeroSection() {
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: 0.75 }}
+            transition={{ delay: 0.72 }}
           >
             <Link to="/results" className="inline-flex items-center gap-1.5 text-sm font-body text-muted-foreground hover:text-primary transition-colors">
               See athlete results <ArrowRight className="w-3.5 h-3.5" />

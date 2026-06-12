@@ -111,11 +111,11 @@ export default function CoachingApply() {
       {/* Header */}
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
         <div className="inline-flex items-center gap-2 glass px-4 py-2 rounded-full mb-4 border border-border/30">
-          <Crown className="w-4 h-4 text-primary" />
-          <span className="text-sm font-body text-muted-foreground">Elite Coaching</span>
+        <Crown className="w-4 h-4 text-primary" />
+        <span className="text-sm font-body text-muted-foreground">AUD $40/week · Min. 1 month</span>
         </div>
         <h1 className="font-heading font-bold text-3xl sm:text-5xl mb-3 leading-tight">
-          BTCALI <span className="gradient-text">1-on-1 Coaching</span>
+        BTCALI <span className="gradient-text">1-on-1 Coaching</span>
         </h1>
       </motion.div>
 
@@ -264,12 +264,9 @@ export default function CoachingApply() {
 
       {/* 5. Skills */}
       <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="mb-12">
-        <h2 className="font-heading font-bold text-2xl text-foreground mb-2">
-          Skills BTCALI Can <span className="gradient-text">Help You Achieve</span>
+        <h2 className="font-heading font-bold text-2xl text-foreground mb-4">
+          Skills I Coach
         </h2>
-        <p className="font-body text-sm text-muted-foreground leading-relaxed mb-4 max-w-xl">
-          Whether you're a complete beginner working towards your first pike push-up, or an advanced athlete chasing the full planche, BTCALI helps bridge the gap with clear programming, technical feedback and proven progressions.
-        </p>
         <div className="flex flex-wrap gap-2">
           {SKILLS.map(s => (
             <span key={s} className="text-sm font-body glass px-3 py-1.5 rounded-full border border-border/30 text-foreground/80 hover:border-primary/40 hover:text-primary transition-all cursor-default">

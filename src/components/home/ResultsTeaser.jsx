@@ -82,7 +82,7 @@ export default function ResultsTeaser() {
           transition={{ duration: 0.5 }}
           className="text-xs font-heading font-bold text-muted-foreground/50 uppercase tracking-[0.25em] mb-3"
         >
-          Real Athletes · Real Results
+          Real Athletes · Real Progress
         </motion.p>
 
         <motion.h2
@@ -91,7 +91,7 @@ export default function ResultsTeaser() {
           transition={{ duration: 0.5, delay: 0.08 }}
           className="font-heading font-bold text-4xl sm:text-5xl lg:text-6xl mb-4"
         >
-          Student <span className="gradient-text">Results</span>
+          Athlete <span className="gradient-text">Results</span>
         </motion.h2>
 
         <motion.p
@@ -100,7 +100,7 @@ export default function ResultsTeaser() {
           transition={{ duration: 0.5, delay: 0.15 }}
           className="text-muted-foreground font-body text-sm sm:text-base max-w-xs sm:max-w-sm mx-auto mb-8 leading-relaxed"
         >
-          See real BTCALI athletes unlocking skills faster through proven coaching systems.
+          Skills unlocked. Transformations achieved. Watch the footage.
         </motion.p>
 
         <motion.div

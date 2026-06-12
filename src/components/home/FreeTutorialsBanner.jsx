@@ -34,10 +34,10 @@ export default function FreeTutorialsBanner() {
               100% FREE — No Credit Card
             </div>
             <h2 className="font-heading font-bold text-2xl sm:text-3xl text-foreground mb-2">
-              Start Training For Free — Right Now
+              Start Training. No Cost.
             </h2>
             <p className="text-muted-foreground font-body text-sm sm:text-base max-w-lg">
-              Get instant access to our <span className="text-foreground font-medium">Free Handstand Beginner Guide</span> and <span className="text-foreground font-medium">Free Planche Conditioning</span> program. Real training, zero cost.
+              Free Handstand Guide and Free Planche Conditioning — real progressions, available now.
             </p>
           </div>
           <div className="flex flex-col sm:flex-row gap-3 flex-shrink-0">
@@ -61,14 +61,14 @@ export default function FreeTutorialsBanner() {
       >
         <Users className="w-8 h-8 text-primary mx-auto mb-3" />
         <h3 className="font-heading font-bold text-xl sm:text-2xl text-foreground mb-2">
-          Ready for <span className="gradient-text">1-on-1 Coaching?</span>
+          Want results like these?
         </h3>
-        <p className="text-muted-foreground font-body text-sm max-w-md mx-auto mb-5">
-          Work directly with an elite BTCALI coach. Custom programs, video feedback, and weekly check-ins. Apply now and transform your training.
+        <p className="text-muted-foreground font-body text-sm max-w-xs mx-auto mb-5">
+          Complete the Athlete Scan. I'll review your level and reach out.
         </p>
-        <Link to="/pricing">
+        <Link to="/scan">
           <GlowButton size="lg">
-            Apply for Coaching <ArrowRight className="w-4 h-4" />
+            Start Athlete Scan <ArrowRight className="w-4 h-4" />
           </GlowButton>
         </Link>
       </motion.div>
