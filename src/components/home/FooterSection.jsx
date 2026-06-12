@@ -4,9 +4,7 @@ import { ScanLine } from 'lucide-react';
 
 export default function FooterSection() {
   return (
-    <>
-
-      <footer className="border-t border-border/30 py-12 px-4 sm:px-6">
+    <footer className="border-t border-border/30 py-12 px-4 sm:px-6">
         <div className="max-w-5xl mx-auto">
 
           {/* Top: Brand + Nav links */}
@@ -93,7 +91,6 @@ export default function FooterSection() {
             </p>
           </div>
         </div>
-      </footer>
-    </>
+    </footer>
   );
 }

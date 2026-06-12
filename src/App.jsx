@@ -18,12 +18,10 @@ import CoachingApply from './pages/CoachingApply.jsx';
 import AdminAnalytics from './pages/AdminAnalytics';
 import Dashboard from './pages/Dashboard';
 import ProvenResults from './pages/ProvenResults.jsx';
-import Pricing from './pages/Pricing';
 import AICoach from './pages/AICoach';
 import CoachDashboard from './pages/CoachDashboard';
 import AdminPayments from './pages/AdminPayments';
 import ProgramBuilder from './pages/ProgramBuilder';
-import Purchase from './pages/Purchase';
 import AthleteDiagnostic from './pages/AthleteDiagnostic';
 import AdminDiagnostics from './pages/AdminDiagnostics';
 import SkillLibraryCategory from './pages/SkillLibraryCategory';
@@ -78,7 +76,6 @@ const AuthenticatedApp = () => {
           <Route path="/coach" element={<CoachDashboard />} />
           <Route path="/admin/payments" element={<AdminPayments />} />
           <Route path="/coach/programs" element={<ProgramBuilder />} />
-          <Route path="/purchase" element={<Purchase />} />
           <Route path="/diagnostic" element={<AthleteDiagnostic />} />
           <Route path="/members" element={<Members />} />
           <Route path="/btcali-members" element={<Members />} />

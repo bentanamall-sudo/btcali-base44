@@ -136,8 +136,6 @@ export default function AthleteDiagnostic() {
   });
   const [report, setReport] = useState(null);
   const [submittedData, setSubmittedData] = useState(null);
-  const [reportId, setReportId] = useState(null);
-  const [sending, setSending] = useState(false);
   const [copied, setCopied] = useState(false);
   const [submitting, setSubmitting] = useState(false);
 
@@ -395,16 +393,13 @@ export default function AthleteDiagnostic() {
 
   const handleSubmit = async () => {
     setSubmitting(true);
-    const snapshot = { ...data }; // capture full data snapshot before any state changes
+    const snapshot = { ...data };
     const r = generateReport(snapshot);
     const fullData = { ...snapshot, ...r };
-    let savedId = null;
     try {
-      const saved = await base44.entities.AthleteReport.create(fullData);
-      savedId = saved?.id || null;
+      await base44.entities.AthleteReport.create(fullData);
     } catch(e) { /* db save best-effort, don't block */ }
-    setReportId(savedId);
-    setSubmittedData(snapshot); // save exact snapshot for send/copy
+    setSubmittedData(snapshot);
     setReport(r);
     setSubmitting(false);
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -412,38 +407,6 @@ export default function AthleteDiagnostic() {
 
   // Always use submittedData snapshot so send/copy always reflects exactly what was submitted
   const buildReportText = () => buildEmailBody(submittedData || data, report);
-
-  const handleWaitingList = (programName) => {
-    const subject = encodeURIComponent('BTCALI Custom Program Enquiry — AUD $50');
-    const body = encodeURIComponent(
-`I want to enquire about this BTCALI custom program (AUD $50):
-
-Program:
-${programName}
-
-My goal/skill:
-${(report?.goals || data.goals || []).join(', ') || 'N/A'}
-
-Name:
-${data.full_name || 'N/A'}
-
-Email:
-${data.email || 'N/A'}
-
-Quiz results:
-Athlete Level: ${report?.athlete_level || 'N/A'}
-Push-ups: ${data.pushup_max} | Pull-ups: ${data.pullup_max} | Dips: ${data.dip_max}
-Front Lever: ${data.front_lever_level}
-Strengths: ${(report?.strengths || []).join(', ')}
-Weaknesses: ${(report?.weaknesses || []).join(', ')}`
-    );
-    const a = document.createElement('a');
-    a.href = `mailto:btcalisw@gmail.com?subject=${subject}&body=${body}`;
-    a.rel = 'noopener';
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-  };
 
   const handleSend = () => {
     const d = submittedData || data;

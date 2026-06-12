@@ -442,8 +442,7 @@ export default function SkillLibraryCategory() {
   const [search, setSearch] = useState('');
   const [activeVideo, setActiveVideo] = useState(null);
   const [activeSub, setActiveSub] = useState(null);
-  const { isAdmin, isMember: ctxMember } = useAccessCodes();
-  const isMember = ctxMember;
+  const { isAdmin, isMember } = useAccessCodes();
 
   // Coming soon pages — show intentional coming soon card
   if (COMING_SOON_CATEGORIES.includes(categoryId)) {

@@ -1,6 +1,6 @@
-import { useState, useRef } from 'react';
+import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Crown, Shield, Dumbbell, Layers, ShoppingBag, ExternalLink, Lock, ChevronRight, ChevronLeft, ChevronDown, CheckCircle, Send, Clock } from 'lucide-react';
+import { Crown, Shield, Dumbbell, Layers, ShoppingBag, ExternalLink, Lock, ChevronRight, ChevronLeft, ChevronDown, CheckCircle, Send } from 'lucide-react';
 import { useAccessCodes } from '@/lib/useAccessCodes';
 import { PageHeaderLogo } from '@/components/Logo';
 import { Link } from 'react-router-dom';
@@ -365,24 +365,7 @@ export default function Members() {
                 </Link>
               </motion.div>
 
-              {/* Next: Agreement */}
-              <div className="flex justify-center mb-4">
-                <motion.button
-                  whileHover={{ scale: 1.03, x: 4 }}
-                  whileTap={{ scale: 0.97 }}
-                  onClick={() => setSlide(1)}
-                  className="flex items-center gap-3 px-8 py-4 rounded-2xl glass border border-primary/30 hover:border-primary/60 transition-all group"
-                  style={{ boxShadow: '0 0 20px hsl(var(--glow-primary)/0.08)' }}
-                >
-                  <div>
-                    <p className="font-heading font-bold text-foreground text-sm text-left">Terms & Conditions Agreement</p>
-                    <p className="font-body text-xs text-muted-foreground text-left">Complete your coaching onboarding</p>
-                  </div>
-                  <div className="w-10 h-10 rounded-xl gradient-bg-strong flex items-center justify-center flex-shrink-0 group-hover:scale-105 transition-transform">
-                    <ChevronRight className="w-5 h-5 text-primary-foreground" />
-                  </div>
-                </motion.button>
-              </div>
+
             </motion.div>
           ) : (
             <motion.div
