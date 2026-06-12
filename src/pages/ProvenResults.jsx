@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect, useCallback, memo } from 'react';
 import { Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import { ChevronLeft, ChevronRight, Users, ArrowRight, Trophy, Zap } from 'lucide-react';
 import GlowButton from '../components/GlowButton';
 
@@ -346,7 +347,7 @@ export default function ProvenResults() {
   return (
     <div className="min-h-screen py-8 px-4">
       {/* Page header */}
-      <div className="text-center mb-12">
+      <div className="text-center mb-8">
         <p className="text-xs font-heading font-bold text-muted-foreground/50 uppercase tracking-[0.25em] mb-2">
           Real Athletes · Real Results
         </p>
@@ -360,14 +361,39 @@ export default function ProvenResults() {
 
       <VideoCarousel
         videos={WINS_VIDEOS}
-        label="Student Wins"
+        label="Skill Achievements"
         icon={Trophy}
         carouselId="wins"
         globalAudio={globalAudio}
         setGlobalAudio={setGlobalAudio}
       />
 
-      <div className="max-w-2xl mx-auto mb-16 border-t border-border/30" />
+      {/* Bridge section — makes transformations unmissable */}
+      <div className="max-w-2xl mx-auto mb-10 text-center px-4">
+        <p className="font-body text-muted-foreground text-base leading-relaxed mb-5">
+          Skill achievements are only part of the story. See how athletes transformed their strength, physique and consistency below.
+        </p>
+        <motion.a
+          href="#transformations"
+          onClick={e => { e.preventDefault(); document.getElementById('transformations')?.scrollIntoView({ behavior: 'smooth' }); }}
+          whileHover={{ scale: 1.03 }}
+          whileTap={{ scale: 0.97 }}
+          className="inline-flex items-center gap-2 px-7 py-4 rounded-xl gradient-bg-strong text-primary-foreground font-heading font-bold text-base cursor-pointer"
+        >
+          📈 View Student Transformations
+        </motion.a>
+        <div className="flex justify-center mt-5">
+          <motion.div
+            animate={{ y: [0, 8, 0] }}
+            transition={{ repeat: Infinity, duration: 1.4, ease: 'easeInOut' }}
+            className="text-primary text-2xl select-none"
+          >
+            ↓
+          </motion.div>
+        </div>
+      </div>
+
+      <div id="transformations" className="max-w-2xl mx-auto mb-10 border-t border-border/30" />
 
       <VideoCarousel
         videos={TRANSFORM_VIDEOS}

@@ -9,9 +9,9 @@ import { useAccessCodes } from '@/lib/useAccessCodes';
 
 const BASE_NAV = [
   { to: '/', label: 'Home', icon: Zap },
-  { to: '/skills', label: 'Skill Library', icon: BookOpen },
-  { to: '/results', label: 'Results', icon: Trophy },
   { to: '/pricing', label: '1-on-1 Coaching', icon: Users },
+  { to: '/results', label: 'Results', icon: Trophy },
+  { to: '/skills', label: 'Skill Library', icon: BookOpen },
   { to: '/diagnostic', label: 'Athlete Scan', icon: ScanLine },
 ];
 
