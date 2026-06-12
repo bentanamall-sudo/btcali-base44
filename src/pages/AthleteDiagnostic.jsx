@@ -550,25 +550,19 @@ Weaknesses: ${(report?.weaknesses || []).join(', ')}`
   if (report) {
     return (
       <div className="min-h-screen py-12 px-4 sm:px-6 max-w-4xl mx-auto">
-        {/* Completion banner */}
-        <motion.div initial={{ opacity: 0, y: -16 }} animate={{ opacity: 1, y: 0 }}
-          className="glass rounded-2xl p-6 border border-primary/30 text-center mb-8">
-          <CheckCircle className="w-10 h-10 text-green-400 mx-auto mb-3" />
-          <h2 className="font-heading font-bold text-xl text-foreground mb-1">Athlete Scan Complete</h2>
-          <p className="text-sm font-body text-muted-foreground leading-relaxed max-w-sm mx-auto">
-            Thank you for completing the Athlete Scan. I will review your answers before assessing your coaching application.
-          </p>
-        </motion.div>
-
         <DiagnosticReport data={data} report={report} />
 
         <div className="mt-8 space-y-3">
-          {/* Primary send button */}
-          <div className="glass rounded-2xl p-5 border border-primary/30 text-center mb-2">
-            <p className="font-heading font-bold text-foreground text-base mb-1">This is the final step</p>
-            <p className="text-sm font-body text-muted-foreground">Click the button below to submit your report to BTCALI. Your email app will open — press Send to complete your submission.</p>
+          {/* Completion message */}
+          <div className="glass rounded-2xl p-6 border border-primary/30 text-center">
+            <CheckCircle className="w-10 h-10 text-green-400 mx-auto mb-3" />
+            <p className="font-heading font-bold text-foreground text-lg mb-1">Athlete Scan Complete</p>
+            <p className="text-sm font-body text-muted-foreground leading-relaxed">
+              Thank you for completing the Athlete Scan. I will review your answers before assessing your coaching application.
+            </p>
           </div>
 
+          {/* Submit button */}
           <motion.button
             whileHover={{ scale: 1.03 }}
             whileTap={{ scale: 0.97 }}
@@ -604,29 +598,26 @@ Weaknesses: ${(report?.weaknesses || []).join(', ')}`
             </p>
           )}
 
-          {/* Post-scan navigation */}
-          <div className="glass rounded-2xl p-6 border border-border/25 mt-6">
-            <p className="font-heading font-semibold text-foreground text-sm text-center mb-4">Explore more while you wait</p>
-            <div className="flex flex-col sm:flex-row gap-3">
-              <Link to="/apply" className="flex-1">
-                <motion.button
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.97 }}
-                  className="w-full py-4 rounded-xl gradient-bg-strong glow-primary text-primary-foreground font-heading font-bold text-sm flex items-center justify-center gap-2"
-                >
-                  🔥 View Coaching Information
-                </motion.button>
-              </Link>
-              <Link to="/results" className="flex-1">
-                <motion.button
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.97 }}
-                  className="w-full py-4 rounded-xl glass border border-primary/30 text-primary font-heading font-bold text-sm flex items-center justify-center gap-2 hover:border-primary/60 transition-all"
-                >
-                  <Trophy className="w-4 h-4" /> View Athlete Results
-                </motion.button>
-              </Link>
-            </div>
+          {/* Navigation CTAs */}
+          <div className="grid sm:grid-cols-2 gap-3 pt-2">
+            <Link to="/apply">
+              <motion.button
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.97 }}
+                className="w-full py-4 rounded-xl gradient-bg-strong glow-primary text-primary-foreground font-heading font-bold text-sm flex items-center justify-center gap-2"
+              >
+                <Zap className="w-4 h-4" /> View Coaching Information
+              </motion.button>
+            </Link>
+            <Link to="/results">
+              <motion.button
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.97 }}
+                className="w-full py-4 rounded-xl glass border border-primary/30 text-primary font-heading font-bold text-sm flex items-center justify-center gap-2 hover:border-primary/60 transition-all"
+              >
+                <Trophy className="w-4 h-4" /> View Athlete Results
+              </motion.button>
+            </Link>
           </div>
         </div>
       </div>

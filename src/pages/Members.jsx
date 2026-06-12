@@ -297,6 +297,16 @@ export default function Members() {
               {/* BTCALI Coaching Terms & Conditions */}
               <AccordionSection icon={Shield} title="BTCALI Coaching Terms & Conditions">
                 <BulletList items={TERMS_ITEMS} />
+                <motion.button
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.97 }}
+                  onClick={() => setSlide(1)}
+                  className="mt-6 w-full py-4 rounded-xl gradient-bg-strong text-primary-foreground font-heading font-bold text-base glow-primary flex items-center justify-center gap-3"
+                  style={{ boxShadow: '0 0 20px hsl(var(--glow-primary)/0.18)' }}
+                >
+                  <CheckCircle className="w-5 h-5" /> Next: Terms & Conditions Agreement
+                  <ChevronRight className="w-5 h-5" />
+                </motion.button>
               </AccordionSection>
 
               {/* General Training Rules */}
