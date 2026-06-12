@@ -189,23 +189,10 @@ export default function CoachingApply() {
             >
               <div className="glass rounded-b-xl px-5 pb-5 pt-4 border border-t-0 border-border/30 space-y-4">
                 <p className="font-body text-sm text-foreground/85 leading-relaxed">
-                  I have helped athletes achieve crazy skills such as bent arm press, L-sit to handstand, full front lever, front lever pull-ups, planche, muscle-ups, pike presses and much more. Then I adapt the routine specifically to each athlete to help them progress as fast as possible.
-                </p>
-                <p className="font-body text-sm text-foreground/80 leading-relaxed">
-                  The question isn't whether BTCALI coaching works. The results already speak for themselves.
-                </p>
-                <p className="font-body text-sm text-foreground/75 leading-relaxed">
-                  From first pull-ups and pike push-ups to advanced skills like the full planche, front lever, front lever pull-ups and L-sit to handstand, athletes have already used these methods to achieve incredible progress.
+                  Every programme is built from scratch around your specific level, goals, weaknesses, form, mobility, and equipment. Nothing is copied. Nothing is generic.
                 </p>
                 <div className="glass rounded-xl p-4 border border-primary/20">
-                  <p className="font-heading font-semibold text-primary text-xs uppercase tracking-wider mb-2">Main Availability</p>
-                  <p className="text-sm font-body text-foreground/80">• Weekdays 4–6 PM NSW time</p>
-                  <p className="text-xs font-body text-muted-foreground mt-2 leading-relaxed">
-                    I will do my best to respond before your next workout whenever possible, with most replies occurring during my availability hours.
-                  </p>
-                </div>
-                <div className="pt-2 border-t border-border/30">
-                  <p className="font-heading font-bold text-foreground text-sm mb-3">This is NOT a random copied program. I look at:</p>
+                  <p className="font-heading font-semibold text-primary text-xs uppercase tracking-wider mb-2">What I analyse</p>
                   <div className="grid grid-cols-2 gap-1.5">
                     {WHAT_I_ANALYZE.map(item => (
                       <div key={item} className="flex items-center gap-2">
@@ -214,9 +201,11 @@ export default function CoachingApply() {
                       </div>
                     ))}
                   </div>
-                  <p className="text-sm font-body text-foreground/75 mt-3 leading-relaxed">
-                    Then I adapt the routine specifically to the athlete to help them progress as fast as possible.
-                  </p>
+                </div>
+                <div className="glass rounded-xl p-4 border border-border/20">
+                  <p className="font-heading font-semibold text-foreground text-xs uppercase tracking-wider mb-1">Support availability</p>
+                  <p className="text-sm font-body text-foreground/80">Weekdays 4–6 PM NSW time</p>
+                  <p className="text-xs font-body text-muted-foreground mt-1">I aim to respond before your next session whenever possible.</p>
                 </div>
               </div>
             </motion.div>

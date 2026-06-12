@@ -286,8 +286,8 @@ export default function ProvenResults() {
         <h1 className="font-heading font-bold text-3xl sm:text-5xl mb-2">
           Athlete <span className="gradient-text">Results</span>
         </h1>
-        <p className="text-muted-foreground font-body text-sm max-w-sm mx-auto">
-          Real BTCALI athlete achievements and physique transformations.
+        <p className="text-muted-foreground font-body text-sm max-w-xs mx-auto">
+          Every video is real footage from active BTCALI coaching athletes.
         </p>
       </div>
 
@@ -404,15 +404,15 @@ export default function ProvenResults() {
       <div className="rounded-2xl glass text-center py-8 px-6 border border-border/30 relative overflow-hidden mt-8 max-w-3xl mx-auto">
         <div className="absolute inset-0 bg-gradient-to-br from-primary/3 to-transparent pointer-events-none" />
         <Users className="w-8 h-8 text-primary mx-auto mb-4 relative z-10" />
-        <h2 className="font-heading font-bold text-2xl sm:text-3xl text-foreground mb-3 relative z-10">
-          Your Transformation <span className="gradient-text">Starts Now</span>
+        <h2 className="font-heading font-bold text-2xl sm:text-3xl text-foreground mb-2 relative z-10">
+          Want results like these?
         </h2>
-        <p className="text-muted-foreground font-body max-w-md mx-auto mb-6 relative z-10">
-          Join athletes already training with BTCALI. Apply for coaching or start free today.
+        <p className="text-muted-foreground font-body max-w-xs mx-auto mb-6 relative z-10">
+          Complete the Athlete Scan. I'll review your application and reach out.
         </p>
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4 relative z-10">
-          <Link to="/apply"><GlowButton size="lg">Apply for Coaching <ArrowRight className="w-4 h-4" /></GlowButton></Link>
-          <Link to="/skills/free"><GlowButton variant="secondary" size="lg">Start Free Tutorials</GlowButton></Link>
+          <Link to="/scan"><GlowButton size="lg">Start Athlete Scan <ArrowRight className="w-4 h-4" /></GlowButton></Link>
+          <Link to="/skills/free"><GlowButton variant="secondary" size="lg">Free Tutorials</GlowButton></Link>
         </div>
       </div>
     </div>

@@ -172,18 +172,7 @@ export default function AthleteDiagnostic() {
 
     // 1 — Coaching Fit (moved to page 2)
     <div key="s-coaching" className="space-y-0">
-      {/* Why athletes invest */}
-      <div className="glass rounded-xl p-4 border border-primary/20 mb-5">
-        <p className="font-heading font-bold text-primary text-xs uppercase tracking-wider mb-3">Why athletes invest in BTCALI coaching:</p>
-        <div className="grid grid-cols-2 gap-y-1.5 gap-x-3">
-          {['Personalised programming','Direct coach feedback','Faster skill progression','Accountability','Technique corrections','Individual support'].map(item => (
-            <div key={item} className="flex items-center gap-2">
-              <div className="w-1.5 h-1.5 rounded-full bg-primary flex-shrink-0" />
-              <span className="text-xs font-body text-foreground/80">{item}</span>
-            </div>
-          ))}
-        </div>
-      </div>
+
 
       <Field>
         <Label>Which coaching option would you realistically consider?</Label>
@@ -453,32 +442,24 @@ export default function AthleteDiagnostic() {
           </div>
           <div className="inline-flex items-center gap-2 glass px-4 py-2 rounded-full mb-4">
             <Zap className="w-4 h-4 text-primary" />
-            <span className="text-sm font-body text-muted-foreground">Athlete Diagnostic</span>
+            <span className="text-sm font-body text-muted-foreground">Coaching Application</span>
           </div>
-          <h1 className="font-heading font-bold text-2xl sm:text-3xl gradient-text mb-4">BTCALI Athlete Scan</h1>
-          <div className="glass rounded-xl p-5 border border-primary/30 mb-6 text-left space-y-4">
-            <p className="font-heading font-semibold text-foreground text-sm">
-              BTCALI Athlete Scan is only for athletes genuinely interested in BTCALI 1-on-1 coaching.
-            </p>
-            <div className="rounded-xl border border-primary/40 bg-primary/8 p-4 space-y-2">
-              <p className="font-heading font-bold text-primary text-sm uppercase tracking-wide">Coaching starts from:</p>
-              <div className="flex gap-4">
-                <div className="flex items-center gap-2">
-                  <div className="w-2 h-2 rounded-full bg-primary flex-shrink-0" />
-                  <span className="font-heading font-bold text-foreground text-sm">AUD $40/week</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <div className="w-2 h-2 rounded-full bg-primary flex-shrink-0" />
-                  <span className="font-heading font-bold text-foreground text-sm">AUD $150/month</span>
-                </div>
+          <h1 className="font-heading font-bold text-2xl sm:text-3xl gradient-text mb-3">BTCALI Athlete Scan</h1>
+          <p className="font-body text-sm text-muted-foreground mb-5 leading-relaxed max-w-xs mx-auto">
+            For athletes ready to invest in 1-on-1 coaching. Takes 3–5 minutes.
+          </p>
+          <div className="glass rounded-xl p-4 border border-primary/30 mb-6 text-left">
+            <p className="font-heading font-semibold text-primary text-xs uppercase tracking-wider mb-2">Coaching from</p>
+            <div className="flex gap-6">
+              <div className="flex items-center gap-2">
+                <div className="w-2 h-2 rounded-full bg-primary flex-shrink-0" />
+                <span className="font-heading font-bold text-foreground text-sm">AUD $40/week</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="w-2 h-2 rounded-full bg-primary flex-shrink-0" />
+                <span className="font-heading font-bold text-foreground text-sm">AUD $150/month</span>
               </div>
             </div>
-            <p className="font-body text-sm text-foreground/80">
-              This application is for athletes willing to <span className="text-primary font-semibold">invest in coaching</span> to accelerate their progress.
-            </p>
-            <p className="font-body text-sm text-muted-foreground">
-              If you are not interested in paid coaching, please enjoy the free tutorials available in the Skill Library instead.
-            </p>
           </div>
           <div className="flex flex-col gap-3">
             <motion.button
@@ -486,14 +467,14 @@ export default function AthleteDiagnostic() {
               onClick={() => setGateAccepted(true)}
               className="w-full py-4 rounded-xl gradient-bg-strong glow-primary text-primary-foreground font-heading font-bold text-base"
             >
-              I am a serious applicant willing to invest in coaching — Continue
+              I'm ready to invest in coaching — Continue
             </motion.button>
             <motion.button
               whileTap={{ scale: 0.97 }}
               onClick={() => navigate('/skills')}
               className="w-full py-3 rounded-xl glass border border-border/40 text-muted-foreground font-heading font-semibold text-sm flex items-center justify-center gap-2 hover:border-primary/30 transition-all"
             >
-              <BookOpen className="w-4 h-4" /> Browse Free Tutorials Instead
+              <BookOpen className="w-4 h-4" /> Browse Free Tutorials
             </motion.button>
           </div>
         </motion.div>
@@ -510,9 +491,9 @@ export default function AthleteDiagnostic() {
           {/* Completion message */}
           <div className="glass rounded-2xl p-6 border border-primary/30 text-center">
             <CheckCircle className="w-10 h-10 text-green-400 mx-auto mb-3" />
-            <p className="font-heading font-bold text-foreground text-lg mb-1">Athlete Scan Complete</p>
+            <p className="font-heading font-bold text-foreground text-lg mb-1">Scan Complete</p>
             <p className="text-sm font-body text-muted-foreground leading-relaxed">
-              Thank you for completing the Athlete Scan. I will review your answers before assessing your coaching application.
+              Submit your report below. I'll review it and reach out directly.
             </p>
           </div>
 
@@ -530,7 +511,7 @@ export default function AthleteDiagnostic() {
             After your email app opens, press <strong className="text-foreground">Send</strong> to complete your submission.
           </p>
           <p className="text-center text-xs font-body text-muted-foreground/70 px-2">
-            If the button does not open your email app, press <strong className="text-foreground">COPY REPORT TO SEND MANUALLY</strong>, paste the report into Gmail, and send it to <strong className="text-foreground">btcalisw@gmail.com</strong>.
+            If the button doesn't open your email app, copy the report below and paste it into an email to <strong className="text-foreground">btcalisw@gmail.com</strong>.
           </p>
 
           <motion.button
@@ -592,11 +573,8 @@ export default function AthleteDiagnostic() {
           <span className="text-sm font-body text-muted-foreground">Athlete Diagnostic</span>
         </div>
         <h1 className="font-heading font-bold text-2xl sm:text-3xl gradient-text">BTCALI Athlete Scan</h1>
-        <p className="text-sm font-body text-foreground/90 font-semibold mt-3 max-w-sm mx-auto leading-relaxed">
-          Complete the Athlete Scan to inquire about BTCALI coaching.
-        </p>
-        <p className="text-sm font-body text-muted-foreground mt-2 max-w-md mx-auto leading-relaxed">
-          This helps BTCALI understand your current level, goals, strengths, weaknesses and commitment so we can determine how best to help you progress.
+        <p className="text-sm font-body text-muted-foreground mt-2 max-w-sm mx-auto leading-relaxed">
+          Your answers help me understand your level, weaknesses, and goals before I review your application.
         </p>
       </motion.div>
 
