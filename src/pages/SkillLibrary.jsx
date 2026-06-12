@@ -16,9 +16,6 @@ const FREE_SECTION = {
     'FREE Planche Conditioning',
   ],
   path: '/skills/free',
-  cta: 'Explore Free Tutorials',
-  ctaIcon: Zap,
-  ctaClass: 'border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/10',
 };
 
 const PREMIUM_SECTION = {
@@ -33,48 +30,39 @@ const PREMIUM_SECTION = {
     'L-Sit to Handstand Full Guide',
   ],
   path: '/skills/premium',
-  cta: 'Explore Premium Tutorials',
-  ctaIcon: Crown,
-  ctaClass: 'gradient-bg-strong text-primary-foreground',
 };
 
 function SectionCard({ section, onClick }) {
   const isPremium = section.path === '/skills/premium';
-  const Icon = section.ctaIcon;
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
       whileHover={{ y: -4, transition: { duration: 0.2 } }}
       onClick={onClick}
-      className="cursor-pointer group rounded-2xl overflow-hidden flex flex-col"
+      className="cursor-pointer group rounded-2xl overflow-hidden relative flex flex-col h-full"
       style={{
         background: isPremium
-          ? 'linear-gradient(145deg, hsl(var(--card)), hsl(42 78% 10%))'
+          ? 'linear-gradient(145deg, hsl(var(--card)), hsl(42 78% 8%))'
           : 'linear-gradient(145deg, hsl(var(--card)), hsl(var(--surface-2)))',
         border: isPremium
-          ? '1.5px solid hsl(var(--primary)/0.4)'
-          : '1px solid hsl(var(--border)/0.5)',
-        boxShadow: isPremium ? '0 0 30px hsl(var(--glow-primary)/0.08)' : undefined,
+          ? '1.5px solid hsl(var(--primary)/0.35)'
+          : '1px solid hsl(var(--border)/0.4)',
       }}
     >
       {/* Top accent line */}
-      <div
-        className="h-0.5 w-full flex-shrink-0"
-        style={{ background: `linear-gradient(90deg, transparent, ${section.accentColor}, transparent)`, opacity: isPremium ? 0.6 : 0.35 }}
-      />
+      <div className="h-0.5 w-full"
+        style={{ background: `linear-gradient(90deg, transparent, ${section.accentColor}, transparent)`, opacity: isPremium ? 0.6 : 0.35 }} />
 
-      <div className="p-8 flex flex-col flex-1">
+      <div className="p-7 sm:p-8 flex flex-col flex-1">
         {/* Badge */}
         <div className="flex justify-end mb-5">
-          <span className={`text-xs font-heading font-bold px-3 py-1 rounded-full border ${section.badgeClass}`}>
+          <span className={`text-xs font-heading font-bold px-3 py-1.5 rounded-full border ${section.badgeClass}`}>
             {section.badge}
           </span>
         </div>
 
         {/* Title */}
-        <h2 className="font-heading font-bold text-2xl sm:text-2xl mb-1.5"
+        <h2 className="font-heading font-bold text-2xl sm:text-3xl mb-1.5"
           style={{ color: isPremium ? 'hsl(var(--primary))' : undefined }}>
           {isPremium ? <span className="gradient-text">{section.title}</span> : section.title}
         </h2>
@@ -87,7 +75,7 @@ function SectionCard({ section, onClick }) {
         </p>
 
         {/* Includes list */}
-        <div className="space-y-2 mb-8 flex-1">
+        <div className="space-y-2 mb-7 flex-1">
           {section.includes.map(item => (
             <div key={item} className="flex items-center gap-2.5">
               <div className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: section.accentColor }} />
@@ -97,9 +85,16 @@ function SectionCard({ section, onClick }) {
         </div>
 
         {/* CTA — always at bottom */}
-        <div className={`w-full py-3.5 rounded-xl flex items-center justify-center gap-2 font-heading font-bold text-sm transition-all duration-200 ${section.ctaClass}`}>
-          <Icon className="w-4 h-4" /> {section.cta}
-        </div>
+        {isPremium ? (
+          <div className="w-full py-3.5 rounded-xl flex items-center justify-center gap-2 font-heading font-bold text-base gradient-bg-strong text-primary-foreground transition-all duration-200"
+            style={{ boxShadow: '0 0 16px hsl(var(--glow-primary)/0.15)' }}>
+            <Crown className="w-4 h-4" /> Explore Premium Tutorials
+          </div>
+        ) : (
+          <div className="w-full py-3.5 rounded-xl flex items-center justify-center gap-2 font-heading font-bold text-base border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/10 transition-all duration-200">
+            <Zap className="w-4 h-4" /> Explore Free Tutorials
+          </div>
+        )}
       </div>
     </motion.div>
   );
@@ -109,42 +104,38 @@ export default function SkillLibrary() {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen py-14 px-4 sm:px-6 max-w-4xl mx-auto">
+    <div className="min-h-screen py-12 px-4 sm:px-6 max-w-4xl mx-auto">
       {/* Header */}
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-10 text-center">
         <div className="flex justify-center mb-6">
           <PageHeaderLogo />
         </div>
-        <div className="inline-flex items-center gap-2 glass px-4 py-2 rounded-full mb-5 border border-border/40">
+        <div className="inline-flex items-center gap-2 glass px-4 py-2 rounded-full mb-4 border border-border/30">
           <BookOpen className="w-4 h-4 text-primary" />
           <span className="text-xs font-heading font-semibold text-muted-foreground uppercase tracking-widest">BTCALI Skill Library</span>
         </div>
         <h1 className="font-heading font-bold text-4xl sm:text-5xl mb-3 leading-tight">
           The <span className="gradient-text">Skill Library</span>
         </h1>
-        <p className="font-body text-muted-foreground text-base max-w-md mx-auto">
-          Free tutorials to build foundations, or premium member content for advanced skills.
+        <p className="font-body text-muted-foreground text-sm max-w-md mx-auto">
+          Choose your path — free tutorials to build foundations, or premium member content for advanced skills.
         </p>
       </motion.div>
 
-      {/* Two section cards — equal height grid */}
-      <div className="grid sm:grid-cols-2 gap-6 items-stretch">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="flex">
-          <div className="flex-1">
-            <SectionCard section={FREE_SECTION} onClick={() => navigate('/skills/free')} />
-          </div>
+      {/* Two section cards — equal height */}
+      <div className="grid sm:grid-cols-2 gap-5 items-stretch">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.08 }} className="flex">
+          <SectionCard section={FREE_SECTION} onClick={() => navigate('/skills/free')} />
         </motion.div>
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.16 }} className="flex">
-          <div className="flex-1">
-            <SectionCard section={PREMIUM_SECTION} onClick={() => navigate('/skills/premium')} />
-          </div>
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="flex">
+          <SectionCard section={PREMIUM_SECTION} onClick={() => navigate('/skills/premium')} />
         </motion.div>
       </div>
 
       {/* Bottom note */}
       <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3 }} className="mt-8 text-center">
-        <div className="inline-flex items-center gap-2 glass px-5 py-3 rounded-xl border border-border/30">
-          <Lock className="w-3.5 h-3.5 text-muted-foreground/50" />
+        <div className="inline-flex items-center gap-2 glass px-5 py-3 rounded-xl border border-border/25">
+          <Lock className="w-3.5 h-3.5 text-muted-foreground/40" />
           <p className="text-xs font-body text-muted-foreground">Premium tutorials require a BTCALI member access code or active coaching enrolment.</p>
         </div>
       </motion.div>

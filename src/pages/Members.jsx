@@ -13,9 +13,9 @@ const EQUIPMENT = [
 ];
 
 const TERMS_ITEMS = [
-  'BTCALI response availability is weekdays 4–6 PM NSW time.',
-  'I will respond within these hours on weekdays.',
-  'Outside these hours, I may respond, but it is not guaranteed.',
+  'Coaching support availability is weekdays 4–6 PM NSW time.',
+  'I will do my best to respond before your next workout whenever possible, with most replies during availability hours.',
+  'Outside these hours I may respond, but it is not guaranteed.',
   'Coaching is AUD $40/week with a minimum 1-month commitment.',
   'If the athlete is not consistent, the standard price is AUD $50/week with no discount.',
   'Monthly discounted option: AUD $150/month.',
@@ -41,9 +41,7 @@ const TRAINING_RULES = [
 const CONSENT_CHECKBOXES = [
   'I agree to the BTCALI Coaching Terms & Conditions.',
   'I agree to follow the General Training Rules.',
-  'I understand BTCALI coaching support is primarily available weekdays 4–6 PM NSW time. Responses outside these hours may be provided when available but are not guaranteed.',
-  'I understand I will receive a response within these hours on weekdays whenever possible.',
-  'I understand responses outside these hours are not guaranteed.',
+  'I understand coaching support is primarily available weekdays 4–6 PM NSW time. Responses outside these hours are not guaranteed.',
   'I understand coaching is AUD $40/week with a minimum 1-month commitment.',
   'I understand inconsistent athletes may be charged AUD $50/week with no discount.',
   'I understand the monthly discounted option is AUD $150/month.',
