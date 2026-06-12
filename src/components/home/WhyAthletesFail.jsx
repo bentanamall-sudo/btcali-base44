@@ -1,12 +1,20 @@
 import { motion } from 'framer-motion';
-import { X, CheckCircle } from 'lucide-react';
+import { CheckCircle } from 'lucide-react';
 
 const FAILS = [
   'Random YouTube tutorials with no structure',
   'No progression — same exercises forever',
   'No form or technique feedback',
   'No accountability or consistency',
-  'Program hopping every few weeks',
+  'Constantly changing programs without sticking to one',
+];
+
+const SOLUTIONS = [
+  'Structured progression',
+  'Personalised programming',
+  'Full technique feedback',
+  'Accountability',
+  'Routine adjustments based on progress',
 ];
 
 export default function WhyAthletesFail() {
@@ -24,7 +32,7 @@ export default function WhyAthletesFail() {
           </p>
           <h2 className="font-heading font-black text-3xl sm:text-4xl text-foreground mb-2 text-center leading-tight">
             Why Most Athletes Never<br />
-            <span className="gradient-text">Unlock Planche</span>
+            <span className="gradient-text">Unlock Skills</span>
           </h2>
           <p className="text-muted-foreground font-body text-sm text-center mb-10">
             It's not a lack of effort. It's a lack of direction.
@@ -40,9 +48,7 @@ export default function WhyAthletesFail() {
                 transition={{ delay: i * 0.08 }}
                 className="flex items-center gap-4 glass rounded-xl px-5 py-4 border border-border/30"
               >
-                <div className="w-7 h-7 rounded-lg bg-destructive/10 flex items-center justify-center flex-shrink-0">
-                  <X className="w-4 h-4 text-destructive" />
-                </div>
+                <span className="text-base flex-shrink-0">❌</span>
                 <span className="font-body text-sm text-foreground/80">{item}</span>
               </motion.div>
             ))}
@@ -53,17 +59,22 @@ export default function WhyAthletesFail() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.45 }}
-            className="rounded-xl px-6 py-5 text-center relative overflow-hidden"
+            className="rounded-xl px-6 py-5 relative overflow-hidden"
             style={{
               background: 'linear-gradient(135deg, hsl(var(--gradient-start)/0.12), hsl(var(--gradient-end)/0.12))',
               border: '1px solid hsl(var(--primary)/0.35)',
             }}
           >
-            <div className="flex items-center justify-center gap-3">
-              <CheckCircle className="w-5 h-5 text-primary flex-shrink-0" />
-              <p className="font-heading font-bold text-foreground text-base sm:text-lg">
-                BTCALI solves all 5.
-              </p>
+            <p className="font-heading font-bold text-foreground text-base sm:text-lg text-center mb-4">
+              BTCALI Solves All 5
+            </p>
+            <div className="space-y-2">
+              {SOLUTIONS.map((sol, i) => (
+                <div key={i} className="flex items-center gap-3">
+                  <CheckCircle className="w-4 h-4 text-primary flex-shrink-0" />
+                  <span className="font-body text-sm text-foreground/85">{sol}</span>
+                </div>
+              ))}
             </div>
           </motion.div>
         </motion.div>

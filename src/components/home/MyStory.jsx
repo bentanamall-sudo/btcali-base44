@@ -1,19 +1,15 @@
 import { motion } from 'framer-motion';
-import { CheckCircle } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { Trophy } from 'lucide-react';
 
-const BEFORE = [
-  "Skinny kid — called \"skinny chopsticks\"",
-  "Couldn't do a handstand",
-  "Couldn't do a muscle-up",
-  "No structure, no results",
-];
-
-const NOW = [
-  'Full Planche',
-  'Front Lever',
-  'HSPU',
-  '4,000+ followers',
-  'Coaching athletes worldwide',
+const PARAGRAPHS = [
+  "Two years ago I could only do around 10 pull-ups.",
+  "No planche. No front lever. No handstand push-ups. No coaching business. No real understanding of how to structure training.",
+  "Over the last two years I've spent thousands of hours learning calisthenics, overcoming plateaus, refining technique, managing injuries, and figuring out what actually works.",
+  "After 1.5 years of dedicated training I unlocked the full planche. Along the way I also unlocked front lever, handstand push-ups, muscle-ups, bent arm press, L-sit to handstand and many other advanced skills.",
+  "The biggest thing I learned is that most athletes don't fail because they aren't working hard enough. They fail because they don't know what to focus on next.",
+  "I've been through the plateaus. I've dealt with injuries. I've made the mistakes. Now I help athletes avoid those mistakes and progress faster through structured programming, personalised coaching, proper foundations and technique feedback.",
+  "Whether your goal takes a few weeks or a few months, the objective is always the same: find the fastest path forward.",
 ];
 
 export default function MyStory() {
@@ -28,47 +24,36 @@ export default function MyStory() {
           <p className="text-xs font-heading font-bold text-muted-foreground/50 uppercase tracking-[0.25em] mb-3 text-center">
             Behind BTCALI
           </p>
-          <h2 className="font-heading font-black text-3xl sm:text-4xl text-foreground mb-2 text-center leading-tight">
-            My Story
+          <h2 className="font-heading font-black text-3xl sm:text-4xl text-foreground mb-10 text-center leading-tight">
+            My <span className="gradient-text">Story</span>
           </h2>
-          <p className="text-muted-foreground font-body text-sm text-center mb-10">
-            I've been where you are. That's why I know how to get you out.
-          </p>
 
-          <div className="grid sm:grid-cols-2 gap-4">
-            {/* Before */}
-            <div className="glass rounded-2xl p-6 border border-border/30">
-              <p className="text-xs font-heading font-bold text-muted-foreground/50 uppercase tracking-widest mb-4">Before</p>
-              <div className="space-y-2.5">
-                {BEFORE.map((item, i) => (
-                  <div key={i} className="flex items-start gap-2.5">
-                    <span className="text-muted-foreground/40 mt-0.5 flex-shrink-0 text-base leading-none">—</span>
-                    <span className="font-body text-sm text-foreground/70 leading-relaxed">{item}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Now */}
-            <div className="glass rounded-2xl p-6 border border-primary/25 relative overflow-hidden"
-              style={{ background: 'linear-gradient(135deg, hsl(var(--card)), hsl(42 78% 8%))' }}>
-              <div className="absolute top-0 left-0 right-0 h-px"
-                style={{ background: 'linear-gradient(90deg, transparent, hsl(var(--primary)/0.5), transparent)' }} />
-              <p className="text-xs font-heading font-bold text-primary/70 uppercase tracking-widest mb-4">Now</p>
-              <div className="space-y-2.5">
-                {NOW.map((item, i) => (
-                  <div key={i} className="flex items-center gap-2.5">
-                    <CheckCircle className="w-4 h-4 text-primary flex-shrink-0" />
-                    <span className="font-heading font-semibold text-sm text-foreground">{item}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
+          <div className="glass rounded-2xl p-7 border border-border/30 mb-8 space-y-4">
+            {PARAGRAPHS.map((p, i) => (
+              <motion.p
+                key={i}
+                initial={{ opacity: 0, y: 8 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.05 }}
+                className="font-body text-sm text-foreground/80 leading-relaxed"
+              >
+                {p}
+              </motion.p>
+            ))}
           </div>
 
-          <p className="text-center text-sm font-body text-muted-foreground mt-8 max-w-md mx-auto leading-relaxed">
-            I built BTCALI because I wanted to give athletes the coaching I never had. Every programme I write is built on what actually worked — not theory.
-          </p>
+          <div className="flex justify-center">
+            <Link to="/results">
+              <motion.button
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.97 }}
+                className="flex items-center gap-2.5 px-8 py-4 rounded-xl gradient-bg-strong text-primary-foreground font-heading font-bold text-base glow-primary"
+              >
+                <Trophy className="w-5 h-5" /> View Student Results
+              </motion.button>
+            </Link>
+          </div>
         </motion.div>
       </div>
     </section>

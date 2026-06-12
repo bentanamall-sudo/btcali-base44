@@ -3,12 +3,13 @@ import { CheckCircle } from 'lucide-react';
 import { Link as RouterLink } from 'react-router-dom';
 
 const ITEMS = [
-  'Complete beginners starting from zero',
-  'Working towards your first handstand',
-  'Stuck on muscle-up for months',
-  'Training front lever with no structure',
-  'Chasing planche with no real plan',
-  'Advanced athletes going after elite skills',
+  'Complete beginners',
+  'Learning first handstand',
+  'Working towards muscle-up',
+  'Working towards front lever',
+  'Working towards planche',
+  'Athletes stuck at plateaus',
+  'Advanced athletes chasing elite skills',
 ];
 
 export default function WhoThisIsFor() {
@@ -28,7 +29,7 @@ export default function WhoThisIsFor() {
             <span className="gradient-text">Is For</span>
           </h2>
 
-          <div className="grid sm:grid-cols-2 gap-3 mb-8">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3 mb-8">
             {ITEMS.map((item, i) => (
               <motion.div
                 key={i}

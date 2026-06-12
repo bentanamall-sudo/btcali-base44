@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { CheckCircle, Crown, Target, ChevronDown, Trophy, Flame } from 'lucide-react';
+import { CheckCircle, Crown, ChevronDown, Trophy, Flame } from 'lucide-react';
 
 const SKILLS = [
   'Planche','Front Lever','Handstand','Handstand Push-Up','Muscle-Up',
@@ -256,13 +256,33 @@ export default function CoachingApply() {
         <h2 className="font-heading font-bold text-2xl text-foreground mb-4">
           Skills I Coach
         </h2>
-        <div className="flex flex-wrap gap-2">
+        <div className="flex flex-wrap gap-2 mb-6">
           {SKILLS.map(s => (
             <span key={s} className="text-sm font-body glass px-3 py-1.5 rounded-full border border-border/30 text-foreground/80 hover:border-primary/40 hover:text-primary transition-all cursor-default">
               {s}
             </span>
           ))}
         </div>
+        <div className="glass rounded-xl p-5 border border-border/30 space-y-3 mb-6">
+          <p className="font-body text-sm text-foreground/80 leading-relaxed">
+            I coach athletes through skills such as Planche, Front Lever, Handstand, Handstand Push-Ups, Muscle-Ups, L-Sit to Handstand, Bent Arm Press and many more.
+          </p>
+          <p className="font-body text-sm text-muted-foreground leading-relaxed">
+            Whether you're learning your first pike push-up, trying to unlock a muscle-up, building towards a front lever or working towards a full planche, BTCALI coaching is built around your current level and goals.
+          </p>
+        </div>
+        <Link to="/results">
+          <motion.button
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.97 }}
+            className="w-full flex items-center justify-center gap-2 py-3.5 rounded-xl gradient-bg-strong text-primary-foreground font-heading font-bold text-base glow-primary"
+          >
+            <Trophy className="w-5 h-5" /> See What BTCALI Athletes Have Achieved
+          </motion.button>
+        </Link>
+        <p className="text-center text-xs font-body text-muted-foreground/60 mt-2">
+          This is what can be achieved through personalised BTCALI coaching.
+        </p>
       </motion.div>
 
     </div>

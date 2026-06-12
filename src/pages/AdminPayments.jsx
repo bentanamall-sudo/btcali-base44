@@ -1,200 +1,208 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { DollarSign, Plus, Search, Shield } from 'lucide-react';
-import { base44 } from '@/api/base44Client';
-import GlassCard from '../components/GlassCard';
-import GlowButton from '../components/GlowButton';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Lock, CreditCard, Link2, Settings, Eye, CheckCircle, AlertCircle } from 'lucide-react';
+import { useAccessCodes } from '@/lib/useAccessCodes';
 
-const ADMIN_EMAIL = 'ben.tanamall@gmail.com';
+const METHODS = [
+  {
+    id: 'paypal',
+    name: 'PayPal',
+    icon: '💳',
+    status: 'pending',
+    statusLabel: 'Pending Setup',
+    placeholder: 'Paste your PayPal.me or payment link here',
+    note: 'e.g. https://paypal.me/yourusername/150AUD',
+  },
+  {
+    id: 'directdebit',
+    name: 'Direct Debit',
+    icon: '🏦',
+    status: 'pending',
+    statusLabel: 'Pending Setup',
+    placeholder: 'Paste your Direct Debit setup link or BSB/Account info here',
+    note: 'e.g. a payment instruction link or BSB + Account number',
+  },
+  {
+    id: 'stripe',
+    name: 'Stripe',
+    icon: '⚡',
+    status: 'optional',
+    statusLabel: 'Optional Future Integration',
+    placeholder: 'Paste your Stripe payment link here',
+    note: 'e.g. https://buy.stripe.com/...',
+  },
+];
 
-export default function AdminPayments() {
-  const [payments, setPayments] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [authorized, setAuthorized] = useState(false);
-  const [checking, setChecking] = useState(true);
-  const [search, setSearch] = useState('');
-  const [dialogOpen, setDialogOpen] = useState(false);
-  const [form, setForm] = useState({ student_name: '', amount: '', status: 'due', plan: 'monthly_coaching', notes: '' });
+function MethodCard({ method }) {
+  const [link, setLink] = useState('');
+  const [editing, setEditing] = useState(false);
+  const [saved, setSaved] = useState('');
 
-  useEffect(() => {
-    checkAuth();
-  }, []);
-
-  const checkAuth = async () => {
-    const me = await base44.auth.me();
-    if (me?.email === ADMIN_EMAIL) {
-      setAuthorized(true);
-      loadPayments();
-    }
-    setChecking(false);
-  };
-
-  const loadPayments = async () => {
-    const data = await base44.entities.Payment.list('-created_date', 100);
-    setPayments(data);
-    setLoading(false);
-  };
-
-  const handleCreate = async () => {
-    await base44.entities.Payment.create({ ...form, amount: parseFloat(form.amount) });
-    setDialogOpen(false);
-    setForm({ student_name: '', amount: '', status: 'due', plan: 'monthly_coaching', notes: '' });
-    loadPayments();
-  };
-
-  const handleStatusUpdate = async (id, newStatus) => {
-    await base44.entities.Payment.update(id, {
-      status: newStatus,
-      ...(newStatus === 'paid' ? { paid_date: new Date().toISOString().split('T')[0] } : {}),
-    });
-    loadPayments();
-  };
-
-  if (checking) return (
-    <div className="min-h-screen flex items-center justify-center">
-      <div className="w-8 h-8 border-4 border-muted border-t-primary rounded-full animate-spin" />
-    </div>
-  );
-
-  if (!authorized) return (
-    <div className="min-h-screen flex items-center justify-center px-4">
-      <GlassCard glow hover={false} className="text-center max-w-sm">
-        <Shield className="w-12 h-12 text-destructive mx-auto mb-4" />
-        <h2 className="font-heading font-bold text-xl text-foreground mb-2">Access Denied</h2>
-        <p className="text-muted-foreground font-body text-sm">This section is restricted to BTCALI admins only.</p>
-      </GlassCard>
-    </div>
-  );
-
-  const filtered = payments.filter((p) =>
-    p.student_name?.toLowerCase().includes(search.toLowerCase())
-  );
-
-  const statusColors = {
-    paid: 'bg-green-500/20 text-green-400',
-    due: 'bg-yellow-500/20 text-yellow-400',
-    overdue: 'bg-red-500/20 text-red-400',
-    partial: 'bg-blue-500/20 text-blue-400',
+  const handleSave = () => {
+    setSaved(link);
+    setEditing(false);
   };
 
   return (
-    <div className="min-h-screen py-12 px-4 sm:px-6 max-w-5xl mx-auto">
-      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-8">
-        <div className="inline-flex items-center gap-2 glass px-4 py-2 rounded-full mb-4">
-          <DollarSign className="w-4 h-4 text-primary" />
-          <span className="text-sm font-body text-muted-foreground">Admin Only</span>
+    <div className="glass rounded-2xl border border-border/30 overflow-hidden">
+      <div className="px-5 py-4 border-b border-border/20 flex items-center justify-between gap-3">
+        <div className="flex items-center gap-3">
+          <span className="text-xl">{method.icon}</span>
+          <div>
+            <p className="font-heading font-bold text-foreground text-sm">{method.name}</p>
+            <div className="flex items-center gap-1.5 mt-0.5">
+              {method.status === 'pending' ? (
+                <AlertCircle className="w-3 h-3 text-amber-400" />
+              ) : (
+                <Settings className="w-3 h-3 text-muted-foreground/50" />
+              )}
+              <span className={`text-xs font-body ${method.status === 'pending' ? 'text-amber-400' : 'text-muted-foreground/50'}`}>
+                {method.statusLabel}
+              </span>
+            </div>
+          </div>
         </div>
-        <h1 className="font-heading font-bold text-3xl text-foreground">
-          Payment <span className="gradient-text">Manager</span>
+        {saved && <CheckCircle className="w-4 h-4 text-green-400 flex-shrink-0" />}
+      </div>
+      <div className="p-5 space-y-3">
+        {saved && !editing ? (
+          <div className="glass rounded-xl px-4 py-3 border border-primary/20">
+            <p className="text-xs font-heading font-bold text-primary/70 uppercase tracking-wider mb-1">Saved Link</p>
+            <p className="text-sm font-body text-foreground/80 break-all">{saved}</p>
+          </div>
+        ) : (
+          <input
+            type="text"
+            value={link}
+            onChange={e => setLink(e.target.value)}
+            placeholder={method.placeholder}
+            className="w-full glass rounded-xl px-4 py-2.5 text-foreground text-sm border border-border/40 focus:border-primary/60 focus:outline-none bg-transparent font-body"
+          />
+        )}
+        <p className="text-xs font-body text-muted-foreground/50">{method.note}</p>
+        <div className="flex gap-2">
+          {editing || !saved ? (
+            <motion.button
+              whileTap={{ scale: 0.97 }}
+              onClick={handleSave}
+              disabled={!link.trim()}
+              className="flex items-center gap-1.5 px-4 py-2 rounded-lg gradient-bg-strong text-primary-foreground font-heading font-bold text-xs disabled:opacity-40"
+            >
+              <Link2 className="w-3.5 h-3.5" /> Save Link
+            </motion.button>
+          ) : (
+            <motion.button
+              whileTap={{ scale: 0.97 }}
+              onClick={() => setEditing(true)}
+              className="flex items-center gap-1.5 px-4 py-2 rounded-lg glass border border-border/40 text-foreground font-heading font-bold text-xs"
+            >
+              <Settings className="w-3.5 h-3.5" /> Edit
+            </motion.button>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function AthletePaymentPreview() {
+  return (
+    <div className="glass rounded-2xl border border-primary/20 overflow-hidden">
+      <div className="px-5 py-3 border-b border-border/20 flex items-center gap-2">
+        <Eye className="w-4 h-4 text-primary" />
+        <p className="font-heading font-bold text-sm text-foreground">Athlete Payment Step Preview</p>
+        <span className="ml-auto text-xs font-body text-muted-foreground/50 bg-muted/30 px-2 py-0.5 rounded-full">Admin Preview Only</span>
+      </div>
+      <div className="p-6">
+        <div className="max-w-sm mx-auto glass rounded-2xl p-6 border border-border/30 text-center">
+          <CreditCard className="w-8 h-8 text-primary mx-auto mb-3" />
+          <h3 className="font-heading font-bold text-foreground text-lg mb-2">Payment Setup</h3>
+          <p className="font-body text-sm text-muted-foreground leading-relaxed mb-6">
+            Your coaching application has been accepted. Complete payment setup to begin BTCALI coaching and receive members access.
+          </p>
+          <div className="space-y-3">
+            {['💳 PayPal', '🏦 Direct Debit', '⚡ Stripe'].map(method => (
+              <div key={method} className="glass rounded-xl px-4 py-3 border border-border/30 flex items-center justify-between">
+                <span className="font-heading font-semibold text-sm text-foreground">{method}</span>
+                <span className="text-xs font-body text-muted-foreground/50 bg-muted/30 px-2 py-1 rounded-full">Pending setup</span>
+              </div>
+            ))}
+          </div>
+          <p className="text-xs font-body text-muted-foreground/40 mt-4">Payment buttons will activate once links are configured above.</p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function AccessGate({ onUnlock }) {
+  const [code, setCode] = useState('');
+  const [error, setError] = useState(false);
+  const { unlockCode } = useAccessCodes();
+
+  const handle = () => {
+    const result = unlockCode(code);
+    if (result === 'admin') onUnlock();
+    else { setError(true); setTimeout(() => setError(false), 2500); }
+  };
+
+  return (
+    <div className="min-h-screen flex items-center justify-center px-4">
+      <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }}
+        className="glass-strong rounded-2xl p-8 border border-primary/30 max-w-sm w-full text-center glow-border">
+        <Lock className="w-10 h-10 text-primary mx-auto mb-4" />
+        <h1 className="font-heading font-bold text-2xl text-foreground mb-2">Admin Access Required</h1>
+        <p className="text-sm font-body text-muted-foreground mb-6">Enter your admin code to manage payment settings.</p>
+        <div className={`flex gap-2 rounded-xl overflow-hidden mb-3 transition-all ${error ? 'ring-2 ring-destructive/60' : 'ring-1 ring-border/40'}`}>
+          <input type="password" value={code} onChange={e => { setCode(e.target.value); setError(false); }}
+            onKeyDown={e => e.key === 'Enter' && handle()}
+            placeholder="Admin code..."
+            className="flex-1 bg-transparent text-foreground font-body text-sm px-4 py-3.5 outline-none placeholder:text-muted-foreground/50" />
+          <motion.button whileTap={{ scale: 0.95 }} onClick={handle}
+            className="gradient-bg-strong px-4 flex items-center justify-center">
+            <Lock className="w-4 h-4 text-primary-foreground" />
+          </motion.button>
+        </div>
+        {error && <p className="text-xs text-destructive font-body">Invalid admin code.</p>}
+      </motion.div>
+    </div>
+  );
+}
+
+export default function AdminPayments() {
+  const { isAdmin } = useAccessCodes();
+  const [localUnlocked, setLocalUnlocked] = useState(false);
+
+  if (!isAdmin && !localUnlocked) {
+    return <AccessGate onUnlock={() => setLocalUnlocked(true)} />;
+  }
+
+  return (
+    <div className="min-h-screen py-12 px-4 sm:px-6 max-w-3xl mx-auto">
+      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-8">
+        <div className="inline-flex items-center gap-2 glass px-3 py-1.5 rounded-full border border-primary/30 mb-4">
+          <Lock className="w-3.5 h-3.5 text-primary" />
+          <span className="text-xs font-heading font-bold text-primary uppercase tracking-wider">Admin Only</span>
+        </div>
+        <h1 className="font-heading font-bold text-3xl sm:text-4xl text-foreground mb-2">
+          Payment <span className="gradient-text">Management</span>
         </h1>
+        <p className="font-body text-sm text-muted-foreground leading-relaxed max-w-lg">
+          Configure payment links for BTCALI coaching. These will be shown to athletes after their application is accepted. All methods are inactive until a link is saved.
+        </p>
       </motion.div>
 
-      {/* Controls */}
-      <div className="flex flex-col sm:flex-row gap-4 mb-6">
-        <div className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-          <Input
-            placeholder="Search students..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className="pl-10 glass border-border/30 text-foreground"
-          />
-        </div>
-        <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-          <DialogTrigger asChild>
-            <GlowButton><Plus className="w-4 h-4" /> Add Payment</GlowButton>
-          </DialogTrigger>
-          <DialogContent className="glass-strong border-border/30 text-foreground">
-            <DialogHeader>
-              <DialogTitle className="font-heading gradient-text">New Payment Record</DialogTitle>
-            </DialogHeader>
-            <div className="space-y-4 mt-4">
-              <div>
-                <Label className="text-sm font-body text-muted-foreground">Student Name</Label>
-                <Input value={form.student_name} onChange={(e) => setForm({ ...form, student_name: e.target.value })} className="glass border-border/30 text-foreground mt-1" />
-              </div>
-              <div>
-                <Label className="text-sm font-body text-muted-foreground">Amount ($)</Label>
-                <Input type="number" value={form.amount} onChange={(e) => setForm({ ...form, amount: e.target.value })} className="glass border-border/30 text-foreground mt-1" />
-              </div>
-              <div>
-                <Label className="text-sm font-body text-muted-foreground">Status</Label>
-                <Select value={form.status} onValueChange={(v) => setForm({ ...form, status: v })}>
-                  <SelectTrigger className="glass border-border/30 text-foreground mt-1"><SelectValue /></SelectTrigger>
-                  <SelectContent className="glass-strong border-border/30">
-                    <SelectItem value="due">Due</SelectItem>
-                    <SelectItem value="paid">Paid</SelectItem>
-                    <SelectItem value="overdue">Overdue</SelectItem>
-                    <SelectItem value="partial">Partial</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-              <div>
-                <Label className="text-sm font-body text-muted-foreground">Plan</Label>
-                <Select value={form.plan} onValueChange={(v) => setForm({ ...form, plan: v })}>
-                  <SelectTrigger className="glass border-border/30 text-foreground mt-1"><SelectValue /></SelectTrigger>
-                  <SelectContent className="glass-strong border-border/30">
-                    <SelectItem value="monthly_coaching">Monthly Coaching</SelectItem>
-                    <SelectItem value="quarterly_coaching">Quarterly Coaching</SelectItem>
-                    <SelectItem value="annual_coaching">Annual Coaching</SelectItem>
-                    <SelectItem value="one_time">One-Time</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-              <div>
-                <Label className="text-sm font-body text-muted-foreground">Notes</Label>
-                <Input value={form.notes} onChange={(e) => setForm({ ...form, notes: e.target.value })} className="glass border-border/30 text-foreground mt-1" />
-              </div>
-              <GlowButton onClick={handleCreate} className="w-full">Create Payment Record</GlowButton>
-            </div>
-          </DialogContent>
-        </Dialog>
+      <div className="space-y-4 mb-10">
+        {METHODS.map((method, i) => (
+          <motion.div key={method.id} initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.08 }}>
+            <MethodCard method={method} />
+          </motion.div>
+        ))}
       </div>
 
-      {/* Payment list */}
-      {loading ? (
-        <div className="text-center py-12">
-          <div className="w-8 h-8 border-4 border-muted border-t-primary rounded-full animate-spin mx-auto" />
-        </div>
-      ) : filtered.length === 0 ? (
-        <GlassCard hover={false} className="text-center py-12">
-          <p className="text-muted-foreground font-body">No payment records found.</p>
-        </GlassCard>
-      ) : (
-        <div className="space-y-3">
-          {filtered.map((payment, i) => (
-            <motion.div
-              key={payment.id}
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: i * 0.05 }}
-            >
-              <GlassCard hover={false} className="flex flex-col sm:flex-row sm:items-center gap-4">
-                <div className="flex-1">
-                  <div className="font-heading font-semibold text-foreground">{payment.student_name}</div>
-                  <div className="text-xs text-muted-foreground font-body">{payment.plan?.replace(/_/g, ' ')}</div>
-                  {payment.notes && <div className="text-xs text-muted-foreground font-body mt-1">{payment.notes}</div>}
-                </div>
-                <div className="font-heading font-bold text-lg gradient-text">${payment.amount}</div>
-                <div className="flex items-center gap-2">
-                  <span className={`text-xs font-heading font-semibold px-3 py-1 rounded-full ${statusColors[payment.status]}`}>
-                    {payment.status}
-                  </span>
-                  {payment.status !== 'paid' && (
-                    <GlowButton size="sm" onClick={() => handleStatusUpdate(payment.id, 'paid')}>
-                      Mark Paid
-                    </GlowButton>
-                  )}
-                </div>
-              </GlassCard>
-            </motion.div>
-          ))}
-        </div>
-      )}
+      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}>
+        <AthletePaymentPreview />
+      </motion.div>
     </div>
   );
 }
