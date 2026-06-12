@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { ChevronLeft, Play, X, ExternalLink, AlertTriangle, Clock } from 'lucide-react';
+import TutorialCoachingCTA from '../../components/home/TutorialCoachingCTA';
 
 const TUTORIALS = [
   {
@@ -181,7 +182,9 @@ export default function LSitHandstandGuide() {
         {TUTORIALS.map((t, i) => <TutorialCard key={t.title} tutorial={t} index={i} />)}
       </div>
 
-      <div className="flex items-start gap-3 rounded-xl px-5 py-4 border border-destructive/20 bg-destructive/5 max-w-3xl mx-auto">
+      <TutorialCoachingCTA />
+
+      <div className="flex items-start gap-3 rounded-xl px-5 py-4 border border-destructive/20 bg-destructive/5 max-w-3xl mx-auto mt-6">
         <AlertTriangle className="w-4 h-4 text-destructive/70 flex-shrink-0 mt-0.5" />
         <p className="text-xs font-body text-muted-foreground leading-relaxed">
           <span className="text-destructive/80 font-semibold">⚠️ Disclaimer: </span>

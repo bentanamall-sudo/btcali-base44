@@ -622,20 +622,25 @@ export default function SkillLibraryCategory() {
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
-        className="mt-16 glass rounded-2xl p-8 border border-primary/20 text-center"
+        className="mt-16 glass rounded-2xl p-6 sm:p-8 border border-primary/20"
       >
-        <p className="font-body text-muted-foreground text-base max-w-lg mx-auto mb-6">
-          Want to unlock all tutorials and get personalised coaching? Apply for BTCALI 1-on-1 coaching.
-        </p>
-        <Link to="/1-on-1-coaching">
-          <motion.button
-            whileHover={{ scale: 1.03 }}
-            whileTap={{ scale: 0.97 }}
-            className="inline-flex items-center gap-2 px-8 py-4 rounded-2xl gradient-bg-strong text-primary-foreground font-heading font-bold text-base glow-primary"
-          >
-            View 1-on-1 Coaching <ArrowRight className="w-5 h-5" />
-          </motion.button>
-        </Link>
+        <div className="flex flex-col sm:flex-row items-center gap-5 text-center sm:text-left">
+          <div className="flex-1">
+            <p className="font-heading font-bold text-foreground text-base mb-1">Want personalised coaching?</p>
+            <p className="font-body text-sm text-muted-foreground leading-relaxed">
+              If you want a routine built around your exact level, goals, weaknesses and equipment, complete the Athlete Scan and apply for 1-on-1 coaching.
+            </p>
+          </div>
+          <Link to="/scan" className="flex-shrink-0">
+            <motion.button
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.97 }}
+              className="flex items-center gap-2 px-6 py-3.5 rounded-xl gradient-bg-strong text-primary-foreground font-heading font-bold text-sm glow-primary whitespace-nowrap"
+            >
+              Complete Athlete Scan <ArrowRight className="w-4 h-4" />
+            </motion.button>
+          </Link>
+        </div>
       </motion.div>
     </div>
   );

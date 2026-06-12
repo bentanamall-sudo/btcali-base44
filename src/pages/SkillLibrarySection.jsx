@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Crown, Zap, Lock, ChevronLeft, Clock } from 'lucide-react';
+
 import { useAccessCodes } from '@/lib/useAccessCodes';
 
 const FREE_CATEGORIES = [
@@ -269,6 +270,33 @@ export default function SkillLibrarySection({ sectionId: propSectionId }) {
       {/* Premium gate for non-members */}
       {isPremium && !isAdmin && !isMember && (
         <PremiumGateInline />
+      )}
+
+      {/* Free tutorial coaching CTA */}
+      {isFree && (
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1 }}
+          className="glass rounded-2xl p-6 border border-primary/20 mb-8 flex flex-col sm:flex-row items-center gap-5"
+        >
+          <div className="flex-1 text-center sm:text-left">
+            <p className="font-heading font-bold text-foreground text-base mb-1">Want personalised coaching?</p>
+            <p className="font-body text-sm text-muted-foreground leading-relaxed">
+              If you want a routine built around your exact level, goals, weaknesses and equipment, apply for 1-on-1 coaching.
+            </p>
+          </div>
+          <Link to="/scan" className="flex-shrink-0">
+            <motion.button
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.97 }}
+              className="flex items-center gap-2 px-6 py-3 rounded-xl gradient-bg-strong text-primary-foreground font-heading font-bold text-sm whitespace-nowrap"
+              style={{ boxShadow: '0 0 16px hsl(var(--glow-primary)/0.2)' }}
+            >
+              <Crown className="w-4 h-4" /> Complete Athlete Scan
+            </motion.button>
+          </Link>
+        </motion.div>
       )}
 
       {/* Category grid — always show, gate overlays for premium */}
