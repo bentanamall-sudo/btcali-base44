@@ -166,6 +166,7 @@ export default function AthleteDiagnostic() {
   const [submitting, setSubmitting] = useState(false);
   const [showLeaveWarning, setShowLeaveWarning] = useState(false);
   const [pendingNavUrl, setPendingNavUrl] = useState(null);
+  const [redoConfirm, setRedoConfirm] = useState(false);
 
   // Auto-save to localStorage on every change
   useEffect(() => {
@@ -583,9 +584,51 @@ export default function AthleteDiagnostic() {
     );
   }
 
+  const handleRedo = () => {
+    clearScan();
+    localStorage.removeItem(COMPLETED_KEY);
+    setReport(null);
+    setSubmittedData(null);
+    setData({ ...BLANK_DATA });
+    setStep(0);
+    setGateAccepted(false);
+    setRedoConfirm(false);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   if (report) {
     return (
       <div className="min-h-screen py-12 px-4 sm:px-6 max-w-4xl mx-auto">
+        {/* Redo confirmation modal */}
+        <AnimatePresence>
+          {redoConfirm && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center px-4">
+              <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={() => setRedoConfirm(false)} />
+              <motion.div
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.95 }}
+                className="relative glass-strong rounded-2xl border border-primary/30 p-6 max-w-sm w-full text-center"
+              >
+                <p className="font-heading font-bold text-foreground text-lg mb-2">Redo Athlete Scan?</p>
+                <p className="text-sm font-body text-muted-foreground mb-6 leading-relaxed">
+                  Are you sure you want to redo your Athlete Scan? Your previous report will remain stored. A new submission will become your latest diagnosis.
+                </p>
+                <div className="flex gap-3">
+                  <button onClick={() => setRedoConfirm(false)}
+                    className="flex-1 py-3 rounded-xl glass border border-border/40 text-foreground font-heading font-semibold text-sm">
+                    Cancel
+                  </button>
+                  <button onClick={handleRedo}
+                    className="flex-1 py-3 rounded-xl gradient-bg-strong text-primary-foreground font-heading font-bold text-sm glow-primary">
+                    Redo Athlete Scan
+                  </button>
+                </div>
+              </motion.div>
+            </div>
+          )}
+        </AnimatePresence>
+
         <DiagnosticReport data={submittedData || data} report={report} />
 
         <div className="mt-8 space-y-3">
@@ -654,6 +697,19 @@ export default function AthleteDiagnostic() {
                 <Trophy className="w-4 h-4" /> View Athlete Results
               </motion.button>
             </Link>
+          </div>
+
+          {/* Redo scan */}
+          <div className="pt-2">
+            <motion.button
+              whileHover={{ scale: 1.01 }}
+              whileTap={{ scale: 0.97 }}
+              onClick={() => setRedoConfirm(true)}
+              className="w-full py-3 rounded-xl glass border border-border/30 text-muted-foreground font-heading font-semibold text-sm hover:border-primary/30 hover:text-foreground transition-all"
+            >
+              ↩ Redo Athlete Scan
+            </motion.button>
+            <p className="text-center text-xs font-body text-muted-foreground/50 mt-1.5">Your previous report is kept on record.</p>
           </div>
         </div>
       </div>
