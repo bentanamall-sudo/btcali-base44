@@ -54,9 +54,9 @@ export default function HeroSection() {
             transition={{ delay: 0.35, duration: 0.65 }}
             className="font-heading font-black text-4xl sm:text-6xl md:text-7xl leading-[1.02] mb-4 tracking-tight"
           >
-            <span className="gradient-text">Master Advanced</span>
+            <span className="gradient-text">Master Calisthenics Skills</span>
             <br />
-            <span className="text-foreground">Calisthenics Skills</span>
+            <span className="text-foreground">At Every Level</span>
           </motion.h1>
 
           {/* Short copy */}
