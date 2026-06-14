@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Search, Filter, Eye, MessageSquare, CheckCircle, Users, X } from 'lucide-react';
+import { Search, Eye, MessageSquare, CheckCircle, Users, X, Trash2 } from 'lucide-react';
 import { base44 } from '@/api/base44Client';
 import GlassCard from '../components/GlassCard';
 import DiagnosticReport from '../components/diagnostic/DiagnosticReport';
@@ -12,11 +12,9 @@ const STATUS_COLORS = {
 };
 
 const LEVEL_COLORS = {
-  Recruit: 'text-slate-400',
-  Initiate: 'text-blue-400',
-  Warrior: 'text-cyan-400',
-  Elite: 'text-primary',
-  Legend: 'text-amber-400',
+  Beginner: 'text-slate-400',
+  Intermediate: 'text-cyan-400',
+  Advanced: 'text-amber-400',
 };
 
 export default function AdminDiagnostics() {
@@ -52,6 +50,15 @@ export default function AdminDiagnostics() {
     await base44.entities.AthleteReport.update(id, { status });
     setReports(prev => prev.map(r => r.id === id ? { ...r, status } : r));
     if (selected?.id === id) setSelected(prev => ({ ...prev, status }));
+  };
+
+  const [deleteTarget, setDeleteTarget] = useState(null);
+
+  const deleteReport = async (id) => {
+    await base44.entities.AthleteReport.delete(id);
+    setReports(prev => prev.filter(r => r.id !== id));
+    if (selected?.id === id) setSelected(null);
+    setDeleteTarget(null);
   };
 
   const saveNotes = async () => {
@@ -91,7 +98,7 @@ export default function AdminDiagnostics() {
           className="glass rounded-xl px-4 py-2.5 text-sm text-foreground border border-border/40 focus:outline-none bg-transparent"
         >
           <option value="">All Levels</option>
-          {['Recruit','Initiate','Warrior','Elite','Legend'].map(l => <option key={l} value={l}>{l}</option>)}
+          {['Beginner','Intermediate','Advanced'].map(l => <option key={l} value={l}>{l}</option>)}
         </select>
         <select
           value={filterStatus}
@@ -113,8 +120,15 @@ export default function AdminDiagnostics() {
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {filtered.map((r, i) => (
             <motion.div key={r.id} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.04 }}>
-              <GlassCard hover={false} className="h-full">
-                <div className="flex items-start justify-between gap-2 mb-3">
+              <GlassCard hover={false} className="h-full relative">
+                <button
+                  onClick={(e) => { e.stopPropagation(); setDeleteTarget(r); }}
+                  className="absolute top-3 left-3 w-6 h-6 rounded-full flex items-center justify-center text-muted-foreground/40 hover:text-destructive hover:bg-destructive/10 transition-all z-10"
+                  title="Delete report"
+                >
+                  <Trash2 className="w-3.5 h-3.5" />
+                </button>
+                <div className="flex items-start justify-between gap-2 mb-3 pl-7">
                   <div>
                     <p className="font-heading font-semibold text-foreground">{r.full_name}</p>
                     <p className="text-xs text-muted-foreground font-body">{r.email}</p>
@@ -140,6 +154,33 @@ export default function AdminDiagnostics() {
               </GlassCard>
             </motion.div>
           ))}
+        </div>
+      )}
+
+      {/* Delete confirmation modal */}
+      {deleteTarget && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center px-4" onClick={() => setDeleteTarget(null)}>
+          <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" />
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="relative glass-strong rounded-2xl border border-destructive/40 p-6 max-w-sm w-full text-center"
+            onClick={e => e.stopPropagation()}
+          >
+            <Trash2 className="w-8 h-8 text-destructive mx-auto mb-3" />
+            <h3 className="font-heading font-bold text-foreground text-lg mb-2">Delete Report?</h3>
+            <p className="text-sm font-body text-muted-foreground mb-6">
+              Are you sure you want to delete <span className="text-foreground font-semibold">{deleteTarget.full_name}</span>'s report? This cannot be undone.
+            </p>
+            <div className="flex gap-3">
+              <button onClick={() => setDeleteTarget(null)} className="flex-1 py-2.5 rounded-xl glass border border-border/40 text-foreground font-heading font-semibold text-sm hover:border-primary/30 transition-all">
+                Cancel
+              </button>
+              <button onClick={() => deleteReport(deleteTarget.id)} className="flex-1 py-2.5 rounded-xl bg-destructive/20 border border-destructive/50 text-destructive font-heading font-bold text-sm hover:bg-destructive/30 transition-all">
+                Delete
+              </button>
+            </div>
+          </motion.div>
         </div>
       )}
 

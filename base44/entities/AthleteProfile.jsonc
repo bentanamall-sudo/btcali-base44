@@ -16,13 +16,11 @@
     "rank": {
       "type": "string",
       "enum": [
-        "Recruit",
-        "Initiate",
-        "Warrior",
-        "Elite",
-        "Legend"
+        "Beginner",
+        "Intermediate",
+        "Advanced"
       ],
-      "default": "Recruit"
+      "default": "Beginner"
     },
     "streak_days": {
       "type": "number",

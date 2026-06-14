@@ -114,9 +114,11 @@ export default function CoachingApply() {
         <Crown className="w-4 h-4 text-primary" />
         <span className="text-sm font-body text-muted-foreground">AUD $40/week · Min. 1 month</span>
         </div>
+        <p className="text-xs font-heading font-bold text-muted-foreground/50 uppercase tracking-[0.25em] mb-2">PRICING</p>
         <h1 className="font-heading font-bold text-3xl sm:text-5xl mb-3 leading-tight">
-        BTCALI <span className="gradient-text">1-on-1 Coaching</span>
+          <span className="gradient-text">Pricing</span>
         </h1>
+        <p className="text-sm font-heading font-semibold text-primary/70 uppercase tracking-widest">Currently Accepting New Athletes</p>
       </motion.div>
 
       {/* 1. Pricing */}

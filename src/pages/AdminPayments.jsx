@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Lock, CreditCard, Link2, Settings, Eye, CheckCircle, AlertCircle } from 'lucide-react';
+import { Lock, CreditCard, Settings, Eye, CheckCircle, AlertCircle, Link2 } from 'lucide-react';
 import { useAccessCodes } from '@/lib/useAccessCodes';
 
 const METHODS = [
@@ -20,16 +20,7 @@ const METHODS = [
     status: 'pending',
     statusLabel: 'Pending Setup',
     placeholder: 'Paste your Direct Debit setup link or BSB/Account info here',
-    note: 'e.g. a payment instruction link or BSB + Account number',
-  },
-  {
-    id: 'stripe',
-    name: 'Stripe',
-    icon: '⚡',
-    status: 'optional',
-    statusLabel: 'Optional Future Integration',
-    placeholder: 'Paste your Stripe payment link here',
-    note: 'e.g. https://buy.stripe.com/...',
+    note: 'e.g. BSB 062-714 / Account 1011 2122',
   },
 ];
 
@@ -121,7 +112,7 @@ function AthletePaymentPreview() {
             Your coaching application has been accepted. Complete payment setup to begin BTCALI coaching and receive members access.
           </p>
           <div className="space-y-3">
-            {['💳 PayPal', '🏦 Direct Debit', '⚡ Stripe'].map(method => (
+            {['💳 PayPal', '🏦 Direct Debit'].map(method => (
               <div key={method} className="glass rounded-xl px-4 py-3 border border-border/30 flex items-center justify-between">
                 <span className="font-heading font-semibold text-sm text-foreground">{method}</span>
                 <span className="text-xs font-body text-muted-foreground/50 bg-muted/30 px-2 py-1 rounded-full">Pending setup</span>
@@ -188,7 +179,7 @@ export default function AdminPayments() {
           Payment <span className="gradient-text">Management</span>
         </h1>
         <p className="font-body text-sm text-muted-foreground leading-relaxed max-w-lg">
-          Configure payment links for BTCALI coaching. These will be shown to athletes after their application is accepted. All methods are inactive until a link is saved.
+          Configure payment links for BTCALI coaching. These will be shown to athletes after their application is accepted.
         </p>
       </motion.div>
 
@@ -200,7 +191,7 @@ export default function AdminPayments() {
         ))}
       </div>
 
-      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}>
+      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }}>
         <AthletePaymentPreview />
       </motion.div>
     </div>

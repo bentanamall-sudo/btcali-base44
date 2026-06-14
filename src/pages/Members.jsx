@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Crown, Shield, Dumbbell, Layers, ShoppingBag, ExternalLink, Lock, ChevronRight, ChevronLeft, ChevronDown, CheckCircle, Send } from 'lucide-react';
+import { Crown, Shield, Dumbbell, Layers, ShoppingBag, ExternalLink, Lock, ChevronRight, ChevronLeft, ChevronDown, CheckCircle, Send, CreditCard } from 'lucide-react';
 import { useAccessCodes } from '@/lib/useAccessCodes';
 import { PageHeaderLogo } from '@/components/Logo';
 import { Link } from 'react-router-dom';
@@ -257,10 +257,58 @@ function AccessGate() {
   );
 }
 
+function PaymentMethods() {
+  return (
+    <div className="space-y-4">
+      <p className="text-sm font-body text-muted-foreground mb-2">Use any of the following methods to pay for your BTCALI coaching.</p>
+
+      {/* PayPal */}
+      <div className="glass rounded-2xl border border-border/30 overflow-hidden">
+        <div className="px-5 py-4 border-b border-border/20 flex items-center gap-3">
+          <span className="text-xl">💳</span>
+          <p className="font-heading font-bold text-foreground text-sm">PayPal</p>
+        </div>
+        <div className="p-5">
+          <p className="text-sm font-body text-foreground/80">d.lo128@yahoo.com.au</p>
+        </div>
+      </div>
+
+      {/* Bank Transfer */}
+      <div className="glass rounded-2xl border border-border/30 overflow-hidden">
+        <div className="px-5 py-4 border-b border-border/20 flex items-center gap-3">
+          <span className="text-xl">🏦</span>
+          <p className="font-heading font-bold text-foreground text-sm">Bank Transfer</p>
+        </div>
+        <div className="p-5 space-y-2">
+          <div className="flex items-center justify-between">
+            <span className="text-xs font-heading font-semibold text-muted-foreground uppercase tracking-wider">BSB</span>
+            <span className="text-sm font-body font-semibold text-foreground">062-714</span>
+          </div>
+          <div className="flex items-center justify-between">
+            <span className="text-xs font-heading font-semibold text-muted-foreground uppercase tracking-wider">Account Number</span>
+            <span className="text-sm font-body font-semibold text-foreground">1011 2122</span>
+          </div>
+        </div>
+      </div>
+
+      {/* PayID */}
+      <div className="glass rounded-2xl border border-border/30 overflow-hidden">
+        <div className="px-5 py-4 border-b border-border/20 flex items-center gap-3">
+          <span className="text-xl">📱</span>
+          <p className="font-heading font-bold text-foreground text-sm">PayID</p>
+        </div>
+        <div className="p-5">
+          <p className="text-sm font-body text-foreground/80">61493172114</p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 // ── Main Members page — two-slide onboarding flow ──────────────────────────
 export default function Members() {
   const { isMember } = useAccessCodes();
-  const [slide, setSlide] = useState(0); // 0 = coaching dashboard, 1 = agreement form
+  const [slide, setSlide] = useState(0); // 0 = coaching dashboard, 1 = agreement form, 2 = payment methods
 
   if (!isMember) return <AccessGate />;
 
@@ -283,6 +331,28 @@ export default function Members() {
         </p>
       </motion.div>
 
+      {/* Tab navigation */}
+      <div className="flex gap-2 mb-6 flex-wrap">
+        {[
+          { id: 0, label: 'Coaching Resources' },
+          { id: 1, label: 'T&C Agreement' },
+          { id: 2, label: 'Payment Methods', TabIcon: CreditCard },
+        ].map(tab => (
+          <button
+            key={tab.id}
+            onClick={() => setSlide(tab.id)}
+            className={`flex items-center gap-1.5 px-4 py-2 rounded-xl font-heading font-semibold text-sm transition-all border ${
+              slide === tab.id
+                ? 'gradient-bg-strong text-primary-foreground border-primary/40'
+                : 'glass border-border/30 text-muted-foreground hover:border-primary/30 hover:text-foreground'
+            }`}
+          >
+            {tab.TabIcon && <tab.TabIcon className="w-3.5 h-3.5" />}
+            {tab.label}
+          </button>
+        ))}
+      </div>
+
       {/* Slide container */}
       <div className="relative overflow-hidden">
         <AnimatePresence mode="wait">
@@ -301,11 +371,10 @@ export default function Members() {
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.97 }}
                   onClick={() => setSlide(1)}
-                  className="mt-6 w-full py-4 rounded-xl gradient-bg-strong text-primary-foreground font-heading font-bold text-base glow-primary flex items-center justify-center gap-3"
-                  style={{ boxShadow: '0 0 20px hsl(var(--glow-primary)/0.18)' }}
+                  className="mt-6 w-full py-3.5 rounded-xl glass border border-primary/30 text-primary font-heading font-bold text-sm flex items-center justify-center gap-2 hover:border-primary/60 transition-all"
                 >
-                  <CheckCircle className="w-5 h-5" /> Next: Terms & Conditions Agreement
-                  <ChevronRight className="w-5 h-5" />
+                  <CheckCircle className="w-4 h-4" /> Go to T&C Agreement
+                  <ChevronRight className="w-4 h-4" />
                 </motion.button>
               </AccordionSection>
 
@@ -367,7 +436,7 @@ export default function Members() {
 
 
             </motion.div>
-          ) : (
+          ) : slide === 1 ? (
             <motion.div
               key="agreement"
               initial={{ opacity: 0, x: 30 }}
@@ -375,22 +444,6 @@ export default function Members() {
               exit={{ opacity: 0, x: 30 }}
               transition={{ duration: 0.3, ease: 'easeInOut' }}
             >
-              {/* Back button */}
-              <div className="flex justify-start mb-6">
-                <motion.button
-                  whileHover={{ scale: 1.03, x: -4 }}
-                  whileTap={{ scale: 0.97 }}
-                  onClick={() => setSlide(0)}
-                  className="flex items-center gap-3 px-6 py-3 rounded-xl glass border border-border/30 hover:border-primary/40 transition-all group"
-                >
-                  <div className="w-8 h-8 rounded-lg gradient-bg-strong flex items-center justify-center flex-shrink-0 group-hover:scale-105 transition-transform">
-                    <ChevronLeft className="w-4 h-4 text-primary-foreground" />
-                  </div>
-                  <span className="font-heading font-semibold text-sm text-foreground">Back to Coaching Resources</span>
-                </motion.button>
-              </div>
-
-              {/* Agreement header */}
               <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}
                 className="glass rounded-2xl border border-primary/30 mb-6 overflow-hidden">
                 <div className="flex items-center gap-3 p-6 border-b border-border/30">
@@ -406,6 +459,29 @@ export default function Members() {
                   <ConsentForm />
                 </div>
               </motion.div>
+            </motion.div>
+          ) : (
+            <motion.div
+              key="payments"
+              initial={{ opacity: 0, x: 30 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: 30 }}
+              transition={{ duration: 0.3, ease: 'easeInOut' }}
+            >
+              <div className="glass rounded-2xl border border-primary/20 overflow-hidden mb-6">
+                <div className="flex items-center gap-3 p-6 border-b border-border/30">
+                  <div className="w-9 h-9 rounded-xl gradient-bg-strong flex items-center justify-center flex-shrink-0">
+                    <CreditCard className="w-4 h-4 text-primary-foreground" />
+                  </div>
+                  <div>
+                    <h2 className="font-heading font-bold text-base sm:text-lg text-foreground">Payment Methods</h2>
+                    <p className="text-xs font-body text-muted-foreground mt-0.5">BTCALI Members only</p>
+                  </div>
+                </div>
+                <div className="px-6 pb-6 pt-5">
+                  <PaymentMethods />
+                </div>
+              </div>
             </motion.div>
           )}
         </AnimatePresence>
