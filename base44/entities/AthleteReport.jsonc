@@ -8,6 +8,10 @@
     "email": {
       "type": "string"
     },
+    "phone": {
+      "type": "string",
+      "description": "Phone number with country code"
+    },
     "age": {
       "type": "string"
     },
@@ -118,6 +122,15 @@
       "type": "string"
     },
     "why_btcali": {
+      "type": "string"
+    },
+    "equipment_available": {
+      "type": "string"
+    },
+    "exact_current_skills": {
+      "type": "string"
+    },
+    "additional_notes": {
       "type": "string"
     },
     "media_consent": {

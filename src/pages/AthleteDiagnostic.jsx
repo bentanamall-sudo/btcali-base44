@@ -134,7 +134,7 @@ function Field({ children }) {
 }
 
 const BLANK_DATA = {
-  full_name: '', email: '', age: '', height: '', weight: '', country: '', instagram: '',
+  full_name: '', email: '', phone: '', age: '', height: '', weight: '', country: '', instagram: '',
   training_experience: '', training_days: '', training_location: '',
   followed_program: '', has_coach: '',
   pushup_max: '', pullup_max: '', dip_max: '', pike_pushup_max: '',
@@ -211,6 +211,11 @@ export default function AthleteDiagnostic() {
     <div key="s0" className="space-y-0">
       <Field><Label>Full Name</Label><TextInput value={data.full_name} onChange={v => set('full_name', v)} placeholder="Your full name" /></Field>
       <Field><Label>Email</Label><TextInput value={data.email} onChange={v => set('email', v)} placeholder="your@email.com" type="email" /></Field>
+      <Field>
+        <Label>Phone Number <span className="text-primary">*</span></Label>
+        <TextInput value={data.phone} onChange={v => set('phone', v)} placeholder="e.g. +61 412 345 678 or +1 555 123 4567" type="tel" />
+        <p className="text-xs text-muted-foreground/60 font-body mt-1">Include your country code (e.g. +61 for Australia)</p>
+      </Field>
       <Field><Label>Age</Label><TextInput value={data.age} onChange={v => set('age', v)} placeholder="e.g. 24" type="number" /></Field>
       <Field><Label>Height (cm or ft)</Label><TextInput value={data.height} onChange={v => set('height', v)} placeholder="e.g. 178cm or 5'10" /></Field>
       <Field><Label>Weight (kg or lbs)</Label><TextInput value={data.weight} onChange={v => set('weight', v)} placeholder="e.g. 75kg or 165lbs" /></Field>
@@ -421,7 +426,7 @@ export default function AthleteDiagnostic() {
   ];
 
   const canNext = () => {
-    if (step === 0) return data.full_name && data.email;
+    if (step === 0) return data.full_name && data.email && data.phone;
     if (step === 1) return !!data.payment_method && !!data.coaching_investment && data.coaching_investment !== 'I am not interested in coaching';
     if (step === 4) return data.goals.length > 0;
     if (step === 7) return data.serious_applicant;

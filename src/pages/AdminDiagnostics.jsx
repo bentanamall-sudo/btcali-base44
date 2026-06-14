@@ -150,6 +150,7 @@ export default function AdminDiagnostics() {
                   <div>
                     <p className="font-heading font-semibold text-foreground">{r.full_name || 'Unknown'}</p>
                     <p className="text-xs text-muted-foreground font-body">{r.email || '—'}</p>
+                    {r.phone && <p className="text-xs text-primary/80 font-body font-semibold">{r.phone}</p>}
                   </div>
                   <div className="flex flex-col items-end gap-1">
                     <span className={`text-xs font-heading font-bold px-2 py-0.5 rounded-full ${STATUS_COLORS[r.status] || STATUS_COLORS.pending}`}>{r.status || 'pending'}</span>
@@ -230,6 +231,7 @@ export default function AdminDiagnostics() {
               <div>
                 <h2 className="font-heading font-bold text-xl text-foreground">{selected.full_name}</h2>
                 <p className="text-xs text-muted-foreground font-body">{selected.email} · @{selected.instagram}</p>
+                {selected.phone && <p className="text-xs text-primary/80 font-body font-semibold mt-0.5">{selected.phone}</p>}
                 {selected.payment_method && (
                   <span className="inline-flex items-center gap-1.5 mt-1.5 text-xs font-heading font-bold px-2.5 py-1 rounded-full bg-primary/10 text-primary border border-primary/25">
                     💳 {selected.payment_method}
