@@ -220,6 +220,14 @@ export default function AthleteDiagnostic() {
     // 1 — Coaching Fit (moved to page 2)
     <div key="s-coaching" className="space-y-0">
 
+      <Field>
+        <Label>Preferred payment method</Label>
+        <div className="grid grid-cols-2 gap-2">
+          {['PayPal', 'Bank Transfer', 'PayID', 'Not Sure Yet'].map(v => (
+            <OptionBtn key={v} label={v} selected={data.payment_method === v} onClick={() => set('payment_method', v)} />
+          ))}
+        </div>
+      </Field>
 
       <Field>
         <Label>Which coaching option would you realistically consider?</Label>
@@ -412,7 +420,7 @@ export default function AthleteDiagnostic() {
 
   const canNext = () => {
     if (step === 0) return data.full_name && data.email;
-    if (step === 1) return !!data.coaching_investment && data.coaching_investment !== 'I am not interested in coaching';
+    if (step === 1) return !!data.payment_method && !!data.coaching_investment && data.coaching_investment !== 'I am not interested in coaching';
     if (step === 4) return data.goals.length > 0;
     if (step === 7) return data.serious_applicant;
     return true;

@@ -23,6 +23,7 @@ export default function AdminDiagnostics() {
   const [search, setSearch] = useState('');
   const [filterLevel, setFilterLevel] = useState('');
   const [filterStatus, setFilterStatus] = useState('');
+  const [filterPayment, setFilterPayment] = useState('');
   const [selected, setSelected] = useState(null);
   const [notes, setNotes] = useState('');
   const [savingNotes, setSavingNotes] = useState(false);
@@ -30,7 +31,8 @@ export default function AdminDiagnostics() {
   useEffect(() => {
     const load = async () => {
       try {
-        const r = await base44.entities.AthleteReport.list('-created_date', 200);
+        // Use asServiceRole to bypass RLS and load ALL submissions regardless of email
+        const r = await base44.asServiceRole.entities.AthleteReport.list('-created_date', 500);
         setReports(r || []);
       } catch (err) {
         console.error('Failed to load reports:', err);
@@ -45,7 +47,8 @@ export default function AdminDiagnostics() {
     const matchSearch = !search || r.full_name?.toLowerCase().includes(search.toLowerCase()) || r.email?.toLowerCase().includes(search.toLowerCase());
     const matchLevel = !filterLevel || r.athlete_level === filterLevel;
     const matchStatus = !filterStatus || r.status === filterStatus;
-    return matchSearch && matchLevel && matchStatus;
+    const matchPayment = !filterPayment || r.payment_method === filterPayment;
+    return matchSearch && matchLevel && matchStatus && matchPayment;
   });
 
   const openReport = (r) => {
@@ -117,6 +120,14 @@ export default function AdminDiagnostics() {
           <option value="contacted">Contacted</option>
           <option value="enrolled">Enrolled</option>
         </select>
+        <select
+          value={filterPayment}
+          onChange={e => setFilterPayment(e.target.value)}
+          className="glass rounded-xl px-4 py-2.5 text-sm text-foreground border border-border/40 focus:outline-none bg-transparent"
+        >
+          <option value="">All Payment Methods</option>
+          {['PayPal', 'Bank Transfer', 'PayID', 'Not Sure Yet'].map(p => <option key={p} value={p}>{p}</option>)}
+        </select>
       </div>
 
       {loading ? (
@@ -135,16 +146,23 @@ export default function AdminDiagnostics() {
                 >
                   <Trash2 className="w-3.5 h-3.5" />
                 </button>
-                <div className="flex items-start justify-between gap-2 mb-3 pl-7">
+                <div className="flex items-start justify-between gap-2 mb-2 pl-7">
                   <div>
-                    <p className="font-heading font-semibold text-foreground">{r.full_name}</p>
-                    <p className="text-xs text-muted-foreground font-body">{r.email}</p>
+                    <p className="font-heading font-semibold text-foreground">{r.full_name || 'Unknown'}</p>
+                    <p className="text-xs text-muted-foreground font-body">{r.email || '—'}</p>
                   </div>
                   <div className="flex flex-col items-end gap-1">
                     <span className={`text-xs font-heading font-bold px-2 py-0.5 rounded-full ${STATUS_COLORS[r.status] || STATUS_COLORS.pending}`}>{r.status || 'pending'}</span>
-                    <span className={`text-xs font-heading font-semibold ${LEVEL_COLORS[r.athlete_level] || ''}`}>{r.athlete_level}</span>
+                    <span className={`text-xs font-heading font-semibold ${LEVEL_COLORS[r.athlete_level] || 'text-muted-foreground'}`}>{r.athlete_level || '—'}</span>
                   </div>
                 </div>
+                {r.payment_method && (
+                  <div className="pl-7 mb-2">
+                    <span className="inline-flex items-center gap-1.5 text-xs font-heading font-bold px-2.5 py-1 rounded-full bg-primary/10 text-primary border border-primary/25">
+                      💳 {r.payment_method}
+                    </span>
+                  </div>
+                )}
                 <div className="flex flex-wrap gap-1 mb-3">
                   {(r.goals || []).slice(0, 3).map(g => (
                     <span key={g} className="text-xs glass px-2 py-0.5 rounded-full text-foreground/60 font-body">{g}</span>
@@ -208,10 +226,15 @@ export default function AdminDiagnostics() {
             className="relative w-full max-w-xl h-screen bg-card border-l border-border/30 overflow-y-auto p-6"
             onClick={e => e.stopPropagation()}
           >
-            <div className="flex items-center justify-between mb-5">
+            <div className="flex items-center justify-between mb-4">
               <div>
                 <h2 className="font-heading font-bold text-xl text-foreground">{selected.full_name}</h2>
                 <p className="text-xs text-muted-foreground font-body">{selected.email} · @{selected.instagram}</p>
+                {selected.payment_method && (
+                  <span className="inline-flex items-center gap-1.5 mt-1.5 text-xs font-heading font-bold px-2.5 py-1 rounded-full bg-primary/10 text-primary border border-primary/25">
+                    💳 {selected.payment_method}
+                  </span>
+                )}
               </div>
               <button onClick={() => setSelected(null)} className="glass w-8 h-8 rounded-full flex items-center justify-center">
                 <X className="w-4 h-4" />

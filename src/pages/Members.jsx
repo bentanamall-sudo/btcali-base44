@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Crown, Shield, Dumbbell, Layers, ShoppingBag, ExternalLink, Lock, ChevronRight, ChevronLeft, ChevronDown, CheckCircle, Send, CreditCard } from 'lucide-react';
+import { Crown, Shield, Dumbbell, Layers, ShoppingBag, ExternalLink, Lock, ChevronRight, ChevronLeft, ChevronDown, CheckCircle, Send, CreditCard, LogOut } from 'lucide-react';
 import { useAccessCodes } from '@/lib/useAccessCodes';
 import { PageHeaderLogo } from '@/components/Logo';
 import { Link } from 'react-router-dom';
@@ -307,7 +307,7 @@ function PaymentMethods() {
 
 // ── Main Members page — two-slide onboarding flow ──────────────────────────
 export default function Members() {
-  const { isMember } = useAccessCodes();
+  const { isMember, clearAccess } = useAccessCodes();
   const [slide, setSlide] = useState(0); // 0 = coaching dashboard, 1 = agreement form, 2 = payment methods
 
   if (!isMember) return <AccessGate />;
@@ -323,12 +323,23 @@ export default function Members() {
           <Crown className="w-4 h-4 text-primary" />
           <span className="text-sm font-heading font-semibold gradient-text">BTCALI Members Area</span>
         </div>
-        <h1 className="font-heading font-bold text-3xl sm:text-4xl text-foreground mb-2">
-          Welcome, <span className="gradient-text">BTCALI Athlete</span>
-        </h1>
-        <p className="text-muted-foreground font-body text-base">
-          Your exclusive coaching resources, training rules, and member content.
-        </p>
+        <div className="flex items-start justify-between gap-4">
+          <div>
+            <h1 className="font-heading font-bold text-3xl sm:text-4xl text-foreground mb-2">
+              Welcome, <span className="gradient-text">BTCALI Athlete</span>
+            </h1>
+            <p className="text-muted-foreground font-body text-base">
+              Your exclusive coaching resources, training rules, and member content.
+            </p>
+          </div>
+          <button
+            onClick={clearAccess}
+            className="flex-shrink-0 flex items-center gap-2 px-4 py-2 rounded-xl glass border border-border/30 text-muted-foreground font-heading font-semibold text-xs hover:border-destructive/40 hover:text-destructive transition-all mt-1"
+            title="Remove access code"
+          >
+            <LogOut className="w-3.5 h-3.5" /> Change Code
+          </button>
+        </div>
       </motion.div>
 
       {/* Tab navigation */}

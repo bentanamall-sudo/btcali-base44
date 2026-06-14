@@ -55,8 +55,13 @@ export function AccessProvider({ children }) {
     return null;
   }, [access]);
 
+  const clearAccess = useCallback(() => {
+    localStorage.removeItem(STORAGE_KEY);
+    setAccess({});
+  }, []);
+
   return (
-    <AccessContext.Provider value={{ isAdmin, isMember, unlockedPrograms, isProgramUnlocked, unlockCode }}>
+    <AccessContext.Provider value={{ isAdmin, isMember, unlockedPrograms, isProgramUnlocked, unlockCode, clearAccess }}>
       {children}
     </AccessContext.Provider>
   );
