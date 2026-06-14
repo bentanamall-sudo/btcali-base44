@@ -111,8 +111,8 @@ export default function CoachingApply() {
       {/* Header */}
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
         <div className="inline-flex items-center gap-2 glass px-4 py-2 rounded-full mb-4 border border-border/30">
-        <Crown className="w-4 h-4 text-primary" />
-        <span className="text-sm font-body text-muted-foreground">AUD $40/week · Min. 1 month</span>
+          <Crown className="w-4 h-4 text-primary" />
+          <span className="text-sm font-body text-muted-foreground">$40/week (1 month) · $50/week (no commitment)</span>
         </div>
         <p className="text-xs font-heading font-bold text-muted-foreground/50 uppercase tracking-[0.25em] mb-2">PRICING</p>
         <h1 className="font-heading font-bold text-3xl sm:text-5xl mb-3 leading-tight">
@@ -125,25 +125,21 @@ export default function CoachingApply() {
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.06 }}
         className="glass rounded-xl px-5 py-4 border border-primary/20 mb-4 relative overflow-hidden">
         <div className="absolute inset-0 gradient-bg pointer-events-none" />
-        <div className="relative flex flex-col sm:flex-row items-center gap-4">
-          <div className="flex items-center gap-6 flex-1">
-            <div className="text-center">
-              <div className="text-xs font-heading text-muted-foreground uppercase tracking-wider mb-0.5">Weekly</div>
-              <div className="text-xs font-body text-muted-foreground line-through">$49.99</div>
-              <div className="font-heading font-bold text-3xl gradient-text leading-none">$39.99</div>
-              <div className="text-xs text-muted-foreground font-body mt-0.5">AUD/week</div>
+        <div className="relative flex flex-col gap-3">
+          <div className="flex items-center justify-between gap-4">
+            <div>
+              <div className="font-heading font-bold text-2xl gradient-text leading-none">$40 <span className="text-sm font-semibold text-muted-foreground">AUD/week</span></div>
+              <div className="text-xs font-body text-muted-foreground mt-0.5">Minimum 1 month commitment</div>
             </div>
-            <div className="text-muted-foreground font-body text-xs font-semibold uppercase">or</div>
-            <div className="text-center">
-              <div className="text-xs font-heading text-muted-foreground uppercase tracking-wider mb-0.5">Monthly</div>
-              <div className="text-xs font-body text-muted-foreground line-through">$200</div>
-              <div className="font-heading font-bold text-3xl gradient-text leading-none">$150</div>
-              <div className="text-xs text-muted-foreground font-body mt-0.5">AUD/month</div>
+            <span className="text-xs font-heading font-bold px-2.5 py-1 rounded-full gradient-bg-strong text-primary-foreground">Best Value</span>
+          </div>
+          <div className="h-px bg-border/30" />
+          <div className="flex items-center justify-between gap-4">
+            <div>
+              <div className="font-heading font-bold text-2xl text-foreground/80 leading-none">$50 <span className="text-sm font-semibold text-muted-foreground">AUD/week</span></div>
+              <div className="text-xs font-body text-muted-foreground mt-0.5">No minimum commitment</div>
             </div>
           </div>
-          <p className="text-xs font-body text-muted-foreground/70 max-w-xs text-center sm:text-right leading-relaxed">
-            Lock in discounted pricing for the full year. Min. 1-month commitment. One-off week: AUD $50.
-          </p>
         </div>
       </motion.div>
 

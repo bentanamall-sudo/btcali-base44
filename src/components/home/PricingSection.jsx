@@ -44,29 +44,30 @@ export default function PricingSection() {
           </motion.div>
 
           {/* Pricing cards */}
-          <div className="grid sm:grid-cols-2 gap-4 mb-6">
-            <div className="glass rounded-2xl p-6 border border-border/30 text-center">
-              <p className="text-xs font-heading font-bold text-muted-foreground/50 uppercase tracking-widest mb-3">Weekly</p>
-              <div className="text-xs font-body text-muted-foreground/50 line-through mb-0.5">$49.99</div>
-              <div className="font-heading font-black text-4xl gradient-text leading-none mb-1">$39.99</div>
-              <div className="text-xs text-muted-foreground font-body">AUD / week</div>
-              <p className="text-xs font-body text-muted-foreground/60 mt-3">Min. 1-month commitment</p>
-            </div>
-            <div className="rounded-2xl p-6 border text-center relative overflow-hidden"
-              style={{
-                background: 'linear-gradient(145deg, hsl(var(--card)), hsl(42 78% 8%))',
-                border: '1.5px solid hsl(var(--primary)/0.4)',
-              }}>
+          <div className="space-y-3 mb-6">
+            {/* Committed */}
+            <div className="rounded-2xl p-5 border relative overflow-hidden"
+              style={{ background: 'linear-gradient(145deg, hsl(var(--card)), hsl(42 78% 8%))', border: '1.5px solid hsl(var(--primary)/0.4)' }}>
               <div className="absolute top-0 left-0 right-0 h-px"
                 style={{ background: 'linear-gradient(90deg, transparent, hsl(var(--primary)/0.6), transparent)' }} />
-              <div className="absolute top-3 right-3">
-                <span className="text-xs font-heading font-bold px-2 py-1 rounded-full gradient-bg-strong text-primary-foreground">Best Value</span>
+              <div className="flex items-center justify-between gap-4">
+                <div>
+                  <div className="flex items-center gap-2 mb-1">
+                    <span className="text-xs font-heading font-bold px-2 py-0.5 rounded-full gradient-bg-strong text-primary-foreground">Best Value</span>
+                  </div>
+                  <div className="font-heading font-black text-3xl gradient-text leading-none">$40 <span className="text-base font-semibold text-muted-foreground">AUD/week</span></div>
+                </div>
+                <p className="text-sm font-body text-foreground/70 text-right leading-relaxed">Minimum 1 month<br />commitment</p>
               </div>
-              <p className="text-xs font-heading font-bold text-muted-foreground/50 uppercase tracking-widest mb-3">Monthly</p>
-              <div className="text-xs font-body text-muted-foreground/50 line-through mb-0.5">$200</div>
-              <div className="font-heading font-black text-4xl gradient-text leading-none mb-1">$150</div>
-              <div className="text-xs text-muted-foreground font-body">AUD / month</div>
-              <p className="text-xs font-body text-muted-foreground/60 mt-3">Save ~$10/week</p>
+            </div>
+            {/* No commitment */}
+            <div className="glass rounded-2xl p-5 border border-border/30">
+              <div className="flex items-center justify-between gap-4">
+                <div>
+                  <div className="font-heading font-black text-3xl text-foreground/80 leading-none">$50 <span className="text-base font-semibold text-muted-foreground">AUD/week</span></div>
+                </div>
+                <p className="text-sm font-body text-muted-foreground text-right leading-relaxed">No minimum<br />commitment</p>
+              </div>
             </div>
           </div>
 
@@ -82,7 +83,7 @@ export default function PricingSection() {
               ))}
             </div>
             <p className="text-xs font-body text-muted-foreground/60 mt-4 pt-4 border-t border-border/20">
-              Support availability: Weekdays 4–6 PM NSW time. One-off week available at AUD $50.
+              Support availability: Weekdays 4–6 PM NSW time.
             </p>
           </div>
 
