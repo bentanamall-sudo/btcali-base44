@@ -4,12 +4,14 @@ import { Trophy } from 'lucide-react';
 
 const PARAGRAPHS = [
   "Two years ago I could only do around 10 pull-ups.",
-  "No planche. No front lever. No handstand push-ups. No coaching business. No real understanding of how to structure training.",
-  "Over the last two years I've spent thousands of hours learning calisthenics, overcoming plateaus, refining technique, managing injuries, and figuring out what actually works.",
-  "After 1.5 years of dedicated training I unlocked the full planche. Along the way I also unlocked front lever, handstand push-ups, muscle-ups, bent arm press, L-sit to handstand and many other advanced skills.",
-  "The biggest thing I learned is that most athletes don't fail because they aren't working hard enough. They fail because they don't know what to focus on next.",
-  "I've been through the plateaus. I've dealt with injuries. I've made the mistakes. Now I help athletes avoid those mistakes and progress faster through structured programming, personalised coaching, proper foundations and technique feedback.",
-  "Whether your goal takes a few weeks or a few months, the objective is always the same: find the fastest path forward.",
+  "No Planche. No Front Lever. No Handstand Push-Ups. No Muscle-Up. I also had no real understanding of how to structure my training or what I should focus on to progress efficiently.",
+  "Over the last two years I've spent thousands of hours learning calisthenics, overcoming plateaus, refining technique, managing injuries and figuring out what actually works.",
+  "Along the way I also received coaching and guidance from some of the best athletes in the world. That's one of the biggest reasons I started BTCALI Coaching — because I know firsthand how much coaching can accelerate progress. Before receiving guidance myself, I spent months stuck making slow progress and repeating the same mistakes.",
+  "After roughly 1.5 years of dedicated training I unlocked the Full Planche. Along the way I also achieved Front Lever Pull-Ups, No Dip Muscle-Ups, 90 Degree Handstand Push-Ups, Bent Arm Press, L-Sit to Handstand, Handstand Push-Ups and many other advanced skills.",
+  "The biggest lesson I learned is that most athletes don't fail because they aren't working hard enough. They fail because they don't know what to focus on next.",
+  "I've been through the plateaus. I've dealt with injuries. I've made the mistakes. Now I know how to help athletes avoid those same mistakes and progress faster through structured programming, personalised coaching, proper foundations and detailed technique feedback.",
+  "This is why I started BTCALI Coaching. To help athletes avoid the mistakes that slow progress, achieve skills faster and do it safely. My goal is to help transform as many athletes as possible.",
+  "Whether you're a beginner trying to go from 0–5 pull-ups, an intermediate athlete working towards skills such as the L-Sit to Handstand and Handstand Push-Up, or a stronger athlete wanting to progress from Handstand Push-Ups into Planche, or build your pull-up foundation into a Full Front Lever and Muscle-Up — my coaching is built to help you achieve those goals.",
 ];
 
 export default function MyStory() {

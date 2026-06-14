@@ -45,6 +45,10 @@ export default function WhoThisIsFor() {
             ))}
           </div>
 
+          <p className="text-center text-sm font-heading font-semibold text-foreground/80 mb-2">And many more skills and goals.</p>
+          <p className="text-center text-sm font-body text-muted-foreground mb-6 leading-relaxed max-w-xl mx-auto">
+            Whether your goal is your first pull-up, first handstand, muscle-up, front lever, planche, strength development, mobility improvements or overcoming a plateau, BTCALI Coaching is built around your specific goals.
+          </p>
           <p className="text-center text-sm font-body text-muted-foreground">
             Not sure if coaching is right for you?{' '}
             <RouterLink to="/scan" className="text-primary font-semibold hover:underline">

@@ -287,13 +287,25 @@ export default function CoachingApply() {
                 </div>
 
                 {/* Why BTCALI */}
-                <div className="glass rounded-xl p-4 border border-primary/20">
-                  <p className="font-heading font-bold text-primary text-sm mb-2">Why BTCALI Coaching?</p>
-                  <p className="font-body text-sm text-foreground/80 leading-relaxed mb-2">
+                <div className="glass rounded-xl p-4 border border-primary/20 space-y-3">
+                  <p className="font-heading font-bold text-primary text-sm">Why BTCALI Coaching?</p>
+                  <p className="font-body text-sm text-foreground/80 leading-relaxed">
                     Throughout coaching you'll receive direct support, personalised guidance and clear explanations so you always know exactly what to focus on next.
                   </p>
                   <p className="font-body text-sm text-foreground/80 leading-relaxed">
-                    The difference between watching random tutorials online and receiving coaching is that every piece of feedback, every exercise and every adjustment is built specifically around you. Instead of guessing what to do next, you'll always have a clear path towards your goals.
+                    One thing that's important to me is that BTCALI Coaching was never created purely to make money. I started BTCALI because I know exactly how frustrating it feels to train hard, stay consistent and still feel stuck. I've experienced the plateaus. I've dealt with injuries. I've spent months focusing on the wrong things. I've wasted time on advice that simply didn't apply to me. That's why one of my biggest goals is helping athletes avoid those same mistakes and progress faster.
+                  </p>
+                  <p className="font-body text-sm text-foreground/80 leading-relaxed">
+                    My coaching is currently only $150 per month, which is significantly lower than many coaches who charge $500+ per month for similar services. The goal isn't to be the most expensive coach. The goal is to help as many athletes as possible achieve skills they once thought were impossible.
+                  </p>
+                  <p className="font-body text-sm text-foreground/80 leading-relaxed">
+                    Whether your goal is your first pull-up, first handstand, muscle-up, front lever, planche, handstand push-up, bent arm press or something completely different, every part of your coaching experience is built specifically around helping you reach that goal. You'll receive a personalised training program, detailed technique feedback, ongoing support and routine adjustments based on your progress so you always know exactly what to focus on next.
+                  </p>
+                  <p className="font-body text-sm text-foreground/80 leading-relaxed">
+                    As a calisthenics coach, I have worked with athletes across a wide range of ages and skill levels, both online and in person. The coaching system has consistently produced results because it focuses on personalised programming, detailed feedback and continuous adjustments based on real progress.
+                  </p>
+                  <p className="font-body text-sm text-foreground/80 leading-relaxed">
+                    The difference between watching random tutorials online and receiving coaching is that every exercise, every correction and every adjustment is built specifically around YOU. Instead of guessing what to do next, you'll always have a clear path towards your goals.
                   </p>
                 </div>
 

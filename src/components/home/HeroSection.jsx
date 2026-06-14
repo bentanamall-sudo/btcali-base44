@@ -59,30 +59,18 @@ export default function HeroSection() {
             <span className="text-foreground">At Every Level</span>
           </motion.h1>
 
-          {/* Short copy */}
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.45 }}
-            className="max-w-lg mx-auto mb-3"
-          >
-            <p className="font-body text-base text-muted-foreground leading-relaxed">
-              Personalised programming, video feedback, and form analysis — built around your level, your goals, and your weaknesses.
-            </p>
-          </motion.div>
-
-          {/* How it works dropdown */}
+          {/* Why My Coaching dropdown */}
           <motion.div
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.5 }}
+            transition={{ delay: 0.45 }}
             className="max-w-xl mx-auto mb-10"
           >
             <button
               onClick={() => setDetailsOpen(o => !o)}
               className="flex items-center justify-center gap-2 mx-auto text-sm font-heading font-semibold text-primary hover:text-primary/80 transition-colors"
             >
-              How it works
+              Why My Coaching
               <motion.span animate={{ rotate: detailsOpen ? 180 : 0 }} transition={{ duration: 0.2 }}>
                 <ChevronDown className="w-4 h-4" />
               </motion.span>
@@ -96,15 +84,27 @@ export default function HeroSection() {
                   transition={{ duration: 0.28, ease: 'easeInOut' }}
                   className="overflow-hidden"
                 >
-                  <div className="glass rounded-xl p-5 mt-3 border border-border/30 text-left space-y-2.5">
+                  <div className="glass rounded-xl p-5 mt-3 border border-border/30 text-left space-y-3">
                     <p className="text-sm font-body text-foreground/80 leading-relaxed">
-                      I analyse your level, goals, form, weaknesses, and mobility — then build a routine designed specifically to get you progressing as fast as possible.
+                      The goal of my coaching is simple: help you achieve your dream calisthenics skills as fast, safely and efficiently as possible.
                     </p>
                     <p className="text-sm font-body text-foreground/75 leading-relaxed">
-                      You send every set. I provide feedback via text, voice notes, screen recordings, and personalised tutorials — before your next session.
+                      Over the past few years I've spent thousands of hours learning calisthenics, overcoming plateaus, refining technique, managing injuries and figuring out what actually works. I've also received coaching and guidance from some of the best athletes in the world, which completely changed the speed of my progress. That's one of the biggest reasons I started BTCALI Coaching — because I know firsthand how much coaching can accelerate results.
                     </p>
                     <p className="text-sm font-body text-foreground/75 leading-relaxed">
-                      Your routine is continuously adapted as you improve.
+                      I've coached athletes both online and in person, ranging from complete beginners to advanced athletes, and from ages as young as 12 all the way into their 30s. The results are there. At this point it isn't really a question of whether coaching works. It's been proven over and over again. The real question is how much longer you're willing to spend guessing.
+                    </p>
+                    <p className="text-sm font-body text-foreground/75 leading-relaxed">
+                      Most people continue watching random YouTube tutorials and trying different methods without knowing which advice actually applies to them. Some eventually get there, but progress is often much slower than it needs to be. With personalised coaching, every exercise, progression, correction and adjustment is built specifically around YOU.
+                    </p>
+                    <p className="text-sm font-body text-foreground/75 leading-relaxed">
+                      One thing that's important to me is that I'm not doing this purely for money. The reason my coaching is priced lower than many coaches is because my goal has always been to help as many athletes as possible achieve skills they once thought were impossible.
+                    </p>
+                    <p className="text-sm font-body text-foreground/75 leading-relaxed">
+                      I know exactly how it feels to look at skills such as the Planche, Front Lever, Muscle-Up, Handstand Push-Up and 90 Degree Handstand Push-Up and think they'll never happen. Yet within roughly two years of training I achieved a 5 second Full Planche, 5 Front Lever Pull-Ups, No Dip Muscle-Ups, Handstand Push-Ups and 90 Degree Handstand Push-Ups. Those skills weren't unlocked through luck. They came through proper guidance, structured training and understanding what to focus on.
+                    </p>
+                    <p className="text-sm font-body text-foreground/75 leading-relaxed">
+                      My goal is to help you achieve those same results faster while avoiding the mistakes that slow down progress.
                     </p>
                   </div>
                 </motion.div>

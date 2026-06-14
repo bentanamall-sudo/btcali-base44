@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import { CheckCircle } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const FAILS = [
   'Following random YouTube videos without a clear plan',
@@ -68,14 +69,30 @@ export default function WhyAthletesFail() {
             <p className="font-heading font-bold text-foreground text-base sm:text-lg text-center mb-4">
               Why BTCALI Works
             </p>
-            <div className="space-y-2">
+            <div className="space-y-2 mb-4">
               {SOLUTIONS.map((sol, i) => (
                 <div key={i} className="flex items-center gap-3">
                   <CheckCircle className="w-4 h-4 text-primary flex-shrink-0" />
                   <span className="font-body text-sm text-foreground/85">{sol}</span>
                 </div>
               ))}
+              <div className="flex items-center gap-3">
+                <CheckCircle className="w-4 h-4 text-primary flex-shrink-0" />
+                <span className="font-body text-sm text-foreground/85">And much more.</span>
+              </div>
             </div>
+            <p className="font-body text-sm text-foreground/70 leading-relaxed mb-4">
+              For a complete breakdown of exactly how BTCALI Coaching works, including video analysis, personalised programming, progress tracking and ongoing support, visit the 1-1 Coaching page.
+            </p>
+            <Link to="/apply">
+              <motion.button
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.97 }}
+                className="w-full py-3 rounded-xl glass border border-primary/40 text-primary font-heading font-bold text-sm hover:border-primary/70 transition-all"
+              >
+                View Full Coaching Details
+              </motion.button>
+            </Link>
           </motion.div>
         </motion.div>
       </div>

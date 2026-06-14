@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
 
 const STEPS = [
   {
@@ -43,6 +44,18 @@ export default function HowCoachingWorks() {
           <h2 className="font-heading font-black text-3xl sm:text-4xl text-foreground mb-10 text-center leading-tight">
             How Coaching <span className="gradient-text">Works</span>
           </h2>
+
+          <div className="flex justify-center mb-8">
+            <Link to="/apply">
+              <motion.button
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.97 }}
+                className="flex items-center gap-2 px-7 py-3.5 rounded-xl gradient-bg-strong text-primary-foreground font-heading font-bold text-sm glow-primary"
+              >
+                How 1-1 Coaching Works
+              </motion.button>
+            </Link>
+          </div>
 
           <div className="relative">
             {/* Vertical line */}
