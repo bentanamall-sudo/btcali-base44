@@ -11,45 +11,80 @@ const SKILLS = [
 
 const INCLUSION_ITEMS = [
   {
-    title: 'Personalized training routine / program',
-    detail: 'Built specifically around your current level, goals, weaknesses, and available equipment.',
+    title: 'Personalised training routine / program',
+    detail: `As soon as coaching begins, I analyse your Athlete Scan and build a personalised training routine designed specifically around you. Every exercise, progression and training method is selected with the purpose of helping you reach your goals as quickly and safely as possible.
+
+Since every athlete is different, every program is different. Whether you're a complete beginner going from 0–5 pullups, an intermediate athlete working towards the L-Sit to Handstand and Handstand Pushup, or a stronger athlete progressing from Handstand Pushups to Planche or building your pullup foundation into a Full Front Lever and Muscle-Up, your program will be built specifically around your current level, goals, strengths, weaknesses, available equipment, mobility and schedule.
+
+Nothing is copied. Nothing is generic. Every program starts from scratch.`,
   },
   {
     title: 'Full technique and form analysis',
-    detail: 'You send through your workout sets and I analyse them in depth.',
-    sub: ['Text feedback', 'Voice recordings', 'Screen recording analysis', 'Personalized tutorials specific to YOU'],
-    subNote: 'This helps you understand what you are doing wrong, how to fix it, proper technique, correct activations, and how to perform movements correctly.',
+    detail: `As you complete your training, you record your sets and send the videos through to me for analysis. I review your clips in depth and provide detailed feedback — usually during my available hours of 4–6 PM Australian time, though I may also respond outside of these hours when available. You will always receive feedback before your next workout, and in most cases feedback is returned within 24 hours.
+
+I don't simply tell you that your form is wrong. I show you exactly what needs to change and how to fix it. Feedback may include text explanations, voice messages, personalised tutorials, movement demonstrations, video breakdowns and premium skill tutorials available through the BTCALI Members Area.`,
   },
   {
     title: 'Video feedback and movement breakdowns',
-    detail: 'I personally perform movements to show you:',
-    sub: ['What you are doing wrong', 'What needs fixing', 'Proper positioning', 'Correct technique', 'Movement control', 'How to improve faster'],
+    detail: `One of the most effective methods I use is visually breaking down your clips frame by frame. I often record your footage on my laptop and analyse it in detail, showing you exactly where you should be looking, where certain body parts should be moving and how your positioning can be improved.
+
+I also take screenshots and annotate them by drawing directly onto the image to highlight movement pathways, lean angles, body positioning and technique corrections. This helps you clearly understand things such as how much you should lean, the correct angle of specific movements, how to activate the right muscles and how to reduce unnecessary stress on your joints.
+
+The goal is to make sure you fully understand the feedback being given so you can apply it immediately during your next session.`,
   },
   {
     title: 'Routine adjustments based on progress',
-    detail: 'As you improve, I constantly adapt and upgrade your routine so your progress does not stall.',
+    detail: `As your strength and skill level increase, your program evolves with you. Many athletes progress quickly and outgrow certain exercises within just a few weeks. For example, an athlete may progress from Pike Pushups to Bent Arm Press variations much faster than expected. When this happens, I update the program to match their new strength level and continue moving them towards bigger goals.
+
+Programs are regularly adjusted based on your progress, technique, strengths and weaknesses to make sure your training continues moving in the right direction.`,
   },
   {
     title: 'Direct messaging support',
-    detail: 'Message whenever you need help. I will do my best to respond before your next workout whenever possible, with most replies occurring during my availability hours.',
-    note: 'Main availability: weekdays 4–6 PM NSW time. Response timing will not negatively affect progress — corrections and advice will always be provided before your next session.',
+    detail: `Message whenever you need help or have a question about your training. My main availability is 4–6 PM Australian time, though I may also respond outside of these hours when available. You will always receive feedback before your next workout.
+
+You can send videos through Instagram, WhatsApp or Messages — whichever is most convenient for you. Response timing will never negatively affect your progress; corrections and advice will always be provided before your next session.`,
   },
   {
     title: 'Skill-specific programming',
-    detail: 'Whether your goal is Handstand, Planche, Front Lever, Muscle-Up, L-Sit to Handstand, or Strength — the programme is built around YOUR specific target.',
+    detail: `Whether your goal is Handstand, Planche, Front Lever, Muscle-Up, L-Sit to Handstand, Bent Arm Press or general strength, the programme is built entirely around your specific target. Every exercise and progression chosen for your routine is there for a reason — to move you closer to your goal.
+
+My coaching works around your schedule too. I can create programs specifically designed to help you make progress in shorter training sessions. Even training once every two days for under an hour can still produce significant results when programmed correctly.`,
   },
   {
-    title: 'Personalized tutorials',
-    detail: 'Detailed tutorials explaining exactly how to improve movements and perform exercises correctly.',
+    title: 'Personalised tutorials',
+    detail: `You will receive detailed personalised tutorials explaining exactly how to improve your specific movements and perform exercises correctly. These tutorials are created specifically for you based on what I observe in your submitted clips — not generic guides, but targeted explanations built around your current technique, weaknesses and goals.
+
+Premium skill tutorials are also available through the BTCALI Members Area, giving you access to in-depth breakdowns of specific calisthenics skills.`,
   },
   {
     title: 'Progress tracking',
-    detail: 'I track your progress across every set and continuously refine your programme based on real performance data.',
+    detail: `I track your progress across every set you send through. This allows me to see exactly how your strength, technique and skill level are developing over time. Based on this data, I continuously refine your programme to ensure your training is always moving in the right direction.
+
+As your strength increases and you begin achieving your goals, your program is updated to reflect your new level and set you up for your next progression target.`,
   },
 ];
 
 const WHAT_I_ANALYZE = [
-  'Current level', 'Goals', 'Weaknesses', 'Form', 'Technique', 'Mobility', 'Strengths', 'Limitations',
+  'Current level', 'Goals', 'Weaknesses', 'Form', 'Technique', 'Mobility', 'Strengths', 'Limitations', 'Equipment', 'Schedule',
+];
+
+const FAQ_ITEMS = [
+  {
+    q: 'How do I send my videos?',
+    a: 'You can send videos through Instagram, WhatsApp or Messages — whichever is most convenient for you.',
+  },
+  {
+    q: 'What are your available hours?',
+    a: 'My main availability is 4–6 PM Australian time. I may also respond outside of these hours when available. You will always receive feedback before your next workout.',
+  },
+  {
+    q: 'What if I don\'t have much time?',
+    a: 'That\'s completely fine. My coaching works around your schedule. I can create programs specifically designed to help you make progress in shorter training sessions while still working towards your goals. Even training once every two days for under an hour can still produce significant results when programmed correctly.',
+  },
+  {
+    q: 'What payment methods do you accept?',
+    a: 'I currently accept PayPal, BSB Bank Transfer, PayID and Wise. Additional payment methods may also be available if needed.',
+  },
 ];
 
 function AccordionItem({ title, children }) {
@@ -78,20 +113,10 @@ function AccordionItem({ title, children }) {
             className="overflow-hidden"
           >
             <div className="px-5 pb-5 pt-1 border-t border-border/30">
-              <div className="space-y-2 pt-1">
-                <p className="text-sm font-body text-foreground/75 leading-relaxed">{children.detail}</p>
-                {children.sub && (
-                  <ul className="space-y-1 mt-2">
-                    {children.sub.map(s => (
-                      <li key={s} className="flex items-center gap-2 text-sm font-body text-foreground/70">
-                        <div className="w-1 h-1 rounded-full bg-primary/60 flex-shrink-0" />
-                        {s}
-                      </li>
-                    ))}
-                  </ul>
-                )}
-                {children.subNote && <p className="text-xs font-body text-muted-foreground leading-relaxed mt-2 italic">{children.subNote}</p>}
-                {children.note && <p className="text-xs font-body text-muted-foreground leading-relaxed mt-2 italic">{children.note}</p>}
+              <div className="space-y-3 pt-2">
+                {children.detail.split('\n\n').map((para, i) => (
+                  <p key={i} className="text-sm font-body text-foreground/75 leading-relaxed">{para}</p>
+                ))}
               </div>
             </div>
           </motion.div>
@@ -192,10 +217,20 @@ export default function CoachingApply() {
               transition={{ duration: 0.28, ease: 'easeInOut' }}
               className="overflow-hidden"
             >
-              <div className="glass rounded-b-xl px-5 pb-5 pt-4 border border-t-0 border-border/30 space-y-4">
+              <div className="glass rounded-b-xl px-5 pb-6 pt-4 border border-t-0 border-border/30 space-y-5">
+
+                {/* Intro */}
                 <p className="font-body text-sm text-foreground/85 leading-relaxed">
-                  Every programme is built from scratch around your specific level, goals, weaknesses, form, mobility, and equipment. Nothing is copied. Nothing is generic.
+                  As soon as we begin coaching through your first payment, I will analyse your Athlete Scan and create a personalised training routine designed to help you achieve your goals as efficiently as possible.
                 </p>
+                <p className="font-body text-sm text-foreground/80 leading-relaxed">
+                  Since every athlete is different, every program is different. Whether you're a complete beginner trying to go from 0–5 pullups, an intermediate athlete working towards skills such as the L-Sit to Handstand and Handstand Pushup, or a stronger athlete looking to progress from Handstand Pushups to Planche, or build your pullup foundation into a Full Front Lever and Muscle-Up — your program will be built specifically around you.
+                </p>
+                <p className="font-body text-sm text-foreground/80 leading-relaxed">
+                  I take into account your current skill level, goals, strengths, weaknesses, available equipment, mobility, schedule and individual needs. Every exercise, progression and training method is selected with the purpose of helping you reach your goals as quickly and safely as possible.
+                </p>
+
+                {/* What I analyse */}
                 <div className="glass rounded-xl p-4 border border-primary/20">
                   <p className="font-heading font-semibold text-primary text-xs uppercase tracking-wider mb-2">What I analyse</p>
                   <div className="grid grid-cols-2 gap-1.5">
@@ -207,10 +242,66 @@ export default function CoachingApply() {
                     ))}
                   </div>
                 </div>
+
+                {/* Framework */}
+                <div>
+                  <p className="font-heading font-bold text-foreground text-sm mb-2">The Framework I Use To Help My Students Progress</p>
+                  <p className="font-body text-sm text-foreground/80 leading-relaxed">
+                    The main way athletes progress through my coaching is by following the exact framework I have used to help many of my students achieve amazing results. You follow the program I create for you, record your sets and send the videos through to me for analysis. I review your clips in depth and provide detailed feedback — usually during my available hours of 4–6 PM Australian time, though I may also respond outside of these hours. You will always receive feedback before your next workout, and in most cases feedback is returned within 24 hours.
+                  </p>
+                </div>
+
+                {/* Video analysis */}
+                <div>
+                  <p className="font-heading font-bold text-foreground text-sm mb-2">How I Analyse Your Clips</p>
+                  <p className="font-body text-sm text-foreground/80 leading-relaxed mb-2">
+                    One of the biggest advantages of BTCALI Coaching is the level of detail that goes into the feedback you receive. I don't simply tell you that your form is wrong. I show you exactly what needs to change and how to fix it.
+                  </p>
+                  <p className="font-body text-sm text-foreground/80 leading-relaxed mb-2">
+                    I often record your footage on my laptop and analyse it frame by frame, showing you exactly where you should be looking, where certain body parts should be moving and how your positioning can be improved.
+                  </p>
+                  <p className="font-body text-sm text-foreground/80 leading-relaxed">
+                    I also take screenshots and annotate them by drawing directly onto the image to highlight movement pathways, lean angles, body positioning and technique corrections — helping you clearly understand things such as how much you should lean, the correct angle of specific movements, how to activate the right muscles and how to reduce unnecessary stress on your joints.
+                  </p>
+                </div>
+
+                {/* Program updates */}
+                <div>
+                  <p className="font-heading font-bold text-foreground text-sm mb-2">Program Updates As You Improve</p>
+                  <p className="font-body text-sm text-foreground/80 leading-relaxed">
+                    As your strength and skill level increase, your program will evolve with you. Many athletes progress quickly and outgrow certain exercises within just a few weeks. For example, an athlete may progress from Pike Pushups to Bent Arm Press variations much faster than expected. When this happens, I update the program to match their new strength level and continue moving them towards bigger goals.
+                  </p>
+                </div>
+
+                {/* FAQ */}
+                <div>
+                  <p className="font-heading font-bold text-foreground text-sm mb-3">Frequently Asked Questions</p>
+                  <div className="space-y-3">
+                    {FAQ_ITEMS.map((faq, i) => (
+                      <div key={i} className="glass rounded-xl p-4 border border-border/20">
+                        <p className="font-heading font-semibold text-foreground text-sm mb-1">{faq.q}</p>
+                        <p className="font-body text-sm text-foreground/75 leading-relaxed">{faq.a}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Why BTCALI */}
+                <div className="glass rounded-xl p-4 border border-primary/20">
+                  <p className="font-heading font-bold text-primary text-sm mb-2">Why BTCALI Coaching?</p>
+                  <p className="font-body text-sm text-foreground/80 leading-relaxed mb-2">
+                    Throughout coaching you'll receive direct support, personalised guidance and clear explanations so you always know exactly what to focus on next.
+                  </p>
+                  <p className="font-body text-sm text-foreground/80 leading-relaxed">
+                    The difference between watching random tutorials online and receiving coaching is that every piece of feedback, every exercise and every adjustment is built specifically around you. Instead of guessing what to do next, you'll always have a clear path towards your goals.
+                  </p>
+                </div>
+
+                {/* Availability */}
                 <div className="glass rounded-xl p-4 border border-border/20">
-                  <p className="font-heading font-semibold text-foreground text-xs uppercase tracking-wider mb-1">Support availability</p>
-                  <p className="text-sm font-body text-foreground/80">Weekdays 4–6 PM NSW time</p>
-                  <p className="text-xs font-body text-muted-foreground mt-1">I aim to respond before your next session whenever possible.</p>
+                  <p className="font-heading font-semibold text-foreground text-xs uppercase tracking-wider mb-1">Support Availability</p>
+                  <p className="text-sm font-body text-foreground/80">Main availability: 4–6 PM Australian time</p>
+                  <p className="text-xs font-body text-muted-foreground mt-1">I aim to respond before your next session whenever possible. I may also respond outside of these hours when available.</p>
                 </div>
               </div>
             </motion.div>
@@ -258,16 +349,20 @@ export default function CoachingApply() {
 
       {/* 5. Skills */}
       <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="mb-12">
-        <h2 className="font-heading font-bold text-2xl text-foreground mb-4">
-          Skills I Coach
+        <h2 className="font-heading font-bold text-2xl text-foreground mb-2">
+          Main Calisthenics Skills I Help Athletes Achieve
         </h2>
-        <div className="flex flex-wrap gap-2 mb-6">
+        <p className="font-body text-sm text-muted-foreground leading-relaxed mb-4">
+          These are some of the most common skills I help athletes achieve through BTCALI Coaching. Every program is built around your specific goals, meaning many additional skills, strength goals and movement patterns can also be coached.
+        </p>
+        <div className="flex flex-wrap gap-2 mb-3">
           {SKILLS.map(s => (
             <span key={s} className="text-sm font-body glass px-3 py-1.5 rounded-full border border-border/30 text-foreground/80 hover:border-primary/40 hover:text-primary transition-all cursor-default">
               {s}
             </span>
           ))}
         </div>
+        <p className="font-body text-sm text-muted-foreground italic mb-6">And many more skills and goals specific to YOU.</p>
         <div className="glass rounded-xl p-5 border border-border/30 space-y-3 mb-6">
           <p className="font-body text-sm text-foreground/80 leading-relaxed">
             I coach athletes through skills such as Planche, Front Lever, Handstand, Handstand Push-Ups, Muscle-Ups, L-Sit to Handstand, Bent Arm Press and many more.
