@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronRight, ChevronLeft, Zap, CheckCircle, Trophy, BookOpen } from 'lucide-react';
@@ -6,6 +6,25 @@ import { PageHeaderLogo } from '@/components/Logo';
 import { base44 } from '@/api/base44Client';
 import { generateReport, buildEmailBody } from '@/lib/reportGenerator';
 import DiagnosticReport from '../components/diagnostic/DiagnosticReport';
+
+const STORAGE_KEY = 'btcali-athlete-scan';
+const COMPLETED_KEY = 'btcali-scan-completed';
+
+function loadSaved() {
+  try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null'); } catch { return null; }
+}
+function loadCompleted() {
+  try { return JSON.parse(localStorage.getItem(COMPLETED_KEY) || 'null'); } catch { return null; }
+}
+function saveScan(data, step, gateAccepted) {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify({ data, step, gateAccepted }));
+}
+function saveCompleted(data, report) {
+  localStorage.setItem(COMPLETED_KEY, JSON.stringify({ data, report }));
+}
+function clearScan() {
+  localStorage.removeItem(STORAGE_KEY);
+}
 
 const GOALS_OPTIONS = [
   'Handstand','Handstand Push-Up','Pike Push-Up','Bent Arm Press','L-Sit',
@@ -114,30 +133,58 @@ function Field({ children }) {
   return <div className="mb-5">{children}</div>;
 }
 
+const BLANK_DATA = {
+  full_name: '', email: '', age: '', height: '', weight: '', country: '', instagram: '',
+  training_experience: '', training_days: '', training_location: '',
+  followed_program: '', has_coach: '',
+  pushup_max: '', pullup_max: '', dip_max: '', pike_pushup_max: '',
+  handstand_hold: '', lsit_hold: '', tuck_planche_hold: '',
+  front_lever_level: '', can_muscle_up: '', can_hspu: '',
+  can_bent_arm_press: '', can_lsit_to_hs: '',
+  goals: [],
+  wrist_mobility: '', shoulder_mobility: '', hamstring_mobility: '',
+  injuries: '', pain_areas: '', sleep_quality: '', recovery_quality: '',
+  coaching_investment: '', payment_option: '',
+  consistency_answer: '', seriousness: '', why_btcali: '',
+  equipment_available: '', exact_current_skills: '', additional_notes: '',
+  media_consent: false, serious_applicant: false,
+};
+
 export default function AthleteDiagnostic() {
   const navigate = useNavigate();
-  const [gateAccepted, setGateAccepted] = useState(false);
-  const [step, setStep] = useState(0);
-  const [data, setData] = useState({
-    full_name: '', email: '', age: '', height: '', weight: '', country: '', instagram: '',
-    training_experience: '', training_days: '', training_location: '',
-    followed_program: '', has_coach: '',
-    pushup_max: '', pullup_max: '', dip_max: '', pike_pushup_max: '',
-    handstand_hold: '', lsit_hold: '', tuck_planche_hold: '',
-    front_lever_level: '', can_muscle_up: '', can_hspu: '',
-    can_bent_arm_press: '', can_lsit_to_hs: '',
-    goals: [],
-    wrist_mobility: '', shoulder_mobility: '', hamstring_mobility: '',
-    injuries: '', pain_areas: '', sleep_quality: '', recovery_quality: '',
-    coaching_investment: '', payment_option: '',
-    consistency_answer: '', seriousness: '', why_btcali: '',
-    equipment_available: '', exact_current_skills: '', additional_notes: '',
-    media_consent: false, serious_applicant: false,
-  });
-  const [report, setReport] = useState(null);
-  const [submittedData, setSubmittedData] = useState(null);
+
+  // Load saved state on mount
+  const saved = loadSaved();
+  const completed = loadCompleted();
+
+  const [gateAccepted, setGateAccepted] = useState(saved?.gateAccepted || false);
+  const [step, setStep] = useState(saved?.step || 0);
+  const [data, setData] = useState(saved?.data || { ...BLANK_DATA });
+  const [report, setReport] = useState(completed?.report || null);
+  const [submittedData, setSubmittedData] = useState(completed?.data || null);
   const [copied, setCopied] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+  const [showLeaveWarning, setShowLeaveWarning] = useState(false);
+  const [pendingNavUrl, setPendingNavUrl] = useState(null);
+
+  // Auto-save to localStorage on every change
+  useEffect(() => {
+    if (gateAccepted && !report) {
+      saveScan(data, step, gateAccepted);
+    }
+  }, [data, step, gateAccepted, report]);
+
+  // Navigation guard — warn if mid-scan
+  useEffect(() => {
+    const handleBeforeUnload = (e) => {
+      if (gateAccepted && !report) {
+        e.preventDefault();
+        e.returnValue = '';
+      }
+    };
+    window.addEventListener('beforeunload', handleBeforeUnload);
+    return () => window.removeEventListener('beforeunload', handleBeforeUnload);
+  }, [gateAccepted, report]);
 
   const set = (key, val) => setData(prev => ({ ...prev, [key]: val }));
   const toggleGoal = (g) => set('goals', data.goals.includes(g) ? data.goals.filter(x => x !== g) : [...data.goals, g]);
@@ -387,7 +434,12 @@ export default function AthleteDiagnostic() {
     const fullData = { ...snapshot, ...r };
     try {
       await base44.entities.AthleteReport.create(fullData);
-    } catch(e) { /* db save best-effort, don't block */ }
+    } catch(e) {
+      console.error('DB save failed:', e);
+    }
+    // Save completed report locally so it persists
+    saveCompleted(snapshot, r);
+    clearScan();
     setSubmittedData(snapshot);
     setReport(r);
     setSubmitting(false);
@@ -428,6 +480,29 @@ export default function AthleteDiagnostic() {
     }
   };
 
+  // ── Leave warning modal ──────────────────────────────────────────────────
+  const LeaveWarning = () => (
+    <div className="fixed inset-0 z-50 flex items-center justify-center px-4">
+      <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={() => setShowLeaveWarning(false)} />
+      <motion.div
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        className="relative glass-strong rounded-2xl border border-primary/30 p-6 max-w-sm w-full text-center"
+      >
+        <p className="font-heading font-bold text-foreground text-lg mb-2">Scan In Progress</p>
+        <p className="text-sm font-body text-muted-foreground mb-6">You have an Athlete Scan in progress. Are you sure you want to leave? Your progress is saved.</p>
+        <div className="flex gap-3">
+          <button onClick={() => setShowLeaveWarning(false)} className="flex-1 py-3 rounded-xl gradient-bg-strong text-primary-foreground font-heading font-bold text-sm">
+            Continue Athlete Scan
+          </button>
+          <button onClick={() => { setShowLeaveWarning(false); if (pendingNavUrl) navigate(pendingNavUrl); }} className="flex-1 py-3 rounded-xl glass border border-border/40 text-foreground font-heading font-semibold text-sm">
+            Leave Page
+          </button>
+        </div>
+      </motion.div>
+    </div>
+  );
+
   // ── Gate screen ─────────────────────────────────────────────────────────
   if (!gateAccepted) {
     return (
@@ -462,13 +537,28 @@ export default function AthleteDiagnostic() {
             </div>
           </div>
           <div className="flex flex-col gap-3">
+            {saved && (
+              <div className="glass rounded-xl px-4 py-3 border border-amber-500/30 text-left mb-1">
+                <p className="text-xs font-heading font-bold text-amber-400 mb-0.5">Saved progress found</p>
+                <p className="text-xs font-body text-muted-foreground">You have an unfinished scan. Continue where you left off.</p>
+              </div>
+            )}
             <motion.button
               whileTap={{ scale: 0.97 }}
               onClick={() => setGateAccepted(true)}
               className="w-full py-4 rounded-xl gradient-bg-strong glow-primary text-primary-foreground font-heading font-bold text-base"
             >
-              I'm ready to invest in coaching — Continue
+              {saved ? 'Continue Athlete Scan' : "I'm ready to invest in coaching — Continue"}
             </motion.button>
+            {saved && (
+              <motion.button
+                whileTap={{ scale: 0.97 }}
+                onClick={() => { clearScan(); setStep(0); setData({ ...BLANK_DATA }); setGateAccepted(true); }}
+                className="w-full py-2.5 rounded-xl glass border border-border/40 text-muted-foreground font-heading font-semibold text-xs hover:border-primary/30 transition-all"
+              >
+                Start Fresh (Clear Saved Progress)
+              </motion.button>
+            )}
             <motion.button
               whileTap={{ scale: 0.97 }}
               onClick={() => navigate('/skills')}
@@ -485,7 +575,7 @@ export default function AthleteDiagnostic() {
   if (report) {
     return (
       <div className="min-h-screen py-12 px-4 sm:px-6 max-w-4xl mx-auto">
-        <DiagnosticReport data={data} report={report} />
+        <DiagnosticReport data={submittedData || data} report={report} />
 
         <div className="mt-8 space-y-3">
           {/* Completion message */}
@@ -563,6 +653,7 @@ export default function AthleteDiagnostic() {
 
   return (
     <div className="min-h-screen py-12 px-4 sm:px-6 max-w-2xl mx-auto">
+      {showLeaveWarning && <LeaveWarning />}
       {/* Header */}
       <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
         <div className="flex justify-start mb-5">

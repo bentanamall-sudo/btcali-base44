@@ -2,19 +2,19 @@ import { motion } from 'framer-motion';
 import { CheckCircle } from 'lucide-react';
 
 const FAILS = [
-  'Random YouTube tutorials with no structure',
-  'No progression — same exercises forever',
-  'No form or technique feedback',
-  'No accountability or consistency',
-  'Constantly changing programs without sticking to one',
+  'Following random YouTube videos without a clear plan',
+  'Unsure what exercises you should actually be doing',
+  'No expert feedback on your technique',
+  'Getting stuck on the same skills for months',
+  'Losing motivation and consistency over time',
 ];
 
 const SOLUTIONS = [
-  'Structured progression',
-  'Personalised programming',
-  'Full technique feedback',
-  'Accountability',
-  'Routine adjustments based on progress',
+  'A step-by-step roadmap built around your goals',
+  'Personalised training tailored to your current level',
+  'Detailed form and technique feedback',
+  'Ongoing support and accountability',
+  'Program adjustments as you improve',
 ];
 
 export default function WhyAthletesFail() {
@@ -66,7 +66,7 @@ export default function WhyAthletesFail() {
             }}
           >
             <p className="font-heading font-bold text-foreground text-base sm:text-lg text-center mb-4">
-              BTCALI Solves All 5
+              Why BTCALI Works
             </p>
             <div className="space-y-2">
               {SOLUTIONS.map((sol, i) => (

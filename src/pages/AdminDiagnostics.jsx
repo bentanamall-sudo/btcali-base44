@@ -28,10 +28,17 @@ export default function AdminDiagnostics() {
   const [savingNotes, setSavingNotes] = useState(false);
 
   useEffect(() => {
-    base44.entities.AthleteReport.list('-created_date', 100).then(r => {
-      setReports(r);
-      setLoading(false);
-    });
+    const load = async () => {
+      try {
+        const r = await base44.entities.AthleteReport.list('-created_date', 200);
+        setReports(r || []);
+      } catch (err) {
+        console.error('Failed to load reports:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    load();
   }, []);
 
   const filtered = reports.filter(r => {
@@ -144,7 +151,12 @@ export default function AdminDiagnostics() {
                   ))}
                   {(r.goals || []).length > 3 && <span className="text-xs text-muted-foreground font-body">+{r.goals.length - 3}</span>}
                 </div>
-                <p className="text-xs text-muted-foreground font-body mb-4">{r.training_experience} · {r.country}</p>
+                <p className="text-xs text-muted-foreground font-body mb-1">{r.training_experience} · {r.country}</p>
+                {r.created_date && (
+                  <p className="text-xs text-muted-foreground/50 font-body mb-4">
+                    Submitted: {new Date(r.created_date).toLocaleDateString('en-AU', { day: 'numeric', month: 'long', year: 'numeric' })}
+                  </p>
+                )}
                 <button
                   onClick={() => openReport(r)}
                   className="w-full flex items-center justify-center gap-2 py-2 rounded-xl glass border border-primary/30 text-primary text-sm font-heading font-semibold hover:glow-border transition-all"

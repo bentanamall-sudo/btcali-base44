@@ -71,7 +71,7 @@ const PREMIUM_CATEGORIES = [
   },
 ];
 
-function CategoryCard({ cat, onClick, isPremium }) {
+function CategoryCard({ cat, onClick, isPremium, isFree }) {
   if (cat.comingSoon) {
     return (
       <div className="rounded-2xl overflow-hidden opacity-65"
@@ -97,50 +97,86 @@ function CategoryCard({ cat, onClick, isPremium }) {
     );
   }
 
+  // Landscape card for free section
+  if (isFree) {
+    return (
+      <motion.div
+        whileHover={{ y: -2, transition: { duration: 0.2 } }}
+        onClick={onClick}
+        className="cursor-pointer group rounded-2xl overflow-hidden relative flex items-stretch"
+        style={{
+          background: cat.featured
+            ? 'linear-gradient(135deg, hsl(var(--card)), hsl(42 78% 12%))'
+            : 'linear-gradient(135deg, hsl(var(--card)), hsl(var(--surface-2)))',
+          border: cat.featured
+            ? '1.5px solid hsl(var(--primary)/0.4)'
+            : '1px solid hsl(var(--border)/0.5)',
+          minHeight: '140px',
+        }}
+      >
+        {/* Left accent bar */}
+        <div className="w-1 flex-shrink-0 rounded-l-2xl"
+          style={{ background: cat.featured ? 'linear-gradient(180deg, #D4AF37, #B8860B)' : 'linear-gradient(180deg, #6B7280, transparent)' }} />
+
+        {/* Icon column */}
+        <div className="flex items-center justify-center px-5 py-6 flex-shrink-0">
+          <div className="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl"
+            style={{ background: cat.featured ? 'rgba(212,175,55,0.15)' : 'rgba(212,175,55,0.08)', border: cat.featured ? '1.5px solid rgba(212,175,55,0.35)' : '1px solid rgba(212,175,55,0.15)' }}>
+            {cat.icon}
+          </div>
+        </div>
+
+        {/* Content */}
+        <div className="flex-1 py-6 pr-6 flex flex-col justify-between">
+          <div>
+            <div className="flex items-center gap-2 mb-2">
+              {cat.featured && (
+                <span className="inline-flex items-center gap-1 bg-primary/15 border border-primary/35 rounded-full px-2.5 py-0.5 text-xs font-heading font-bold text-primary uppercase tracking-wider">
+                  <Zap className="w-3 h-3" /> Start Here
+                </span>
+              )}
+              <span className="text-xs font-heading font-bold px-2.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">Free</span>
+            </div>
+            <h3 className="font-heading font-bold text-lg text-foreground mb-1.5 group-hover:text-primary transition-colors">{cat.title}</h3>
+            <p className="text-sm font-body text-muted-foreground leading-relaxed">{cat.description}</p>
+          </div>
+          <div className="flex items-center justify-between mt-4 pt-3 border-t border-border/20">
+            <span className="text-xs font-body text-muted-foreground/55">{cat.level}</span>
+            <span className="text-sm font-heading font-bold text-emerald-400 group-hover:translate-x-1 transition-transform">Explore →</span>
+          </div>
+        </div>
+      </motion.div>
+    );
+  }
+
+  // Portrait card for premium section
   return (
     <motion.div
       whileHover={{ y: -4, transition: { duration: 0.2 } }}
       onClick={onClick}
       className="cursor-pointer group rounded-2xl overflow-hidden relative"
       style={{
-        background: isPremium
-          ? 'linear-gradient(145deg, hsl(var(--card)), hsl(42 78% 10%))'
-          : cat.featured
-            ? 'linear-gradient(145deg, hsl(var(--card)), hsl(42 78% 12%))'
-            : 'linear-gradient(145deg, hsl(var(--card)), hsl(var(--surface-2)))',
-        border: isPremium
-          ? '1px solid hsl(var(--primary)/0.35)'
-          : cat.featured
-            ? '1.5px solid hsl(var(--primary)/0.4)'
-            : '1px solid hsl(var(--border)/0.5)',
+        background: 'linear-gradient(145deg, hsl(var(--card)), hsl(42 78% 10%))',
+        border: '1px solid hsl(var(--primary)/0.35)',
       }}
     >
       <div className="h-px w-full opacity-40 group-hover:opacity-80 transition-opacity"
-        style={{ background: isPremium ? 'linear-gradient(90deg, transparent, #D4AF37, transparent)' : 'linear-gradient(90deg, transparent, #6B7280, transparent)' }} />
+        style={{ background: 'linear-gradient(90deg, transparent, #D4AF37, transparent)' }} />
       <div className="p-6">
-        {cat.featured && (
-          <div className="inline-flex items-center gap-1.5 bg-primary/15 border border-primary/35 rounded-full px-3 py-1 mb-3 text-xs font-heading font-bold text-primary uppercase tracking-wider">
-            <Zap className="w-3 h-3" /> Start Here
-          </div>
-        )}
         <div className="flex items-start justify-between mb-4">
           <div className="w-11 h-11 rounded-xl flex items-center justify-center text-xl"
             style={{ background: 'rgba(212,175,55,0.1)', border: '1px solid rgba(212,175,55,0.2)' }}>
             {cat.icon}
           </div>
-          {isPremium ? (
-            <span className="flex items-center gap-1 text-xs font-heading font-bold px-2.5 py-1 rounded-full bg-amber-500/10 text-amber-400 border border-amber-500/25">
-              <Crown className="w-3 h-3" /> Members
-            </span>
-          ) : (
-            <span className="text-xs font-heading font-bold px-2.5 py-1 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">Free</span>
-          )}
+          <span className="flex items-center gap-1 text-xs font-heading font-bold px-2.5 py-1 rounded-full bg-amber-500/10 text-amber-400 border border-amber-500/25">
+            <Crown className="w-3 h-3" /> Members
+          </span>
         </div>
-        <h3 className={`font-heading font-bold text-base mb-1.5 ${isPremium ? 'gradient-text' : 'text-foreground'}`}>{cat.title}</h3>
+        <h3 className="font-heading font-bold text-base mb-1.5 gradient-text">{cat.title}</h3>
         <p className="text-sm font-body text-muted-foreground leading-relaxed mb-4">{cat.description}</p>
         <div className="flex items-center justify-between pt-4 border-t border-border/30">
           <span className="text-xs font-body text-muted-foreground/50">{cat.level}</span>
-          <span className={`text-xs font-heading font-bold group-hover:translate-x-1 transition-transform ${isPremium ? 'text-primary' : 'text-emerald-400'}`}>Explore →</span>
+          <span className="text-xs font-heading font-bold text-primary group-hover:translate-x-1 transition-transform">Explore →</span>
         </div>
       </div>
     </motion.div>
@@ -299,8 +335,8 @@ export default function SkillLibrarySection({ sectionId: propSectionId }) {
         </motion.div>
       )}
 
-      {/* Category grid — always show, gate overlays for premium */}
-      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      {/* Category list — landscape cards for free, grid for premium */}
+      <div className={isFree ? "space-y-4" : "grid sm:grid-cols-2 lg:grid-cols-3 gap-4"}>
         {categories.map((cat, i) => (
           <motion.div
             key={cat.id}
@@ -309,10 +345,9 @@ export default function SkillLibrarySection({ sectionId: propSectionId }) {
             transition={{ delay: i * 0.06 }}
           >
             {isPremium && !isAdmin && !isMember ? (
-              // Blurred/locked preview when not a member
               <div className="relative">
                 <div className="pointer-events-none" style={{ filter: 'blur(2px)', opacity: 0.4 }}>
-                  <CategoryCard cat={cat} onClick={() => {}} isPremium={true} />
+                  <CategoryCard cat={cat} onClick={() => {}} isPremium={true} isFree={isFree} />
                 </div>
                 <div className="absolute inset-0 flex items-center justify-center">
                   <Lock className="w-6 h-6 text-primary/50" />
@@ -322,6 +357,7 @@ export default function SkillLibrarySection({ sectionId: propSectionId }) {
               <CategoryCard
                 cat={cat}
                 isPremium={isPremium}
+                isFree={isFree}
                 onClick={() => {
                   if (!cat.comingSoon) navigate(`/skills/${cat.id}`);
                 }}
