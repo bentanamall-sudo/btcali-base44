@@ -112,7 +112,7 @@ export default function CoachingApply() {
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
         <div className="inline-flex items-center gap-2 glass px-4 py-2 rounded-full mb-4 border border-border/30">
           <Crown className="w-4 h-4 text-primary" />
-          <span className="text-sm font-body text-muted-foreground">$40/week (1 month) · $50/week (no commitment)</span>
+          <span className="text-sm font-body text-muted-foreground">$150/month · $40/week · $50/week</span>
         </div>
         <p className="text-xs font-heading font-bold text-muted-foreground/50 uppercase tracking-[0.25em] mb-2">PRICING</p>
         <h1 className="font-heading font-bold text-3xl sm:text-5xl mb-3 leading-tight">
@@ -128,10 +128,17 @@ export default function CoachingApply() {
         <div className="relative flex flex-col gap-3">
           <div className="flex items-center justify-between gap-4">
             <div>
+              <div className="font-heading font-bold text-2xl gradient-text leading-none">$150 <span className="text-sm font-semibold text-muted-foreground">AUD/month</span></div>
+              <div className="text-xs font-body text-muted-foreground mt-0.5">Paid upfront monthly</div>
+            </div>
+            <span className="text-xs font-heading font-bold px-2.5 py-1 rounded-full gradient-bg-strong text-primary-foreground">Best Value</span>
+          </div>
+          <div className="h-px bg-border/30" />
+          <div className="flex items-center justify-between gap-4">
+            <div>
               <div className="font-heading font-bold text-2xl gradient-text leading-none">$40 <span className="text-sm font-semibold text-muted-foreground">AUD/week</span></div>
               <div className="text-xs font-body text-muted-foreground mt-0.5">Minimum 1 month commitment</div>
             </div>
-            <span className="text-xs font-heading font-bold px-2.5 py-1 rounded-full gradient-bg-strong text-primary-foreground">Best Value</span>
           </div>
           <div className="h-px bg-border/30" />
           <div className="flex items-center justify-between gap-4">

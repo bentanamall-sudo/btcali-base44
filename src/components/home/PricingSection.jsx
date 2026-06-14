@@ -45,7 +45,7 @@ export default function PricingSection() {
 
           {/* Pricing cards */}
           <div className="space-y-3 mb-6">
-            {/* Committed */}
+            {/* Monthly — best value */}
             <div className="rounded-2xl p-5 border relative overflow-hidden"
               style={{ background: 'linear-gradient(145deg, hsl(var(--card)), hsl(42 78% 8%))', border: '1.5px solid hsl(var(--primary)/0.4)' }}>
               <div className="absolute top-0 left-0 right-0 h-px"
@@ -55,6 +55,15 @@ export default function PricingSection() {
                   <div className="flex items-center gap-2 mb-1">
                     <span className="text-xs font-heading font-bold px-2 py-0.5 rounded-full gradient-bg-strong text-primary-foreground">Best Value</span>
                   </div>
+                  <div className="font-heading font-black text-3xl gradient-text leading-none">$150 <span className="text-base font-semibold text-muted-foreground">AUD/month</span></div>
+                </div>
+                <p className="text-sm font-body text-foreground/70 text-right leading-relaxed">Paid upfront<br />monthly</p>
+              </div>
+            </div>
+            {/* Weekly committed */}
+            <div className="glass rounded-2xl p-5 border border-primary/25">
+              <div className="flex items-center justify-between gap-4">
+                <div>
                   <div className="font-heading font-black text-3xl gradient-text leading-none">$40 <span className="text-base font-semibold text-muted-foreground">AUD/week</span></div>
                 </div>
                 <p className="text-sm font-body text-foreground/70 text-right leading-relaxed">Minimum 1 month<br />commitment</p>

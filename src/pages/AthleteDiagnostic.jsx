@@ -233,6 +233,7 @@ export default function AthleteDiagnostic() {
         <Label>Which coaching option would you realistically consider?</Label>
         <div className="grid grid-cols-1 gap-2">
           {[
+            'AUD $150/month (paid upfront — best value)',
             'AUD $40/week (minimum 1 month)',
             'AUD $50/week (no minimum commitment)',
             'I would like more information first',
@@ -533,6 +534,10 @@ export default function AthleteDiagnostic() {
           </p>
           <div className="glass rounded-xl p-4 border border-primary/30 mb-6 text-left space-y-2">
             <p className="font-heading font-semibold text-primary text-xs uppercase tracking-wider mb-1">BTCALI Coaching Pricing</p>
+            <div className="flex items-center gap-2">
+              <div className="w-2 h-2 rounded-full bg-primary flex-shrink-0" />
+              <span className="font-heading font-bold text-foreground text-sm">AUD $150/month <span className="text-muted-foreground font-normal">(paid upfront — best value)</span></span>
+            </div>
             <div className="flex items-center gap-2">
               <div className="w-2 h-2 rounded-full bg-primary flex-shrink-0" />
               <span className="font-heading font-bold text-foreground text-sm">AUD $40/week <span className="text-muted-foreground font-normal">(minimum 1 month commitment)</span></span>
