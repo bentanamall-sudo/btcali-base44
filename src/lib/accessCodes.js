@@ -21,6 +21,7 @@ export const MEMBER_CODES = [
   'HAYDEN167',
   'HUGO144',
   'CEDRICK185',
+  'LENNON184',
 ];
 
 // All program IDs that unlock for members/admin
