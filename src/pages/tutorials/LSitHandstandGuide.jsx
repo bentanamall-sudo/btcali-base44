@@ -1,13 +1,15 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { ChevronLeft, Play, X, ExternalLink, AlertTriangle, Clock } from 'lucide-react';
+import { ChevronLeft, Play, X, ExternalLink, AlertTriangle, Clock, Copy, CheckCircle } from 'lucide-react';
 import TutorialCoachingCTA from '../../components/home/TutorialCoachingCTA';
+import { useAuth } from '@/lib/AuthContext';
 
 const TUTORIALS = [
   {
     title: 'Quick Bent Arm Press Tutorial',
     videoId: '6MpY6iLDtQM',
+    youtubeUrl: 'https://youtube.com/shorts/6MpY6iLDtQM',
     points: [
       'Kick and push at same time',
       'Explosive movement',
@@ -18,6 +20,7 @@ const TUTORIALS = [
   {
     title: 'Bent Arm Press Cues',
     videoId: 'jD7JOlacCgg',
+    youtubeUrl: 'https://youtube.com/shorts/jD7JOlacCgg',
     points: [
       'Imagine kicking over your head',
       'Slight overbalance is okay',
@@ -28,6 +31,7 @@ const TUTORIALS = [
     title: 'Full Bent Arm Press Tutorial',
     videoId: 'UO7pBH4FnOI',
     isLong: true,
+    youtubeUrl: 'https://youtu.be/UO7pBH4FnOI',
     points: [
       'Technique > strength',
       '10 pike pushups is enough foundation',
@@ -101,7 +105,24 @@ function VideoModal({ tutorial, onClose }) {
   );
 }
 
-function TutorialCard({ tutorial, index }) {
+function AdminCopyButton({ url }) {
+  const [copied, setCopied] = useState(false);
+  const handleCopy = async () => {
+    await navigator.clipboard.writeText(url);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+  return (
+    <button
+      onClick={handleCopy}
+      className="w-full mt-2 py-2 rounded-xl glass border border-border/30 flex items-center justify-center gap-1.5 text-xs font-heading font-semibold text-muted-foreground hover:border-primary/40 hover:text-primary transition-all"
+    >
+      {copied ? <><CheckCircle className="w-3.5 h-3.5 text-green-400" /><span className="text-green-400">Link Copied</span></> : <><Copy className="w-3.5 h-3.5" /> Copy YouTube Link</>}
+    </button>
+  );
+}
+
+function TutorialCard({ tutorial, index, isAdmin }) {
   const [open, setOpen] = useState(false);
   const { comingSoon } = tutorial;
 
@@ -153,6 +174,7 @@ function TutorialCard({ tutorial, index }) {
               <Play className="w-3.5 h-3.5" /> Watch Tutorial
             </motion.button>
           )}
+          {isAdmin && !comingSoon && tutorial.youtubeUrl && <AdminCopyButton url={tutorial.youtubeUrl} />}
         </div>
       </motion.div>
       {open && !comingSoon && <VideoModal tutorial={tutorial} onClose={() => setOpen(false)} />}
@@ -161,6 +183,8 @@ function TutorialCard({ tutorial, index }) {
 }
 
 export default function LSitHandstandGuide() {
+  const { user } = useAuth();
+  const isAdmin = user?.role === 'admin';
   return (
     <div className="min-h-screen py-12 px-4 sm:px-6 max-w-5xl mx-auto">
       <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="mb-8">
@@ -179,7 +203,7 @@ export default function LSitHandstandGuide() {
       </motion.div>
 
       <div className="grid sm:grid-cols-2 gap-4 mb-12">
-        {TUTORIALS.map((t, i) => <TutorialCard key={t.title} tutorial={t} index={i} />)}
+        {TUTORIALS.map((t, i) => <TutorialCard key={t.title} tutorial={t} index={i} isAdmin={isAdmin} />)}
       </div>
 
       <TutorialCoachingCTA />

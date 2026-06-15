@@ -1,13 +1,15 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { ChevronLeft, Play, X, ExternalLink, AlertTriangle } from 'lucide-react';
+import { ChevronLeft, Play, X, ExternalLink, AlertTriangle, Copy, CheckCircle } from 'lucide-react';
 import TutorialCoachingCTA from '../../components/home/TutorialCoachingCTA';
+import { useAuth } from '@/lib/AuthContext';
 
 const TUTORIALS = [
   {
     title: 'Handstand Bail Tutorial',
     videoId: 'rGoEHcIPeFY',
+    youtubeUrl: 'https://www.youtube.com/watch?v=rGoEHcIPeFY',
     points: [
       'Fear of falling is the biggest reason people cannot handstand',
       'Learn safe bail technique',
@@ -21,6 +23,7 @@ const TUTORIALS = [
   {
     title: 'Handstand Kick-Up Tutorial',
     videoId: '8GLA_c0jueA',
+    youtubeUrl: 'https://www.youtube.com/watch?v=8GLA_c0jueA',
     points: [
       'Start in runner position',
       'Get feet above head',
@@ -33,6 +36,7 @@ const TUTORIALS = [
   {
     title: 'Handstand Toe Taps',
     videoId: 'yDYk7w7uqTA',
+    youtubeUrl: 'https://www.youtube.com/watch?v=yDYk7w7uqTA',
     points: [
       'Chest to wall',
       'Walk feet up wall',
@@ -45,6 +49,7 @@ const TUTORIALS = [
   {
     title: 'Where To Look In A Handstand',
     videoId: 'pgKP61v2kz8',
+    youtubeUrl: 'https://www.youtube.com/watch?v=pgKP61v2kz8',
     points: [
       'Hands form bottom of triangle',
       'Look slightly in front of hands',
@@ -102,7 +107,24 @@ function VideoModal({ tutorial, onClose }) {
   );
 }
 
-function TutorialCard({ tutorial, index }) {
+function AdminCopyButton({ url }) {
+  const [copied, setCopied] = useState(false);
+  const handleCopy = async () => {
+    await navigator.clipboard.writeText(url);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+  return (
+    <button
+      onClick={handleCopy}
+      className="w-full mt-2 py-2 rounded-xl glass border border-border/30 flex items-center justify-center gap-1.5 text-xs font-heading font-semibold text-muted-foreground hover:border-primary/40 hover:text-primary transition-all"
+    >
+      {copied ? <><CheckCircle className="w-3.5 h-3.5 text-green-400" /><span className="text-green-400">Link Copied</span></> : <><Copy className="w-3.5 h-3.5" /> Copy YouTube Link</>}
+    </button>
+  );
+}
+
+function TutorialCard({ tutorial, index, isAdmin }) {
   const [open, setOpen] = useState(false);
   return (
     <>
@@ -139,6 +161,7 @@ function TutorialCard({ tutorial, index }) {
           >
             <Play className="w-3.5 h-3.5" /> Watch Tutorial
           </motion.button>
+          {isAdmin && tutorial.youtubeUrl && <AdminCopyButton url={tutorial.youtubeUrl} />}
         </div>
       </motion.div>
       {open && <VideoModal tutorial={tutorial} onClose={() => setOpen(false)} />}
@@ -147,6 +170,8 @@ function TutorialCard({ tutorial, index }) {
 }
 
 export default function HandstandGuide() {
+  const { user } = useAuth();
+  const isAdmin = user?.role === 'admin';
   return (
     <div className="min-h-screen py-12 px-4 sm:px-6 max-w-5xl mx-auto">
       <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="mb-8">
@@ -165,7 +190,7 @@ export default function HandstandGuide() {
       </motion.div>
 
       <div className="grid sm:grid-cols-2 lg:grid-cols-2 gap-4 mb-12">
-        {TUTORIALS.map((t, i) => <TutorialCard key={t.title} tutorial={t} index={i} />)}
+        {TUTORIALS.map((t, i) => <TutorialCard key={t.title} tutorial={t} index={i} isAdmin={isAdmin} />)}
       </div>
 
       {/* Coaching CTA */}
