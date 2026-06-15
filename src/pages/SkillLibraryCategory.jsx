@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Search, Lock, X, ChevronLeft, Crown, ArrowRight, Clock, ChevronDown } from 'lucide-react';
+import { Search, Lock, X, ChevronLeft, Crown, ArrowRight, Clock, ChevronDown, Copy, CheckCircle } from 'lucide-react';
 import { useAccessCodes } from '@/lib/useAccessCodes';
 
 const COMING_SOON_DATA = {
@@ -314,7 +314,27 @@ function LockedCard({ tutorial }) {
   );
 }
 
-function TutorialCard({ tutorial, onPlay, memberContent = false }) {
+function AdminCopyOverlay({ videoId }) {
+  const [copied, setCopied] = useState(false);
+  const url = `https://youtube.com/shorts/${videoId}`;
+  const handleCopy = async (e) => {
+    e.stopPropagation();
+    await navigator.clipboard.writeText(url);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+  return (
+    <button
+      onClick={handleCopy}
+      className="absolute bottom-2 right-2 flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-heading font-bold border border-primary/60 text-primary hover:bg-primary/10 transition-all z-10"
+      style={{ background: 'rgba(0,0,0,0.75)', backdropFilter: 'blur(6px)' }}
+    >
+      {copied ? <><CheckCircle className="w-3 h-3 text-green-400" /><span className="text-green-400">Copied!</span></> : <><Copy className="w-3 h-3" /> Copy Link</>}
+    </button>
+  );
+}
+
+function TutorialCard({ tutorial, onPlay, memberContent = false, isAdmin = false }) {
   return (
     <motion.div
       whileHover={{ y: -2 }}
@@ -345,6 +365,7 @@ function TutorialCard({ tutorial, onPlay, memberContent = false }) {
             <span className="text-xs font-heading font-bold px-2 py-0.5 rounded-full bg-green-500/20 text-green-400 border border-green-500/30">Free</span>
           )}
         </div>
+        {isAdmin && <AdminCopyOverlay videoId={tutorial.videoId} />}
       </div>
       <div className="p-4">
         <div className="flex items-start justify-between gap-2 mb-1">
@@ -606,7 +627,7 @@ export default function SkillLibraryCategory() {
               {tutorial.comingSoon ? (
                 <ComingSoonCard tutorial={tutorial} />
               ) : tutorial.free || isAdmin || isMember ? (
-                <TutorialCard tutorial={tutorial} onPlay={() => setActiveVideo(tutorial)} memberContent={!tutorial.free} />
+                <TutorialCard tutorial={tutorial} onPlay={() => setActiveVideo(tutorial)} memberContent={!tutorial.free} isAdmin={isAdmin} />
               ) : (
                 <LockedCard tutorial={tutorial} />
               )}

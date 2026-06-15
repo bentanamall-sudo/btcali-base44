@@ -107,9 +107,10 @@ function VideoModal({ tutorial, onClose }) {
   );
 }
 
-function AdminCopyButton({ url }) {
+function AdminCopyOverlay({ url }) {
   const [copied, setCopied] = useState(false);
-  const handleCopy = async () => {
+  const handleCopy = async (e) => {
+    e.stopPropagation();
     await navigator.clipboard.writeText(url);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
@@ -117,9 +118,10 @@ function AdminCopyButton({ url }) {
   return (
     <button
       onClick={handleCopy}
-      className="w-full mt-2 py-2 rounded-xl glass border border-border/30 flex items-center justify-center gap-1.5 text-xs font-heading font-semibold text-muted-foreground hover:border-primary/40 hover:text-primary transition-all"
+      className="absolute bottom-2 right-2 flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-heading font-bold border border-primary/60 text-primary hover:bg-primary/10 transition-all z-10"
+      style={{ background: 'rgba(0,0,0,0.75)', backdropFilter: 'blur(6px)' }}
     >
-      {copied ? <><CheckCircle className="w-3.5 h-3.5 text-green-400" /><span className="text-green-400">Link Copied</span></> : <><Copy className="w-3.5 h-3.5" /> Copy YouTube Link</>}
+      {copied ? <><CheckCircle className="w-3 h-3 text-green-400" /><span className="text-green-400">Copied!</span></> : <><Copy className="w-3 h-3" /> Copy Link</>}
     </button>
   );
 }
@@ -133,7 +135,7 @@ function TutorialCard({ tutorial, index, isAdmin }) {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ delay: index * 0.08 }}
-        className="rounded-2xl border border-border/30 bg-card/60 overflow-hidden group transition-all duration-300 hover:border-primary/40"
+        className="rounded-2xl border border-border/30 bg-card/60 overflow-hidden group transition-all duration-300 hover:border-primary/40 relative"
         onMouseEnter={e => { e.currentTarget.style.boxShadow = '0 0 25px hsl(var(--glow-primary) / 0.18)'; }}
         onMouseLeave={e => { e.currentTarget.style.boxShadow = 'none'; }}
       >
@@ -161,7 +163,7 @@ function TutorialCard({ tutorial, index, isAdmin }) {
           >
             <Play className="w-3.5 h-3.5" /> Watch Tutorial
           </motion.button>
-          {isAdmin && tutorial.youtubeUrl && <AdminCopyButton url={tutorial.youtubeUrl} />}
+          {isAdmin && tutorial.youtubeUrl && <AdminCopyOverlay url={tutorial.youtubeUrl} />}
         </div>
       </motion.div>
       {open && <VideoModal tutorial={tutorial} onClose={() => setOpen(false)} />}
