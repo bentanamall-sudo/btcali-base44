@@ -30,7 +30,15 @@ export default function MyStory() {
             My <span className="gradient-text">Story</span>
           </h2>
 
-          <div className="glass rounded-2xl p-7 border border-border/30 mb-8 space-y-4">
+          <div
+            className="rounded-2xl p-7 mb-8 space-y-4"
+            style={{
+              background: 'hsl(0 0% 6% / 0.7)',
+              backdropFilter: 'blur(24px)',
+              border: '1px solid hsl(40 25% 15% / 0.5)',
+              boxShadow: 'inset 0 1px 0 hsl(0 0% 100% / 0.05), 0 8px 40px hsl(0 0% 0% / 0.3)',
+            }}
+          >
             {PARAGRAPHS.map((p, i) => (
               <motion.p
                 key={i}

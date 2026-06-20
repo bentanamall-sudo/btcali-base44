@@ -17,9 +17,10 @@ export default function SocialProofCounter() {
           transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
           className="relative rounded-2xl overflow-hidden"
           style={{
-            background: 'linear-gradient(145deg, hsl(var(--card)), hsl(42 78% 6%))',
-            border: '1px solid hsl(var(--primary)/0.25)',
-            boxShadow: '0 0 40px hsl(var(--glow-primary)/0.07), 0 4px 24px hsl(0 0% 0%/0.3)',
+            background: 'linear-gradient(145deg, hsl(0 0% 7%) 0%, hsl(43 30% 6%) 100%)',
+            backdropFilter: 'blur(20px)',
+            border: '1px solid hsl(43 74% 49% / 0.2)',
+            boxShadow: '0 0 50px hsl(43 74% 49% / 0.06), 0 4px 30px hsl(0 0% 0% / 0.35), inset 0 1px 0 hsl(0 0% 100% / 0.05)',
           }}
         >
           <div className="absolute top-0 left-0 right-0 h-px"

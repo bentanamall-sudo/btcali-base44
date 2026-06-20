@@ -22,11 +22,12 @@ const SOCIAL = [
 
 export default function FooterSection() {
   return (
-    <footer className="relative border-t border-border/20 pt-16 pb-10 px-4 sm:px-6 overflow-hidden">
+    <footer className="relative pt-16 pb-10 px-4 sm:px-6 overflow-hidden"
+      style={{ borderTop: '1px solid hsl(40 25% 12% / 0.6)' }}>
       <div className="absolute top-0 left-0 right-0 h-px"
-        style={{ background: 'linear-gradient(90deg, transparent, hsl(var(--primary)/0.2), transparent)' }} />
+        style={{ background: 'linear-gradient(90deg, transparent 10%, hsl(43 74% 49% / 0.25) 50%, transparent 90%)' }} />
       <div className="absolute inset-0 pointer-events-none"
-        style={{ background: 'radial-gradient(ellipse at 50% 0%, hsl(var(--glow-primary)/0.03), transparent 60%)' }} />
+        style={{ background: 'radial-gradient(ellipse 60% 40% at 50% 0%, hsl(43 74% 49% / 0.03), transparent 65%)' }} />
 
       <div className="max-w-5xl mx-auto relative">
         <div className="grid sm:grid-cols-3 gap-10 mb-12">

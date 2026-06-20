@@ -49,7 +49,7 @@ export default function PricingSection() {
             Pricing
           </p>
           <h2 className="font-heading font-black text-3xl sm:text-4xl text-foreground mb-10 text-center leading-tight">
-            Simple, <span className="gradient-text">Transparent</span>
+            Invest In <span className="gradient-text">Faster Progress</span>
           </h2>
 
           {/* Spots badge */}
@@ -85,10 +85,24 @@ export default function PricingSection() {
                     : 'hover:border-primary/30'
                 }`}
                 style={tier.premium
-                  ? { background: 'linear-gradient(145deg, hsl(var(--card)), hsl(42 78% 8%))', border: '1.5px solid hsl(var(--primary)/0.45)', boxShadow: '0 4px 24px hsl(var(--glow-primary)/0.1)' }
+                  ? {
+                      background: 'linear-gradient(145deg, hsl(0 0% 9%) 0%, hsl(43 40% 7%) 100%)',
+                      backdropFilter: 'blur(24px)',
+                      border: '1.5px solid hsl(43 74% 49% / 0.4)',
+                      boxShadow: '0 0 40px hsl(43 74% 49% / 0.1), 0 8px 32px hsl(0 0% 0% / 0.3), inset 0 1px 0 hsl(0 0% 100% / 0.07)',
+                    }
                   : tier.muted
-                    ? { background: 'hsl(var(--card)/0.5)', border: '1px solid hsl(var(--border)/0.35)' }
-                    : { background: 'hsl(var(--card)/0.7)', border: '1px solid hsl(var(--primary)/0.25)' }
+                    ? {
+                        background: 'hsl(0 0% 6% / 0.5)',
+                        backdropFilter: 'blur(16px)',
+                        border: '1px solid hsl(40 20% 12% / 0.5)',
+                      }
+                    : {
+                        background: 'hsl(0 0% 7% / 0.7)',
+                        backdropFilter: 'blur(20px)',
+                        border: '1px solid hsl(43 74% 49% / 0.22)',
+                        boxShadow: 'inset 0 1px 0 hsl(0 0% 100% / 0.04)',
+                      }
                 }
               >
                 {tier.premium && (
@@ -120,8 +134,13 @@ export default function PricingSection() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.35 }}
-            className="glass rounded-2xl p-6 border border-border/25 mb-8"
-            style={{ boxShadow: '0 4px 20px hsl(0 0% 0%/0.15)' }}
+            className="rounded-2xl p-6 mb-8"
+            style={{
+              background: 'hsl(0 0% 6% / 0.65)',
+              backdropFilter: 'blur(20px)',
+              border: '1px solid hsl(40 25% 14% / 0.5)',
+              boxShadow: '0 4px 24px hsl(0 0% 0% / 0.25), inset 0 1px 0 hsl(0 0% 100% / 0.04)',
+            }}
           >
             <p className="font-heading font-bold text-foreground text-sm mb-4">Everything included:</p>
             <div className="grid sm:grid-cols-2 gap-2.5">

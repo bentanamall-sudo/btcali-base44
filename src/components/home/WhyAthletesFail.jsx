@@ -62,9 +62,10 @@ export default function WhyAthletesFail() {
             transition={{ delay: 0.5, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
             className="rounded-2xl px-6 py-7 relative overflow-hidden"
             style={{
-              background: 'linear-gradient(135deg, hsl(var(--gradient-start)/0.1), hsl(var(--gradient-end)/0.08))',
-              border: '1px solid hsl(var(--primary)/0.3)',
-              boxShadow: '0 8px 40px hsl(var(--glow-primary)/0.06)',
+              background: 'linear-gradient(135deg, hsl(43 74% 49% / 0.09) 0%, hsl(38 65% 35% / 0.06) 100%)',
+              backdropFilter: 'blur(20px)',
+              border: '1px solid hsl(43 74% 49% / 0.25)',
+              boxShadow: '0 0 40px hsl(43 74% 49% / 0.06), inset 0 1px 0 hsl(0 0% 100% / 0.06)',
             }}
           >
             <div className="absolute top-0 left-0 right-0 h-px"

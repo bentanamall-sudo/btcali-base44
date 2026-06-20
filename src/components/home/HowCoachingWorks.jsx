@@ -80,8 +80,17 @@ export default function HowCoachingWorks() {
                   >
                     {num}
                   </div>
-                  <div className="glass rounded-2xl px-5 py-4 border border-border/25 flex-1 transition-all duration-300 group-hover:border-primary/30"
-                    style={{ background: 'hsl(var(--card)/0.6)' }}>
+                  <div
+                    className="rounded-2xl px-5 py-4 flex-1 transition-all duration-300"
+                    style={{
+                      background: 'hsl(0 0% 6% / 0.65)',
+                      backdropFilter: 'blur(16px)',
+                      border: '1px solid hsl(40 25% 14% / 0.5)',
+                      transition: 'border-color 0.25s ease',
+                    }}
+                    onMouseEnter={e => e.currentTarget.style.borderColor = 'hsl(43 74% 49% / 0.3)'}
+                    onMouseLeave={e => e.currentTarget.style.borderColor = 'hsl(40 25% 14% / 0.5)'}
+                  >
                     <p className="font-heading font-bold text-foreground text-sm mb-1">{title}</p>
                     <p className="font-body text-sm text-muted-foreground/80 leading-relaxed">{body}</p>
                   </div>

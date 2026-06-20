@@ -1,35 +1,47 @@
 import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
 
-export default function TypewriterText({ text, className = '', delay = 0, speed = 38 }) {
+/**
+ * TypewriterText — renders text character by character.
+ * @param {string} text - Full text to type
+ * @param {string} className - CSS classes on the wrapper span
+ * @param {number} delay - Seconds before typing starts (default 0)
+ * @param {number} speed - Ms per character (default 42)
+ * @param {boolean} showCursor - Show blinking cursor (default true)
+ */
+export default function TypewriterText({ text, className = '', delay = 0, speed = 42, showCursor = true }) {
   const [displayed, setDisplayed] = useState('');
-  const [started, setStarted] = useState(false);
+  const [done, setDone] = useState(false);
+  const [active, setActive] = useState(false);
 
   useEffect(() => {
-    const startTimer = setTimeout(() => setStarted(true), delay * 1000);
-    return () => clearTimeout(startTimer);
+    const t = setTimeout(() => setActive(true), delay * 1000);
+    return () => clearTimeout(t);
   }, [delay]);
 
   useEffect(() => {
-    if (!started) return;
+    if (!active) return;
     setDisplayed('');
+    setDone(false);
     let i = 0;
-    const interval = setInterval(() => {
+    const id = setInterval(() => {
       i++;
       setDisplayed(text.slice(0, i));
-      if (i >= text.length) clearInterval(interval);
+      if (i >= text.length) { setDone(true); clearInterval(id); }
     }, speed);
-    return () => clearInterval(interval);
-  }, [started, text, speed]);
+    return () => clearInterval(id);
+  }, [active, text, speed]);
 
   return (
     <span className={className}>
       {displayed}
-      {displayed.length < text.length && started && (
-        <motion.span
-          animate={{ opacity: [1, 0] }}
-          transition={{ duration: 0.5, repeat: Infinity, repeatType: 'reverse' }}
-          className="inline-block w-0.5 h-[1em] bg-primary ml-0.5 align-middle"
+      {showCursor && !done && (
+        <span
+          className="inline-block w-[2px] h-[0.85em] align-middle ml-0.5 rounded-sm"
+          style={{
+            background: 'hsl(44 85% 52%)',
+            animation: 'cursorBlink 0.8s ease-in-out infinite',
+            boxShadow: '0 0 6px hsl(44 85% 52% / 0.6)',
+          }}
         />
       )}
     </span>

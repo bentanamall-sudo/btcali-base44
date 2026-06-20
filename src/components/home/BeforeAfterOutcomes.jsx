@@ -56,8 +56,13 @@ export default function BeforeAfterOutcomes() {
           </p>
 
           {/* Results Achieved */}
-          <div className="glass rounded-xl border border-primary/25 px-6 py-5 mb-8"
-            style={{ background: 'linear-gradient(135deg, hsl(var(--gradient-start)/0.07), hsl(var(--gradient-end)/0.07))' }}>
+          <div className="rounded-2xl px-6 py-5 mb-8"
+            style={{
+              background: 'linear-gradient(135deg, hsl(43 74% 49% / 0.09), hsl(38 65% 35% / 0.06))',
+              border: '1px solid hsl(43 74% 49% / 0.22)',
+              backdropFilter: 'blur(16px)',
+              boxShadow: '0 0 30px hsl(43 74% 49% / 0.05), inset 0 1px 0 hsl(0 0% 100% / 0.05)',
+            }}>
             <p className="font-heading font-bold text-foreground text-sm text-center mb-4">Results Achieved By BTCALI Athletes</p>
             <div className="grid sm:grid-cols-2 gap-2">
               {SKILL_RESULTS.map((r, i) => (
