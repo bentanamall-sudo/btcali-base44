@@ -1,8 +1,8 @@
-import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { CheckCircle, Crown, Trophy, Flame } from 'lucide-react';
+import { Crown, Trophy, Flame } from 'lucide-react';
 import HoverAccordion from '@/components/HoverAccordion';
+import ControlledAccordion from '@/components/ControlledAccordion';
 
 const SKILLS = [
   'Planche','Front Lever','Handstand','Handstand Push-Up','Muscle-Up',
@@ -88,34 +88,7 @@ const FAQ_ITEMS = [
   },
 ];
 
-function AccordionItem({ title, children }) {
-  return (
-    <div className="rounded-xl overflow-hidden" style={{
-      background: 'hsl(0 0% 7% / 0.65)',
-      backdropFilter: 'blur(20px)',
-      border: '1px solid hsl(40 25% 14% / 0.4)',
-    }}>
-      <HoverAccordion
-        trigger={
-          <div className="flex items-center gap-3">
-            <CheckCircle className="w-4 h-4 text-primary flex-shrink-0" />
-            <span className="font-heading font-semibold text-foreground text-sm sm:text-base">{title}</span>
-          </div>
-        }
-        triggerClassName="px-5 py-4 hover:bg-white/3 transition-colors"
-      >
-        <div className="px-5 pb-5">
-          <div className="h-px mb-3" style={{ background: 'hsl(var(--border)/0.25)' }} />
-          <div className="space-y-3">
-            {children.detail.split('\n\n').map((para, i) => (
-              <p key={i} className="text-sm font-body text-foreground/75 leading-relaxed">{para}</p>
-            ))}
-          </div>
-        </div>
-      </HoverAccordion>
-    </div>
-  );
-}
+
 
 export default function CoachingApply() {
 
@@ -315,14 +288,7 @@ export default function CoachingApply() {
           >
             <div className="px-4 pb-4 pt-2">
               <div className="h-px mb-3" style={{ background: 'hsl(var(--border)/0.25)' }} />
-              <p className="text-xs text-muted-foreground font-body mb-3">Hover or tap each item to expand</p>
-              <div className="space-y-2">
-                {INCLUSION_ITEMS.map((item, i) => (
-                  <AccordionItem key={i} title={item.title}>
-                    {item}
-                  </AccordionItem>
-                ))}
-              </div>
+              <ControlledAccordion items={INCLUSION_ITEMS} />
             </div>
           </HoverAccordion>
         </div>
