@@ -2,6 +2,7 @@ import { useRef, useState } from 'react';
 import { motion, useInView } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { Trophy, Quote } from 'lucide-react';
+import TypewriterHeading from '@/components/TypewriterHeading';
 
 const STORY_SEGMENTS = [
   {
@@ -81,9 +82,13 @@ export default function MyStory() {
           <p className="text-xs font-heading font-bold text-muted-foreground/50 uppercase tracking-[0.25em] mb-3 text-center">
             Behind BTCALI
           </p>
-          <h2 className="font-heading font-black text-3xl sm:text-4xl text-foreground mb-10 text-center leading-tight">
-            My <span className="gradient-text">Story</span>
-          </h2>
+          <TypewriterHeading
+            text="My Story"
+            tag="h2"
+            className="font-heading font-black text-3xl sm:text-4xl text-foreground mb-10 text-center leading-tight"
+            highlightWords={['Story']}
+            speed={50}
+          />
         </motion.div>
 
         <div className="space-y-4">

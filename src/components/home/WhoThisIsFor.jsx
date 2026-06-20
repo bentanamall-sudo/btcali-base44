@@ -1,6 +1,8 @@
 import { motion } from 'framer-motion';
 import { CheckCircle } from 'lucide-react';
 import { Link as RouterLink } from 'react-router-dom';
+import use3DHover from '@/hooks/use3DHover';
+import TypewriterHeading from '@/components/TypewriterHeading';
 
 const ITEMS = [
   'Complete beginners',
@@ -12,6 +14,33 @@ const ITEMS = [
   'Advanced athletes chasing elite skills',
 ];
 
+function ItemCard({ item, delay }) {
+  const tilt = use3DHover({ intensity: 8, scale: 1.05 });
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 14, scale: 0.96 }}
+      whileInView={{ opacity: 1, y: 0, scale: 1 }}
+      viewport={{ once: true }}
+      transition={{ delay, duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+      ref={tilt.ref}
+      onMouseMove={tilt.onMouseMove}
+      onMouseLeave={tilt.onMouseLeave}
+      style={{
+        ...tilt.style,
+        background: 'hsl(0 0% 7% / 0.6)',
+        backdropFilter: 'blur(16px)',
+        border: '1px solid hsl(40 25% 14% / 0.45)',
+      }}
+      className="flex items-center gap-3 rounded-xl px-4 py-3.5 cursor-default"
+    >
+      <motion.span whileHover={{ scale: 1.3 }} transition={{ type: 'spring', stiffness: 500 }}>
+        <CheckCircle className="w-4 h-4 text-primary flex-shrink-0" />
+      </motion.span>
+      <span className="font-body text-sm text-foreground/85">{item}</span>
+    </motion.div>
+  );
+}
+
 export default function WhoThisIsFor() {
   return (
     <section className="py-16 px-4 sm:px-6">
@@ -20,28 +49,22 @@ export default function WhoThisIsFor() {
           initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
+          transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
         >
           <p className="text-xs font-heading font-bold text-muted-foreground/50 uppercase tracking-[0.25em] mb-3 text-center">
             All Levels Welcome
           </p>
-          <h2 className="font-heading font-black text-3xl sm:text-4xl text-foreground mb-10 text-center leading-tight">
-            Who BTCALI Coaching<br />
-            <span className="gradient-text">Is For</span>
-          </h2>
+          <TypewriterHeading
+            text="Who BTCALI Coaching Is For"
+            tag="h2"
+            className="font-heading font-black text-3xl sm:text-4xl text-foreground mb-10 text-center leading-tight"
+            highlightWords={['Is For']}
+            speed={38}
+          />
 
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3 mb-8">
             {ITEMS.map((item, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 12 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.07 }}
-                className="flex items-center gap-3 glass rounded-xl px-4 py-3.5 border border-border/30"
-              >
-                <CheckCircle className="w-4 h-4 text-primary flex-shrink-0" />
-                <span className="font-body text-sm text-foreground/85">{item}</span>
-              </motion.div>
+              <ItemCard key={i} item={item} delay={i * 0.07} />
             ))}
           </div>
 

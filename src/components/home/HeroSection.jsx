@@ -1,9 +1,9 @@
-import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { Crown, ChevronDown, BookOpen, ArrowRight } from 'lucide-react';
+import { Crown, BookOpen, ArrowRight } from 'lucide-react';
 import { HeroLogo } from '../Logo';
 import TypewriterText from '../TypewriterText';
+import SmartAccordion from '@/components/SmartAccordion';
 
 const WHY_PARAGRAPHS = [
   "The goal of my coaching is simple: help you achieve your dream calisthenics skills as fast, safely and efficiently as possible.",
@@ -13,7 +13,6 @@ const WHY_PARAGRAPHS = [
 ];
 
 export default function HeroSection() {
-  const [detailsOpen, setDetailsOpen] = useState(false);
 
   return (
     <section className="relative min-h-[95vh] flex items-center overflow-hidden">
@@ -138,41 +137,21 @@ export default function HeroSection() {
             transition={{ delay: 2.95, duration: 0.4 }}
             className="max-w-xl mx-auto mb-10"
           >
-            <button
-              onClick={() => setDetailsOpen(o => !o)}
-              className="flex items-center justify-center gap-1.5 mx-auto text-sm font-heading font-semibold transition-all duration-200 px-4 py-2 rounded-lg hover:bg-white/4"
-              style={{ color: 'hsl(44 80% 55%)' }}
+            <SmartAccordion
+              scrollThreshold={60}
+              trigger={
+                <span className="flex items-center justify-center gap-1.5 mx-auto text-sm font-heading font-semibold px-4 py-2 rounded-lg w-full"
+                  style={{ color: 'hsl(45 85% 58%)' }}>
+                  Why My Coaching
+                </span>
+              }
             >
-              Why My Coaching
-              <motion.span animate={{ rotate: detailsOpen ? 180 : 0 }} transition={{ duration: 0.22 }}>
-                <ChevronDown className="w-4 h-4" />
-              </motion.span>
-            </button>
-            <AnimatePresence initial={false}>
-              {detailsOpen && (
-                <motion.div
-                  initial={{ height: 0, opacity: 0 }}
-                  animate={{ height: 'auto', opacity: 1 }}
-                  exit={{ height: 0, opacity: 0 }}
-                  transition={{ duration: 0.28, ease: [0.25, 0.46, 0.45, 0.94] }}
-                  className="overflow-hidden"
-                >
-                  <div
-                    className="mt-3 rounded-2xl p-6 text-left space-y-3"
-                    style={{
-                      background: 'hsl(0 0% 6% / 0.85)',
-                      backdropFilter: 'blur(24px)',
-                      border: '1px solid hsl(40 25% 16% / 0.6)',
-                      boxShadow: '0 8px 40px hsl(0 0% 0% / 0.4), inset 0 1px 0 hsl(0 0% 100% / 0.05)',
-                    }}
-                  >
-                    {WHY_PARAGRAPHS.map((p, i) => (
-                      <p key={i} className="text-sm font-body leading-relaxed" style={{ color: 'hsl(0 0% 65%)' }}>{p}</p>
-                    ))}
-                  </div>
-                </motion.div>
-              )}
-            </AnimatePresence>
+              <div className="space-y-3">
+                {WHY_PARAGRAPHS.map((p, i) => (
+                  <p key={i} className="text-sm font-body leading-relaxed" style={{ color: 'hsl(0 0% 65%)' }}>{p}</p>
+                ))}
+              </div>
+            </SmartAccordion>
           </motion.div>
 
           {/* CTAs */}

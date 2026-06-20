@@ -1,6 +1,8 @@
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { CheckCircle, Flame, Zap } from 'lucide-react';
+import use3DHover from '@/hooks/use3DHover';
+import TypewriterHeading from '@/components/TypewriterHeading';
 
 const INCLUDED = [
   'Personalised programme',
@@ -48,9 +50,13 @@ export default function PricingSection() {
           <p className="text-xs font-heading font-bold text-primary/50 uppercase tracking-[0.3em] mb-3 text-center">
             Pricing
           </p>
-          <h2 className="font-heading font-black text-3xl sm:text-4xl text-foreground mb-10 text-center leading-tight">
-            Invest In <span className="gradient-text">Faster Progress</span>
-          </h2>
+          <TypewriterHeading
+            text="Invest In Faster Progress"
+            tag="h2"
+            className="font-heading font-black text-3xl sm:text-4xl text-foreground mb-10 text-center leading-tight"
+            highlightWords={['Faster Progress']}
+            speed={40}
+          />
 
           {/* Spots badge */}
           <motion.div
@@ -72,32 +78,41 @@ export default function PricingSection() {
 
           {/* Pricing cards */}
           <div className="space-y-3 mb-6">
-            {TIERS.map((tier, i) => (
+            {TIERS.map((tier, i) => {
+              // eslint-disable-next-line react-hooks/rules-of-hooks
+              const tilt = use3DHover({ intensity: 6, scale: 1.03 });
+              return (
               <motion.div
                 key={i}
-                initial={{ opacity: 0, y: 12 }}
-                whileInView={{ opacity: 1, y: 0 }}
+                initial={{ opacity: 0, y: 14, scale: 0.97 }}
+                whileInView={{ opacity: 1, y: 0, scale: 1 }}
                 viewport={{ once: true }}
-                transition={{ delay: 0.12 + i * 0.1 }}
-                className="rounded-2xl p-5 border relative overflow-hidden card-premium"
+                transition={{ delay: 0.12 + i * 0.1, ease: [0.22, 1, 0.36, 1] }}
+                ref={tilt.ref}
+                onMouseMove={tilt.onMouseMove}
+                onMouseLeave={tilt.onMouseLeave}
+                className="rounded-2xl p-5 border relative overflow-hidden cursor-default"
                 style={tier.premium
                   ? {
+                      ...tilt.style,
                       background: 'linear-gradient(145deg, hsl(0 0% 9%) 0%, hsl(43 40% 7%) 100%)',
                       backdropFilter: 'blur(24px)',
-                      border: '1.5px solid hsl(43 74% 49% / 0.4)',
-                      boxShadow: '0 0 40px hsl(43 74% 49% / 0.1), 0 8px 32px hsl(0 0% 0% / 0.3), inset 0 1px 0 hsl(0 0% 100% / 0.07)',
+                      border: '1.5px solid hsl(45 85% 52% / 0.45)',
+                      boxShadow: `0 0 40px hsl(45 85% 52% / 0.12), 0 8px 32px hsl(0 0% 0% / 0.3), inset 0 1px 0 hsl(0 0% 100% / 0.07), ${tilt.style.boxShadow || ''}`,
                     }
                   : tier.muted
                     ? {
+                        ...tilt.style,
                         background: 'hsl(0 0% 6% / 0.5)',
                         backdropFilter: 'blur(16px)',
                         border: '1px solid hsl(40 20% 12% / 0.5)',
                       }
                     : {
+                        ...tilt.style,
                         background: 'hsl(0 0% 7% / 0.7)',
                         backdropFilter: 'blur(20px)',
-                        border: '1px solid hsl(43 74% 49% / 0.22)',
-                        boxShadow: 'inset 0 1px 0 hsl(0 0% 100% / 0.04)',
+                        border: '1px solid hsl(45 85% 52% / 0.22)',
+                        boxShadow: `inset 0 1px 0 hsl(0 0% 100% / 0.04), ${tilt.style.boxShadow || ''}`,
                       }
                 }
               >
@@ -121,7 +136,8 @@ export default function PricingSection() {
                   <p className="text-sm font-body text-foreground/60 text-right leading-relaxed">{tier.desc}</p>
                 </div>
               </motion.div>
-            ))}
+              );
+            })}
           </div>
 
           {/* What's included */}
