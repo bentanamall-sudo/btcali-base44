@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700;800;900&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -6,11 +6,11 @@
 
 @layer base {
   :root {
-    --font-heading: 'Space Grotesk', sans-serif;
-    --font-body: 'Inter', sans-serif;
+    --font-heading: 'Kanit', sans-serif;
+    --font-body: 'Kanit', sans-serif;
 
     /* ── BTCALI ELITE — deep black + true metallic gold ── */
-    --background: 0 0% 3%;            /* #080808 pure near-black */
+    --background: 0 0% 5%;            /* #0C0C0C near-black */
     --foreground: 0 0% 95%;
     --card: 0 0% 7%;                   /* #111 deep card */
     --card-foreground: 0 0% 95%;
@@ -78,6 +78,14 @@
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-heading);
   }
+}
+
+/* ── HERO HEADING — gradient text (ported from Jack's portfolio design) ── */
+.hero-heading {
+  background: linear-gradient(180deg, #646973 0%, #BBCCD7 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 /* ── GLASSMORPHISM ── */

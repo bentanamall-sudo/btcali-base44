@@ -5,8 +5,9 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        heading: ['var(--font-heading)'],
-        body: ['var(--font-body)'],
+        heading: ["'Kanit'", 'var(--font-heading)', 'sans-serif'],
+        body: ["'Kanit'", 'var(--font-body)', 'sans-serif'],
+        kanit: ["'Kanit'", 'sans-serif'],
       },
       borderRadius: {
         lg: 'var(--radius)',

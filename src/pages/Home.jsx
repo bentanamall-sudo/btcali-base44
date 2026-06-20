@@ -1,47 +1,26 @@
 import HeroSection from '../components/home/HeroSection';
+import MarqueeSection from '../components/home/MarqueeSection';
 import WhyAthletesFail from '../components/home/WhyAthletesFail';
 import SocialProofCounter from '../components/home/SocialProofCounter';
-import ResultsTeaser from '../components/home/ResultsTeaser';
-import WhoThisIsFor from '../components/home/WhoThisIsFor';
 import MyStory from '../components/home/MyStory';
-import BeforeAfterOutcomes from '../components/home/BeforeAfterOutcomes';
-import HowCoachingWorks from '../components/home/HowCoachingWorks';
+import BTCALIServicesSection from '../components/home/BTCALIServicesSection';
+import BTCALIProjectsSection from '../components/home/BTCALIProjectsSection';
 import PricingSection from '../components/home/PricingSection';
 import FAQSection from '../components/home/FAQSection';
-import FreeTutorialsBanner from '../components/home/FreeTutorialsBanner';
 import FooterSection from '../components/home/FooterSection';
-
-function Divider() {
-  return (
-    <div className="px-4 my-1">
-      <div className="section-divider" />
-    </div>
-  );
-}
 
 export default function Home() {
   return (
-    <div>
+    <div style={{ background: '#0C0C0C', overflowX: 'clip' }}>
       <HeroSection />
+      <MarqueeSection />
       <WhyAthletesFail />
-      <Divider />
       <SocialProofCounter />
-      <Divider />
-      <ResultsTeaser />
-      <Divider />
-      <WhoThisIsFor />
-      <Divider />
       <MyStory />
-      <Divider />
-      <BeforeAfterOutcomes />
-      <Divider />
-      <HowCoachingWorks />
-      <Divider />
+      <BTCALIServicesSection />
+      <BTCALIProjectsSection />
       <PricingSection />
-      <Divider />
       <FAQSection />
-      <Divider />
-      <FreeTutorialsBanner />
       <FooterSection />
     </div>
   );
