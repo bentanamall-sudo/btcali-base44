@@ -1,63 +1,108 @@
-import { useState, useRef, useEffect } from 'react';
+/**
+ * SmartAccordion — used in the Hero "Why My Coaching" dropdown.
+ *
+ * Desktop: opens on hover, closes 500ms after mouse leaves the entire area.
+ * Mobile:  opens on tap. Uses IntersectionObserver — only auto-closes when
+ *          less than 15% of the accordion is visible, with a 600ms delay.
+ *          Scrolling inside or near the content keeps it open.
+ */
+import { useState, useRef, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronDown } from 'lucide-react';
 
-/**
- * SmartAccordion — opens on hover (desktop) or click (mobile).
- * Auto-retracts when user scrolls away from the element.
- * scrollThreshold: px of scroll before it retracts (default 80).
- */
+const isDesktop = () => typeof window !== 'undefined' && window.innerWidth >= 1024;
+
 export default function SmartAccordion({
   trigger,
   children,
   className = '',
   panelStyle = {},
-  scrollThreshold = 80,
   defaultOpen = false,
 }) {
   const [open, setOpen] = useState(defaultOpen);
-  const ref = useRef(null);
-  const scrollStartRef = useRef(null);
-  const isMobile = typeof window !== 'undefined' && window.innerWidth < 1024;
+  const rootRef = useRef(null);
+  const leaveTimer = useRef(null);
+  const closeTimer = useRef(null);
+  const desktop = useRef(isDesktop());
+  const observerRef = useRef(null);
 
-  // Scroll-aware retract
   useEffect(() => {
-    if (!open) return;
-    const onScroll = () => {
-      if (scrollStartRef.current === null) {
-        scrollStartRef.current = window.scrollY;
-        return;
-      }
-      const delta = Math.abs(window.scrollY - scrollStartRef.current);
-      if (delta > scrollThreshold) {
-        setOpen(false);
-        scrollStartRef.current = null;
-      }
+    const onResize = () => { desktop.current = isDesktop(); };
+    window.addEventListener('resize', onResize, { passive: true });
+    return () => window.removeEventListener('resize', onResize);
+  }, []);
+
+  // ── MOBILE: IntersectionObserver ─────────────────────────────────────────
+  const setupObserver = useCallback(() => {
+    if (!rootRef.current || desktop.current) return;
+    if (observerRef.current) { observerRef.current.disconnect(); observerRef.current = null; }
+
+    observerRef.current = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.intersectionRatio < 0.15) {
+          clearTimeout(closeTimer.current);
+          closeTimer.current = setTimeout(() => setOpen(false), 600);
+        } else {
+          clearTimeout(closeTimer.current);
+        }
+      },
+      { threshold: [0, 0.15, 0.5, 1.0] }
+    );
+    observerRef.current.observe(rootRef.current);
+  }, []);
+
+  useEffect(() => {
+    if (open && !desktop.current) {
+      setupObserver();
+    } else {
+      if (observerRef.current) { observerRef.current.disconnect(); observerRef.current = null; }
+      clearTimeout(closeTimer.current);
+    }
+    return () => {
+      if (observerRef.current) { observerRef.current.disconnect(); observerRef.current = null; }
+      clearTimeout(closeTimer.current);
     };
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
-  }, [open, scrollThreshold]);
+  }, [open, setupObserver]);
 
-  useEffect(() => {
-    if (open) scrollStartRef.current = window.scrollY;
-  }, [open]);
+  useEffect(() => () => {
+    clearTimeout(leaveTimer.current);
+    clearTimeout(closeTimer.current);
+    if (observerRef.current) observerRef.current.disconnect();
+  }, []);
 
-  const hoverProps = isMobile ? {} : {
-    onMouseEnter: () => setOpen(true),
-    onMouseLeave: () => setOpen(false),
+  // ── DESKTOP: hover ────────────────────────────────────────────────────────
+  const handleMouseEnter = () => {
+    if (!desktop.current) return;
+    clearTimeout(leaveTimer.current);
+    setOpen(true);
+  };
+  const handleMouseLeave = () => {
+    if (!desktop.current) return;
+    leaveTimer.current = setTimeout(() => setOpen(false), 500);
+  };
+
+  // ── MOBILE: tap toggle ────────────────────────────────────────────────────
+  const handleClick = () => {
+    if (desktop.current) return;
+    setOpen(o => !o);
   };
 
   return (
-    <div ref={ref} className={`relative ${className}`} {...hoverProps}>
+    <div
+      ref={rootRef}
+      className={`relative ${className}`}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+    >
       <button
-        onClick={() => setOpen(o => !o)}
+        onClick={handleClick}
         className="w-full flex items-center justify-between gap-3 text-left"
         type="button"
       >
         {trigger}
         <motion.span
           animate={{ rotate: open ? 180 : 0 }}
-          transition={{ duration: 0.22, ease: [0.25, 0.46, 0.45, 0.94] }}
+          transition={{ duration: 0.25, ease: [0.25, 0.46, 0.45, 0.94] }}
           className="flex-shrink-0 text-primary/60"
         >
           <ChevronDown className="w-4 h-4" />
@@ -67,10 +112,11 @@ export default function SmartAccordion({
       <AnimatePresence initial={false}>
         {open && (
           <motion.div
+            key="panel"
             initial={{ opacity: 0, height: 0, filter: 'blur(4px)' }}
             animate={{ opacity: 1, height: 'auto', filter: 'blur(0px)' }}
             exit={{ opacity: 0, height: 0, filter: 'blur(3px)' }}
-            transition={{ duration: 0.28, ease: [0.25, 0.46, 0.45, 0.94] }}
+            transition={{ duration: 0.3, ease: [0.25, 0.46, 0.45, 0.94] }}
             className="overflow-hidden"
           >
             <div
