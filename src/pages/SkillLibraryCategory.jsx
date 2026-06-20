@@ -339,17 +339,15 @@ function TutorialCard({ tutorial, onPlay, memberContent = false, isAdmin = false
     <motion.div
       whileHover={{ y: -2 }}
       onClick={onPlay}
-      className="glass rounded-xl border border-border/30 overflow-hidden cursor-pointer group transition-all duration-300 hover:border-primary/40"
-      onMouseEnter={e => e.currentTarget.style.boxShadow = '0 0 25px hsl(var(--glow-primary) / 0.2)'}
-      onMouseLeave={e => e.currentTarget.style.boxShadow = 'none'}
+      className="glass rounded-xl border border-border/25 overflow-hidden cursor-pointer group card-premium hover:border-primary/40"
     >
-      <div className="aspect-video w-full bg-muted/20 relative overflow-hidden">
+      <div className="aspect-video w-full bg-muted/20 relative overflow-hidden thumb-hover">
         <img
           src={`https://img.youtube.com/vi/${tutorial.videoId}/hqdefault.jpg`}
           alt={tutorial.title}
-          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500 ease-out"
         />
-        <div className="absolute inset-0 bg-black/30 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+        <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/10 to-transparent flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
           <div className="w-12 h-12 rounded-full gradient-bg-strong flex items-center justify-center glow-primary">
             <svg className="w-5 h-5 text-white ml-0.5" fill="currentColor" viewBox="0 0 20 20">
               <path d="M6.3 2.841A1.5 1.5 0 004 4.11v11.78a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z" />

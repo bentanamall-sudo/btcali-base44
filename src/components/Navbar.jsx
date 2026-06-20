@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Menu, X, Zap, BookOpen, Trophy, Users, ScanLine, Crown, Settings, CreditCard, ChevronDown } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -80,15 +80,22 @@ function AdminDropdown() {
 
 export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
   const { isMember, isAdmin } = useAccessCodes();
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 20);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
 
   const navLinks = isMember
     ? [...BASE_NAV, { to: '/members', label: 'BTCALI Members', icon: Crown }]
     : BASE_NAV;
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 glass-strong">
+    <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? 'glass-strong shadow-lg' : 'bg-transparent backdrop-blur-sm'}`} style={scrolled ? { borderBottom: '1px solid hsl(var(--border)/0.3)' } : {}}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div className="flex items-center justify-between h-16">
           <Link to="/" className="flex-shrink-0">
@@ -105,18 +112,21 @@ export default function Navbar() {
                   key={link.to}
                   to={link.to}
                   className={cn(
-                    'px-3 py-2 rounded-lg text-sm font-body font-medium transition-all duration-200 flex items-center gap-1.5',
+                    'relative px-3 py-2 rounded-lg text-sm font-heading font-semibold transition-all duration-200 flex items-center gap-1.5 group',
                     link.to === '/members'
                       ? active
-                        ? 'text-primary bg-primary/15 font-semibold'
-                        : 'text-primary/80 hover:text-primary hover:bg-primary/10 font-semibold'
+                        ? 'text-primary bg-primary/15'
+                        : 'text-primary/80 hover:text-primary hover:bg-primary/10'
                       : active
                         ? 'text-primary bg-primary/10'
-                        : 'text-muted-foreground hover:text-foreground hover:bg-muted/30'
+                        : 'text-muted-foreground hover:text-foreground hover:bg-muted/20'
                   )}
                 >
-                  <Icon className="w-4 h-4" />
+                  <Icon className="w-4 h-4 transition-transform duration-200 group-hover:scale-110" />
                   {link.label}
+                  {active && (
+                    <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-4 h-0.5 rounded-full bg-primary" />
+                  )}
                 </Link>
               );
             })}

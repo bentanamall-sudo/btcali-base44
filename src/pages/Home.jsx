@@ -13,8 +13,8 @@ import FooterSection from '../components/home/FooterSection';
 
 function Divider() {
   return (
-    <div className="max-w-2xl mx-auto px-4">
-      <div className="h-px w-full" style={{ background: 'linear-gradient(90deg, transparent, hsl(var(--border)/0.5), transparent)' }} />
+    <div className="px-4 my-1">
+      <div className="section-divider" />
     </div>
   );
 }

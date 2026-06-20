@@ -135,9 +135,7 @@ function TutorialCard({ tutorial, index, isAdmin }) {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ delay: index * 0.08 }}
-        className={`rounded-2xl border overflow-hidden transition-all duration-300 relative ${comingSoon ? 'border-border/20 bg-card/30 opacity-60' : 'border-border/30 bg-card/60 hover:border-primary/40'}`}
-        onMouseEnter={e => { if (!comingSoon) e.currentTarget.style.boxShadow = '0 0 25px hsl(var(--glow-primary) / 0.18)'; }}
-        onMouseLeave={e => { e.currentTarget.style.boxShadow = 'none'; }}
+        className={`rounded-2xl border overflow-hidden relative ${comingSoon ? 'border-border/20 bg-card/30 opacity-60' : 'border-border/25 bg-card/60 card-premium hover:border-primary/35'}`}
       >
         <div className={`h-0.5 w-full ${comingSoon ? 'bg-border/20' : 'bg-gradient-to-r from-primary/60 via-accent/40 to-transparent'}`} />
         <div className="p-5">
