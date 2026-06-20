@@ -187,7 +187,7 @@ export default function HeroSection() {
                 whileHover={{ scale: 1.04, y: -2 }}
                 whileTap={{ scale: 0.97 }}
                 transition={{ type: 'spring', stiffness: 380, damping: 22 }}
-                className="flex items-center gap-3 px-9 py-4 rounded-2xl font-heading font-black text-base relative overflow-hidden group gradient-bg-strong"
+                className="flex items-center gap-3 px-9 py-4 rounded-2xl font-heading font-black text-base relative overflow-hidden group gradient-bg-strong btn-shine"
                 style={{
                   color: 'hsl(0 0% 5%)',
                   boxShadow: '0 0 30px hsl(43 74% 49% / 0.28), 0 4px 20px hsl(43 74% 49% / 0.16)',

@@ -17,15 +17,15 @@
     --popover: 0 0% 7%;
     --popover-foreground: 0 0% 95%;
 
-    /* TRUE METALLIC GOLD — not yellow, not mustard */
-    --primary: 43 74% 49%;             /* #C9971A — deep saturated gold */
-    --primary-foreground: 0 0% 5%;
+    /* TRUE METALLIC GOLD — champagne, shiny, premium */
+    --primary: 45 85% 52%;             /* #D4A017 — rich bright gold */
+    --primary-foreground: 0 0% 4%;
     --secondary: 0 0% 9%;
     --secondary-foreground: 0 0% 85%;
     --muted: 0 0% 11%;
     --muted-foreground: 0 0% 45%;
-    --accent: 42 80% 62%;              /* #E0AE3E — bright accent gold */
-    --accent-foreground: 0 0% 5%;
+    --accent: 47 95% 68%;              /* #F5C842 — champagne highlight gold */
+    --accent-foreground: 0 0% 4%;
     --destructive: 0 72% 50%;
     --destructive-foreground: 0 0% 98%;
     --border: 40 25% 15%;              /* dark gold-toned border */
@@ -33,12 +33,12 @@
     --ring: 43 74% 49%;
     --radius: 0.85rem;
 
-    /* gold glow — rich, warm, metallic */
-    --glow-primary: 43 74% 49%;
-    --glow-secondary: 38 65% 35%;
-    /* gradient: bright gold → deep amber gold (NOT yellow) */
-    --gradient-start: 44 78% 55%;     /* #D4A520 */
-    --gradient-end: 38 70% 38%;       /* #A06C10 */
+    /* gold glow — rich champagne metallic */
+    --glow-primary: 45 85% 52%;
+    --glow-secondary: 40 70% 38%;
+    /* gradient: champagne highlight → deep antique gold */
+    --gradient-start: 47 92% 62%;     /* bright champagne gold */
+    --gradient-end: 40 75% 38%;       /* deep antique gold */
 
     --glass-bg: 0 0% 5%;
     --glass-border: 40 30% 18%;
@@ -140,25 +140,26 @@
 .gradient-text {
   background: linear-gradient(
     135deg,
-    hsl(44 90% 65%) 0%,
-    hsl(43 78% 50%) 40%,
-    hsl(38 72% 40%) 100%
+    hsl(50 100% 75%) 0%,
+    hsl(45 88% 58%) 35%,
+    hsl(40 78% 44%) 70%,
+    hsl(36 70% 36%) 100%
   );
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  filter: drop-shadow(0 0 10px hsl(var(--glow-primary) / 0.35));
+  filter: drop-shadow(0 0 12px hsl(var(--glow-primary) / 0.4));
 }
 
 /* Shimmer variant for special emphasis */
 .shimmer-text {
   background: linear-gradient(
     90deg,
-    hsl(44 90% 65%) 0%,
-    hsl(38 72% 42%) 30%,
-    hsl(50 95% 78%) 50%,
-    hsl(38 72% 42%) 70%,
-    hsl(44 90% 65%) 100%
+    hsl(50 100% 72%) 0%,
+    hsl(42 82% 48%) 30%,
+    hsl(52 100% 82%) 50%,
+    hsl(42 82% 48%) 70%,
+    hsl(50 100% 72%) 100%
   );
   background-size: 200% auto;
   -webkit-background-clip: text;
@@ -175,9 +176,10 @@
 .gradient-bg-strong {
   background: linear-gradient(
     135deg,
-    hsl(44 85% 52%) 0%,
-    hsl(42 80% 44%) 50%,
-    hsl(36 70% 34%) 100%
+    hsl(50 100% 68%) 0%,
+    hsl(45 88% 54%) 40%,
+    hsl(40 78% 42%) 75%,
+    hsl(36 68% 34%) 100%
   );
   position: relative;
   overflow: hidden;
@@ -223,7 +225,7 @@
 
 /* ── PROGRESS BAR ── */
 .progress-glow {
-  background: linear-gradient(90deg, hsl(44 85% 52%), hsl(38 70% 40%));
+  background: linear-gradient(90deg, hsl(50 100% 68%), hsl(45 88% 54%), hsl(40 78% 42%));
   box-shadow: 0 0 10px hsl(var(--glow-primary) / 0.55), 0 0 20px hsl(var(--glow-primary) / 0.18);
 }
 
@@ -355,6 +357,32 @@
 /* Btn press */
 .btn-press { transition: transform 0.1s ease, box-shadow 0.1s ease; }
 .btn-press:active { transform: scale(0.97) translateY(1px); }
+
+/* Gold shine sweep on hover — for buttons */
+.btn-shine {
+  position: relative;
+  overflow: hidden;
+}
+.btn-shine::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -75%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(
+    120deg,
+    transparent 0%,
+    hsl(0 0% 100% / 0.18) 50%,
+    transparent 100%
+  );
+  transform: skewX(-20deg);
+  transition: left 0.5s ease;
+  pointer-events: none;
+}
+.btn-shine:hover::before {
+  left: 135%;
+}
 
 /* Typewriter cursor */
 @keyframes cursorBlink {

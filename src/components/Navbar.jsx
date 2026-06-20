@@ -97,11 +97,20 @@ export default function Navbar() {
   const location = useLocation();
   const { isMember, isAdmin } = useAccessCodes();
 
+  // Close mobile menu on route change
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 24);
+    setMobileOpen(false);
+  }, [location.pathname]);
+
+  // Close mobile menu on scroll
+  useEffect(() => {
+    const onScroll = () => {
+      setScrolled(window.scrollY > 24);
+      if (mobileOpen) setMobileOpen(false);
+    };
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
-  }, []);
+  }, [mobileOpen]);
 
   const navLinks = isMember
     ? [...BASE_NAV, { to: '/members', label: 'BTCALI Members', icon: Crown }]
@@ -184,10 +193,10 @@ export default function Navbar() {
       <AnimatePresence>
         {mobileOpen && (
           <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.25, ease: [0.25, 0.46, 0.45, 0.94] }}
+            initial={{ opacity: 0, y: -8, height: 0 }}
+            animate={{ opacity: 1, y: 0, height: 'auto' }}
+            exit={{ opacity: 0, y: -6, height: 0 }}
+            transition={{ duration: 0.28, ease: [0.25, 0.46, 0.45, 0.94] }}
             className="lg:hidden overflow-hidden"
             style={{
               background: 'hsl(0 0% 4% / 0.96)',

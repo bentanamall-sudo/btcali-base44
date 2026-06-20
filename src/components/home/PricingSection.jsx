@@ -79,11 +79,7 @@ export default function PricingSection() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: 0.12 + i * 0.1 }}
-                className={`rounded-2xl p-5 border relative overflow-hidden transition-all duration-300 hover:scale-[1.01] ${
-                  tier.premium
-                    ? 'hover:shadow-[0_0_30px_hsl(var(--glow-primary)/0.18)]'
-                    : 'hover:border-primary/30'
-                }`}
+                className="rounded-2xl p-5 border relative overflow-hidden card-premium"
                 style={tier.premium
                   ? {
                       background: 'linear-gradient(145deg, hsl(0 0% 9%) 0%, hsl(43 40% 7%) 100%)',
@@ -162,7 +158,7 @@ export default function PricingSection() {
               whileHover={{ scale: 1.02, y: -2 }}
               whileTap={{ scale: 0.97 }}
               transition={{ type: 'spring', stiffness: 400, damping: 20 }}
-              className="w-full py-5 rounded-2xl gradient-bg-strong text-primary-foreground font-heading font-black text-lg flex items-center justify-center gap-3 relative overflow-hidden group"
+              className="w-full py-5 rounded-2xl gradient-bg-strong text-primary-foreground font-heading font-black text-lg flex items-center justify-center gap-3 relative overflow-hidden group btn-shine"
               style={{ boxShadow: '0 0 32px hsl(var(--glow-primary)/0.3), 0 4px 24px hsl(var(--glow-primary)/0.15)' }}
             >
               <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
