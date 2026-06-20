@@ -17,14 +17,14 @@
     --popover: 0 0% 7%;
     --popover-foreground: 0 0% 95%;
 
-    /* TRUE METALLIC GOLD — champagne, shiny, premium */
-    --primary: 45 85% 52%;             /* #D4A017 — rich bright gold */
+    /* TRUE METALLIC GOLD — shiny, reflective, premium champagne */
+    --primary: 44 88% 50%;             /* bright metallic gold */
     --primary-foreground: 0 0% 4%;
     --secondary: 0 0% 9%;
     --secondary-foreground: 0 0% 85%;
     --muted: 0 0% 11%;
     --muted-foreground: 0 0% 45%;
-    --accent: 47 95% 68%;              /* #F5C842 — champagne highlight gold */
+    --accent: 48 96% 66%;              /* bright champagne highlight */
     --accent-foreground: 0 0% 4%;
     --destructive: 0 72% 50%;
     --destructive-foreground: 0 0% 98%;
@@ -33,12 +33,12 @@
     --ring: 43 74% 49%;
     --radius: 0.85rem;
 
-    /* gold glow — rich champagne metallic */
-    --glow-primary: 45 85% 52%;
-    --glow-secondary: 40 70% 38%;
-    /* gradient: champagne highlight → deep antique gold */
-    --gradient-start: 47 92% 62%;     /* bright champagne gold */
-    --gradient-end: 40 75% 38%;       /* deep antique gold */
+    /* gold glow — rich shiny metallic */
+    --glow-primary: 44 88% 50%;
+    --glow-secondary: 38 72% 36%;
+    /* gradient: bright champagne → deep antique gold */
+    --gradient-start: 48 96% 64%;     /* bright champagne */
+    --gradient-end: 38 78% 36%;       /* deep rich gold */
 
     --glass-bg: 0 0% 5%;
     --glass-border: 40 30% 18%;
@@ -140,10 +140,10 @@
 .gradient-text {
   background: linear-gradient(
     135deg,
-    hsl(50 100% 75%) 0%,
-    hsl(45 88% 58%) 35%,
-    hsl(40 78% 44%) 70%,
-    hsl(36 70% 36%) 100%
+    hsl(52 100% 78%) 0%,
+    hsl(46 92% 60%) 30%,
+    hsl(42 82% 46%) 65%,
+    hsl(36 72% 34%) 100%
   );
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -176,10 +176,10 @@
 .gradient-bg-strong {
   background: linear-gradient(
     135deg,
-    hsl(50 100% 68%) 0%,
-    hsl(45 88% 54%) 40%,
-    hsl(40 78% 42%) 75%,
-    hsl(36 68% 34%) 100%
+    hsl(52 100% 70%) 0%,
+    hsl(46 92% 56%) 35%,
+    hsl(40 82% 44%) 70%,
+    hsl(35 70% 32%) 100%
   );
   position: relative;
   overflow: hidden;

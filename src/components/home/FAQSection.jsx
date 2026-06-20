@@ -1,6 +1,6 @@
-import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronDown } from 'lucide-react';
+import { motion } from 'framer-motion';
+import HoverAccordion from '@/components/HoverAccordion';
+import TypewriterHeading from '@/components/TypewriterHeading';
 
 const FAQS = [
   {
@@ -33,38 +33,6 @@ const FAQS = [
   },
 ];
 
-function FAQItem({ q, a }) {
-  const [open, setOpen] = useState(false);
-  return (
-    <div className="glass rounded-xl border border-border/30 overflow-hidden">
-      <button
-        onClick={() => setOpen(o => !o)}
-        className="w-full flex items-center justify-between gap-4 px-5 py-4 text-left hover:bg-muted/5 transition-colors"
-      >
-        <span className="font-heading font-semibold text-foreground text-sm">{q}</span>
-        <motion.span animate={{ rotate: open ? 180 : 0 }} transition={{ duration: 0.2 }} className="flex-shrink-0">
-          <ChevronDown className="w-4 h-4 text-muted-foreground" />
-        </motion.span>
-      </button>
-      <AnimatePresence initial={false}>
-        {open && (
-          <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: 'auto', opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.25, ease: 'easeInOut' }}
-            className="overflow-hidden"
-          >
-            <div className="px-5 pb-5 pt-1 border-t border-border/20">
-              <p className="text-sm font-body text-foreground/75 leading-relaxed">{a}</p>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </div>
-  );
-}
-
 export default function FAQSection() {
   return (
     <section className="py-16 px-4 sm:px-6">
@@ -73,16 +41,45 @@ export default function FAQSection() {
           initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
+          transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
         >
           <p className="text-xs font-heading font-bold text-muted-foreground/50 uppercase tracking-[0.25em] mb-3 text-center">
             Common Questions
           </p>
-          <h2 className="font-heading font-black text-3xl sm:text-4xl text-foreground mb-10 text-center leading-tight">
-            FAQ
-          </h2>
+          <TypewriterHeading
+            text="Frequently Asked Questions"
+            tag="h2"
+            className="font-heading font-black text-3xl sm:text-4xl text-foreground mb-10 text-center leading-tight"
+            highlightWords={['Asked Questions']}
+            speed={38}
+          />
           <div className="space-y-2">
-            {FAQS.map(faq => (
-              <FAQItem key={faq.q} {...faq} />
+            {FAQS.map((faq, i) => (
+              <motion.div
+                key={faq.q}
+                initial={{ opacity: 0, y: 10 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.05, duration: 0.35 }}
+                className="rounded-xl overflow-hidden"
+                style={{
+                  background: 'hsl(0 0% 7% / 0.65)',
+                  backdropFilter: 'blur(20px)',
+                  border: '1px solid hsl(40 25% 14% / 0.4)',
+                }}
+              >
+                <HoverAccordion
+                  trigger={
+                    <span className="font-heading font-semibold text-foreground text-sm">{faq.q}</span>
+                  }
+                  triggerClassName="px-5 py-4 hover:bg-white/3 transition-colors"
+                >
+                  <div className="px-5 pb-5">
+                    <div className="h-px mb-3" style={{ background: 'hsl(var(--border)/0.2)' }} />
+                    <p className="text-sm font-body text-foreground/75 leading-relaxed">{faq.a}</p>
+                  </div>
+                </HoverAccordion>
+              </motion.div>
             ))}
           </div>
         </motion.div>

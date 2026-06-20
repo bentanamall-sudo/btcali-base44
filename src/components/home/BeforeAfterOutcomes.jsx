@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import { CheckCircle } from 'lucide-react';
+import ResultsWall from '@/components/home/ResultsWall';
 
 const SKILL_RESULTS = [
   'Full Planche in under a year',
@@ -38,7 +39,7 @@ const OUTCOMES = [
 
 export default function BeforeAfterOutcomes() {
   return (
-    <section className="py-16 px-4 sm:px-6">
+    <ResultsWall className="py-16 px-4 sm:px-6">
       <div className="max-w-3xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 24 }}
@@ -58,18 +59,25 @@ export default function BeforeAfterOutcomes() {
           {/* Results Achieved */}
           <div className="rounded-2xl px-6 py-5 mb-8"
             style={{
-              background: 'linear-gradient(135deg, hsl(43 74% 49% / 0.09), hsl(38 65% 35% / 0.06))',
-              border: '1px solid hsl(43 74% 49% / 0.22)',
+              background: 'linear-gradient(135deg, hsl(45 85% 52% / 0.09), hsl(40 75% 38% / 0.06))',
+              border: '1px solid hsl(45 85% 52% / 0.22)',
               backdropFilter: 'blur(16px)',
-              boxShadow: '0 0 30px hsl(43 74% 49% / 0.05), inset 0 1px 0 hsl(0 0% 100% / 0.05)',
+              boxShadow: '0 0 30px hsl(45 85% 52% / 0.06), inset 0 1px 0 hsl(0 0% 100% / 0.05)',
             }}>
             <p className="font-heading font-bold text-foreground text-sm text-center mb-4">Results Achieved By BTCALI Athletes</p>
             <div className="grid sm:grid-cols-2 gap-2">
               {SKILL_RESULTS.map((r, i) => (
-                <div key={i} className="flex items-center gap-2.5">
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, x: -8 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.06 }}
+                  className="flex items-center gap-2.5"
+                >
                   <CheckCircle className="w-3.5 h-3.5 text-primary flex-shrink-0" />
                   <span className="font-body text-sm text-foreground/80">{r}</span>
-                </div>
+                </motion.div>
               ))}
             </div>
           </div>
@@ -83,6 +91,7 @@ export default function BeforeAfterOutcomes() {
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.08 }}
                 className="glass rounded-xl border border-border/30 overflow-hidden"
+                whileHover={{ borderColor: 'hsl(45 85% 52% / 0.3)', boxShadow: '0 0 20px hsl(45 85% 52% / 0.08)' }}
               >
                 <div className="px-5 py-3 border-b border-border/20">
                   <span className="font-heading font-bold text-sm gradient-text uppercase tracking-wider">{category}</span>
@@ -102,6 +111,6 @@ export default function BeforeAfterOutcomes() {
           </div>
         </motion.div>
       </div>
-    </section>
+    </ResultsWall>
   );
 }

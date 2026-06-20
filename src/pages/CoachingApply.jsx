@@ -1,7 +1,8 @@
 import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { CheckCircle, Crown, ChevronDown, Trophy, Flame } from 'lucide-react';
+import { CheckCircle, Crown, Trophy, Flame } from 'lucide-react';
+import HoverAccordion from '@/components/HoverAccordion';
 
 const SKILLS = [
   'Planche','Front Lever','Handstand','Handstand Push-Up','Muscle-Up',
@@ -88,47 +89,35 @@ const FAQ_ITEMS = [
 ];
 
 function AccordionItem({ title, children }) {
-  const [open, setOpen] = useState(false);
   return (
-    <div className="glass rounded-xl border border-border/30 overflow-hidden">
-      <button
-        onClick={() => setOpen(o => !o)}
-        className="w-full flex items-center justify-between gap-3 px-5 py-4 text-left hover:bg-muted/10 transition-colors"
+    <div className="rounded-xl overflow-hidden" style={{
+      background: 'hsl(0 0% 7% / 0.65)',
+      backdropFilter: 'blur(20px)',
+      border: '1px solid hsl(40 25% 14% / 0.4)',
+    }}>
+      <HoverAccordion
+        trigger={
+          <div className="flex items-center gap-3">
+            <CheckCircle className="w-4 h-4 text-primary flex-shrink-0" />
+            <span className="font-heading font-semibold text-foreground text-sm sm:text-base">{title}</span>
+          </div>
+        }
+        triggerClassName="px-5 py-4 hover:bg-white/3 transition-colors"
       >
-        <div className="flex items-center gap-3">
-          <CheckCircle className="w-4 h-4 text-primary flex-shrink-0" />
-          <span className="font-heading font-semibold text-foreground text-sm sm:text-base">{title}</span>
+        <div className="px-5 pb-5">
+          <div className="h-px mb-3" style={{ background: 'hsl(var(--border)/0.25)' }} />
+          <div className="space-y-3">
+            {children.detail.split('\n\n').map((para, i) => (
+              <p key={i} className="text-sm font-body text-foreground/75 leading-relaxed">{para}</p>
+            ))}
+          </div>
         </div>
-        <motion.span animate={{ rotate: open ? 180 : 0 }} transition={{ duration: 0.2 }}>
-          <ChevronDown className="w-4 h-4 text-muted-foreground flex-shrink-0" />
-        </motion.span>
-      </button>
-      <AnimatePresence initial={false}>
-        {open && (
-          <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: 'auto', opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.25, ease: 'easeInOut' }}
-            className="overflow-hidden"
-          >
-            <div className="px-5 pb-5 pt-1 border-t border-border/30">
-              <div className="space-y-3 pt-2">
-                {children.detail.split('\n\n').map((para, i) => (
-                  <p key={i} className="text-sm font-body text-foreground/75 leading-relaxed">{para}</p>
-                ))}
-              </div>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      </HoverAccordion>
     </div>
   );
 }
 
 export default function CoachingApply() {
-  const [detailsOpen, setDetailsOpen] = useState(false);
-  const [includedOpen, setIncludedOpen] = useState(false);
 
   return (
     <div className="min-h-screen py-12 px-4 sm:px-6 max-w-3xl mx-auto">
@@ -196,28 +185,13 @@ export default function CoachingApply() {
 
       {/* 3. BTCALI Coaching Details */}
       <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.14 }} className="mb-6">
-        <motion.button
-          whileHover={{ scale: 1.01 }}
-          whileTap={{ scale: 0.98 }}
-          onClick={() => setDetailsOpen(o => !o)}
-          className="w-full flex items-center justify-between gap-3 glass rounded-xl px-5 py-4 border border-border/30 hover:border-primary/30 transition-all"
-        >
-          <span className="font-heading font-bold text-foreground text-base">BTCALI Coaching Details</span>
-          <motion.span animate={{ rotate: detailsOpen ? 180 : 0 }} transition={{ duration: 0.2 }}>
-            <ChevronDown className="w-5 h-5 text-muted-foreground" />
-          </motion.span>
-        </motion.button>
-
-        <AnimatePresence initial={false}>
-          {detailsOpen && (
-            <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: 'auto' }}
-              exit={{ opacity: 0, height: 0 }}
-              transition={{ duration: 0.28, ease: 'easeInOut' }}
-              className="overflow-hidden"
-            >
-              <div className="glass rounded-b-xl px-5 pb-6 pt-4 border border-t-0 border-border/30 space-y-5">
+        <div className="glass rounded-xl border border-border/30 hover:border-primary/25 transition-colors overflow-hidden">
+          <HoverAccordion
+            trigger={<span className="font-heading font-bold text-foreground text-base">BTCALI Coaching Details</span>}
+            triggerClassName="px-5 py-4"
+          >
+              <div className="px-5 pb-6 pt-2 space-y-5">
+                <div className="h-px" style={{ background: 'hsl(var(--border)/0.25)' }} />
 
                 {/* Intro */}
                 <p className="font-body text-sm text-foreground/85 leading-relaxed">
@@ -276,11 +250,22 @@ export default function CoachingApply() {
                 {/* FAQ */}
                 <div>
                   <p className="font-heading font-bold text-foreground text-sm mb-3">Frequently Asked Questions</p>
-                  <div className="space-y-3">
+                  <div className="space-y-2">
                     {FAQ_ITEMS.map((faq, i) => (
-                      <div key={i} className="glass rounded-xl p-4 border border-border/20">
-                        <p className="font-heading font-semibold text-foreground text-sm mb-1">{faq.q}</p>
-                        <p className="font-body text-sm text-foreground/75 leading-relaxed">{faq.a}</p>
+                      <div key={i} className="rounded-xl overflow-hidden" style={{
+                        background: 'hsl(0 0% 7% / 0.6)',
+                        backdropFilter: 'blur(16px)',
+                        border: '1px solid hsl(40 25% 14% / 0.4)',
+                      }}>
+                        <HoverAccordion
+                          trigger={<span className="font-heading font-semibold text-foreground text-sm">{faq.q}</span>}
+                          triggerClassName="px-4 py-3 hover:bg-white/3 transition-colors"
+                        >
+                          <div className="px-4 pb-4">
+                            <div className="h-px mb-2" style={{ background: 'hsl(var(--border)/0.2)' }} />
+                            <p className="font-body text-sm text-foreground/75 leading-relaxed">{faq.a}</p>
+                          </div>
+                        </HoverAccordion>
                       </div>
                     ))}
                   </div>
@@ -316,47 +301,31 @@ export default function CoachingApply() {
                   <p className="text-xs font-body text-muted-foreground mt-1">I aim to respond before your next session whenever possible. I may also respond outside of these hours when available.</p>
                 </div>
               </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
+          </HoverAccordion>
+        </div>
       </motion.div>
 
-      {/* 4. What's Included — single outer dropdown */}
-      <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="mb-6">
-        <motion.button
-          whileHover={{ scale: 1.01 }}
-          whileTap={{ scale: 0.98 }}
-          onClick={() => setIncludedOpen(o => !o)}
-          className="w-full flex items-center justify-between gap-3 glass rounded-xl px-5 py-4 border border-border/30 hover:border-primary/30 transition-all"
-        >
-          <span className="font-heading font-bold text-foreground text-base">What Is Included</span>
-          <motion.span animate={{ rotate: includedOpen ? 180 : 0 }} transition={{ duration: 0.2 }}>
-            <ChevronDown className="w-5 h-5 text-muted-foreground" />
-          </motion.span>
-        </motion.button>
 
-        <AnimatePresence initial={false}>
-          {includedOpen && (
-            <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: 'auto' }}
-              exit={{ opacity: 0, height: 0 }}
-              transition={{ duration: 0.28, ease: 'easeInOut' }}
-              className="overflow-hidden"
-            >
-              <div className="glass rounded-b-xl border border-t-0 border-border/30 px-4 pb-4 pt-3">
-                <p className="text-xs text-muted-foreground font-body mb-3">Tap each item to expand</p>
-                <div className="space-y-2">
-                  {INCLUSION_ITEMS.map((item, i) => (
-                    <AccordionItem key={i} title={item.title}>
-                      {item}
-                    </AccordionItem>
-                  ))}
-                </div>
+      {/* 4. What's Included */}
+      <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="mb-6">
+        <div className="glass rounded-xl border border-border/30 hover:border-primary/25 transition-colors overflow-hidden">
+          <HoverAccordion
+            trigger={<span className="font-heading font-bold text-foreground text-base">What Is Included</span>}
+            triggerClassName="px-5 py-4"
+          >
+            <div className="px-4 pb-4 pt-2">
+              <div className="h-px mb-3" style={{ background: 'hsl(var(--border)/0.25)' }} />
+              <p className="text-xs text-muted-foreground font-body mb-3">Hover or tap each item to expand</p>
+              <div className="space-y-2">
+                {INCLUSION_ITEMS.map((item, i) => (
+                  <AccordionItem key={i} title={item.title}>
+                    {item}
+                  </AccordionItem>
+                ))}
               </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
+            </div>
+          </HoverAccordion>
+        </div>
       </motion.div>
 
       {/* 5. Skills */}
