@@ -505,7 +505,6 @@ export default function HeroSection() {
             initial={{ opacity: 0, scale: 0.88, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             transition={{ delay: 0.3, duration: 1, ease: [0.22, 1, 0.36, 1] }}
-            style={{ x: parallaxX, y: parallaxY }}
             className="hidden lg:flex items-center justify-center relative overflow-hidden"
           >
             {/* Outer ambient glow */}
@@ -522,10 +521,10 @@ export default function HeroSection() {
 
             {/* Floating skill labels */}
             {[
-              { text: 'PLANCHE', top: '10%', left: '5%', delay: 1.4 },
-              { text: 'MUSCLE UP', top: '28%', right: '-5%', delay: 1.6 },
-              { text: 'FRONT LEVER', bottom: '38%', left: '-2%', delay: 1.8 },
-              { text: 'HSPU', bottom: '20%', right: '0%', delay: 2.0 },
+              { text: 'PLANCHE', top: '10%', left: '8%', delay: 1.4 },
+              { text: 'MUSCLE UP', top: '28%', right: '2%', delay: 1.6 },
+              { text: 'FRONT LEVER', bottom: '38%', left: '8%', delay: 1.8 },
+              { text: 'HSPU', bottom: '20%', right: '2%', delay: 2.0 },
             ].map((chip, i) => (
               <motion.div
                 key={i}
