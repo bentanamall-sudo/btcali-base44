@@ -46,18 +46,7 @@ function HolographicScanner() {
     ];
     const jMap = Object.fromEntries(JOINTS.map(j => [j.id, j]));
 
-    // Body outline polygon (left side then right side)
-    const OUTLINE = [
-      [0.44, 0.02],[0.56, 0.02],[0.62, 0.06],[0.64, 0.14],
-      [0.68, 0.20],[0.72, 0.28],[0.78, 0.46],[0.76, 0.50],
-      [0.62, 0.50],[0.64, 0.67],[0.65, 0.82],[0.67, 0.91],[0.62, 0.94],
-      [0.54, 0.94],[0.53, 0.82],[0.52, 0.67],[0.58, 0.50],
-      // mirror
-      [0.42, 0.50],[0.48, 0.50],[0.47, 0.67],[0.46, 0.82],[0.47, 0.94],
-      [0.38, 0.94],[0.35, 0.91],[0.36, 0.82],[0.37, 0.67],[0.38, 0.50],
-      [0.24, 0.50],[0.22, 0.46],[0.28, 0.28],[0.32, 0.20],
-      [0.36, 0.14],[0.38, 0.06],
-    ];
+
 
     // Particles
     const particles = Array.from({ length: 120 }, () => ({
@@ -104,23 +93,7 @@ function HolographicScanner() {
       ctx.fillStyle = groundGlow;
       ctx.fill();
 
-      // === BODY OUTLINE (wireframe mesh fill) ===
-      ctx.beginPath();
-      OUTLINE.forEach(([ox, oy], i) => {
-        const px = ox * W, py = (oy + breathe) * H;
-        if (i === 0) ctx.moveTo(px, py);
-        else ctx.lineTo(px, py);
-      });
-      ctx.closePath();
-      const bodyGrad = ctx.createLinearGradient(0, 0, 0, H);
-      bodyGrad.addColorStop(0, 'hsla(213,100%,65%,0.06)');
-      bodyGrad.addColorStop(0.5, 'hsla(188,100%,68%,0.1)');
-      bodyGrad.addColorStop(1, 'hsla(213,100%,65%,0.04)');
-      ctx.fillStyle = bodyGrad;
-      ctx.fill();
-      ctx.strokeStyle = 'hsla(213,100%,65%,0.18)';
-      ctx.lineWidth = 0.6;
-      ctx.stroke();
+      // Body outline removed — skeleton only, no filled silhouette
 
       // === HORIZONTAL SCAN LINES across body ===
       for (let ly = 0.04; ly < 0.96; ly += 0.04) {
