@@ -10,6 +10,7 @@ import PricingSection from '../components/home/PricingSection';
 import FAQSection from '../components/home/FAQSection';
 import FreeTutorialsBanner from '../components/home/FreeTutorialsBanner';
 import FooterSection from '../components/home/FooterSection';
+import Floating3DWords from '../components/home/Floating3DWords';
 
 function Divider() {
   return (
@@ -22,7 +23,9 @@ function Divider() {
 export default function Home() {
   return (
     <div>
-      <HeroSection />
+      <Floating3DWords>
+        <HeroSection />
+      </Floating3DWords>
       <Divider />
       <SocialProofCounter />
       <Divider />

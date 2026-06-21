@@ -23,15 +23,15 @@ const MILESTONES = [
     accent: '#7BB8FF',
   },
   {
-    year: '~1 yr',
+    year: '~1.5 yr',
     title: 'First Planche',
-    desc: 'The most demanding skill I\'d ever attempted. Hundreds of hours of conditioning, wrist prep, and targeted progressions.',
+    desc: 'The most demanding skill I\'d ever attempted. Hundreds of hours of conditioning, wrist prep, and targeted progressions. 1.5 years in the making.',
     accent: '#4F9DFF',
   },
   {
-    year: '~1.5 yr',
+    year: '~1 yr',
     title: '90° Handstand Push-Ups',
-    desc: 'Pressing strength reached its peak — full depth handstand push-ups from consistent overhead pressing work.',
+    desc: 'Pressing strength peaked before the planche — full depth handstand push-ups achieved through consistent overhead pressing work.',
     accent: '#5EEBFF',
   },
   {
