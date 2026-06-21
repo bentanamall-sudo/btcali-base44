@@ -96,69 +96,80 @@ export default function CoachingApply() {
     <div className="min-h-screen py-12 px-4 sm:px-6 max-w-3xl mx-auto">
 
       {/* Header */}
-      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
-        <div className="inline-flex items-center gap-2 glass px-4 py-2 rounded-full mb-4 border border-border/30">
+      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-10">
+        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-5"
+          style={{ background: 'rgba(79,157,255,0.08)', border: '1px solid rgba(79,157,255,0.18)' }}>
           <Crown className="w-4 h-4 text-primary" />
-          <span className="text-sm font-body text-muted-foreground">$150/month · $40/week · $50/week</span>
+          <span className="text-sm font-body" style={{ color: 'rgba(191,201,217,0.7)' }}>$150/month · $40/week · $50/week</span>
         </div>
-        <p className="text-xs font-heading font-bold text-muted-foreground/50 uppercase tracking-[0.25em] mb-2">PRICING</p>
-        <h1 className="font-heading font-bold text-3xl sm:text-5xl mb-3 leading-tight">
-          <span className="gradient-text">Pricing</span>
+        <p className="text-xs font-heading font-semibold uppercase tracking-[0.3em] mb-3" style={{ color: 'rgba(79,157,255,0.5)' }}>Pricing</p>
+        <h1 className="font-heading font-black text-4xl sm:text-5xl mb-3 leading-tight">
+          <span className="gradient-text">1-on-1 Coaching</span>
         </h1>
-        <p className="text-sm font-heading font-semibold text-primary/70 uppercase tracking-widest">Currently Accepting New Athletes</p>
+        <p className="text-sm font-heading font-semibold uppercase tracking-widest" style={{ color: 'rgba(79,157,255,0.6)' }}>Currently Accepting New Athletes</p>
       </motion.div>
 
       {/* 1. Pricing */}
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.06 }}
-        className="glass rounded-xl px-5 py-4 border border-primary/20 mb-4 relative overflow-hidden">
-        <div className="absolute inset-0 gradient-bg pointer-events-none" />
-        <div className="relative flex flex-col gap-3">
-          <div className="flex items-center justify-between gap-4">
-            <div>
-              <div className="font-heading font-bold text-2xl gradient-text leading-none">$150 <span className="text-sm font-semibold text-muted-foreground">AUD/month</span></div>
-              <div className="text-xs font-body text-muted-foreground mt-0.5">Paid upfront monthly</div>
+        className="rounded-2xl px-5 py-5 mb-4 relative overflow-hidden"
+        style={{ background: 'linear-gradient(145deg, rgba(79,157,255,0.08) 0%, rgba(94,235,255,0.05) 100%)', border: '1px solid rgba(79,157,255,0.2)' }}>
+        <div className="absolute top-0 left-0 right-0 h-px"
+          style={{ background: 'linear-gradient(90deg, transparent, rgba(79,157,255,0.5), transparent)' }} />
+        <div className="flex flex-col gap-4">
+          {[
+            { price: '$150', unit: 'AUD/month', desc: 'Paid upfront monthly', badge: 'Best Value' },
+            { price: '$40',  unit: 'AUD/week',  desc: 'Minimum 1 month commitment' },
+            { price: '$50',  unit: 'AUD/week',  desc: 'No minimum commitment', muted: true },
+          ].map((tier, i) => (
+            <div key={i}>
+              {i > 0 && <div className="h-px mb-3" style={{ background: 'rgba(255,255,255,0.06)' }} />}
+              <div className="flex items-center justify-between gap-4">
+                <div>
+                  <div className={`font-heading font-black text-2xl leading-none ${tier.muted ? '' : 'gradient-text'}`}
+                    style={tier.muted ? { color: 'rgba(255,255,255,0.65)' } : {}}>
+                    {tier.price} <span className="text-sm font-semibold" style={{ color: 'rgba(191,201,217,0.5)' }}>{tier.unit}</span>
+                  </div>
+                  <div className="text-xs font-body mt-0.5" style={{ color: 'rgba(191,201,217,0.45)' }}>{tier.desc}</div>
+                </div>
+                {tier.badge && (
+                  <span className="text-xs font-heading font-bold px-2.5 py-1 rounded-full"
+                    style={{ background: 'rgba(79,157,255,0.15)', color: '#A6D4FF', border: '1px solid rgba(79,157,255,0.25)' }}>
+                    {tier.badge}
+                  </span>
+                )}
+              </div>
             </div>
-            <span className="text-xs font-heading font-bold px-2.5 py-1 rounded-full gradient-bg-strong text-primary-foreground">Best Value</span>
-          </div>
-          <div className="h-px bg-border/30" />
-          <div className="flex items-center justify-between gap-4">
-            <div>
-              <div className="font-heading font-bold text-2xl gradient-text leading-none">$40 <span className="text-sm font-semibold text-muted-foreground">AUD/week</span></div>
-              <div className="text-xs font-body text-muted-foreground mt-0.5">Minimum 1 month commitment</div>
-            </div>
-          </div>
-          <div className="h-px bg-border/30" />
-          <div className="flex items-center justify-between gap-4">
-            <div>
-              <div className="font-heading font-bold text-2xl text-foreground/80 leading-none">$50 <span className="text-sm font-semibold text-muted-foreground">AUD/week</span></div>
-              <div className="text-xs font-body text-muted-foreground mt-0.5">No minimum commitment</div>
-            </div>
-          </div>
+          ))}
         </div>
       </motion.div>
 
       {/* 2. Application Section */}
       <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
-        className="glass rounded-xl px-5 py-5 border border-border/30 mb-6">
-        <h3 className="font-heading font-bold text-lg text-foreground mb-1">Apply For 1-on-1 Coaching</h3>
-        <p className="text-sm font-body text-muted-foreground mb-4 leading-relaxed">
+        className="rounded-xl px-5 py-5 mb-6"
+        style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)' }}>
+        <h3 className="font-heading font-bold text-lg text-white mb-1">Apply For 1-on-1 Coaching</h3>
+        <p className="text-sm font-body mb-4 leading-relaxed" style={{ color: 'rgba(191,201,217,0.6)' }}>
           Complete the Athlete Scan so I can analyse your current level, goals and weaknesses before reviewing your coaching application.
         </p>
         <Link to="/scan">
           <motion.button
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.97 }}
-            className="w-full flex items-center justify-center gap-2 py-3.5 rounded-xl gradient-bg-strong text-primary-foreground font-heading font-bold text-base"
-            style={{ boxShadow: '0 0 16px hsl(var(--glow-primary)/0.18)' }}
+            className="w-full flex items-center justify-center gap-2 py-3.5 rounded-xl gradient-bg-strong text-white font-heading font-bold text-base btn-shine"
+            style={{ boxShadow: '0 0 20px rgba(79,157,255,0.2)' }}
           >
-            <Flame className="w-5 h-5" /> Apply For 1-on-1 Coaching Through Athlete Scan
+            <Flame className="w-5 h-5 relative z-10" />
+            <span className="relative z-10">Apply For 1-on-1 Coaching Through Athlete Scan</span>
           </motion.button>
         </Link>
       </motion.div>
 
       {/* 3. BTCALI Coaching Details */}
       <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.14 }} className="mb-6">
-        <div className="glass rounded-xl border border-border/30 hover:border-primary/25 transition-colors overflow-hidden">
+        <div className="rounded-xl overflow-hidden transition-colors"
+          style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)' }}
+          onMouseEnter={e => e.currentTarget.style.borderColor = 'rgba(79,157,255,0.2)'}
+          onMouseLeave={e => e.currentTarget.style.borderColor = 'rgba(255,255,255,0.07)'}>
           <HoverAccordion
             trigger={<span className="font-heading font-bold text-foreground text-base">BTCALI Coaching Details</span>}
             triggerClassName="px-5 py-4"
@@ -281,7 +292,10 @@ export default function CoachingApply() {
 
       {/* 4. What's Included */}
       <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="mb-6">
-        <div className="glass rounded-xl border border-border/30 hover:border-primary/25 transition-colors overflow-hidden">
+        <div className="rounded-xl overflow-hidden transition-colors"
+          style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)' }}
+          onMouseEnter={e => e.currentTarget.style.borderColor = 'rgba(79,157,255,0.2)'}
+          onMouseLeave={e => e.currentTarget.style.borderColor = 'rgba(255,255,255,0.07)'}>
           <HoverAccordion
             trigger={<span className="font-heading font-bold text-foreground text-base">What Is Included</span>}
             triggerClassName="px-5 py-4"
@@ -296,7 +310,7 @@ export default function CoachingApply() {
 
       {/* 5. Skills */}
       <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="mb-12">
-        <h2 className="font-heading font-bold text-2xl text-foreground mb-2">
+        <h2 className="font-heading font-bold text-2xl text-white mb-2">
           Main Calisthenics Skills I Help Athletes Achieve
         </h2>
         <p className="font-body text-sm text-muted-foreground leading-relaxed mb-4">
@@ -304,7 +318,11 @@ export default function CoachingApply() {
         </p>
         <div className="flex flex-wrap gap-2 mb-3">
           {SKILLS.map(s => (
-            <span key={s} className="text-sm font-body glass px-3 py-1.5 rounded-full border border-border/30 text-foreground/80 hover:border-primary/40 hover:text-primary transition-all cursor-default">
+            <span key={s} className="text-sm font-body px-3 py-1.5 rounded-full cursor-default transition-all"
+              style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)', color: 'rgba(191,201,217,0.75)' }}
+              onMouseEnter={e => { e.currentTarget.style.borderColor = 'rgba(79,157,255,0.35)'; e.currentTarget.style.color = '#A6D4FF'; }}
+              onMouseLeave={e => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.08)'; e.currentTarget.style.color = 'rgba(191,201,217,0.75)'; }}
+            >
               {s}
             </span>
           ))}
@@ -322,7 +340,8 @@ export default function CoachingApply() {
           <motion.button
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.97 }}
-            className="w-full flex items-center justify-center gap-2 py-3.5 rounded-xl gradient-bg-strong text-primary-foreground font-heading font-bold text-base glow-primary"
+            className="w-full flex items-center justify-center gap-2 py-3.5 rounded-xl gradient-bg-strong text-white font-heading font-bold text-base btn-shine"
+            style={{ boxShadow: '0 0 20px rgba(79,157,255,0.2)' }}
           >
             <Trophy className="w-5 h-5" /> See What BTCALI Athletes Have Achieved
           </motion.button>

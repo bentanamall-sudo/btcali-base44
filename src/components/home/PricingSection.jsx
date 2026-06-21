@@ -1,11 +1,10 @@
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { CheckCircle, Flame, Zap } from 'lucide-react';
+import { CheckCircle, Zap, ArrowRight } from 'lucide-react';
 import use3DHover from '@/hooks/use3DHover';
-import TypewriterHeading from '@/components/TypewriterHeading';
 
 const INCLUDED = [
-  'Personalised programme',
+  'Personalised training programme',
   'Video form analysis',
   'Voice note & screen recording feedback',
   'Personalised tutorials',
@@ -16,175 +15,180 @@ const INCLUDED = [
 
 const TIERS = [
   {
-    price: '$150',
-    unit: 'AUD/month',
-    desc: 'Paid upfront monthly',
-    badge: 'Best Value',
-    premium: true,
-  },
-  {
-    price: '$40',
-    unit: 'AUD/week',
-    desc: 'Minimum 1 month commitment',
-    premium: false,
-  },
-  {
+    id: 'starter',
+    name: 'Starter',
     price: '$50',
-    unit: 'AUD/week',
-    desc: 'No minimum commitment',
-    premium: false,
-    muted: true,
+    unit: '/week',
+    desc: 'No minimum commitment. Start and cancel anytime.',
+    highlight: false,
+    color: '#7BB8FF',
+  },
+  {
+    id: 'professional',
+    name: 'Professional',
+    price: '$40',
+    unit: '/week',
+    desc: 'Minimum 1 month commitment. Best flexibility.',
+    highlight: true,
+    badge: 'Most Popular',
+    color: '#4F9DFF',
+  },
+  {
+    id: 'elite',
+    name: 'Elite',
+    price: '$150',
+    unit: '/month',
+    desc: 'Paid upfront monthly. Maximum savings.',
+    highlight: false,
+    badge: 'Best Value',
+    color: '#5EEBFF',
   },
 ];
+
+function PricingCard({ tier, delay }) {
+  const tilt = use3DHover({ intensity: 6, scale: tier.highlight ? 1.02 : 1.03 });
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20, scale: 0.97 }}
+      whileInView={{ opacity: 1, y: 0, scale: 1 }}
+      viewport={{ once: true }}
+      transition={{ delay, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+      ref={tilt.ref}
+      onMouseMove={tilt.onMouseMove}
+      onMouseLeave={tilt.onMouseLeave}
+      style={{
+        ...tilt.style,
+        background: tier.highlight
+          ? 'linear-gradient(145deg, rgba(79,157,255,0.12) 0%, rgba(94,235,255,0.07) 100%)'
+          : 'rgba(255,255,255,0.03)',
+        border: tier.highlight
+          ? '1px solid rgba(79,157,255,0.35)'
+          : '1px solid rgba(255,255,255,0.07)',
+        boxShadow: tier.highlight
+          ? `0 0 40px rgba(79,157,255,0.12), inset 0 1px 0 rgba(255,255,255,0.06), ${tilt.style.boxShadow || ''}`
+          : tilt.style.boxShadow,
+      }}
+      className="rounded-2xl p-6 relative overflow-hidden cursor-default"
+    >
+      {tier.highlight && (
+        <div className="absolute top-0 left-0 right-0 h-px"
+          style={{ background: 'linear-gradient(90deg, transparent, rgba(79,157,255,0.7), transparent)' }} />
+      )}
+
+      {tier.badge && (
+        <div className="flex mb-4">
+          <span className="text-xs font-heading font-bold px-3 py-1 rounded-full"
+            style={{
+              background: tier.highlight ? 'rgba(79,157,255,0.2)' : 'rgba(94,235,255,0.12)',
+              color: tier.color,
+              border: `1px solid ${tier.color}35`,
+            }}>
+            {tier.badge}
+          </span>
+        </div>
+      )}
+
+      <p className="font-heading font-bold text-sm mb-4" style={{ color: tier.color }}>{tier.name}</p>
+
+      <div className="flex items-end gap-1 mb-2">
+        <span className="font-heading font-black text-4xl" style={{ color: tier.highlight ? '#fff' : 'rgba(255,255,255,0.85)' }}>
+          {tier.price}
+        </span>
+        <span className="text-sm font-body pb-1" style={{ color: 'rgba(191,201,217,0.5)' }}>{tier.unit}</span>
+      </div>
+
+      <p className="text-sm font-body mb-6 leading-relaxed" style={{ color: 'rgba(191,201,217,0.55)' }}>{tier.desc}</p>
+
+      <Link to="/diagnostic">
+        <motion.button
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.98 }}
+          className="w-full py-3 rounded-xl font-heading font-semibold text-sm flex items-center justify-center gap-2 transition-all duration-200"
+          style={tier.highlight ? {
+            background: 'linear-gradient(135deg, #4F9DFF, #3B7DD8)',
+            color: 'white',
+            boxShadow: '0 0 20px rgba(79,157,255,0.3)',
+          } : {
+            background: 'rgba(255,255,255,0.04)',
+            border: `1px solid ${tier.color}25`,
+            color: tier.color,
+          }}
+        >
+          Start Athlete Scan <ArrowRight className="w-3.5 h-3.5" />
+        </motion.button>
+      </Link>
+    </motion.div>
+  );
+}
 
 export default function PricingSection() {
   return (
     <section className="py-20 px-4 sm:px-6">
-      <div className="max-w-2xl mx-auto">
+      <div className="max-w-4xl mx-auto">
         <motion.div
-          initial={{ opacity: 0, y: 28 }}
+          initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-60px' }}
-          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+          viewport={{ once: true }}
+          className="text-center mb-12"
         >
-          <p className="text-xs font-heading font-bold text-primary/50 uppercase tracking-[0.3em] mb-3 text-center">
-            Pricing
+          <p className="text-xs font-heading font-semibold uppercase tracking-[0.3em] mb-3"
+            style={{ color: 'rgba(79,157,255,0.5)' }}>Pricing</p>
+          <h2 className="font-heading font-black text-3xl sm:text-4xl lg:text-5xl text-white leading-tight">
+            Invest In Faster<br /><span className="gradient-text">Progress</span>
+          </h2>
+          <p className="text-base mt-4 max-w-md mx-auto" style={{ color: '#BFC9D9' }}>
+            Significantly less than most coaches charging $500+/month for similar results.
           </p>
-          <TypewriterHeading
-            text="Invest In Faster Progress"
-            tag="h2"
-            className="font-heading font-black text-3xl sm:text-4xl text-foreground mb-10 text-center leading-tight"
-            highlightWords={['Faster Progress']}
-            speed={40}
-          />
 
           {/* Spots badge */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
+            initial={{ opacity: 0, scale: 0.95 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
-            transition={{ delay: 0.1 }}
-            className="flex justify-center mb-8"
-          >
-            <div
-              className="inline-flex items-center gap-2 glass px-5 py-2.5 rounded-full border border-primary/30"
-              style={{ boxShadow: '0 0 20px hsl(var(--glow-primary)/0.12)' }}
-            >
-              <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
-              <span className="text-xs font-heading font-bold text-foreground">Currently Accepting New Athletes</span>
-              <span className="text-xs font-body text-muted-foreground">— 8 spots available</span>
-            </div>
-          </motion.div>
-
-          {/* Pricing cards */}
-          <div className="space-y-3 mb-6">
-            {TIERS.map((tier, i) => {
-              // eslint-disable-next-line react-hooks/rules-of-hooks
-              const tilt = use3DHover({ intensity: 6, scale: 1.03 });
-              return (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 14, scale: 0.97 }}
-                whileInView={{ opacity: 1, y: 0, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.12 + i * 0.1, ease: [0.22, 1, 0.36, 1] }}
-                ref={tilt.ref}
-                onMouseMove={tilt.onMouseMove}
-                onMouseLeave={tilt.onMouseLeave}
-                className="rounded-2xl p-5 border relative overflow-hidden cursor-default"
-                style={tier.premium
-                  ? {
-                      ...tilt.style,
-                      background: 'linear-gradient(145deg, hsl(0 0% 9%) 0%, hsl(43 40% 7%) 100%)',
-                      backdropFilter: 'blur(24px)',
-                      border: '1.5px solid hsl(45 85% 52% / 0.45)',
-                      boxShadow: `0 0 40px hsl(45 85% 52% / 0.12), 0 8px 32px hsl(0 0% 0% / 0.3), inset 0 1px 0 hsl(0 0% 100% / 0.07), ${tilt.style.boxShadow || ''}`,
-                    }
-                  : tier.muted
-                    ? {
-                        ...tilt.style,
-                        background: 'hsl(0 0% 6% / 0.5)',
-                        backdropFilter: 'blur(16px)',
-                        border: '1px solid hsl(40 20% 12% / 0.5)',
-                      }
-                    : {
-                        ...tilt.style,
-                        background: 'hsl(0 0% 7% / 0.7)',
-                        backdropFilter: 'blur(20px)',
-                        border: '1px solid hsl(45 85% 52% / 0.22)',
-                        boxShadow: `inset 0 1px 0 hsl(0 0% 100% / 0.04), ${tilt.style.boxShadow || ''}`,
-                      }
-                }
-              >
-                {tier.premium && (
-                  <div className="absolute top-0 left-0 right-0 h-px"
-                    style={{ background: 'linear-gradient(90deg, transparent, hsl(var(--primary)/0.7), transparent)' }} />
-                )}
-                <div className="flex items-center justify-between gap-4">
-                  <div>
-                    {tier.badge && (
-                      <div className="flex items-center gap-2 mb-2">
-                        <span className="text-xs font-heading font-black px-2.5 py-1 rounded-full gradient-bg-strong text-primary-foreground">{tier.badge}</span>
-                      </div>
-                    )}
-                    <div className={`font-heading font-black text-3xl leading-none ${tier.muted ? 'text-foreground/70' : 'gradient-text'}`}
-                      style={!tier.muted ? { textShadow: '0 0 20px hsl(var(--glow-primary)/0.2)' } : {}}>
-                      {tier.price}{' '}
-                      <span className="text-base font-semibold text-muted-foreground">{tier.unit}</span>
-                    </div>
-                  </div>
-                  <p className="text-sm font-body text-foreground/60 text-right leading-relaxed">{tier.desc}</p>
-                </div>
-              </motion.div>
-              );
-            })}
-          </div>
-
-          {/* What's included */}
-          <motion.div
-            initial={{ opacity: 0, y: 12 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.35 }}
-            className="rounded-2xl p-6 mb-8"
+            className="inline-flex items-center gap-2 mt-6 px-4 py-2 rounded-full"
             style={{
-              background: 'hsl(0 0% 6% / 0.65)',
-              backdropFilter: 'blur(20px)',
-              border: '1px solid hsl(40 25% 14% / 0.5)',
-              boxShadow: '0 4px 24px hsl(0 0% 0% / 0.25), inset 0 1px 0 hsl(0 0% 100% / 0.04)',
+              background: 'rgba(79,157,255,0.08)',
+              border: '1px solid rgba(79,157,255,0.2)',
             }}
           >
-            <p className="font-heading font-bold text-foreground text-sm mb-4">Everything included:</p>
-            <div className="grid sm:grid-cols-2 gap-2.5">
-              {INCLUDED.map(item => (
-                <div key={item} className="flex items-center gap-2.5">
-                  <CheckCircle className="w-3.5 h-3.5 text-primary flex-shrink-0" />
-                  <span className="font-body text-sm text-foreground/80">{item}</span>
-                </div>
-              ))}
-            </div>
-            <p className="text-xs font-body text-muted-foreground/50 mt-5 pt-4 border-t border-border/20">
-              Support availability: Weekdays 4–6 PM NSW time.
-            </p>
+            <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
+            <span className="text-xs font-heading font-semibold text-white">Currently Accepting New Athletes</span>
+            <span className="text-xs font-body" style={{ color: 'rgba(191,201,217,0.5)' }}>— 8 spots</span>
           </motion.div>
+        </motion.div>
 
-          {/* CTA */}
-          <Link to="/scan">
-            <motion.button
-              whileHover={{ scale: 1.02, y: -2 }}
-              whileTap={{ scale: 0.97 }}
-              transition={{ type: 'spring', stiffness: 400, damping: 20 }}
-              className="w-full py-5 rounded-2xl gradient-bg-strong text-primary-foreground font-heading font-black text-lg flex items-center justify-center gap-3 relative overflow-hidden group btn-shine"
-              style={{ boxShadow: '0 0 32px hsl(var(--glow-primary)/0.3), 0 4px 24px hsl(var(--glow-primary)/0.15)' }}
-            >
-              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                style={{ background: 'linear-gradient(135deg, hsl(0 0% 100%/0.06), transparent)' }} />
-              <Flame className="w-5 h-5 relative z-10" />
-              <span className="relative z-10">Apply Through Athlete Scan</span>
-            </motion.button>
-          </Link>
-          <p className="text-center text-xs font-body text-muted-foreground/50 mt-3">
-            Takes 3–5 minutes. I'll review your application and reach out directly.
+        {/* Pricing cards */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-10">
+          {TIERS.map((tier, i) => (
+            <PricingCard key={tier.id} tier={tier} delay={i * 0.1} />
+          ))}
+        </div>
+
+        {/* Included features */}
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="rounded-2xl p-6 relative overflow-hidden"
+          style={{
+            background: 'rgba(255,255,255,0.02)',
+            border: '1px solid rgba(255,255,255,0.06)',
+          }}
+        >
+          <div className="flex items-center gap-2 mb-5">
+            <Zap className="w-4 h-4 text-primary" />
+            <p className="font-heading font-bold text-sm text-white">Everything Included — All Plans</p>
+          </div>
+          <div className="grid sm:grid-cols-2 gap-2.5">
+            {INCLUDED.map((item, i) => (
+              <div key={i} className="flex items-center gap-2.5">
+                <CheckCircle className="w-3.5 h-3.5 text-primary flex-shrink-0" />
+                <span className="text-sm font-body" style={{ color: 'rgba(191,201,217,0.75)' }}>{item}</span>
+              </div>
+            ))}
+          </div>
+          <p className="text-xs font-body mt-5 pt-4 border-t" style={{ color: 'rgba(191,201,217,0.3)', borderColor: 'rgba(255,255,255,0.06)' }}>
+            Support availability: Weekdays 4–6 PM NSW time.
           </p>
         </motion.div>
       </div>

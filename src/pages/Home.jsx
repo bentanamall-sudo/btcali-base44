@@ -13,7 +13,7 @@ import FooterSection from '../components/home/FooterSection';
 
 function Divider() {
   return (
-    <div className="px-4 my-1">
+    <div className="px-4 my-2">
       <div className="section-divider" />
     </div>
   );
@@ -23,9 +23,10 @@ export default function Home() {
   return (
     <div>
       <HeroSection />
-      <WhyAthletesFail />
       <Divider />
       <SocialProofCounter />
+      <Divider />
+      <WhyAthletesFail />
       <Divider />
       <ResultsTeaser />
       <Divider />

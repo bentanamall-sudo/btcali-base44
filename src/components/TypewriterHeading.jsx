@@ -56,7 +56,7 @@ export default function TypewriterHeading({
         <span
           className="inline-block w-0.5 h-[0.85em] ml-0.5 align-middle rounded-sm"
           style={{
-            background: 'hsl(45 85% 52%)',
+            background: '#4F9DFF',
             animation: 'cursorBlink 0.75s step-end infinite',
             verticalAlign: 'middle',
           }}

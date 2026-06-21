@@ -1,77 +1,93 @@
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { BookOpen, ArrowRight, Gift, Users } from 'lucide-react';
-import GlowButton from '../GlowButton';
-
+import { BookOpen, ArrowRight, ScanLine } from 'lucide-react';
 
 export default function FreeTutorialsBanner() {
   return (
-    <section className="py-16 px-4 sm:px-6 max-w-7xl mx-auto">
-      {/* Free Tutorials Promo */}
-      <motion.div
-        initial={{ opacity: 0, y: 30 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        className="relative rounded-2xl overflow-hidden mb-10"
-        style={{
-          background: 'linear-gradient(135deg, hsl(var(--gradient-start) / 0.12), hsl(var(--gradient-end) / 0.12))',
-          border: '1px solid hsl(var(--glow-primary) / 0.25)',
-          boxShadow: '0 0 40px hsl(var(--glow-primary) / 0.1)',
-        }}
-      >
-        <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute top-0 right-0 w-80 h-80 bg-primary/5 rounded-full blur-3xl" />
-          <div className="absolute bottom-0 left-1/4 w-60 h-60 bg-accent/5 rounded-full blur-3xl" />
-        </div>
-        <div className="relative z-10 px-6 sm:px-10 py-10 flex flex-col md:flex-row items-center gap-8">
-          <div className="flex-shrink-0">
-            <div className="w-16 h-16 rounded-2xl gradient-bg-strong flex items-center justify-center glow-primary">
-              <Gift className="w-8 h-8 text-primary-foreground" />
-            </div>
+    <section className="py-16 px-4 sm:px-6">
+      <div className="max-w-5xl mx-auto space-y-4">
+        {/* Free Tutorials */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="relative rounded-2xl overflow-hidden px-6 sm:px-10 py-8"
+          style={{
+            background: 'linear-gradient(145deg, rgba(94,235,255,0.07) 0%, rgba(79,157,255,0.05) 100%)',
+            border: '1px solid rgba(94,235,255,0.18)',
+          }}
+        >
+          <div className="absolute top-0 left-0 right-0 h-px"
+            style={{ background: 'linear-gradient(90deg, transparent, rgba(94,235,255,0.4), transparent)' }} />
+          <div className="absolute inset-0 pointer-events-none">
+            <div className="absolute top-0 right-0 w-60 h-60 rounded-full"
+              style={{ background: 'radial-gradient(circle, rgba(94,235,255,0.06) 0%, transparent 65%)' }} />
           </div>
-          <div className="flex-1 text-center md:text-left">
-            <div className="inline-flex items-center gap-2 bg-primary/20 text-primary text-xs font-heading font-semibold px-3 py-1 rounded-full mb-3">
-              100% FREE — No Credit Card
+          <div className="relative flex flex-col sm:flex-row items-start sm:items-center gap-6">
+            <div className="w-12 h-12 rounded-2xl flex items-center justify-center flex-shrink-0"
+              style={{ background: 'rgba(94,235,255,0.12)', border: '1px solid rgba(94,235,255,0.25)' }}>
+              <BookOpen className="w-6 h-6" style={{ color: '#5EEBFF' }} />
             </div>
-            <h2 className="font-heading font-bold text-2xl sm:text-3xl text-foreground mb-2">
-              Start Training. No Cost.
-            </h2>
-            <p className="text-muted-foreground font-body text-sm sm:text-base max-w-lg">
-              Free Handstand Guide and Free Planche Conditioning — real progressions, available now.
-            </p>
-          </div>
-          <div className="flex flex-col sm:flex-row gap-3 flex-shrink-0">
+            <div className="flex-1">
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-heading font-semibold mb-2"
+                style={{ background: 'rgba(94,235,255,0.1)', color: '#5EEBFF', border: '1px solid rgba(94,235,255,0.2)' }}>
+                100% FREE — No Credit Card
+              </div>
+              <h3 className="font-heading font-bold text-xl text-white mb-1">Start Training. No Cost.</h3>
+              <p className="text-sm font-body" style={{ color: 'rgba(191,201,217,0.6)' }}>
+                Free Handstand Guide and Free Planche Conditioning — real progressions, available now.
+              </p>
+            </div>
             <Link to="/skills">
-              <GlowButton size="lg">
-                <BookOpen className="w-5 h-5" />
-                Free Tutorials
-                <ArrowRight className="w-4 h-4" />
-              </GlowButton>
+              <motion.button
+                whileHover={{ scale: 1.04 }}
+                whileTap={{ scale: 0.97 }}
+                className="flex-shrink-0 flex items-center gap-2 px-5 py-3 rounded-xl font-heading font-semibold text-sm transition-all duration-200"
+                style={{
+                  background: 'rgba(94,235,255,0.1)',
+                  border: '1px solid rgba(94,235,255,0.25)',
+                  color: '#5EEBFF',
+                }}
+                onMouseEnter={e => { e.currentTarget.style.background = 'rgba(94,235,255,0.16)'; e.currentTarget.style.color = '#fff'; }}
+                onMouseLeave={e => { e.currentTarget.style.background = 'rgba(94,235,255,0.1)'; e.currentTarget.style.color = '#5EEBFF'; }}
+              >
+                Free Tutorials <ArrowRight className="w-4 h-4" />
+              </motion.button>
             </Link>
           </div>
-        </div>
-      </motion.div>
+        </motion.div>
 
-      {/* Coaching CTA */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        className="mt-10 rounded-2xl glass p-8 text-center glow-border"
-      >
-        <Users className="w-8 h-8 text-primary mx-auto mb-3" />
-        <h3 className="font-heading font-bold text-xl sm:text-2xl text-foreground mb-2">
-          Want results like these?
-        </h3>
-        <p className="text-muted-foreground font-body text-sm max-w-xs mx-auto mb-5">
-          Complete the Athlete Scan. I'll review your level and reach out.
-        </p>
-        <Link to="/scan">
-          <GlowButton size="lg">
-            Start Athlete Scan <ArrowRight className="w-4 h-4" />
-          </GlowButton>
-        </Link>
-      </motion.div>
+        {/* Coaching CTA */}
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.1 }}
+          className="relative rounded-2xl overflow-hidden px-6 sm:px-10 py-8 text-center"
+          style={{
+            background: 'linear-gradient(145deg, rgba(79,157,255,0.08) 0%, rgba(79,157,255,0.04) 100%)',
+            border: '1px solid rgba(79,157,255,0.15)',
+          }}
+        >
+          <div className="absolute top-0 left-0 right-0 h-px"
+            style={{ background: 'linear-gradient(90deg, transparent, rgba(79,157,255,0.4), transparent)' }} />
+          <h3 className="font-heading font-bold text-2xl text-white mb-2">Want results like these?</h3>
+          <p className="text-sm font-body mb-6 max-w-sm mx-auto" style={{ color: 'rgba(191,201,217,0.6)' }}>
+            Complete the Athlete Scan. I'll review your level and reach out directly.
+          </p>
+          <Link to="/diagnostic">
+            <motion.button
+              whileHover={{ scale: 1.04, y: -2 }}
+              whileTap={{ scale: 0.97 }}
+              className="inline-flex items-center gap-2 px-8 py-4 rounded-xl gradient-bg-strong text-white font-heading font-bold text-base btn-shine"
+              style={{ boxShadow: '0 0 28px rgba(79,157,255,0.25)' }}
+            >
+              <ScanLine className="w-5 h-5 relative z-10" />
+              <span className="relative z-10">Start Athlete Scan</span>
+            </motion.button>
+          </Link>
+        </motion.div>
+      </div>
     </section>
   );
 }
