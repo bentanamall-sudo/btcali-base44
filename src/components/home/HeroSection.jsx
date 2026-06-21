@@ -240,8 +240,8 @@ function HolographicScanner() {
   }, []);
 
   return (
-    <div className="relative" style={{ width: 420, maxWidth: '100%' }}>
-      <canvas ref={canvasRef} style={{ width: '100%', height: 'auto' }} />
+    <div className="relative" style={{ width: '100%', maxWidth: 420 }}>
+      <canvas ref={canvasRef} style={{ width: '100%', height: 'auto', display: 'block' }} />
       {/* Status panel — overlaid top-right */}
       <div className="absolute top-8 right-0 flex flex-col gap-2 pointer-events-none" style={{ minWidth: 110 }}>
         {[
@@ -358,7 +358,7 @@ export default function HeroSection() {
         <div className="grid lg:grid-cols-2 gap-8 lg:gap-4 items-center">
 
           {/* LEFT — Typography */}
-          <div>
+          <div className="min-w-0 relative z-10">
             {/* Badge */}
             <motion.div
               initial={{ opacity: 0, y: 12 }}
@@ -533,7 +533,7 @@ export default function HeroSection() {
             animate={{ opacity: 1, scale: 1, y: 0 }}
             transition={{ delay: 0.3, duration: 1, ease: [0.22, 1, 0.36, 1] }}
             style={{ x: parallaxX, y: parallaxY }}
-            className="hidden lg:flex items-center justify-center relative"
+            className="hidden lg:flex items-center justify-center relative overflow-hidden"
           >
             {/* Outer ambient glow */}
             <div className="absolute inset-0 pointer-events-none flex items-center justify-center">
