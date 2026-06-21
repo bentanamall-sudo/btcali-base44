@@ -94,31 +94,10 @@ export default function HoverAccordion({
     if (observerRef.current) observerRef.current.disconnect();
   }, []);
 
-  // ── DESKTOP: hover handlers ──────────────────────────────────────────────
-  const handleMouseEnter = () => {
-    if (!desktop.current) return;
-    clearTimeout(leaveTimer.current);
-    setOpen(true);
-  };
-
-  const handleMouseLeave = () => {
-    if (!desktop.current) return;
-    // 500ms delay — gives user time to move between trigger and content
-    leaveTimer.current = setTimeout(() => setOpen(false), 500);
-  };
-
-  // ── MOBILE: tap to toggle ────────────────────────────────────────────────
-  const handleClick = () => {
-    if (desktop.current) return; // desktop uses hover only
-    setOpen(o => !o);
-  };
+  const handleClick = () => setOpen(o => !o);
 
   return (
-    <div
-      ref={rootRef}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
-    >
+    <div ref={rootRef}>
       <button
         type="button"
         onClick={handleClick}
