@@ -24,17 +24,18 @@ function AdminDropdown() {
   const [open, setOpen] = useState(false);
   const ref = useRef(null);
   const location = useLocation();
-  const timerRef = useRef(null);
 
-  const handleMouseEnter = () => { clearTimeout(timerRef.current); setOpen(true); };
-  const handleMouseLeave = () => { timerRef.current = setTimeout(() => setOpen(false), 120); };
-  useEffect(() => () => clearTimeout(timerRef.current), []);
+  useEffect(() => {
+    const handleClickOutside = (e) => { if (ref.current && !ref.current.contains(e.target)) setOpen(false); };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   const isActive = ADMIN_LINKS.some(l => location.pathname === l.to);
 
   return (
-    <div ref={ref} className="relative" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
-      <button className={cn(
+    <div ref={ref} className="relative">
+      <button onClick={() => setOpen(o => !o)} className={cn(
         'px-3 py-2 rounded-lg text-sm font-heading font-medium transition-all duration-200 flex items-center gap-1.5',
         isActive
           ? 'text-primary bg-primary/10'
