@@ -23,16 +23,16 @@ const MILESTONES = [
     accent: '#7BB8FF',
   },
   {
+    year: '~1 yr',
+    title: '90° Handstand Push-Ups',
+    desc: 'Full depth handstand push-ups — achieved before the planche through consistent overhead pressing and shoulder conditioning work.',
+    accent: '#5EEBFF',
+  },
+  {
     year: '~1.5 yr',
     title: 'First Planche',
     desc: 'The most demanding skill I\'d ever attempted. Hundreds of hours of conditioning, wrist prep, and targeted progressions. 1.5 years in the making.',
     accent: '#4F9DFF',
-  },
-  {
-    year: '~1 yr',
-    title: '90° Handstand Push-Ups',
-    desc: 'Pressing strength peaked before the planche — full depth handstand push-ups achieved through consistent overhead pressing work.',
-    accent: '#5EEBFF',
   },
   {
     year: 'Now',
@@ -127,10 +127,10 @@ export default function MyStory() {
           <p className="text-xs font-heading font-semibold uppercase tracking-[0.3em] mb-3"
             style={{ color: 'rgba(79,157,255,0.5)' }}>Behind BTCALI</p>
           <h2 className="font-heading font-black text-3xl sm:text-4xl lg:text-5xl text-white leading-tight">
-            The Journey Behind<br /><span className="gradient-text">Every Program I Build</span>
+            My Calisthenics<br /><span className="gradient-text">Journey</span>
           </h2>
           <p className="text-base mt-4 max-w-lg mx-auto" style={{ color: '#BFC9D9' }}>
-            Two years ago I could only do 10 pull-ups. Here's what changed.
+            Two years ago I could barely do 10 pull-ups. Here's every step since.
           </p>
         </motion.div>
 
