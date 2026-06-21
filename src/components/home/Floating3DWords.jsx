@@ -1,18 +1,14 @@
 import { useEffect, useRef, useState } from 'react';
 import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
 
+// Words only appear in far left/right margins and very top/bottom — never over the hero text
 const WORDS = [
-  { text: 'PLANCHE', x: '8%', y: '12%', size: 'text-xs', delay: 0, depth: 1.8, color: '#4F9DFF' },
-  { text: 'FRONT LEVER', x: '72%', y: '8%', size: 'text-xs', delay: 0.3, depth: 1.2, color: '#5EEBFF' },
-  { text: 'HANDSTAND', x: '82%', y: '35%', size: 'text-[10px]', delay: 0.6, depth: 2.1, color: '#A6D4FF' },
-  { text: 'MUSCLE-UP', x: '5%', y: '55%', size: 'text-[10px]', delay: 0.9, depth: 1.5, color: '#5EEBFF' },
-  { text: 'STRENGTH', x: '78%', y: '62%', size: 'text-xs', delay: 1.2, depth: 1.0, color: '#4F9DFF' },
-  { text: 'CONTROL', x: '15%', y: '80%', size: 'text-[10px]', delay: 1.5, depth: 1.7, color: '#A6D4FF' },
-  { text: 'MOBILITY', x: '65%', y: '85%', size: 'text-[10px]', delay: 0.4, depth: 1.3, color: '#5EEBFF' },
-  { text: 'PRESS', x: '88%', y: '20%', size: 'text-[9px]', delay: 0.7, depth: 0.9, color: '#7BB8FF' },
-  { text: 'L-SIT', x: '3%', y: '30%', size: 'text-[9px]', delay: 1.1, depth: 1.6, color: '#7BB8FF' },
-  { text: 'TUCK', x: '48%', y: '5%', size: 'text-[9px]', delay: 0.2, depth: 2.0, color: '#A6D4FF' },
-  { text: 'STRADDLE', x: '35%', y: '90%', size: 'text-[9px]', delay: 0.8, depth: 1.4, color: '#4F9DFF' },
+  { text: 'PLANCHE',    x: '1%',  y: '18%', size: 'text-[9px]', delay: 0,   depth: 1.2, color: '#4F9DFF' },
+  { text: 'FRONT LEVER',x: '1%',  y: '55%', size: 'text-[9px]', delay: 0.4, depth: 1.0, color: '#5EEBFF' },
+  { text: 'STRENGTH',   x: '1%',  y: '75%', size: 'text-[9px]', delay: 0.8, depth: 1.1, color: '#7BB8FF' },
+  { text: 'TUCK',       x: '88%', y: '6%',  size: 'text-[9px]', delay: 0.2, depth: 0.9, color: '#A6D4FF' },
+  { text: 'STRADDLE',   x: '87%', y: '88%', size: 'text-[9px]', delay: 1.0, depth: 1.0, color: '#4F9DFF' },
+  { text: 'CONTROL',    x: '1%',  y: '88%', size: 'text-[9px]', delay: 1.3, depth: 0.8, color: '#A6D4FF' },
 ];
 
 function FloatingWord({ word, mouseX, mouseY }) {

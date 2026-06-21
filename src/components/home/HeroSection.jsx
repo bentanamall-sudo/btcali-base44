@@ -68,14 +68,12 @@ function HolographicScanner() {
       hue: Math.random() > 0.5 ? 213 : 188,
     }));
 
-    // Data labels to float
+    // Data labels — right side only so they don't bleed outside canvas
     const DATA_LABELS = [
-      { text: 'CHEST', jx: 0.50, jy: 0.25, ox: 0.25, oy: -0.02 },
-      { text: 'CORE', jx: 0.50, jy: 0.35, ox: 0.26, oy: 0 },
-      { text: 'SHOULDERS', jx: 0.62, jy: 0.20, ox: 0.18, oy: -0.04 },
-      { text: 'BACK', jx: 0.38, jy: 0.20, ox: -0.28, oy: -0.04 },
-      { text: 'ARMS', jx: 0.30, jy: 0.33, ox: -0.26, oy: 0 },
-      { text: 'LEGS', jx: 0.40, jy: 0.67, ox: -0.26, oy: 0 },
+      { text: 'CHEST',     jx: 0.50, jy: 0.25, ox: 0.24, oy: -0.02 },
+      { text: 'CORE',      jx: 0.50, jy: 0.35, ox: 0.24, oy: 0 },
+      { text: 'SHOULDERS', jx: 0.62, jy: 0.20, ox: 0.20, oy: -0.04 },
+      { text: 'LEGS',      jx: 0.60, jy: 0.67, ox: 0.22, oy: 0 },
     ];
 
     let t = 0;
