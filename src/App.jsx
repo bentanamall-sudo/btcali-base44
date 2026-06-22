@@ -25,9 +25,7 @@ import ProgramBuilder from './pages/ProgramBuilder';
 import AthleteDiagnostic from './pages/AthleteDiagnostic';
 import AdminDiagnostics from './pages/AdminDiagnostics';
 import SkillLibraryCategory from './pages/SkillLibraryCategory';
-import HandstandGuide from './pages/tutorials/HandstandGuide';
-import LSitHandstandGuide from './pages/tutorials/LSitHandstandGuide';
-import PlancheGuide from './pages/tutorials/PlancheGuide';
+
 import PlanchePrograms from './pages/programs/PlanchePrograms';
 import FrontLeverPrograms from './pages/programs/FrontLeverPrograms';
 import BrandIdentity from './pages/BrandIdentity';
@@ -62,9 +60,7 @@ const AuthenticatedApp = () => {
           <Route path="/scan" element={<AthleteDiagnostic />} />
           <Route path="/tutorials" element={<Tutorials />} />
           <Route path="/tutorials/:tutorialId" element={<TutorialDetail />} />
-          <Route path="/tutorials/handstand-beginner-guide" element={<HandstandGuide />} />
-          <Route path="/tutorials/l-sit-to-handstand-guide" element={<LSitHandstandGuide />} />
-          <Route path="/tutorials/planche-conditioning-guide" element={<PlancheGuide />} />
+          {/* Legacy guide routes removed — Skill Library is single source of truth */}
           <Route path="/programs/planche-programs" element={<PlanchePrograms />} />
           <Route path="/programs/front-lever-programs" element={<FrontLeverPrograms />} />
           <Route path="/programs" element={<Programs />} />

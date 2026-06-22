@@ -2,13 +2,12 @@ import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { base44 } from '@/api/base44Client';
 import { useAccessCodes } from '@/lib/useAccessCodes';
-import { Link, useNavigate } from 'react-router-dom';
-import { Bell, BookOpen, Target, ClipboardList, Lock, ChevronRight } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { Bell, BookOpen, Target, ClipboardList, Lock } from 'lucide-react';
 import ProgramTable from '@/components/program/ProgramTable';
 import GoalsTab from '@/components/program/GoalsTab';
 import WorkoutLogTab from '@/components/program/WorkoutLogTab';
 import GeneralTutorialsTab from '@/components/program/GeneralTutorialsTab';
-import { MEMBER_CODES } from '@/lib/accessCodes';
 
 function AccessGate() {
   const [code, setCode] = useState('');
@@ -70,22 +69,34 @@ export default function MyProgram() {
 
   useEffect(() => {
     if (!isMember && !isAdmin) { setLoading(false); return; }
-    if (!accessCode && !isAdmin) { setLoading(false); return; }
+
+    const code = accessCode?.toUpperCase();
+    if (!code) { setLoading(false); return; }
+
+    let cancelled = false;
 
     const load = async () => {
       setLoading(true);
-      // Admin viewing their own program uses admin panel instead
-      if (isAdmin && !accessCode) { setLoading(false); return; }
-      const code = accessCode?.toUpperCase();
-      if (!code) { setLoading(false); return; }
-      const results = await base44.entities.StudentProgram.filter({ access_code: code });
-      setProgram(results[0] || null);
-      setLoading(false);
+      // Use backend function (service role) so live site bypasses RLS admin restriction
+      const timeout = new Promise((_, rej) => setTimeout(() => rej(new Error('timeout')), 12000));
+      const res = await Promise.race([
+        base44.functions.invoke('getStudentProgram', { access_code: code }),
+        timeout,
+      ]).catch(err => {
+        console.error('Program load error:', err);
+        return { data: { program: null } };
+      });
+      if (!cancelled) {
+        setProgram(res?.data?.program || null);
+        setLoading(false);
+      }
     };
 
     load();
-    const unsub = base44.entities.StudentProgram.subscribe(() => load());
-    return unsub;
+
+    // Re-fetch when program entity changes (admin saved an update)
+    const unsub = base44.entities.StudentProgram.subscribe(() => { if (!cancelled) load(); });
+    return () => { cancelled = true; unsub(); };
   }, [isMember, isAdmin, accessCode]);
 
   if (!isMember && !isAdmin) return <AccessGate />;

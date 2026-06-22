@@ -1,79 +1,74 @@
-// Auto-match exercise names to tutorials in the Skill Library
-// Matching is fuzzy: case-insensitive, ignores plurals, handles FL/Front Lever aliases
+// Single source of truth: maps exercise names → Skill Library category + tutorial ID
+// Uses the exact CATEGORY_DATA from SkillLibraryCategory.jsx
 
-const TUTORIAL_MAP = [
-  // ── Wrist / warmup ──
-  { keywords: ['wrist warmup', 'wrist warm', 'wrist prep', 'wrist conditioning'], title: 'Wrist Warmup', url: 'https://youtube.com/shorts/A1YPZdLyXPI?si=NTII3TIGbomjKChN', internal: null },
+// Each entry: { keywords[], categoryId, tutorialId, title }
+// categoryId + tutorialId → open exact tutorial modal in SkillLibraryCategory
 
-  // ── Handstand ──
-  { keywords: ['handstand bail', 'bail tutorial', 'how to bail'], title: 'Handstand Bail Tutorial', url: 'https://www.youtube.com/shorts/81mBKvzbyTQ', internal: '/tutorials/handstand-beginner-guide#bail_tutorial' },
-  { keywords: ['handstand kick', 'kick-up', 'kickup', 'kick up'], title: 'Handstand Kick-Up', url: null, internal: '/tutorials/handstand-beginner-guide#kickup_tutorial' },
-  { keywords: ['wall drill', 'toe tap', 'chest to wall', 'handstand toe tap'], title: 'Wall Drills & Toe Taps', url: null, internal: '/tutorials/handstand-beginner-guide#wall_drills' },
-  { keywords: ['handstand hold', 'freestanding hold', 'handstand attempt', 'max handstand'], title: 'Handstand Holds', url: null, internal: '/tutorials/handstand-beginner-guide#holds' },
-  { keywords: ['back to wall handstand', 'back wall handstand'], title: 'Back-to-Wall Handstand', url: null, internal: null },
+const TUTORIAL_INDEX = [
+  // ── Wrist ──
+  { keywords: ['wrist warmup', 'wrist warm', 'wrist prep', 'wrist circle', 'wrist conditioning'], categoryId: 'handstand-foundations', tutorialId: 'hf-wrist-warmup', title: 'Wrist Warmup' },
 
-  // ── HSPU / Pressing ──
-  { keywords: ['bent arm press', 'bent-arm press'], title: 'Bent Arm Press Tutorial', url: 'https://www.youtube.com/watch?v=uMyv-LMlR0o', internal: '/tutorials/handstand-beginner-guide#bent_arm_press' },
-  { keywords: ['pike pushup', 'pike push-up', 'pike push up'], title: 'Pike Pushup', url: null, internal: null },
-  { keywords: ['decline pike', 'declined pike'], title: 'Decline Pike Pushup', url: null, internal: null },
-  { keywords: ['wall hspu', 'wall handstand push', 'chest to wall hspu'], title: 'Wall HSPU', url: null, internal: null },
-  { keywords: ['90 degree hspu', '90 degree handstand', '90degree'], title: '90° HSPU', url: null, internal: null },
-  { keywords: ['p bar hspu', 'parallette hspu', 'p-bar hspu'], title: 'P-Bar HSPU', url: null, internal: null },
-  { keywords: ['hspu attempt', 'handstand pushup attempt', 'handstand push-up attempt'], title: 'HSPU Attempts', url: null, internal: null },
-  { keywords: ['scapular pushup', 'scapula pushup', 'protraction', 'retraction'], title: 'Scapular Pushups', url: null, internal: null },
+  // ── Basics ──
+  { keywords: ['l sit progressions', 'l-sit progressions', 'lsit progressions', 'l sit entry', 'l-sit entry', 'lsit entry'], categoryId: 'master-basics', tutorialId: 'core-lsit-entry', title: 'L-Sit Progressions & Entry' },
+  { keywords: ['pull-up form', 'pullup form', 'pull up form'], categoryId: 'master-basics', tutorialId: 'pull-form', title: 'Pull-Up Form' },
+  { keywords: ['dip form', 'dips form', 'ring dip', 'weighted dip', 'dips'], categoryId: 'master-basics', tutorialId: 'push-dip-form', title: 'Dip Form' },
+  { keywords: ['bent knee pike', 'bent-knee pike'], categoryId: 'master-basics', tutorialId: 'push-bent-knee-pike', title: 'Bent Knee Pike Push-Ups' },
+  { keywords: ['pike push-up', 'pike pushup', 'pike push up'], categoryId: 'master-basics', tutorialId: 'push-pike-pushup', title: 'Pike Push-Ups' },
 
-  // ── Planche ──
-  { keywords: ['planche lean', 'planche-lean'], title: 'Planche Lean', url: null, internal: '/tutorials/planche-conditioning-guide#planche_leans' },
-  { keywords: ['dolphin press', 'dolphin presses'], title: 'Dolphin Presses', url: null, internal: '/tutorials/planche-conditioning-guide' },
-  { keywords: ['planche press', 'planche presses'], title: 'Planche Presses', url: null, internal: '/tutorials/planche-conditioning-guide' },
-  { keywords: ['zanneti', 'zanetti', 'zannettis'], title: "Zannetti's", url: null, internal: '/tutorials/planche-conditioning-guide' },
-  { keywords: ['pseudo planche', 'pseudo lean'], title: 'Pseudo Planche Lean', url: null, internal: '/tutorials/planche-conditioning-guide' },
-  { keywords: ['tuck planche', 'tuck-planche'], title: 'Tuck Planche', url: null, internal: null },
-  { keywords: ['adv tuck planche', 'advanced tuck planche', 'adv tuck', 'advanced tuck'], title: 'Advanced Tuck Planche', url: null, internal: null },
-  { keywords: ['straddle planche', 'straddle attempt', 'straddle hold', 'straddle press'], title: 'Straddle Planche', url: null, internal: null },
-  { keywords: ['full planche', 'full-planche'], title: 'Full Planche', url: null, internal: null },
-  { keywords: ['bent arm tuck planche raise', 'tuck planche raise', 'tuck raise'], title: 'Tuck Planche Raises', url: null, internal: null },
+  // ── Handstand Foundations ──
+  { keywords: ['where to look', 'handstand eyes', 'handstand gaze'], categoryId: 'handstand-foundations', tutorialId: 'hf-where-to-look', title: 'Where to Look in a Handstand' },
+  { keywords: ['handstand kick-up', 'handstand kickup', 'kick-up tutorial', 'kickup tutorial', 'kick up handstand'], categoryId: 'handstand-foundations', tutorialId: 'hf-kickup', title: 'Handstand Kick-Up Tutorial' },
+  { keywords: ['handstand bail', 'bail tutorial', 'face the fear'], categoryId: 'handstand-foundations', tutorialId: 'hf-bail', title: 'Handstand Bail — Face the Fear' },
+  { keywords: ['decline pike', 'declined pike'], categoryId: 'handstand-foundations', tutorialId: 'hf-decline-pike', title: 'Decline Pike Push-Ups' },
+  { keywords: ['handstand toe tap', 'toe tap handstand', 'wall toe tap'], categoryId: 'handstand-foundations', tutorialId: 'hf-toe-taps', title: 'Handstand Toe Taps' },
+  { keywords: ['floating pike', 'float pike'], categoryId: 'handstand-foundations', tutorialId: 'hf-floating-pike', title: 'Floating Pike Push-Ups' },
+  { keywords: ['chest to wall hold', 'chest wall hold', 'chest to wall handstand hold'], categoryId: 'handstand-foundations', tutorialId: 'hf-chest-wall-hold', title: 'Handstand Chest to Wall Hold' },
+
+  // ── L-Sit to Handstand (premium) ──
+  { keywords: ['bent arm press raise', 'bent-arm press raise', 'bat press raise'], categoryId: 'l-sit-to-handstand', tutorialId: 'lshs-bent-arm-raise', title: 'Bent Arm Press Raise' },
+  { keywords: ['bent arm press cue', 'bent-arm press cue', 'bap cues', 'bat press cues'], categoryId: 'l-sit-to-handstand', tutorialId: 'lshs-bent-arm-cues', title: 'Bent Arm Press Cues' },
+  { keywords: ['bent arm tuck planche position', 'bat planche position', 'tuck position bent arm'], categoryId: 'l-sit-to-handstand', tutorialId: 'lshs-bent-arm-tuck-pos', title: 'Bent Arm Tuck Planche Positions' },
+  { keywords: ['bent arm press quick', 'quick bent arm', 'bat quick'], categoryId: 'l-sit-to-handstand', tutorialId: 'lshs-bent-arm-quick', title: 'Bent Arm Press Quick Tutorial' },
+  { keywords: ['momentum bent arm', 'momentum press', 'momentum bat'], categoryId: 'l-sit-to-handstand', tutorialId: 'lshs-momentum-press', title: 'Momentum Bent Arm Press' },
+  { keywords: ['momentum bent arm explanation', 'momentum press explanation', 'momentum bat explanation'], categoryId: 'l-sit-to-handstand', tutorialId: 'lshs-momentum-press-exp', title: 'Momentum Bent Arm Press Explanation' },
+  { keywords: ['clean form bent arm', 'clean bent arm', 'clean form press'], categoryId: 'l-sit-to-handstand', tutorialId: 'lshs-clean-press', title: 'Clean Form Bent Arm Press' },
+  { keywords: ['bent arm press raise progression', 'bat raise progression', 'bent arm raise progression'], categoryId: 'l-sit-to-handstand', tutorialId: 'lshs-bent-arm-raise-prog', title: 'Bent Arm Press Raise Progressions' },
+  { keywords: ['in-depth bent arm', 'indepth bent arm', 'in depth bent arm', 'detailed bent arm'], categoryId: 'l-sit-to-handstand', tutorialId: 'lshs-indepth-press', title: 'In-Depth Bent Arm Press Tutorial' },
+  { keywords: ['bent arm press', 'bent-arm press', 'bat press'], categoryId: 'l-sit-to-handstand', tutorialId: 'lshs-bent-arm-cues', title: 'Bent Arm Press Cues' },
+  { keywords: ['l-sit to handstand', 'lsit to handstand', 'l sit to handstand', 'lsit hs'], categoryId: 'l-sit-to-handstand', tutorialId: 'lshs-lsit-to-hs', title: 'L-Sit to Handstand' },
+  { keywords: ['straddle press to handstand', 'straddle press hs'], categoryId: 'l-sit-to-handstand', tutorialId: 'lshs-straddle-press', title: 'Straddle Press to Handstand' },
+
+  // ── Planche Conditioning ──
+  { keywords: ['scapular protraction', 'scapula protraction', 'scap protraction', 'scap retraction', 'scapular retraction'], categoryId: 'planche-conditioning', tutorialId: 'pc-scap-protract', title: 'Scapular Protraction & Retraction' },
+  { keywords: ['scapular to normal pushup', 'scap to normal', 'scapular pushup'], categoryId: 'planche-conditioning', tutorialId: 'pc-scap-to-normal', title: 'Scapular to Normal Push-Ups' },
+  { keywords: ['planche lean', 'planche-lean'], categoryId: 'planche-conditioning', tutorialId: 'pc-lean', title: 'The Planche Lean' },
+  { keywords: ['planche lean press', 'lean press planche'], categoryId: 'planche-conditioning', tutorialId: 'pc-lean-press', title: 'Planche Lean Press' },
+  { keywords: ["zanetti", "zanettis", "zanetti's", "zannetti", "zannettis"], categoryId: 'planche-conditioning', tutorialId: 'pc-zanettis', title: "Zanetti's" },
+  { keywords: ['how to grip p-bar', 'p-bar grip', 'pbar grip', 'parallette grip'], categoryId: 'planche-conditioning', tutorialId: 'pc-pbars-grip', title: 'How to Properly Grip P-Bars' },
+  { keywords: ['dolphin press', 'dolphin presses'], categoryId: 'planche-conditioning', tutorialId: 'pc-dolphin-press', title: 'Dolphin Press' },
 
   // ── Front Lever ──
-  { keywords: ['front lever activation', 'fl activation'], title: 'Front Lever Activations', url: null, internal: '/tutorials/l-sit-to-handstand-guide' },
-  { keywords: ['fl hip thrust', 'front lever hip thrust', 'fl thrust'], title: 'Front Lever Hip Thrusts', url: null, internal: null },
-  { keywords: ['fl deadlift', 'front lever deadlift', 'reverse deadlift', 'banded reverse deadlift'], title: 'Front Lever Deadlifts', url: null, internal: null },
-  { keywords: ['tuck front lever', 'tuck fl', 'tuck lever'], title: 'Tuck Front Lever', url: null, internal: null },
-  { keywords: ['adv tuck fl', 'adv tuck front lever', 'advanced tuck fl', 'advanced tuck front lever', 'adv tuck lever'], title: 'Advanced Tuck Front Lever', url: null, internal: null },
-  { keywords: ['full front lever', 'full fl', 'full front lever hold', 'full fl hold'], title: 'Full Front Lever', url: null, internal: null },
-  { keywords: ['banded full fl', 'band assisted full fl', 'band assisted front lever', 'red band', 'black band', 'purple band', 'fl hold', 'fl raises', 'band fl'], title: 'Band-Assisted Front Lever', url: null, internal: null },
-  { keywords: ['fl raise', 'front lever raise', 'fl raises'], title: 'Front Lever Raises', url: null, internal: null },
+  { keywords: ['hollow body hold', 'hollow hold', 'hollow body'], categoryId: 'front-lever', tutorialId: 'fl-hollow-body', title: 'Hollow Body Hold' },
+  { keywords: ['front lever activation', 'fl activation', 'front lever activations', 'fl activations'], categoryId: 'front-lever', tutorialId: 'fl-activations', title: 'Front Lever Activations' },
+  { keywords: ['tuck front lever', 'tuck fl', 'tuck lever', 'fl tuck'], categoryId: 'front-lever', tutorialId: 'fl-tuck', title: 'Tuck Front Lever' },
+  { keywords: ['advanced tuck front lever', 'adv tuck front lever', 'advanced tuck fl', 'adv tuck fl', 'adv tuck lever', 'at front lever'], categoryId: 'front-lever', tutorialId: 'fl-adv-tuck', title: 'Advanced Tuck Front Lever' },
+  { keywords: ['full banded fl entry', 'full banded front lever entry', 'banded fl entry', 'full fl entry'], categoryId: 'front-lever', tutorialId: 'fl-full-banded-entry', title: 'Full Banded FL Entry' },
+  { keywords: ['band assisted front lever raise', 'band fl raise', 'banded fl raise', 'fl band raise', 'front lever band raise'], categoryId: 'front-lever', tutorialId: 'fl-band-raises', title: 'Band Assisted Front Lever Raises' },
+  { keywords: ['front lever hip thrust', 'fl hip thrust', 'fl thrust'], categoryId: 'front-lever', tutorialId: 'fl-hip-thrust', title: 'Front Lever Hip Thrust' },
+  { keywords: ['inverted deadlift', 'reverse deadlift', 'fl deadlift', 'front lever deadlift', 'inv deadlift'], categoryId: 'front-lever', tutorialId: 'fl-inv-deadlift', title: 'Inverted / Reverse Deadlifts' },
 
-  // ── L-sit ──
-  { keywords: ['l sit to handstand', 'l-sit to handstand', 'lsit to handstand'], title: 'L-Sit to Handstand', url: null, internal: '/tutorials/l-sit-to-handstand-guide' },
-  { keywords: ['l sit', 'l-sit', 'lsit', 'l sit attempt', 'l sit max'], title: 'L-Sit', url: null, internal: null },
-  { keywords: ['bent knee l sit', 'bent-knee l sit', 'bent knee lsit'], title: 'Bent Knee L-Sit', url: null, internal: null },
-  { keywords: ['l sit raise', 'l-sit raise', 'lsit raise'], title: 'L-Sit Raises', url: null, internal: null },
-  { keywords: ['tuck l sit', 'tuck lsit'], title: 'Tuck L-Sit', url: null, internal: null },
-  { keywords: ['elevated l sit', 'elevated lsit'], title: 'Elevated L-Sit', url: null, internal: null },
-  { keywords: ['l sit compression', 'compression hold', 'compression raise'], title: 'L-Sit Compression', url: null, internal: null },
-
-  // ── Pullups ──
-  { keywords: ['weighted pullup', 'weighted pull-up', 'weighted pull up'], title: 'Weighted Pullups', url: null, internal: null },
-  { keywords: ['max pullup', 'max pull-up', 'high pullup'], title: 'Max Pullups', url: null, internal: null },
-  { keywords: ['scapular pullup', 'scapula pullup'], title: 'Scapular Pullups', url: null, internal: null },
-  { keywords: ['chin up', 'chinup', 'chin-up'], title: 'Chin-Ups', url: null, internal: null },
-  { keywords: ['muscle up', 'muscle-up'], title: 'Muscle-Up', url: null, internal: null },
-
-  // ── Other ──
-  { keywords: ['dip', 'dips', 'weighted dip'], title: 'Dips', url: null, internal: null },
-  { keywords: ['hollow body', 'hollow hold'], title: 'Hollow Body Hold', url: null, internal: null },
-  { keywords: ['plank hold', 'plank'], title: 'Plank Hold', url: null, internal: null },
-  { keywords: ['bicep curl', 'bicep curls'], title: 'Bicep Curls', url: null, internal: null },
+  // ── HSPU ──
+  { keywords: ['chest to wall handstand pushup', 'chest wall hspu', 'ctw hspu', 'c2w hspu'], categoryId: 'handstand-pushups', tutorialId: 'hspu-chest-wall', title: 'Chest to Wall Handstand Push-Ups' },
 ];
 
-// Normalise: lowercase, replace FL→front lever, trim
 function normalise(str) {
   return (str || '')
     .toLowerCase()
     .replace(/\bfl\b/g, 'front lever')
     .replace(/\bhs\b/g, 'handstand')
     .replace(/\bhspu\b/g, 'handstand pushup')
+    .replace(/\bbap\b/g, 'bent arm press')
+    .replace(/\bbat\b/g, 'bent arm')
     .replace(/[^a-z0-9\s]/g, ' ')
     .replace(/\s+/g, ' ')
     .trim();
@@ -86,31 +81,31 @@ export function matchTutorial(exerciseName) {
   let best = null;
   let bestScore = 0;
 
-  for (const entry of TUTORIAL_MAP) {
+  for (const entry of TUTORIAL_INDEX) {
     for (const kw of entry.keywords) {
       const normKw = normalise(kw);
-      // Exact match
-      if (norm === normKw) return entry;
-      // Contains keyword
+      if (norm === normKw) return entry; // exact match
+
+      // Containment
       if (norm.includes(normKw) || normKw.includes(norm)) {
         const score = normKw.length;
         if (score > bestScore) { bestScore = score; best = entry; }
         continue;
       }
-      // Word overlap score
+
+      // Word overlap
       const normWords = new Set(norm.split(' '));
       const kwWords = normKw.split(' ');
       const overlap = kwWords.filter(w => w.length > 2 && normWords.has(w)).length;
-      const score = overlap / kwWords.length;
-      if (score >= 0.6 && overlap > bestScore) { bestScore = overlap; best = entry; }
+      const ratio = overlap / kwWords.length;
+      if (ratio >= 0.65 && overlap > bestScore) { bestScore = overlap; best = entry; }
     }
   }
 
   return bestScore > 0 ? best : null;
 }
 
-export function getTutorialLink(exerciseName) {
-  const match = matchTutorial(exerciseName);
-  if (!match) return null;
-  return { title: match.title, url: match.url, internal: match.internal };
+// Returns { title, categoryId, tutorialId } or null
+export function getTutorialMatch(exerciseName) {
+  return matchTutorial(exerciseName);
 }
