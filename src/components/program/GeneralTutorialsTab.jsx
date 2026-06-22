@@ -73,7 +73,7 @@ const GENERAL_TUTORIALS = [
   {
     title: 'Handstand Bail',
     desc: 'How to safely bail out of a handstand — required before attempting freestanding handstands.',
-    url: 'https://youtube.com/shorts/rGoEHcIPeFY',
+    url: 'https://youtube.com/shorts/81mBKvzbyTQ?feature=share',
     category: 'technique',
   },
   {
