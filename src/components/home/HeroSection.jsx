@@ -205,8 +205,7 @@ export default function HeroSection() {
               className="flex items-center gap-8 flex-wrap"
             >
               {[
-                { value: '40+', label: 'Athletes Coached' },
-                { value: '100+', label: 'Skills Unlocked' },
+                { value: '50+', label: 'Athletes Coached' },
                 { value: '$40/wk', label: 'Starting From' },
               ].map((stat, i) => (
                 <motion.div

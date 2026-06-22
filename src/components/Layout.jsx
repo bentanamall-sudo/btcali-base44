@@ -1,19 +1,15 @@
-import { Outlet, useLocation } from 'react-router-dom';
-import { AnimatePresence } from 'framer-motion';
+import { Outlet } from 'react-router-dom';
 import Navbar from './Navbar';
-import PageTransition from './PageTransition';
+import ErrorBoundary from './ErrorBoundary';
 
 export default function Layout() {
-  const location = useLocation();
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
       <main className="pt-16">
-        <AnimatePresence mode="wait">
-          <PageTransition key={location.pathname}>
-            <Outlet />
-          </PageTransition>
-        </AnimatePresence>
+        <ErrorBoundary>
+          <Outlet />
+        </ErrorBoundary>
       </main>
     </div>
   );

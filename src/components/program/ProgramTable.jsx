@@ -156,9 +156,14 @@ function TutorialButton({ exerciseName, overrideLink, readOnly, onOverride, onOp
     <div className="relative">
       <div className="flex items-center gap-1">
         {hasLink ? (
-          <span className="text-[10px] text-primary font-body truncate max-w-[80px]">
+          <button type="button"
+            onClick={() => {
+              if (hasOverride) window.open(overrideLink, '_blank');
+              else if (autoMatch && !autoIsComingSoon) onOpenModal(autoMatch);
+            }}
+            className="text-[10px] text-primary font-body truncate max-w-[80px] hover:underline hover:text-primary/80 transition-colors text-left">
             {hasOverride ? 'Custom' : (autoMatch?.title?.split(' ').slice(0, 2).join(' ') || 'Linked')}
-          </span>
+          </button>
         ) : (
           <span className="text-[10px] text-muted-foreground/30 italic">Auto</span>
         )}
