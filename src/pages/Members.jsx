@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Crown, Shield, Dumbbell, Layers, ShoppingBag, ExternalLink, Lock, ChevronRight, ChevronLeft, ChevronDown, CheckCircle, Send, CreditCard, LogOut } from 'lucide-react';
+import { Crown, Shield, Dumbbell, Layers, ShoppingBag, ExternalLink, Lock, ChevronRight, ChevronLeft, ChevronDown, CheckCircle, Send, CreditCard, LogOut, ClipboardList } from 'lucide-react';
 import { useAccessCodes } from '@/lib/useAccessCodes';
 import { PageHeaderLogo } from '@/components/Logo';
 import { Link } from 'react-router-dom';
@@ -428,6 +428,22 @@ export default function Members() {
                   ))}
                 </div>
               </AccordionSection>
+
+              {/* My Program CTA */}
+              <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
+                className="glass rounded-2xl p-6 border border-primary/20 text-center mb-4">
+                <ClipboardList className="w-8 h-8 text-primary mx-auto mb-3" />
+                <h3 className="font-heading font-bold text-lg text-foreground mb-2">Your Personalised Program</h3>
+                <p className="text-sm font-body text-muted-foreground mb-5">
+                  View your BTCALI training program, log workouts, and track goals.
+                </p>
+                <Link to="/my-program">
+                  <motion.button whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}
+                    className="inline-flex items-center gap-2 px-7 py-3.5 rounded-xl gradient-bg-strong text-primary-foreground font-heading font-bold text-sm glow-primary">
+                    <ClipboardList className="w-4 h-4" /> View My Program
+                  </motion.button>
+                </Link>
+              </motion.div>
 
               {/* Skill Library CTA */}
               <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}

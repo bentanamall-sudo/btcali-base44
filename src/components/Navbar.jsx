@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, Zap, BookOpen, Trophy, Users, ScanLine, Crown, Settings, CreditCard, ChevronDown } from 'lucide-react';
+import { Menu, X, Zap, BookOpen, Trophy, Users, ScanLine, Crown, Settings, CreditCard, ChevronDown, ClipboardList } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { NavbarLogo } from './Logo';
 import CodeUnlock from './CodeUnlock';
@@ -16,6 +16,7 @@ const BASE_NAV = [
 ];
 
 const ADMIN_LINKS = [
+  { to: '/admin/programs', label: 'Programs', icon: Settings },
   { to: '/admin/payments', label: 'Payments', icon: CreditCard },
   { to: '/admin/diagnostics', label: 'Diagnostics', icon: Settings },
 ];
@@ -105,7 +106,7 @@ export default function Navbar() {
   }, [mobileOpen]);
 
   const navLinks = isMember
-    ? [...BASE_NAV, { to: '/members', label: 'BTCALI Members', icon: Crown }]
+    ? [...BASE_NAV, { to: '/my-program', label: 'My Program', icon: ClipboardList }, { to: '/members', label: 'Members', icon: Crown }]
     : BASE_NAV;
 
   return (

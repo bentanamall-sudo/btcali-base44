@@ -1,0 +1,66 @@
+{
+  "name": "WorkoutLog",
+  "type": "object",
+  "properties": {
+    "access_code": {
+      "type": "string"
+    },
+    "student_name": {
+      "type": "string"
+    },
+    "log_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "workout_type": {
+      "type": "string"
+    },
+    "exercises_completed": {
+      "type": "string"
+    },
+    "sets_reps": {
+      "type": "string"
+    },
+    "hold_times": {
+      "type": "string"
+    },
+    "band_used": {
+      "type": "string"
+    },
+    "difficulty_rating": {
+      "type": "number"
+    },
+    "notes": {
+      "type": "string"
+    },
+    "video_link": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "access_code",
+    "log_date"
+  ],
+  "rls": {
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "read": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

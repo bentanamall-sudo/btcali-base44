@@ -1,0 +1,83 @@
+{
+  "name": "StudentProgram",
+  "type": "object",
+  "properties": {
+    "access_code": {
+      "type": "string",
+      "description": "Student access code e.g. LENNON184"
+    },
+    "student_name": {
+      "type": "string"
+    },
+    "tabs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "rows": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "activity": {
+                  "type": "string"
+                },
+                "rep_range": {
+                  "type": "string"
+                },
+                "exercise_type": {
+                  "type": "string"
+                },
+                "notes": {
+                  "type": "string"
+                },
+                "tutorial_link": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "required": [
+    "access_code",
+    "student_name"
+  ],
+  "rls": {
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "read": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

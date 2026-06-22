@@ -1,0 +1,56 @@
+{
+  "name": "StudentGoal",
+  "type": "object",
+  "properties": {
+    "access_code": {
+      "type": "string"
+    },
+    "student_name": {
+      "type": "string"
+    },
+    "goal_text": {
+      "type": "string"
+    },
+    "target_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "notes": {
+      "type": "string"
+    },
+    "progress_percent": {
+      "type": "number",
+      "default": 0
+    },
+    "completed": {
+      "type": "boolean",
+      "default": false
+    }
+  },
+  "required": [
+    "access_code",
+    "goal_text"
+  ],
+  "rls": {
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "read": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

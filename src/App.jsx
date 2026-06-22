@@ -33,6 +33,8 @@ import FrontLeverPrograms from './pages/programs/FrontLeverPrograms';
 import BrandIdentity from './pages/BrandIdentity';
 import Members from './pages/Members.jsx';
 import SkillLibrarySection from './pages/SkillLibrarySection';
+import MyProgram from './pages/MyProgram';
+import AdminPrograms from './pages/AdminPrograms';
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -85,6 +87,8 @@ const AuthenticatedApp = () => {
           <Route path="/skills/:categoryId" element={<SkillLibraryCategory />} />
           <Route path="/admin/diagnostics" element={<AdminDiagnostics />} />
           <Route path="/brand" element={<BrandIdentity />} />
+          <Route path="/my-program" element={<MyProgram />} />
+          <Route path="/admin/programs" element={<AdminPrograms />} />
           <Route path="*" element={<PageNotFound />} />
         </Route>
       </Routes>
