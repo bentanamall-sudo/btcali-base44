@@ -18,7 +18,13 @@
     "difficulty_rating": {
       "type": "number"
     },
+    "energy_rating": {
+      "type": "number"
+    },
     "prs_hit": {
+      "type": "string"
+    },
+    "strong_points": {
       "type": "string"
     },
     "weak_points": {

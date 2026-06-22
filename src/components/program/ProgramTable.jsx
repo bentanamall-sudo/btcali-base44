@@ -2,14 +2,29 @@ import { useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Plus, Trash2, Copy, GripVertical, ExternalLink, ChevronDown, Check, X, Edit3, Save, Link2, Wand2, PlayCircle, CheckCircle2, ChevronRight } from 'lucide-react';
 import { getTypeConfig } from '@/lib/exerciseTypeConfig';
-import { getTutorialMatch } from '@/lib/tutorialMatcher';
+import { getTutorialMatch, isComingSoon } from '@/lib/tutorialMatcher';
 import { base44 } from '@/api/base44Client';
 
-// ── Inline Tutorial Modal (opens Skill Library video directly) ──────────────
+// ── Inline Tutorial Modal ────────────────────────────────────────────────────
+// Uses the URL directly from tutorialMatcher — extracts YouTube video ID to embed
+function extractYouTubeId(url) {
+  if (!url || url === 'COMING_SOON') return null;
+  // Handle youtu.be/ID and youtube.com/shorts/ID and youtube.com/watch?v=ID
+  const patterns = [
+    /youtu\.be\/([a-zA-Z0-9_-]{11})/,
+    /youtube\.com\/shorts\/([a-zA-Z0-9_-]{11})/,
+    /[?&]v=([a-zA-Z0-9_-]{11})/,
+  ];
+  for (const p of patterns) {
+    const m = url.match(p);
+    if (m) return m[1];
+  }
+  return null;
+}
+
 function TutorialModal({ match, onClose }) {
-  // Try to find the tutorial in CATEGORY_DATA — we need the videoId
-  // We pass it in directly via the match object (enriched below)
   if (!match) return null;
+  const videoId = extractYouTubeId(match.url);
   return (
     <AnimatePresence>
       <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
@@ -27,10 +42,10 @@ function TutorialModal({ match, onClose }) {
               <X className="w-4 h-4 text-muted-foreground" />
             </button>
           </div>
-          {match.videoId ? (
+          {videoId ? (
             <div className="relative w-full" style={{ paddingBottom: '177.78%' }}>
               <iframe
-                src={`https://www.youtube.com/embed/${match.videoId}?autoplay=1&rel=0`}
+                src={`https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0`}
                 title={match.title}
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                 allowFullScreen
@@ -46,74 +61,6 @@ function TutorialModal({ match, onClose }) {
       </motion.div>
     </AnimatePresence>
   );
-}
-
-// Enrich a match with its videoId from the Skill Library CATEGORY_DATA
-// We import a flat lookup table here so we don't need to import the whole SkillLibraryCategory
-const VIDEO_LOOKUP = {
-  // handstand-foundations
-  'hf-wrist-warmup': 'A1YPZdLyXPI',
-  'hf-lsit-entry': 'JV2QPQFlpZQ',
-  'hf-bent-knee-pike': '5HRq7xpcBkw',
-  'hf-pike-pushup': 'PSHF4b99J0Q',
-  'hf-where-to-look': 'pgKP61v2kz8',
-  'hf-kickup': '8GLA_c0jueA',
-  'hf-bail': 'rGoEHcIPeFY',
-  'hf-decline-pike': '3OfR0Kd1u-Q',
-  'hf-toe-taps': 'yDYk7w7uqTA',
-  'hf-floating-pike': 'AfLQJ-cCF2I',
-  // master-basics
-  'core-lsit-entry': 'JV2QPQFlpZQ',
-  'pull-form': 'DzU28xYSCjU',
-  'push-dip-form': 'qG4dnoWpr94',
-  'push-bent-knee-pike': '5HRq7xpcBkw',
-  'push-pike-pushup': 'PSHF4b99J0Q',
-  // planche-conditioning
-  'pc-wrist-warmup': 'A1YPZdLyXPI',
-  'pc-scap-protract': 'QppuGF94PLc',
-  'pc-scap-to-normal': 'D_8_yzV6Jdk',
-  'pc-lean': '-cGOxgIccqU',
-  'pc-lean-press': 'pAn5RJZCvR0',
-  'pc-zanettis': 'IsiqiYLuVdA',
-  'pc-pbars-grip': 'boazomcMT7c',
-  'pc-dolphin-press': 'SWJn6e7Kc50',
-  // front-lever
-  'fl-hollow-body': 'DQu4UNPY8BU',
-  'fl-activations': 'QVqbRvkFlx0',
-  'fl-tuck': '08DECfSNf8Y',
-  'fl-adv-tuck': '9FBurAs5q58',
-  'fl-full-banded-entry': 'xeNxL7ygiHg',
-  'fl-band-raises': 'aku6BVmhuck',
-  'fl-hip-thrust': 'IEbuq-vlXgs',
-  'fl-inv-deadlift': 'VT77Hlo1uoM',
-  // l-sit-to-handstand
-  'lshs-bent-arm-raise': 'jUYGq7sBxI0',
-  'lshs-bent-arm-cues': 'jD7JOlacCgg',
-  'lshs-bent-arm-tuck-pos': 'WRflJHXBIrA',
-  'lshs-bent-arm-quick': '6MpY6iLDtQM',
-  'lshs-momentum-press': 'cIZRmKLMlQ4',
-  'lshs-momentum-press-exp': 'yLn96dEdHWE',
-  'lshs-clean-press': 'BouVt_LNI7k',
-  'lshs-bent-arm-raise-prog': 'qAuVf2KGFUI',
-  'lshs-indepth-press': 'UO7pBH4FnOI',
-  'lshs-lsit-to-hs': '8SOeZroRebI',
-  'lshs-wrist-warmup': 'A1YPZdLyXPI',
-  'lshs-lsit-entry': 'JV2QPQFlpZQ',
-  'lshs-bent-knee-pike': '5HRq7xpcBkw',
-  'lshs-pike-pushup': 'PSHF4b99J0Q',
-  'lshs-where-to-look': 'pgKP61v2kz8',
-  'lshs-kickup': '8GLA_c0jueA',
-  'lshs-bail': 'rGoEHcIPeFY',
-  'lshs-decline-pike': '3OfR0Kd1u-Q',
-  'lshs-toe-taps': 'yDYk7w7uqTA',
-  'lshs-floating-pike': 'AfLQJ-cCF2I',
-  // handstand-pushups
-  'hspu-chest-wall': 'GwHgAPqMMq0',
-};
-
-function enrichMatch(match) {
-  if (!match) return null;
-  return { ...match, videoId: VIDEO_LOOKUP[match.tutorialId] || null };
 }
 
 // ── Type Badge ───────────────────────────────────────────────────────────────
@@ -173,13 +120,18 @@ function TutorialButton({ exerciseName, overrideLink, readOnly, onOverride, onOp
   const [showPicker, setShowPicker] = useState(false);
   const [searchVal, setSearchVal] = useState('');
 
-  const autoMatch = enrichMatch(getTutorialMatch(exerciseName));
+  const autoMatch = getTutorialMatch(exerciseName);
   const hasOverride = overrideLink !== undefined && overrideLink !== '';
   const effectiveTitle = hasOverride ? 'Tutorial' : (autoMatch ? autoMatch.title : null);
-  const hasLink = hasOverride || !!autoMatch;
+  // coming soon = match exists but URL is COMING_SOON
+  const autoIsComingSoon = autoMatch && isComingSoon(autoMatch);
+  const hasLink = hasOverride || (autoMatch && !autoIsComingSoon);
 
   if (readOnly) {
-    if (!hasLink) return <span className="text-[10px] font-body text-muted-foreground/30 italic">Coming soon</span>;
+    // No match at all or coming soon
+    if (!autoMatch && !hasOverride) return <span className="text-[10px] font-body text-muted-foreground/30 italic">Coming soon</span>;
+    if (autoIsComingSoon && !hasOverride) return <span className="text-[10px] font-body text-muted-foreground/30 italic">Coming soon</span>;
+
     if (hasOverride) {
       return (
         <a href={overrideLink} target="_blank" rel="noopener noreferrer"
@@ -189,7 +141,7 @@ function TutorialButton({ exerciseName, overrideLink, readOnly, onOverride, onOp
         </a>
       );
     }
-    // Auto-matched → open inline modal
+    // Auto-matched with valid URL → open inline modal
     return (
       <button onClick={() => onOpenModal(autoMatch)} type="button"
         className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-[11px] font-heading font-semibold transition-all hover:scale-105"
@@ -257,8 +209,9 @@ function MobileRow({ row, rowIndex, readOnly, onUpdate, onDelete, onDuplicate, o
   const [expanded, setExpanded] = useState(false);
   const cfg = getTypeConfig(row.exercise_type);
   const hasOverride = row.tutorial_link && row.tutorial_link !== '';
-  const autoMatch = enrichMatch(getTutorialMatch(row.activity));
-  const hasLink = hasOverride || !!autoMatch;
+  const autoMatch = getTutorialMatch(row.activity);
+  const autoComingSoon = autoMatch && isComingSoon(autoMatch);
+  const hasLink = hasOverride || (autoMatch && !autoComingSoon);
 
   return (
     <motion.div layout className="rounded-xl mb-2 overflow-hidden relative"
@@ -301,20 +254,19 @@ function MobileRow({ row, rowIndex, readOnly, onUpdate, onDelete, onDuplicate, o
                 <p className="text-xs font-body text-muted-foreground/70 leading-relaxed whitespace-pre-wrap">{row.notes}</p>
               )}
               {/* Tutorial */}
-              {hasLink && (
-                hasOverride ? (
-                  <a href={row.tutorial_link} target="_blank" rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-heading font-semibold"
-                    style={{ background: 'rgba(79,157,255,0.08)', border: '1px solid rgba(79,157,255,0.2)', color: '#93C5FD' }}>
-                    <PlayCircle className="w-3.5 h-3.5" /> Tutorial
-                  </a>
-                ) : (
-                  <button onClick={() => onOpenModal(autoMatch)} type="button"
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-heading font-semibold transition-all hover:scale-105"
-                    style={{ background: 'rgba(79,157,255,0.08)', border: '1px solid rgba(79,157,255,0.2)', color: '#93C5FD' }}>
-                    <PlayCircle className="w-3.5 h-3.5" /> {autoMatch?.title?.length > 24 ? 'Watch Tutorial' : autoMatch?.title}
-                  </button>
-                )
+              {hasOverride && (
+                <a href={row.tutorial_link} target="_blank" rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-heading font-semibold"
+                  style={{ background: 'rgba(79,157,255,0.08)', border: '1px solid rgba(79,157,255,0.2)', color: '#93C5FD' }}>
+                  <PlayCircle className="w-3.5 h-3.5" /> Tutorial
+                </a>
+              )}
+              {!hasOverride && autoMatch && !autoComingSoon && (
+                <button onClick={() => onOpenModal(autoMatch)} type="button"
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-heading font-semibold transition-all hover:scale-105"
+                  style={{ background: 'rgba(79,157,255,0.08)', border: '1px solid rgba(79,157,255,0.2)', color: '#93C5FD' }}>
+                  <PlayCircle className="w-3.5 h-3.5" /> {autoMatch?.title?.length > 24 ? 'Watch Tutorial' : autoMatch?.title}
+                </button>
               )}
               {!hasLink && <span className="text-[10px] font-body text-muted-foreground/25 italic">Tutorial coming soon</span>}
 
@@ -340,7 +292,7 @@ function MobileRow({ row, rowIndex, readOnly, onUpdate, onDelete, onDuplicate, o
 function DesktopRow({ row, rowIndex, readOnly, onUpdate, onDelete, onDuplicate, onOpenModal, checked, onCheck }) {
   const cfg = getTypeConfig(row.exercise_type);
   const hasOverride = row.tutorial_link && row.tutorial_link !== '';
-  const autoMatch = enrichMatch(getTutorialMatch(row.activity));
+  const autoMatch = getTutorialMatch(row.activity);
 
   return (
     <div className="group flex items-start gap-2 px-3 py-2.5 hover:bg-white/[0.025] transition-colors"
@@ -575,7 +527,7 @@ export default function ProgramTable({ program, readOnly = false }) {
                   onUpdate={(field, val) => updateRow(row.id, field, val)}
                   onDelete={() => deleteRow(row.id)}
                   onDuplicate={() => duplicateRow(row.id)}
-                  onOpenModal={m => setActiveTutorial(enrichMatch(m))}
+                  onOpenModal={m => setActiveTutorial(m)}
                   checked={!!checked[row.id]}
                   onCheck={() => toggleCheck(row.id)}
                 />
@@ -612,7 +564,7 @@ export default function ProgramTable({ program, readOnly = false }) {
                     onUpdate={(field, val) => updateRow(row.id, field, val)}
                     onDelete={() => deleteRow(row.id)}
                     onDuplicate={() => duplicateRow(row.id)}
-                    onOpenModal={m => setActiveTutorial(enrichMatch(m))}
+                    onOpenModal={m => setActiveTutorial(m)}
                     checked={!!checked[row.id]}
                     onCheck={() => toggleCheck(row.id)}
                   />

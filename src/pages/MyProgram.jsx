@@ -78,7 +78,7 @@ export default function MyProgram() {
     const load = async () => {
       setLoading(true);
       // Use backend function (service role) so live site bypasses RLS admin restriction
-      const timeout = new Promise((_, rej) => setTimeout(() => rej(new Error('timeout')), 12000));
+      const timeout = new Promise((_, rej) => setTimeout(() => rej(new Error('timeout')), 5000));
       const res = await Promise.race([
         base44.functions.invoke('getStudentProgram', { access_code: code }),
         timeout,
