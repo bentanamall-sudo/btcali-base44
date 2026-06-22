@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { base44 } from '@/api/base44Client';
+import { callFunction } from '@/lib/callFunction';
 import { Search, Plus, Users, ArrowLeft, Copy, Trash2, UserPlus } from 'lucide-react';
 import ProgramTable from '@/components/program/ProgramTable';
 import GoalsTab from '@/components/program/GoalsTab';
@@ -107,14 +108,13 @@ export default function AdminPrograms() {
   const load = async () => {
     setLoading(true);
     try {
-      // Use backend function (service role) to bypass RLS on live site
-      const res = await Promise.race([
-        base44.functions.invoke('getStudentPrograms', { admin_code: 'BTCALI999' }),
-        new Promise((_, rej) => setTimeout(() => rej(new Error('timeout')), 8000)),
+      const data = await Promise.race([
+        callFunction('getStudentPrograms', { admin_code: 'BTCALI999' }),
+        new Promise((_, rej) => setTimeout(() => rej(new Error('timeout after 8s')), 8000)),
       ]);
-      setStudents(res?.data?.students || []);
+      setStudents(data?.students || []);
     } catch (err) {
-      console.error('AdminPrograms load error:', err);
+      console.error('[AdminPrograms] load error:', err);
       setStudents([]);
     }
     setLoading(false);

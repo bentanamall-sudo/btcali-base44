@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { base44 } from '@/api/base44Client';
+import { callFunction } from '@/lib/callFunction';
 import { useAccessCodes } from '@/lib/useAccessCodes';
 import { Link } from 'react-router-dom';
 import { Bell, BookOpen, Target, ClipboardList, Lock } from 'lucide-react';
@@ -81,13 +82,13 @@ export default function MyProgram() {
       setLoadError(null);
       try {
         const timeout = new Promise((_, rej) => setTimeout(() => rej(new Error('Request timed out after 5 seconds')), 5000));
-        const res = await Promise.race([
-          base44.functions.invoke('getStudentProgram', { access_code: code }),
+        const data = await Promise.race([
+          callFunction('getStudentProgram', { access_code: code }),
           timeout,
         ]);
         if (!cancelled) {
-          const prog = res?.data?.program || null;
-          console.log('[MyProgram] loaded for', code, '→', prog ? `${prog.tabs?.length} tabs` : 'null');
+          const prog = data?.program || null;
+          console.log('[MyProgram] loaded for', code, '→', prog ? `${prog.tabs?.length} tabs` : 'null (program being prepared)');
           setProgram(prog);
           setLoading(false);
         }
