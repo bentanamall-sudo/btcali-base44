@@ -2,24 +2,13 @@ import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { base44 } from '@/api/base44Client';
 import { useAccessCodes } from '@/lib/useAccessCodes';
-import { Link } from 'react-router-dom';
-import { Bell, BookOpen, Target, ClipboardList, ExternalLink, Lock } from 'lucide-react';
+import { Link, useNavigate } from 'react-router-dom';
+import { Bell, BookOpen, Target, ClipboardList, Lock, ChevronRight } from 'lucide-react';
 import ProgramTable from '@/components/program/ProgramTable';
 import GoalsTab from '@/components/program/GoalsTab';
 import WorkoutLogTab from '@/components/program/WorkoutLogTab';
 import GeneralTutorialsTab from '@/components/program/GeneralTutorialsTab';
 import { MEMBER_CODES } from '@/lib/accessCodes';
-
-function getStudentName(code) {
-  if (!code) return 'Athlete';
-  // Extract name from code (everything before the digits)
-  const match = code.match(/^([A-Za-z]+)/);
-  if (match) {
-    const name = match[1];
-    return name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
-  }
-  return 'Athlete';
-}
 
 function AccessGate() {
   const [code, setCode] = useState('');
@@ -28,9 +17,8 @@ function AccessGate() {
 
   const handleUnlock = () => {
     const upper = code.toUpperCase().trim();
-    if (MEMBER_CODES.includes(upper)) {
-      unlockCode(upper);
-    } else {
+    const result = unlockCode(upper);
+    if (!result) {
       setError(true);
       setTimeout(() => setError(false), 2500);
     }
@@ -50,10 +38,14 @@ function AccessGate() {
           Enter your BTCALI access code to view your personalised program.
         </p>
         <div className={`flex gap-2 rounded-xl overflow-hidden mb-3 transition-all ${error ? 'ring-2 ring-destructive/60' : 'ring-1 ring-border/40'}`}>
-          <input type="text" value={code} onChange={e => { setCode(e.target.value); setError(false); }}
+          <input
+            type="text"
+            value={code}
+            onChange={e => { setCode(e.target.value.toUpperCase()); setError(false); }}
             onKeyDown={e => e.key === 'Enter' && handleUnlock()}
-            placeholder="Enter access code (e.g. LENNON184)"
-            className="flex-1 bg-transparent text-foreground font-body text-sm px-4 py-3.5 outline-none placeholder:text-muted-foreground/50 uppercase" />
+            placeholder="e.g. LENNON184"
+            className="flex-1 bg-transparent text-foreground font-body text-sm px-4 py-3.5 outline-none placeholder:text-muted-foreground/50 uppercase tracking-widest"
+          />
           <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}
             onClick={handleUnlock} className="gradient-bg-strong px-5 font-heading font-bold text-sm text-primary-foreground">
             Enter
@@ -66,45 +58,72 @@ function AccessGate() {
 }
 
 export default function MyProgram() {
-  const { isMember, accessCode } = useAccessCodes();
+  const { isMember, isAdmin, accessCode } = useAccessCodes();
   const [program, setProgram] = useState(null);
   const [loading, setLoading] = useState(true);
   const [activeSection, setActiveSection] = useState('program');
 
-  const studentName = getStudentName(accessCode);
+  // Derive student name from the DB record (not just the code)
+  const studentName = program?.student_name || (accessCode
+    ? accessCode.replace(/\d+/g, '').charAt(0).toUpperCase() + accessCode.replace(/\d+/g, '').slice(1).toLowerCase()
+    : 'Athlete');
 
   useEffect(() => {
-    if (!isMember || !accessCode) { setLoading(false); return; }
+    if (!isMember && !isAdmin) { setLoading(false); return; }
+    if (!accessCode && !isAdmin) { setLoading(false); return; }
+
     const load = async () => {
       setLoading(true);
-      const results = await base44.entities.StudentProgram.filter({ access_code: accessCode.toUpperCase() });
+      // Admin viewing their own program uses admin panel instead
+      if (isAdmin && !accessCode) { setLoading(false); return; }
+      const code = accessCode?.toUpperCase();
+      if (!code) { setLoading(false); return; }
+      const results = await base44.entities.StudentProgram.filter({ access_code: code });
       setProgram(results[0] || null);
       setLoading(false);
     };
+
     load();
     const unsub = base44.entities.StudentProgram.subscribe(() => load());
     return unsub;
-  }, [isMember, accessCode]);
+  }, [isMember, isAdmin, accessCode]);
 
-  if (!isMember) return <AccessGate />;
+  if (!isMember && !isAdmin) return <AccessGate />;
+
+  // Admin without a student access code — redirect them to admin panel
+  if (isAdmin && !accessCode) {
+    return (
+      <div className="min-h-screen flex items-center justify-center px-4 text-center">
+        <div>
+          <h2 className="font-heading font-bold text-xl text-foreground mb-3">Admin Program Manager</h2>
+          <p className="text-sm text-muted-foreground mb-5">Use the Admin panel to manage all student programs.</p>
+          <Link to="/admin/programs">
+            <button className="px-6 py-3 rounded-xl gradient-bg-strong text-primary-foreground font-heading font-bold text-sm">
+              Go to Program Manager →
+            </button>
+          </Link>
+        </div>
+      </div>
+    );
+  }
 
   const sections = [
     { id: 'program', label: 'My Program', icon: ClipboardList },
-    { id: 'tutorials', label: 'General Tutorials', icon: BookOpen },
-    { id: 'goals', label: 'Goals & Progress', icon: Target },
+    { id: 'tutorials', label: 'Tutorials', icon: BookOpen },
+    { id: 'goals', label: 'Goals', icon: Target },
     { id: 'log', label: 'Workout Log', icon: ClipboardList },
   ];
 
   return (
     <div className="min-h-screen py-8 px-4 sm:px-6 max-w-7xl mx-auto">
       {/* Header */}
-      <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
-        <div className="flex items-center gap-3 mb-1">
+      <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} className="mb-5">
+        <div className="flex items-center gap-2 mb-1">
           <span className="text-xs font-heading font-bold uppercase tracking-[0.25em] text-primary/50">BTCALI</span>
           <span className="text-xs text-muted-foreground/40">•</span>
-          <span className="text-xs font-heading font-bold uppercase tracking-[0.2em] text-muted-foreground/50">{accessCode}</span>
+          <span className="text-xs font-heading font-bold uppercase tracking-[0.2em] text-muted-foreground/40 font-mono">{accessCode}</span>
         </div>
-        <h1 className="font-heading font-black text-3xl sm:text-4xl text-foreground">
+        <h1 className="font-heading font-black text-2xl sm:text-4xl text-foreground">
           Welcome back, <span className="gradient-text">{studentName}</span>
         </h1>
       </motion.div>
@@ -114,7 +133,7 @@ export default function MyProgram() {
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.1 }}
-        className="rounded-2xl p-4 sm:p-5 mb-6 relative overflow-hidden"
+        className="rounded-2xl p-4 sm:p-5 mb-5 relative overflow-hidden"
         style={{
           background: 'linear-gradient(135deg, rgba(79,157,255,0.08) 0%, rgba(94,235,255,0.05) 100%)',
           border: '1px solid rgba(79,157,255,0.25)',
@@ -122,18 +141,18 @@ export default function MyProgram() {
       >
         <div className="absolute top-0 left-0 right-0 h-px" style={{ background: 'linear-gradient(90deg, transparent, rgba(79,157,255,0.5), transparent)' }} />
         <div className="flex items-start gap-3">
-          <Bell className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
-          <p className="text-sm font-body leading-relaxed" style={{ color: '#A6D4FF' }}>
+          <Bell className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />
+          <p className="text-xs sm:text-sm font-body leading-relaxed" style={{ color: '#A6D4FF' }}>
             Remember to send every set to BTCALI for feedback. I will respond as soon as I am available, usually between <strong>4:00pm – 6:00pm NSW time</strong>. Keep recording your sets so I can help correct technique and update your program as you improve.
           </p>
         </div>
       </motion.div>
 
-      {/* Section tabs */}
-      <div className="flex gap-2 flex-wrap mb-6">
+      {/* Section tabs — horizontally scrollable on mobile */}
+      <div className="flex gap-2 mb-5 overflow-x-auto pb-1" style={{ scrollbarWidth: 'none', WebkitOverflowScrolling: 'touch' }}>
         {sections.map(s => (
           <button key={s.id} onClick={() => setActiveSection(s.id)}
-            className={`flex items-center gap-1.5 px-4 py-2 rounded-xl font-heading font-semibold text-sm transition-all border ${
+            className={`flex items-center gap-1.5 px-4 py-2.5 rounded-xl font-heading font-semibold text-sm transition-all border whitespace-nowrap flex-shrink-0 ${
               activeSection === s.id
                 ? 'gradient-bg-strong text-primary-foreground border-primary/40'
                 : 'glass border-border/30 text-muted-foreground hover:border-primary/30 hover:text-foreground'

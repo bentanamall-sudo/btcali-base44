@@ -35,6 +35,8 @@ export function AccessProvider({ children }) {
     [isAdmin, unlockedPrograms]
   );
 
+  const accessCode = access.memberCode || null;
+
   const unlockCode = useCallback((code) => {
     const trimmed = code.trim().toUpperCase();
 
@@ -61,7 +63,7 @@ export function AccessProvider({ children }) {
   }, []);
 
   return (
-    <AccessContext.Provider value={{ isAdmin, isMember, unlockedPrograms, isProgramUnlocked, unlockCode, clearAccess }}>
+    <AccessContext.Provider value={{ isAdmin, isMember, accessCode, unlockedPrograms, isProgramUnlocked, unlockCode, clearAccess }}>
       {children}
     </AccessContext.Provider>
   );

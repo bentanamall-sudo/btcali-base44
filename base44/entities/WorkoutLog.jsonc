@@ -15,20 +15,20 @@
     "workout_type": {
       "type": "string"
     },
-    "exercises_completed": {
-      "type": "string"
-    },
-    "sets_reps": {
-      "type": "string"
-    },
-    "hold_times": {
-      "type": "string"
-    },
-    "band_used": {
-      "type": "string"
-    },
     "difficulty_rating": {
       "type": "number"
+    },
+    "prs_hit": {
+      "type": "string"
+    },
+    "weak_points": {
+      "type": "string"
+    },
+    "pain_issues": {
+      "type": "string"
+    },
+    "questions": {
+      "type": "string"
     },
     "notes": {
       "type": "string"
