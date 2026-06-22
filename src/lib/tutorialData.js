@@ -9,7 +9,7 @@ export const tutorials = {
         id: 'bail_tutorial',
         title: 'Handstand Bail Tutorial',
         description: 'Learn to safely exit a handstand — the foundation of fearless kicking up.',
-        videoUrl: 'https://youtube.com/shorts/rGoEHcIPeFY',
+        videoUrl: 'https://www.youtube.com/shorts/81mBKvzbyTQ',
         isYouTube: true,
         steps: [
           'Learn the bunny hop bail — step over with one foot, rotate hips',
