@@ -73,8 +73,26 @@ const GENERAL_TUTORIALS = [
   {
     title: 'Handstand Bail',
     desc: 'How to safely bail out of a handstand — required before attempting freestanding handstands.',
-    url: 'https://youtube.com/shorts/rGoEHcIPeFY?si=gcxe-tFCaHm7y2Nm',
+    url: 'https://youtube.com/shorts/rGoEHcIPeFY',
     category: 'technique',
+  },
+  {
+    title: 'Handstand Kick Up Tutorial',
+    desc: 'Step-by-step handstand kick up technique — how to enter a handstand from the ground.',
+    url: 'https://youtube.com/shorts/8GLA_c0jueA',
+    category: 'technique',
+  },
+  {
+    title: 'Where To Look In A Handstand',
+    desc: 'Correct head position, gaze direction, and eye focus point for a solid handstand.',
+    url: 'https://youtube.com/shorts/pgKP61v2kz8',
+    category: 'technique',
+  },
+  {
+    title: 'Bent Arm Press Quick Tutorial',
+    desc: 'Quick breakdown of the bent arm press — key cues, body position, and execution.',
+    url: 'https://youtube.com/shorts/6MpY6iLDtQM',
+    category: 'skill',
   },
   {
     title: 'Front Lever Activations',
