@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { base44 } from '@/api/base44Client';
 import { callFunction } from '@/lib/callFunction';
 import { useAccessCodes } from '@/lib/useAccessCodes';
 import { Link } from 'react-router-dom';
@@ -104,9 +103,7 @@ export default function MyProgram() {
 
     load();
 
-    // Re-fetch when program entity changes (admin saved an update)
-    const unsub = base44.entities.StudentProgram.subscribe(() => { if (!cancelled) load(); });
-    return () => { cancelled = true; unsub(); };
+    return () => { cancelled = true; };
   }, [isMember, isAdmin, accessCode]);
 
   if (!isMember && !isAdmin) return <AccessGate />;

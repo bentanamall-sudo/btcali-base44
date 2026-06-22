@@ -239,6 +239,24 @@ function MobileRow({ row, rowIndex, readOnly, onUpdate, onDelete, onDuplicate, o
           {row.rep_range && (
             <p className="text-xs font-body text-primary/70 mt-0.5">{row.rep_range}</p>
           )}
+          {/* Tutorial button always visible on mobile in read-only */}
+          {readOnly && hasLink && !expanded && (
+            <div className="mt-1.5">
+              {hasOverride ? (
+                <a href={row.tutorial_link} target="_blank" rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-[11px] font-heading font-semibold"
+                  style={{ background: 'rgba(79,157,255,0.08)', border: '1px solid rgba(79,157,255,0.2)', color: '#93C5FD' }}>
+                  <PlayCircle className="w-3 h-3" /> Tutorial
+                </a>
+              ) : autoMatch && !autoComingSoon ? (
+                <button onClick={e => { e.stopPropagation(); onOpenModal(autoMatch); }} type="button"
+                  className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-[11px] font-heading font-semibold"
+                  style={{ background: 'rgba(79,157,255,0.08)', border: '1px solid rgba(79,157,255,0.2)', color: '#93C5FD' }}>
+                  <PlayCircle className="w-3 h-3" /> Watch
+                </button>
+              ) : null}
+            </div>
+          )}
         </div>
         <button onClick={() => setExpanded(e => !e)} type="button" className="flex-shrink-0 p-1">
           <ChevronDown className={`w-3.5 h-3.5 text-muted-foreground/40 transition-transform ${expanded ? 'rotate-180' : ''}`} />

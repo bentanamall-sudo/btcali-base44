@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { base44 } from '@/api/base44Client';
-import { Plus, Trash2, ChevronDown, ChevronUp, Zap, Trophy, AlertTriangle, MessageCircle, FileText, Video, Target, Flame, Star } from 'lucide-react';
+import { Plus, Trash2, ChevronDown, ChevronUp, Zap, Trophy, AlertTriangle, MessageCircle, FileText, Target, Flame, Star } from 'lucide-react';
 
 const SESSION_TYPES = ['Push', 'Pull', 'Planche', 'Front Lever', 'Weak Day', 'Full Body', 'Other'];
 
@@ -26,7 +26,6 @@ const EMPTY_FORM = {
   pain_issues: '',
   questions: '',
   notes: '',
-  video_link: '',
 };
 
 function RatingSlider({ label, value, onChange, icon: Icon, lowLabel, highLabel, color = '#4F9DFF' }) {
@@ -72,12 +71,12 @@ function SessionCard({ log, onDelete }) {
   const energyColor = energy >= 8 ? '#4ade80' : energy >= 5 ? '#93C5FD' : '#f87171';
 
   const fields = [
-    log.prs_hit && { icon: Trophy, label: 'PRs Hit 🏆', value: log.prs_hit, color: '#FCD34D' },
-    log.strong_points && { icon: Zap, label: 'What Felt Strong', value: log.strong_points, color: '#4ade80' },
-    log.weak_points && { icon: Target, label: 'What Felt Weak', value: log.weak_points, color: '#93C5FD' },
-    log.pain_issues && { icon: AlertTriangle, label: 'Pain / Issues', value: log.pain_issues, color: '#f87171' },
-    log.questions && { icon: MessageCircle, label: 'Questions for BTCALI', value: log.questions, color: '#A6D4FF' },
-    log.notes && { icon: FileText, label: 'Notes', value: log.notes, color: '#94A3B8' },
+    log.prs_hit       && { icon: Trophy,        label: 'PRs Hit 🏆',           value: log.prs_hit,       color: '#FCD34D' },
+    log.strong_points && { icon: Zap,           label: 'What Felt Strong',     value: log.strong_points, color: '#4ade80' },
+    log.weak_points   && { icon: Target,        label: 'What Felt Weak',       value: log.weak_points,   color: '#93C5FD' },
+    log.pain_issues   && { icon: AlertTriangle, label: 'Pain / Issues',        value: log.pain_issues,   color: '#f87171' },
+    log.questions     && { icon: MessageCircle, label: 'Questions for BTCALI', value: log.questions,     color: '#A6D4FF' },
+    log.notes         && { icon: FileText,      label: 'Notes',                value: log.notes,         color: '#94A3B8' },
   ].filter(Boolean);
 
   return (
@@ -145,13 +144,7 @@ function SessionCard({ log, onDelete }) {
                   ))}
                 </div>
               )}
-              {log.video_link && (
-                <div className="mt-3 flex items-center gap-2">
-                  <Video className="w-3.5 h-3.5 text-primary/60 flex-shrink-0" />
-                  <a href={log.video_link} target="_blank" rel="noopener noreferrer"
-                    className="text-xs text-primary hover:underline font-body break-all">{log.video_link}</a>
-                </div>
-              )}
+
             </div>
           </motion.div>
         )}
@@ -339,13 +332,6 @@ export default function WorkoutLogTab({ accessCode, studentName }) {
                 <textarea value={form.notes} onChange={e => f('notes', e.target.value)} rows={2}
                   placeholder="Anything else worth noting..."
                   className={textareaClass} />
-              </FormField>
-
-              {/* Video link */}
-              <FormField label="Video Links Sent" icon={Video}>
-                <input value={form.video_link} onChange={e => f('video_link', e.target.value)}
-                  placeholder="Paste link to your set video (Instagram, YouTube, Google Drive...)"
-                  className="w-full bg-transparent text-sm text-foreground font-body outline-none border-b border-border/25 pb-1.5 focus:border-primary/40 transition-colors placeholder:text-muted-foreground/25" />
               </FormField>
 
               {/* Actions */}

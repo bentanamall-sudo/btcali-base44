@@ -1,23 +1,17 @@
 /**
  * Calls a Base44 backend function directly via the canonical API URL.
- * Bypasses the SDK's functionsVersion header (which can be "preview" on live site)
- * to ensure production functions are always called correctly.
+ * Hardcodes the app ID to avoid any localStorage/env-var caching issues on custom domains.
+ * Never sends a functions-version header, so it always hits the production deployment.
  */
 
-const APP_ID = import.meta.env.VITE_BASE44_APP_ID;
-const BASE_URL = 'https://base44.app';
+const APP_ID = '69fd635623a9368c153045ad';
 
 export async function callFunction(functionName, payload) {
-  const url = `${BASE_URL}/api/apps/${APP_ID}/functions/${functionName}`;
-
-  console.log(`[callFunction] POST ${url}`, payload);
+  const url = `https://base44.app/api/apps/${APP_ID}/functions/${functionName}`;
 
   const res = await fetch(url, {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'X-App-Id': APP_ID,
-    },
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(payload),
   });
 

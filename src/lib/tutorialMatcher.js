@@ -112,12 +112,27 @@ const TUTORIAL_DB = [
   {
     title: 'Full Banded FL Entry',
     url: 'https://youtube.com/shorts/xeNxL7ygiHg?si=1jxYXlji2rz1CGsQ',
-    aliases: ['full banded fl entry', 'banded full fl', 'red band assisted full fl', 'black band assisted full fl', 'purple banded full fl', 'green banded full fl', 'full front lever attempt', 'full fl attempt', 'banded fl entry', 'full fl entry', 'full front lever'],
+    aliases: [
+      'full banded fl entry', 'banded full fl', 'banded fl', 'full banded fl',
+      'red banded fl', 'black banded fl', 'purple banded fl', 'green banded fl', 'yellow banded fl', 'orange banded fl',
+      'red band assisted full fl', 'black band assisted full fl', 'purple banded full fl', 'green banded full fl',
+      'any colour banded fl', 'any banded fl', 'full front lever attempt', 'full fl attempt',
+      'banded fl entry', 'full fl entry', 'full front lever', 'band assisted full fl',
+      'red banded full fl', 'black banded full fl', 'purple band assisted full fl', 'green band assisted full fl',
+    ],
   },
   {
     title: 'Band Assisted Front Lever Raises',
     url: 'https://youtube.com/shorts/aku6BVmhuck?feature=share',
-    aliases: ['band assisted front lever raises', 'fl raises', 'front lever raises', 'red band assisted fl raises', 'black band assisted full fl raises', 'purple band assisted fl raises', 'banded full fl raises', 'band fl raises', 'banded fl raises', 'front lever raise'],
+    aliases: [
+      'band assisted front lever raises', 'fl raises', 'front lever raises', 'banded fl raises',
+      'red band fl raises', 'black band fl raises', 'purple band fl raises', 'green band fl raises',
+      'yellow band fl raises', 'orange band fl raises',
+      'red banded fl raises', 'black banded fl raises', 'purple banded fl raises',
+      'green banded fl raises', 'yellow banded fl raises', 'orange banded fl raises',
+      'red band assisted fl raises', 'black band assisted fl raises', 'black band assisted full fl raises',
+      'purple band assisted fl raises', 'banded full fl raises', 'band fl raises', 'front lever raise',
+    ],
   },
   {
     title: 'Front Lever Hip Thrust',
