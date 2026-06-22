@@ -2,6 +2,7 @@ import { useState, useRef, useEffect, useCallback, memo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { ChevronLeft, ChevronRight, Users, ArrowRight, Trophy, Zap } from 'lucide-react';
+import HomeButton from '../components/HomeButton';
 import GlowButton from '../components/GlowButton';
 import AthleteResultCards from '../components/results/AthleteResultCards';
 
@@ -281,6 +282,7 @@ export default function ProvenResults() {
     <div className="min-h-screen py-8 px-4">
       {/* Page header */}
       <div className="text-center mb-6">
+        <div className="flex justify-center mb-3"><HomeButton /></div>
         <p className="text-xs font-heading font-bold text-muted-foreground/50 uppercase tracking-[0.25em] mb-2">
           Real Athletes · Real Results
         </p>

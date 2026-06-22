@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { base44 } from '@/api/base44Client';
 import { callFunction } from '@/lib/callFunction';
 import { Search, Plus, Users, ArrowLeft, Copy, Trash2, UserPlus } from 'lucide-react';
+import HomeButton from '@/components/HomeButton';
 import ProgramTable from '@/components/program/ProgramTable';
 import GoalsTab from '@/components/program/GoalsTab';
 import WorkoutLogTab from '@/components/program/WorkoutLogTab';
@@ -153,6 +154,7 @@ export default function AdminPrograms() {
     return (
       <div className="min-h-screen py-8 px-4 sm:px-6 max-w-7xl mx-auto">
         <div className="flex items-center gap-3 mb-6">
+          <HomeButton />
           <button onClick={() => setSelected(null)}
             className="flex items-center gap-2 px-3 py-2 rounded-xl glass border border-border/30 text-muted-foreground hover:text-foreground font-heading font-semibold text-sm transition-all">
             <ArrowLeft className="w-4 h-4" /> All Students
@@ -213,6 +215,7 @@ export default function AdminPrograms() {
           <div className="flex items-center gap-2 mb-2">
             <Users className="w-5 h-5 text-primary" />
             <span className="text-xs font-heading font-bold uppercase tracking-[0.25em] text-primary/60">Admin</span>
+            <HomeButton className="ml-2" />
           </div>
           <h1 className="font-heading font-black text-3xl text-foreground">
             Program <span className="gradient-text">Manager</span>

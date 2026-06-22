@@ -2,6 +2,7 @@ import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { BookOpen, Crown, Zap, Lock, Trophy } from 'lucide-react';
 import { PageHeaderLogo } from '../components/Logo';
+import HomeButton from '../components/HomeButton';
 
 const FREE_SECTION = {
   title: 'Free Tutorials',
@@ -114,8 +115,11 @@ export default function SkillLibrary() {
     <div className="min-h-screen py-12 px-4 sm:px-6 max-w-4xl mx-auto">
       {/* Header */}
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-10 text-center">
-        <div className="flex justify-center mb-6">
+        <div className="flex justify-center mb-4">
           <PageHeaderLogo />
+        </div>
+        <div className="flex justify-center mb-4">
+          <HomeButton />
         </div>
         <div className="inline-flex items-center gap-2 glass px-4 py-2 rounded-full mb-4 border border-border/30">
           <BookOpen className="w-4 h-4 text-primary" />

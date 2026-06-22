@@ -437,14 +437,4 @@ body::before {
   z-index: 0;
 }
 
-/* Scroll progress bar */
-.scroll-progress {
-  position: fixed;
-  top: 0;
-  left: 0;
-  height: 2px;
-  background: linear-gradient(90deg, #4F9DFF, #5EEBFF);
-  z-index: 100;
-  transform-origin: left;
-  box-shadow: 0 0 8px hsl(213 100% 65% / 0.6);
-}
+/* Scroll progress bar — replaced by vertical ScrollIndicator component */

@@ -3,6 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronRight, ChevronLeft, Zap, CheckCircle, Trophy, BookOpen } from 'lucide-react';
 import { PageHeaderLogo } from '@/components/Logo';
+import HomeButton from '@/components/HomeButton';
 import { base44 } from '@/api/base44Client';
 import { generateReport, buildEmailBody } from '@/lib/reportGenerator';
 import DiagnosticReport from '../components/diagnostic/DiagnosticReport';
@@ -728,8 +729,9 @@ export default function AthleteDiagnostic() {
       {showLeaveWarning && <LeaveWarning />}
       {/* Header */}
       <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
-        <div className="flex justify-start mb-5">
+        <div className="flex items-center justify-between mb-5">
           <PageHeaderLogo />
+          <HomeButton />
         </div>
         <div className="inline-flex items-center gap-2 glass px-4 py-2 rounded-full mb-3">
           <Zap className="w-4 h-4 text-primary" />

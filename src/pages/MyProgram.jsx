@@ -9,6 +9,7 @@ import GoalsTab from '@/components/program/GoalsTab';
 import WorkoutLogTab from '@/components/program/WorkoutLogTab';
 import GeneralTutorialsTab from '@/components/program/GeneralTutorialsTab';
 import TrainingRulesCard from '@/components/program/TrainingRulesCard';
+import HomeButton from '@/components/HomeButton';
 
 function AccessGate() {
   const [code, setCode] = useState('');
@@ -140,10 +141,13 @@ export default function MyProgram() {
     <div className="min-h-screen py-8 px-4 sm:px-6 max-w-7xl mx-auto">
       {/* Header */}
       <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} className="mb-5">
-        <div className="flex items-center gap-2 mb-1">
-          <span className="text-xs font-heading font-bold uppercase tracking-[0.25em] text-primary/50">BTCALI</span>
-          <span className="text-xs text-muted-foreground/40">•</span>
-          <span className="text-xs font-heading font-bold uppercase tracking-[0.2em] text-muted-foreground/40 font-mono">{accessCode}</span>
+        <div className="flex items-center justify-between mb-1">
+          <div className="flex items-center gap-2">
+            <span className="text-xs font-heading font-bold uppercase tracking-[0.25em] text-primary/50">BTCALI</span>
+            <span className="text-xs text-muted-foreground/40">•</span>
+            <span className="text-xs font-heading font-bold uppercase tracking-[0.2em] text-muted-foreground/40 font-mono">{accessCode}</span>
+          </div>
+          <HomeButton />
         </div>
         <h1 className="font-heading font-black text-2xl sm:text-4xl text-foreground">
           Welcome back, <span className="gradient-text">{studentName}</span>

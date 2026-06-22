@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Crown, Shield, Dumbbell, Layers, ShoppingBag, ExternalLink, Lock, ChevronRight, ChevronLeft, ChevronDown, CheckCircle, Send, CreditCard, LogOut, ClipboardList } from 'lucide-react';
+import HomeButton from '@/components/HomeButton';
 import { useAccessCodes } from '@/lib/useAccessCodes';
 import { PageHeaderLogo } from '@/components/Logo';
 import { Link } from 'react-router-dom';
@@ -316,8 +317,9 @@ export default function Members() {
     <div className="min-h-screen py-12 px-4 sm:px-6 max-w-3xl mx-auto">
       {/* Header */}
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-8">
-        <div className="flex justify-start mb-6">
+        <div className="flex items-center justify-between mb-6">
           <PageHeaderLogo />
+          <HomeButton />
         </div>
         <div className="inline-flex items-center gap-2 glass px-4 py-2 rounded-full mb-4 border border-primary/30">
           <Crown className="w-4 h-4 text-primary" />
