@@ -331,6 +331,15 @@ export default function Members() {
             <p className="text-muted-foreground font-body text-base">
               Your exclusive coaching resources, training rules, and member content.
             </p>
+            <Link to="/my-program">
+              <motion.button
+                whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}
+                className="mt-4 inline-flex items-center gap-2.5 px-6 py-3.5 rounded-xl gradient-bg-strong text-primary-foreground font-heading font-bold text-sm glow-primary"
+                style={{ boxShadow: '0 0 24px rgba(79,157,255,0.3)' }}
+              >
+                <ClipboardList className="w-4 h-4" /> Open My Training Program →
+              </motion.button>
+            </Link>
           </div>
           <button
             onClick={clearAccess}

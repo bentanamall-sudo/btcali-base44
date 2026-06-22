@@ -5,13 +5,13 @@ import { Play, X, ChevronDown } from 'lucide-react';
 function extractYouTubeId(url) {
   if (!url) return null;
   const patterns = [
-    /youtu\.be\/([a-zA-Z0-9_-]{11})/,
-    /youtube\.com\/shorts\/([a-zA-Z0-9_-]{11})/,
-    /[?&]v=([a-zA-Z0-9_-]{11})/,
+    /youtu\.be\/([a-zA-Z0-9_-]+)/,
+    /youtube\.com\/shorts\/([a-zA-Z0-9_-]+)/,
+    /[?&]v=([a-zA-Z0-9_-]+)/,
   ];
   for (const p of patterns) {
     const m = url.match(p);
-    if (m) return m[1];
+    if (m) return m[1].split('?')[0];
   }
   return null;
 }

@@ -11,13 +11,13 @@ function extractYouTubeId(url) {
   if (!url || url === 'COMING_SOON') return null;
   // Handle youtu.be/ID and youtube.com/shorts/ID and youtube.com/watch?v=ID
   const patterns = [
-    /youtu\.be\/([a-zA-Z0-9_-]{11})/,
-    /youtube\.com\/shorts\/([a-zA-Z0-9_-]{11})/,
-    /[?&]v=([a-zA-Z0-9_-]{11})/,
+    /youtu\.be\/([a-zA-Z0-9_-]+)/,
+    /youtube\.com\/shorts\/([a-zA-Z0-9_-]+)/,
+    /[?&]v=([a-zA-Z0-9_-]+)/,
   ];
   for (const p of patterns) {
     const m = url.match(p);
-    if (m) return m[1];
+    if (m) return m[1].split('?')[0];
   }
   return null;
 }
@@ -244,22 +244,27 @@ function MobileRow({ row, rowIndex, readOnly, onUpdate, onDelete, onDuplicate, o
           {row.rep_range && (
             <p className="text-xs font-body text-primary/70 mt-0.5">{row.rep_range}</p>
           )}
-          {/* Tutorial button always visible on mobile in read-only */}
-          {readOnly && hasLink && !expanded && (
-            <div className="mt-1.5">
+          {/* Tutorial button — always visible on mobile */}
+          {readOnly && (
+            <div className="mt-2">
               {hasOverride ? (
                 <a href={row.tutorial_link} target="_blank" rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-[11px] font-heading font-semibold"
-                  style={{ background: 'rgba(79,157,255,0.08)', border: '1px solid rgba(79,157,255,0.2)', color: '#93C5FD' }}>
-                  <PlayCircle className="w-3 h-3" /> Tutorial
+                  className="inline-flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-heading font-bold w-full justify-center"
+                  style={{ background: 'rgba(79,157,255,0.1)', border: '1px solid rgba(79,157,255,0.25)', color: '#93C5FD' }}>
+                  <PlayCircle className="w-4 h-4 flex-shrink-0" /> Watch Tutorial Video
                 </a>
               ) : autoMatch && !autoComingSoon ? (
                 <button onClick={e => { e.stopPropagation(); onOpenModal(autoMatch); }} type="button"
-                  className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-[11px] font-heading font-semibold"
-                  style={{ background: 'rgba(79,157,255,0.08)', border: '1px solid rgba(79,157,255,0.2)', color: '#93C5FD' }}>
-                  <PlayCircle className="w-3 h-3" /> Watch
+                  className="inline-flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-heading font-bold w-full justify-center"
+                  style={{ background: 'rgba(79,157,255,0.1)', border: '1px solid rgba(79,157,255,0.25)', color: '#93C5FD' }}>
+                  <PlayCircle className="w-4 h-4 flex-shrink-0" /> Watch Tutorial Video
                 </button>
-              ) : null}
+              ) : (
+                <div className="inline-flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-heading font-medium w-full justify-center"
+                  style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.06)', color: 'rgba(148,163,184,0.5)' }}>
+                  Tutorial Coming Soon
+                </div>
+              )}
             </div>
           )}
         </div>

@@ -161,7 +161,7 @@ export default function CodeUnlock() {
                 value={code}
                 onChange={(e) => { setCode(e.target.value.toUpperCase()); setStatus(null); }}
                 onKeyDown={(e) => e.key === 'Enter' && handleUnlock()}
-                placeholder="e.g. LENNON184"
+                placeholder="e.g. BTCALI123"
                 className="flex-1 bg-transparent text-foreground text-sm font-body px-3 py-2.5 outline-none placeholder:text-muted-foreground/50 uppercase tracking-widest"
               />
               <motion.button

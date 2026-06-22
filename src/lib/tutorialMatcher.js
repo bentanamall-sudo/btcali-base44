@@ -13,7 +13,7 @@ const TUTORIAL_DB = [
   {
     title: 'L Sit Progressions and Entry',
     url: 'https://youtube.com/shorts/JV2QPQFlpZQ?feature=share',
-    aliases: ['l sit', 'l-sit', 'l sit progressions', 'l sit entry', 'lsit entry', 'lsit progressions', 'bent knee l sit', 'elevated l sit', 'tuck l sit', 'floor l sit raises', 'max l sit raises', 'l sit compression', 'l-sit progressions', 'l-sit entry', 'l-sit compression'],
+    aliases: ['l sit', 'l-sit', 'l sit progressions', 'l sit entry', 'lsit entry', 'lsit progressions', 'bent knee l sit', 'elevated l sit', 'tuck l sit', 'floor l sit raises', 'max l sit raises', 'l sit compression', 'l-sit progressions', 'l-sit entry', 'l-sit compression', 'l sit raises'],
   },
   {
     title: 'Bent Knee Pike Pushups',
@@ -34,6 +34,11 @@ const TUTORIAL_DB = [
     title: 'Handstand Kick Up Tutorial',
     url: 'https://youtube.com/shorts/8GLA_c0jueA?si=dIFucwXfHV7ZIbl2',
     aliases: ['handstand kick up', 'handstand attempts', 'back to wall handstand attempts', 'handstand holds', 'handstand hold', 'handstand kick-up', 'kickup tutorial', 'back to wall handstand', 'freestanding handstand hold', 'max handstand hold'],
+  },
+  {
+    title: 'Handstand Hold Chest To Wall',
+    url: 'COMING_SOON',
+    aliases: ['handstand hold chest to wall', 'chest to wall handstand hold', 'ctw handstand hold', 'chest to wall hs hold'],
   },
   {
     title: 'Handstand Bail',
@@ -64,12 +69,12 @@ const TUTORIAL_DB = [
   {
     title: 'Bent Arm Press Cues',
     url: 'https://youtube.com/shorts/jD7JOlacCgg?si=-iFxIMqEvEgp_Gl8',
-    aliases: ['bent arm press cues', 'bent arm press attempts', 'bent arm press spam', 'bent arm press max', 'clean bent arm press attempt', 'clean bent arm press', 'bent arm press', 'bent-arm press', 'bap attempts', 'bap cues', 'bap spam'],
+    aliases: ['bent arm press cues', 'bent arm press attempts', 'bent arm press spam', 'bent arm press max', 'clean bent arm press attempt', 'bap attempts', 'bap cues', 'bap spam'],
   },
   {
     title: 'Bent Arm Tuck Planche Positions',
     url: 'https://youtube.com/shorts/WRflJHXBIrA?feature=share',
-    aliases: ['bent arm tuck planche', 'bent arm tuck planche raises', 'bent arm tuck planche positions', 'bat tuck planche', 'bent arm tuck raises'],
+    aliases: ['bent arm tuck planche', 'bent arm tuck planche positions', 'bat tuck planche', 'bent arm tuck raises'],
   },
   {
     title: 'Bent Arm Press Quick Tutorial',
@@ -80,7 +85,32 @@ const TUTORIAL_DB = [
   {
     title: 'In Depth Bent Arm Press Tutorial',
     url: 'https://youtu.be/UO7pBH4FnOI?si=1NMIkv6NZsraT3UH',
-    aliases: ['in depth bent arm press tutorial', 'bent arm press tutorial', 'in-depth bent arm press', 'detailed bent arm press', 'full bent arm press tutorial'],
+    aliases: ['in depth bent arm press tutorial', 'bent arm press tutorial', 'in-depth bent arm press', 'detailed bent arm press', 'full bent arm press tutorial', 'bent arm press', 'bent-arm press', 'clean bent arm press'],
+  },
+  {
+    title: 'Bent Arm Press Raise',
+    url: 'https://youtube.com/shorts/jUYGq7sBxI0?si=1CKwTFtBmCnhlGw_',
+    aliases: ['bent arm press raise', 'bent arm tuck planche raises', 'bent arm press raises', 'bap raise', 'bap raises'],
+  },
+  {
+    title: 'Momentum Bent Arm Press',
+    url: 'https://youtube.com/shorts/cIZRmKLMlQ4?si=pQW6REEtDVNTmAcS',
+    aliases: ['momentum bent arm press', 'bent arm press momentum', 'momentum bap'],
+  },
+  {
+    title: 'Momentum Bent Arm Press Explanation',
+    url: 'https://youtube.com/shorts/yLn96dEdHWE?si=sb-RxwRVGOrYyMSi',
+    aliases: ['momentum bent arm press explanation', 'bap momentum explanation'],
+  },
+  {
+    title: 'Clean Form Bent Arm Press',
+    url: 'https://youtube.com/shorts/BouVt_LNI7k?si=AvlmbGfqFgFMxtjHL',
+    aliases: ['clean form bent arm press', 'clean bap'],
+  },
+  {
+    title: 'Bent Arm Press Raise Progressions',
+    url: 'https://youtube.com/shorts/qAuVf2KGFUI?si=mWYBPemCaHx68Qhh',
+    aliases: ['bent arm press raise progressions', 'bap raise progressions'],
   },
   {
     title: 'L Sit To Handstand',
@@ -100,12 +130,12 @@ const TUTORIAL_DB = [
   },
   {
     title: 'Tuck Front Lever',
-    url: 'COMING_SOON',
+    url: 'https://youtube.com/shorts/08DECfSNf8Y?si=k9pi6_KTnvwthoG4',
     aliases: ['tuck front lever', 'tuck fl', 'max tuck fl', 'tuck front lever max', 'tuck fl max', 'fl tuck', 'tuck lever'],
   },
   {
     title: 'Advanced Tuck Front Lever',
-    url: 'COMING_SOON',
+    url: 'https://youtube.com/shorts/9FBurAs5q58?si=82RBgG_NVRHfHdBh',
     aliases: ['adv tuck fl', 'advanced tuck fl', 'adv tuck front lever', 'advanced tuck front lever', 'max adv tuck', 'max adv tuck lever', 'at front lever', 'advanced tuck fl max', 'adv tuck lever'],
   },
   // ─── FRONT LEVER — INTERMEDIATE ─────────────────────────────────────────────
@@ -116,9 +146,11 @@ const TUTORIAL_DB = [
       'full banded fl entry', 'banded full fl', 'banded fl', 'full banded fl',
       'red banded fl', 'black banded fl', 'purple banded fl', 'green banded fl', 'yellow banded fl', 'orange banded fl',
       'red band assisted full fl', 'black band assisted full fl', 'purple banded full fl', 'green banded full fl',
+      'yellow banded full fl', 'orange banded full fl',
       'any colour banded fl', 'any banded fl', 'full front lever attempt', 'full fl attempt',
       'banded fl entry', 'full fl entry', 'full front lever', 'band assisted full fl',
       'red banded full fl', 'black banded full fl', 'purple band assisted full fl', 'green band assisted full fl',
+      'half red band fl', 'half red banded fl', 'half red band full fl',
     ],
   },
   {
@@ -180,21 +212,31 @@ const TUTORIAL_DB = [
     url: 'https://youtube.com/shorts/boazomcMT7c?feature=share',
     aliases: ['p bar grip', 'p bars grip', 'how to properly grip p bars', 'pbar grip', 'parallette grip', 'p-bar grip'],
   },
+  {
+    title: 'Tuck Planche Floor',
+    url: 'COMING_SOON',
+    aliases: ['tuck planche floor', 'floor tuck planche', 'tuck planche on floor', 'floor tuck planche hold'],
+  },
   // ─── BASICS ──────────────────────────────────────────────────────────────────
   {
-    title: 'Pushup Tutorial',
+    title: 'Pushups',
     url: 'COMING_SOON',
-    aliases: ['pushup tutorial', 'pushups', 'pushup', 'max pushups', 'push-ups max', 'knee push-ups', 'max push ups', 'push up max'],
+    aliases: ['pushup tutorial', 'pushups', 'pushup', 'max pushups', 'push-ups max', 'knee push-ups', 'max push ups', 'push up max', 'push ups'],
   },
   {
-    title: 'Dip Tutorial',
-    url: 'https://youtube.com/shorts/qG4dnoWpr94',
+    title: 'Dip Form',
+    url: 'https://youtube.com/shorts/qG4dnoWpr94?si=ntBBA2jldlCWdzpH',
     aliases: ['dip tutorial', 'dips', 'max dips', 'weighted dips', 'weighted dip program', 'dip form', 'ring dip'],
   },
   {
     title: 'Pullups',
+    url: 'https://youtube.com/shorts/DzU28xYSCjU?si=Td9RT1rX13tPRfJJ',
+    aliases: ['pullups', 'pull-ups', 'max pullups', 'weighted pullups', 'weighted pull-ups', 'normal pullups', 'max normal pullups', 'pullup', 'pull up', 'pull-up'],
+  },
+  {
+    title: 'High Pullup Tutorial',
     url: 'COMING_SOON',
-    aliases: ['pullups', 'pull-ups', 'max pullups', 'weighted pullups', 'weighted pull-ups', 'high pullups', 'max high pullups', 'pullup', 'pull up', 'pull-up'],
+    aliases: ['high pullups', 'max high pullups', 'high pull-ups', 'high pullup'],
   },
   {
     title: 'Scapular Pullups',
@@ -202,19 +244,29 @@ const TUTORIAL_DB = [
     aliases: ['scapular pullups', 'max scapular pullups', 'scap pullups', 'scapular pull-ups'],
   },
   {
-    title: 'Partial Rep Pullups Top ROM',
+    title: 'Pullups Top ROM Partials',
     url: 'COMING_SOON',
-    aliases: ['top rom pullups', 'partial rep pullups top rom', 'max half rom pullups top rom', 'pullups top rom', 'top rom pull-ups'],
+    aliases: ['top rom pullups', 'partial rep pullups top rom', 'max half rom pullups top rom', 'pullups top rom partials', 'top rom pull-ups'],
   },
   {
-    title: 'Partial Rep Pullups Bottom ROM',
+    title: 'Pullups Bottom ROM Partials',
     url: 'COMING_SOON',
-    aliases: ['bottom rom pullups', 'partial rep pullups bottom rom', 'max half rom pullups bottom rom', 'bottom rom pull-ups'],
+    aliases: ['bottom rom pullups', 'partial rep pullups bottom rom', 'max half rom pullups bottom rom', 'pullups bottom rom partials', 'bottom rom pull-ups'],
   },
   {
     title: 'Pullup Hold',
     url: 'COMING_SOON',
     aliases: ['pullup hold', 'max pullup hold', 'hold at top', 'pull-up hold', 'pull up hold'],
+  },
+  {
+    title: 'L Sit Raises',
+    url: 'COMING_SOON',
+    aliases: ['l sit raises', 'lsit raises', 'l-sit raises', 'floor l sit raises', 'max l sit raises'],
+  },
+  {
+    title: 'Muscle Up Cues',
+    url: 'COMING_SOON',
+    aliases: ['muscle up cues', 'muscle up tutorial', 'muscle ups', 'muscle up', 'no dip muscle ups', 'no-dip muscle up'],
   },
 ];
 

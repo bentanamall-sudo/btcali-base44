@@ -2,17 +2,65 @@ import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { callFunction } from '@/lib/callFunction';
 import { useAccessCodes } from '@/lib/useAccessCodes';
-import { Link } from 'react-router-dom';
-import { Bell, BookOpen, Target, ClipboardList, Lock } from 'lucide-react';
+import { Link, useNavigate } from 'react-router-dom';
+import { Bell, BookOpen, Target, ClipboardList, Lock, Film, Dumbbell, Shield, AlertTriangle, BookMarked, RotateCcw, TrendingUp } from 'lucide-react';
 import ProgramTable from '@/components/program/ProgramTable';
 import GoalsTab from '@/components/program/GoalsTab';
 import WorkoutLogTab from '@/components/program/WorkoutLogTab';
 import GeneralTutorialsTab from '@/components/program/GeneralTutorialsTab';
 
+const TRAINING_RULES = [
+  { icon: Film,        text: 'Film every working set when possible' },
+  { icon: Bell,        text: 'Send sets to BTCALI for feedback' },
+  { icon: RotateCcw,   text: 'Rest properly between hard sets' },
+  { icon: Shield,      text: 'Focus on clean form over ego reps' },
+  { icon: AlertTriangle, text: 'Stop if pain feels sharp or unsafe' },
+  { icon: BookMarked,  text: 'Log your session after training' },
+  { icon: TrendingUp,  text: 'Stay consistent and trust the process' },
+];
+
+function TrainingRulesCard() {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 0.15 }}
+      className="rounded-2xl mb-5 overflow-hidden"
+      style={{
+        background: 'linear-gradient(135deg, rgba(5,5,12,0.95) 0%, rgba(8,12,24,0.95) 100%)',
+        border: '1px solid rgba(79,157,255,0.2)',
+        boxShadow: '0 0 40px rgba(79,157,255,0.06), inset 0 1px 0 rgba(255,255,255,0.04)',
+      }}
+    >
+      {/* Top accent line */}
+      <div className="h-px w-full" style={{ background: 'linear-gradient(90deg, transparent, rgba(79,157,255,0.6), rgba(252,211,77,0.4), transparent)' }} />
+      <div className="px-5 py-4">
+        <div className="flex items-center gap-2 mb-4">
+          <Dumbbell className="w-4 h-4 flex-shrink-0" style={{ color: '#FCD34D' }} />
+          <span className="font-heading font-black text-sm tracking-[0.12em] uppercase" style={{ color: '#FCD34D' }}>BTCALI Training Rules</span>
+        </div>
+        <div className="grid sm:grid-cols-2 gap-2">
+          {TRAINING_RULES.map((rule, i) => (
+            <div key={i} className="flex items-center gap-2.5">
+              <div className="w-6 h-6 rounded-lg flex items-center justify-center flex-shrink-0"
+                style={{ background: 'rgba(79,157,255,0.1)', border: '1px solid rgba(79,157,255,0.2)' }}>
+                <rule.icon className="w-3.5 h-3.5" style={{ color: '#4F9DFF' }} />
+              </div>
+              <p className="text-xs font-body leading-snug" style={{ color: 'rgba(191,201,217,0.8)' }}>{rule.text}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+      <div className="h-px w-full" style={{ background: 'linear-gradient(90deg, transparent, rgba(79,157,255,0.15), transparent)' }} />
+    </motion.div>
+  );
+}
+
 function AccessGate() {
   const [code, setCode] = useState('');
   const [error, setError] = useState(false);
   const { unlockCode } = useAccessCodes();
+  const navigate = useNavigate();
 
   const handleUnlock = () => {
     const upper = code.toUpperCase().trim();
@@ -20,6 +68,8 @@ function AccessGate() {
     if (!result) {
       setError(true);
       setTimeout(() => setError(false), 2500);
+    } else {
+      navigate('/my-program');
     }
   };
 
@@ -42,7 +92,7 @@ function AccessGate() {
             value={code}
             onChange={e => { setCode(e.target.value.toUpperCase()); setError(false); }}
             onKeyDown={e => e.key === 'Enter' && handleUnlock()}
-            placeholder="e.g. LENNON184"
+            placeholder="e.g. BTCALI123"
             className="flex-1 bg-transparent text-foreground font-body text-sm px-4 py-3.5 outline-none placeholder:text-muted-foreground/50 uppercase tracking-widest"
           />
           <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}
@@ -165,6 +215,9 @@ export default function MyProgram() {
           </p>
         </div>
       </motion.div>
+
+      {/* Training Rules Card */}
+      <TrainingRulesCard />
 
       {/* Section tabs — horizontally scrollable on mobile */}
       <div className="flex gap-2 mb-5 overflow-x-auto pb-1" style={{ scrollbarWidth: 'none', WebkitOverflowScrolling: 'touch' }}>
