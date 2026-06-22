@@ -60,6 +60,7 @@ export default function MyProgram() {
   const { isMember, isAdmin, accessCode } = useAccessCodes();
   const [program, setProgram] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState(null);
   const [activeSection, setActiveSection] = useState('program');
 
   // Derive student name from the DB record (not just the code)
@@ -77,18 +78,26 @@ export default function MyProgram() {
 
     const load = async () => {
       setLoading(true);
-      // Use backend function (service role) so live site bypasses RLS admin restriction
-      const timeout = new Promise((_, rej) => setTimeout(() => rej(new Error('timeout')), 5000));
-      const res = await Promise.race([
-        base44.functions.invoke('getStudentProgram', { access_code: code }),
-        timeout,
-      ]).catch(err => {
-        console.error('Program load error:', err);
-        return { data: { program: null } };
-      });
-      if (!cancelled) {
-        setProgram(res?.data?.program || null);
-        setLoading(false);
+      setLoadError(null);
+      try {
+        const timeout = new Promise((_, rej) => setTimeout(() => rej(new Error('Request timed out after 5 seconds')), 5000));
+        const res = await Promise.race([
+          base44.functions.invoke('getStudentProgram', { access_code: code }),
+          timeout,
+        ]);
+        if (!cancelled) {
+          const prog = res?.data?.program || null;
+          console.log('[MyProgram] loaded for', code, '→', prog ? `${prog.tabs?.length} tabs` : 'null');
+          setProgram(prog);
+          setLoading(false);
+        }
+      } catch (err) {
+        console.error('[MyProgram] load error for', code, ':', err?.message || err);
+        if (!cancelled) {
+          setLoadError(err?.message || 'Failed to load program');
+          setProgram(null);
+          setLoading(false);
+        }
       }
     };
 
@@ -180,6 +189,15 @@ export default function MyProgram() {
           <div className="flex items-center justify-center py-24">
             <div className="w-8 h-8 border-2 border-primary/30 border-t-primary rounded-full animate-spin" />
           </div>
+        ) : loadError ? (
+          <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}
+            className="rounded-2xl p-10 text-center"
+            style={{ background: 'rgba(248,113,113,0.04)', border: '1px solid rgba(248,113,113,0.2)' }}>
+            <ClipboardList className="w-10 h-10 text-destructive/40 mx-auto mb-4" />
+            <h2 className="font-heading font-bold text-xl text-foreground mb-2">Could not load your program</h2>
+            <p className="text-sm font-body text-muted-foreground mb-4">{loadError}</p>
+            <p className="text-xs font-body text-muted-foreground/50">Try refreshing the page. If this keeps happening, contact BTCALI.</p>
+          </motion.div>
         ) : !program || !program.tabs || program.tabs.length === 0 ? (
           <motion.div
             initial={{ opacity: 0, y: 16 }}
