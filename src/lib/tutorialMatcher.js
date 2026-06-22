@@ -42,7 +42,7 @@ const TUTORIAL_DB = [
   },
   {
     title: 'Handstand Bail',
-    url: 'https://youtube.com/shorts/8GLA_c0jueA',
+    url: 'https://youtube.com/shorts/rGoEHcIPeFY?si=gcxe-tFCaHm7y2Nm',
     aliases: ['handstand bail', 'face the fear of handstand', 'how to bail handstand', 'bail tutorial', 'face the fear'],
   },
   // ─── HANDSTAND & PRESSING — INTERMEDIATE ───────────────────────────────────
