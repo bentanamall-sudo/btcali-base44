@@ -6,31 +6,42 @@
  */
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Lock, CheckCircle, Loader2, AlertCircle } from 'lucide-react';
+import { Lock, CheckCircle, Loader2, AlertCircle, ArrowRight } from 'lucide-react';
 import { base44 } from '@/api/base44Client';
 import { callFunction } from '@/lib/callFunction';
 import { useMember } from '@/lib/MemberContext';
 import { Link, useNavigate } from 'react-router-dom';
+import { NavbarLogo } from '@/components/Logo';
 
 export default function ActivateAccount() {
   const [step, setStep] = useState('enter_code'); // enter_code | activating | done | error
   const [code, setCode] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const { refresh } = useMember();
+  const { refresh, isMember, loading: memberLoading } = useMember();
   const navigate = useNavigate();
 
   useEffect(() => {
     base44.auth.isAuthenticated().then(auth => {
       setIsLoggedIn(auth);
-      // If user is already logged in and has a pending code in sessionStorage, activate it
-      const pending = sessionStorage.getItem('btcali-pending-code');
-      if (auth && pending) {
-        sessionStorage.removeItem('btcali-pending-code');
-        activateCode(pending);
+      if (auth) {
+        // If user is already a member, go straight to their program
+        // (checked after memberLoading resolves — see second useEffect)
+        const pending = sessionStorage.getItem('btcali-pending-code');
+        if (pending) {
+          sessionStorage.removeItem('btcali-pending-code');
+          activateCode(pending);
+        }
       }
     });
   }, []);
+
+  // Once member context loads, if already a member redirect straight to program
+  useEffect(() => {
+    if (!memberLoading && isMember) {
+      navigate('/my-program', { replace: true });
+    }
+  }, [memberLoading, isMember]);
 
   const activateCode = async (codeToActivate) => {
     setStep('activating');
@@ -43,7 +54,6 @@ export default function ActivateAccount() {
       } else {
         await refresh();
         setStep('done');
-        setTimeout(() => navigate('/my-program'), 2000);
       }
     } catch (err) {
       setErrorMsg(err.message || 'Activation failed. Please try again.');
@@ -56,9 +66,8 @@ export default function ActivateAccount() {
     if (!trimmed) return;
 
     if (!isLoggedIn) {
-      // Store the code and redirect to login/register
+      // Store the code and redirect to login/register — return to this page after login
       sessionStorage.setItem('btcali-pending-code', trimmed);
-      // Use origin only — after login Base44 returns to the root, then our useEffect picks up the pending code
       base44.auth.redirectToLogin(window.location.origin + '/#/activate');
       return;
     }
@@ -67,7 +76,12 @@ export default function ActivateAccount() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4">
+    <div className="min-h-screen flex flex-col items-center justify-center px-4 py-12">
+      {/* Logo */}
+      <div className="mb-8">
+        <NavbarLogo />
+      </div>
+
       <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }}
         className="glass-strong rounded-2xl p-8 sm:p-12 border border-primary/30 max-w-md w-full text-center glow-border">
 
@@ -78,6 +92,7 @@ export default function ActivateAccount() {
             : <Lock className="w-7 h-7 text-primary-foreground" />}
         </div>
 
+        {/* ── Step: Enter Code ── */}
         {step === 'enter_code' && (
           <>
             <h1 className="font-heading font-bold text-2xl sm:text-3xl text-foreground mb-2">
@@ -85,10 +100,10 @@ export default function ActivateAccount() {
             </h1>
             <p className="text-sm font-body text-muted-foreground mb-8 leading-relaxed">
               Enter your BTCALI access code to activate your account.
-              {!isLoggedIn && ' You\'ll then create a login with your email and password.'}
+              {!isLoggedIn && " You'll then create a login with your email and password."}
             </p>
 
-            <div className={`flex gap-2 rounded-xl overflow-hidden mb-3 ring-1 ring-border/40`}>
+            <div className="flex gap-2 rounded-xl overflow-hidden mb-3 ring-1 ring-border/40">
               <input
                 type="text"
                 value={code}
@@ -116,6 +131,7 @@ export default function ActivateAccount() {
           </>
         )}
 
+        {/* ── Step: Activating ── */}
         {step === 'activating' && (
           <>
             <h1 className="font-heading font-bold text-2xl text-foreground mb-2">Activating...</h1>
@@ -123,17 +139,29 @@ export default function ActivateAccount() {
           </>
         )}
 
+        {/* ── Step: Done ── */}
         {step === 'done' && (
           <>
-            <h1 className="font-heading font-bold text-2xl text-foreground mb-2">
-              Account <span className="gradient-text">Activated!</span>
+            <h1 className="font-heading font-bold text-2xl text-foreground mb-3">
+              Account <span className="gradient-text">Created!</span>
             </h1>
-            <p className="text-sm font-body text-muted-foreground mb-4">
-              Your account is linked. Redirecting to your program...
+            <p className="text-sm font-body text-muted-foreground mb-2 leading-relaxed">
+              Your BTCALI account has been created successfully.
             </p>
+            <p className="text-sm font-body text-muted-foreground mb-8 leading-relaxed">
+              Your login details have been saved. You can now access your personalised coaching program.
+            </p>
+            <Link to="/my-program">
+              <motion.button whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.97 }}
+                className="w-full py-4 rounded-xl gradient-bg-strong text-primary-foreground font-heading font-bold text-base flex items-center justify-center gap-2"
+                style={{ boxShadow: '0 0 28px rgba(79,157,255,0.35)' }}>
+                Go To My Program <ArrowRight className="w-5 h-5" />
+              </motion.button>
+            </Link>
           </>
         )}
 
+        {/* ── Step: Error ── */}
         {step === 'error' && (
           <>
             <h1 className="font-heading font-bold text-2xl text-foreground mb-2">Activation Failed</h1>

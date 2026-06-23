@@ -4,6 +4,7 @@ import { callFunction } from '@/lib/callFunction';
 import { useMember } from '@/lib/MemberContext';
 import { Link, useNavigate } from 'react-router-dom';
 import { Bell, BookOpen, Target, ClipboardList, Lock } from 'lucide-react';
+import { base44 } from '@/api/base44Client';
 import ProgramTable from '@/components/program/ProgramTable';
 import GoalsTab from '@/components/program/GoalsTab';
 import WorkoutLogTab from '@/components/program/WorkoutLogTab';
@@ -28,9 +29,14 @@ function AccessGate() {
         <Link to="/activate">
           <motion.button whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}
             className="w-full py-3.5 rounded-xl gradient-bg-strong text-primary-foreground font-heading font-bold text-sm">
-            Activate Account / Log In
+            Activate Account (First Time)
           </motion.button>
         </Link>
+        <motion.button whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}
+          onClick={() => base44.auth.redirectToLogin(window.location.origin + '/#/my-program')}
+          className="w-full py-3.5 rounded-xl glass border border-primary/40 text-primary font-heading font-bold text-sm">
+          Log In → Open My Program
+        </motion.button>
       </motion.div>
     </div>
   );
