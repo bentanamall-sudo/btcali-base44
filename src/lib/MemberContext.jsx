@@ -36,7 +36,7 @@ export function MemberProvider({ children }) {
   const logout = () => {
     setMemberAccount(null);
     setIsAdmin(false);
-    base44.auth.logout(window.location.href);
+    base44.auth.logout(window.location.origin + '/');
   };
 
   const isMember = isAdmin || !!memberAccount;

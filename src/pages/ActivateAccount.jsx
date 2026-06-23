@@ -58,7 +58,8 @@ export default function ActivateAccount() {
     if (!isLoggedIn) {
       // Store the code and redirect to login/register
       sessionStorage.setItem('btcali-pending-code', trimmed);
-      base44.auth.redirectToLogin(window.location.href);
+      // Use origin only — after login Base44 returns to the root, then our useEffect picks up the pending code
+      base44.auth.redirectToLogin(window.location.origin + '/#/activate');
       return;
     }
 
@@ -106,7 +107,7 @@ export default function ActivateAccount() {
             {!isLoggedIn && (
               <p className="text-xs font-body text-muted-foreground mt-4">
                 Already activated?{' '}
-                <button onClick={() => base44.auth.redirectToLogin(window.location.href.replace('activate', 'my-program'))}
+                <button onClick={() => base44.auth.redirectToLogin(window.location.origin + '/#/my-program')}
                   className="text-primary font-semibold hover:underline">
                   Log in →
                 </button>
