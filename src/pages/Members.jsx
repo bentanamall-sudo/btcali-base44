@@ -5,7 +5,7 @@ import HomeButton from '@/components/HomeButton';
 import { useMember } from '@/lib/MemberContext';
 import { PageHeaderLogo } from '@/components/Logo';
 import { Link } from 'react-router-dom';
-import { base44 } from '@/api/base44Client';
+
 
 const EQUIPMENT = [
   { name: 'P-bars (Parallettes)', url: 'https://www.amazon.com.au/BRITOR-Parallettes-Gymnastics-Bodybuilding-Non-Slip-Durable-1/dp/B08CMZMFCS' },
@@ -231,14 +231,9 @@ function AccessGate() {
           <Link to="/activate">
             <motion.button whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}
               className="w-full py-3.5 rounded-xl gradient-bg-strong text-primary-foreground font-heading font-bold text-sm">
-              Activate Account (First Time)
+              Enter Access Code
             </motion.button>
           </Link>
-          <motion.button whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}
-            onClick={() => base44.auth.redirectToLogin(window.location.origin + '/#/my-program')}
-            className="w-full py-3.5 rounded-xl glass border border-primary/40 text-primary font-heading font-bold text-sm">
-            Log In → Open My Program
-          </motion.button>
         </div>
         <p className="text-xs text-muted-foreground font-body mt-6">
           Not a BTCALI member?{' '}

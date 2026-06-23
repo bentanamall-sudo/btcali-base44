@@ -4,7 +4,6 @@ import { callFunction } from '@/lib/callFunction';
 import { useMember } from '@/lib/MemberContext';
 import { Link, useNavigate } from 'react-router-dom';
 import { Bell, BookOpen, Target, ClipboardList, Lock } from 'lucide-react';
-import { base44 } from '@/api/base44Client';
 import ProgramTable from '@/components/program/ProgramTable';
 import GoalsTab from '@/components/program/GoalsTab';
 import WorkoutLogTab from '@/components/program/WorkoutLogTab';
@@ -24,19 +23,17 @@ function AccessGate() {
           My <span className="gradient-text">Program</span>
         </h1>
         <p className="text-sm font-body text-muted-foreground mb-8 leading-relaxed">
-          Log in or activate your account to access your personalised program.
+          Enter your BTCALI access code to open your personalised training program.
         </p>
         <Link to="/activate">
           <motion.button whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}
             className="w-full py-3.5 rounded-xl gradient-bg-strong text-primary-foreground font-heading font-bold text-sm">
-            Activate Account (First Time)
+            Enter Access Code
           </motion.button>
         </Link>
-        <motion.button whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}
-          onClick={() => base44.auth.redirectToLogin(window.location.origin + '/#/my-program')}
-          className="w-full py-3.5 rounded-xl glass border border-primary/40 text-primary font-heading font-bold text-sm">
-          Log In → Open My Program
-        </motion.button>
+          <p className="text-xs text-muted-foreground font-body mt-2">
+          Already have a code? Enter it above.
+        </p>
       </motion.div>
     </div>
   );
@@ -91,8 +88,8 @@ export default function MyProgram() {
 
   if (!isMember && !isAdmin) return <AccessGate />;
 
-  // Admin without a student access code — redirect them to admin panel
-  if (isAdmin && !accessCode) {
+  // Admin — redirect them to admin panel
+  if (isAdmin) {
     return (
       <div className="min-h-screen flex items-center justify-center px-4 text-center">
         <div>
