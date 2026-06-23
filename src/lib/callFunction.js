@@ -1,14 +1,20 @@
 /**
  * Calls a Base44 backend function directly via the canonical API URL.
- * Hardcodes the app ID to avoid any localStorage/env-var caching issues on custom domains.
- * Always sends the user's auth token so backend functions can identify the caller.
+ * Hardcodes the app ID to avoid any routing issues on custom domains.
+ * Sends the user's auth token so backend functions can identify the caller.
  */
 
 const APP_ID = '69fd635623a9368c153045ad';
 
 function getToken() {
   try {
-    return localStorage.getItem('base44_access_token') || localStorage.getItem('token') || '';
+    // Base44 SDK stores the token under 'base44_access_token'
+    return (
+      localStorage.getItem('base44_access_token') ||
+      localStorage.getItem('base44_token') ||
+      localStorage.getItem('token') ||
+      ''
+    );
   } catch {
     return '';
   }
