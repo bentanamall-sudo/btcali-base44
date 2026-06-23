@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { callFunction } from '@/lib/callFunction';
-import { useAccessCodes } from '@/lib/useAccessCodes';
+import { useMember } from '@/lib/MemberContext';
 import { Link, useNavigate } from 'react-router-dom';
 import { Bell, BookOpen, Target, ClipboardList, Lock } from 'lucide-react';
 import ProgramTable from '@/components/program/ProgramTable';
@@ -12,22 +12,6 @@ import TrainingRulesCard from '@/components/program/TrainingRulesCard';
 import HomeButton from '@/components/HomeButton';
 
 function AccessGate() {
-  const [code, setCode] = useState('');
-  const [error, setError] = useState(false);
-  const { unlockCode } = useAccessCodes();
-  const navigate = useNavigate();
-
-  const handleUnlock = () => {
-    const upper = code.toUpperCase().trim();
-    const result = unlockCode(upper);
-    if (!result) {
-      setError(true);
-      setTimeout(() => setError(false), 2500);
-    } else {
-      navigate('/my-program');
-    }
-  };
-
   return (
     <div className="min-h-screen flex items-center justify-center px-4">
       <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }}
@@ -39,39 +23,27 @@ function AccessGate() {
           My <span className="gradient-text">Program</span>
         </h1>
         <p className="text-sm font-body text-muted-foreground mb-8 leading-relaxed">
-          Enter your BTCALI access code to view your personalised program.
+          Log in or activate your account to access your personalised program.
         </p>
-        <div className={`flex gap-2 rounded-xl overflow-hidden mb-3 transition-all ${error ? 'ring-2 ring-destructive/60' : 'ring-1 ring-border/40'}`}>
-          <input
-            type="text"
-            value={code}
-            onChange={e => { setCode(e.target.value.toUpperCase()); setError(false); }}
-            onKeyDown={e => e.key === 'Enter' && handleUnlock()}
-            placeholder="e.g. BTCALI123"
-            className="flex-1 bg-transparent text-foreground font-body text-sm px-4 py-3.5 outline-none placeholder:text-muted-foreground/50 uppercase tracking-widest"
-          />
-          <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}
-            onClick={handleUnlock} className="gradient-bg-strong px-5 font-heading font-bold text-sm text-primary-foreground">
-            Enter
+        <Link to="/activate">
+          <motion.button whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}
+            className="w-full py-3.5 rounded-xl gradient-bg-strong text-primary-foreground font-heading font-bold text-sm">
+            Activate Account / Log In
           </motion.button>
-        </div>
-        {error && <p className="text-xs text-destructive font-body mb-4">Invalid access code. Contact BTCALI if you need help.</p>}
+        </Link>
       </motion.div>
     </div>
   );
 }
 
 export default function MyProgram() {
-  const { isMember, isAdmin, accessCode } = useAccessCodes();
+  const { isMember, isAdmin, accessCode, loading: memberLoading, studentName: memberStudentName, logout } = useMember();
   const [program, setProgram] = useState(null);
   const [loading, setLoading] = useState(true);
   const [loadError, setLoadError] = useState(null);
   const [activeSection, setActiveSection] = useState('program');
 
-  // Derive student name from the DB record (not just the code)
-  const studentName = program?.student_name || (accessCode
-    ? accessCode.replace(/\d+/g, '').charAt(0).toUpperCase() + accessCode.replace(/\d+/g, '').slice(1).toLowerCase()
-    : 'Athlete');
+  const studentName = program?.student_name || memberStudentName || 'Athlete';
 
   useEffect(() => {
     if (!isMember && !isAdmin) { setLoading(false); return; }
@@ -147,7 +119,13 @@ export default function MyProgram() {
             <span className="text-xs text-muted-foreground/40">•</span>
             <span className="text-xs font-heading font-bold uppercase tracking-[0.2em] text-muted-foreground/40 font-mono">{accessCode}</span>
           </div>
-          <HomeButton />
+          <div className="flex items-center gap-2">
+            <HomeButton />
+            <button onClick={logout}
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl glass border border-border/30 text-muted-foreground hover:text-destructive hover:border-destructive/30 transition-all font-heading font-semibold text-xs">
+              Log Out
+            </button>
+          </div>
         </div>
         <h1 className="font-heading font-black text-2xl sm:text-4xl text-foreground">
           Welcome back, <span className="gradient-text">{studentName}</span>

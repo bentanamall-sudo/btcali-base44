@@ -4,6 +4,7 @@ import { Plus, Trash2, Copy, GripVertical, ExternalLink, ChevronDown, Check, X, 
 import { getTypeConfig } from '@/lib/exerciseTypeConfig';
 import { getTutorialMatch, isComingSoon } from '@/lib/tutorialMatcher';
 import { base44 } from '@/api/base44Client';
+import { callFunction } from '@/lib/callFunction';
 
 // ── Inline Tutorial Modal ────────────────────────────────────────────────────
 // Uses the URL directly from tutorialMatcher — extracts YouTube video ID to embed
@@ -474,7 +475,20 @@ export default function ProgramTable({ program, readOnly = false }) {
   const deleteTab = (idx) => { setTabs(prev => { const next = prev.filter((_, i) => i !== idx); if (activeTabIdx >= next.length) setActiveTabIdx(Math.max(0, next.length - 1)); return next; }); };
   const duplicateTab = (idx) => { setTabs(prev => { const copy = { ...prev[idx], id: genId(), name: prev[idx].name + ' (copy)', rows: prev[idx].rows.map(r => ({ ...r, id: genId() })) }; const next = [...prev.slice(0, idx + 1), copy, ...prev.slice(idx + 1)]; setActiveTabIdx(idx + 1); return next; }); };
   const autoMatchAll = () => setTabs(prev => prev.map(t => ({ ...t, rows: t.rows.map(r => ({ ...r, tutorial_link: '' })) })));
-  const handleSave = async () => { setSaving(true); await base44.entities.StudentProgram.update(program.id, { tabs }); setSaving(false); setSaved(true); setTimeout(() => setSaved(false), 2500); };
+  const handleSave = async () => {
+    setSaving(true);
+    try {
+      const result = await callFunction('updateStudentProgram', { program_id: program.id, tabs });
+      if (result?.error) throw new Error(result.error);
+      setSaved(true);
+      setTimeout(() => setSaved(false), 2500);
+    } catch (err) {
+      console.error('[ProgramTable] save error:', err.message);
+      alert('Save failed: ' + (err.message || 'Unknown error. Please try again.'));
+    } finally {
+      setSaving(false);
+    }
+  };
 
   const onDragStart = (rowId) => { dragRow.current = rowId; };
   const onDragOver = (e, rowId) => { e.preventDefault(); setDragOver(rowId); };

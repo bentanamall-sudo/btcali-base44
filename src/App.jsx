@@ -6,6 +6,7 @@ import { useEffect } from 'react';
 import PageNotFound from './lib/PageNotFound';
 import { AuthProvider, useAuth } from '@/lib/AuthContext';
 import { AccessProvider } from '@/lib/AccessContext';
+import { MemberProvider } from '@/lib/MemberContext';
 import UserNotRegisteredError from '@/components/UserNotRegisteredError';
 import Layout from './components/Layout';
 import Home from './pages/Home';
@@ -33,6 +34,7 @@ import Members from './pages/Members.jsx';
 import SkillLibrarySection from './pages/SkillLibrarySection';
 import MyProgram from './pages/MyProgram';
 import AdminPrograms from './pages/AdminPrograms';
+import ActivateAccount from './pages/ActivateAccount';
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -84,6 +86,7 @@ const AuthenticatedApp = () => {
           <Route path="/admin/diagnostics" element={<AdminDiagnostics />} />
           <Route path="/brand" element={<BrandIdentity />} />
           <Route path="/my-program" element={<MyProgram />} />
+          <Route path="/activate" element={<ActivateAccount />} />
           <Route path="/admin/programs" element={<AdminPrograms />} />
           <Route path="*" element={<PageNotFound />} />
         </Route>
@@ -96,12 +99,14 @@ function App() {
   return (
     <AuthProvider>
       <AccessProvider>
-        <QueryClientProvider client={queryClientInstance}>
-          <Router>
-            <AuthenticatedApp />
-          </Router>
-          <Toaster />
-        </QueryClientProvider>
+        <MemberProvider>
+          <QueryClientProvider client={queryClientInstance}>
+            <Router>
+              <AuthenticatedApp />
+            </Router>
+            <Toaster />
+          </QueryClientProvider>
+        </MemberProvider>
       </AccessProvider>
     </AuthProvider>
   )

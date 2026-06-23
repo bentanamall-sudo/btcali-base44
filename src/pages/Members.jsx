@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Crown, Shield, Dumbbell, Layers, ShoppingBag, ExternalLink, Lock, ChevronRight, ChevronLeft, ChevronDown, CheckCircle, Send, CreditCard, LogOut, ClipboardList } from 'lucide-react';
 import HomeButton from '@/components/HomeButton';
-import { useAccessCodes } from '@/lib/useAccessCodes';
+import { useMember } from '@/lib/MemberContext';
 import { PageHeaderLogo } from '@/components/Logo';
 import { Link } from 'react-router-dom';
 
@@ -213,18 +213,6 @@ This athlete has read, understood, and accepted all BTCALI Coaching Terms & Cond
 }
 
 function AccessGate() {
-  const [code, setCode] = useState('');
-  const [error, setError] = useState(false);
-  const { unlockCode } = useAccessCodes();
-
-  const handleUnlock = () => {
-    const result = unlockCode(code);
-    if (!result) {
-      setError(true);
-      setTimeout(() => setError(false), 2500);
-    }
-  };
-
   return (
     <div className="min-h-screen flex items-center justify-center px-4">
       <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }}
@@ -236,20 +224,17 @@ function AccessGate() {
           BTCALI <span className="gradient-text">Members</span>
         </h1>
         <p className="text-sm font-body text-muted-foreground mb-8 leading-relaxed">
-          This area is exclusive to BTCALI coaching members. Enter your unique access code below.
+          This area is exclusive to BTCALI coaching members. Log in or activate your account with your access code.
         </p>
-        <div className={`flex gap-2 rounded-xl overflow-hidden mb-3 transition-all ${error ? 'ring-2 ring-destructive/60' : 'ring-1 ring-border/40'}`}>
-          <input type="text" value={code} onChange={e => { setCode(e.target.value); setError(false); }}
-            onKeyDown={e => e.key === 'Enter' && handleUnlock()}
-            placeholder="Enter your member access code..."
-            className="flex-1 bg-transparent text-foreground font-body text-sm px-4 py-3.5 outline-none placeholder:text-muted-foreground/50" />
-          <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}
-            onClick={handleUnlock} className="gradient-bg-strong px-4 flex items-center justify-center">
-            <ChevronRight className="w-5 h-5 text-primary-foreground" />
-          </motion.button>
+        <div className="flex flex-col gap-3">
+          <Link to="/activate">
+            <motion.button whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}
+              className="w-full py-3.5 rounded-xl gradient-bg-strong text-primary-foreground font-heading font-bold text-sm">
+              Activate Account / Log In
+            </motion.button>
+          </Link>
         </div>
-        {error && <p className="text-xs text-destructive font-body mb-4">Invalid code. Please check and try again.</p>}
-        <p className="text-xs text-muted-foreground font-body mt-4">
+        <p className="text-xs text-muted-foreground font-body mt-6">
           Not a BTCALI member?{' '}
           <Link to="/1-on-1-coaching" className="text-primary font-semibold hover:underline">Apply for coaching →</Link>
         </p>
@@ -308,7 +293,7 @@ function PaymentMethods() {
 
 // ── Main Members page — two-slide onboarding flow ──────────────────────────
 export default function Members() {
-  const { isMember, clearAccess } = useAccessCodes();
+  const { isMember, logout } = useMember();
   const [slide, setSlide] = useState(0); // 0 = coaching dashboard, 1 = agreement form, 2 = payment methods
 
   if (!isMember) return <AccessGate />;
@@ -344,7 +329,7 @@ export default function Members() {
             </Link>
           </div>
           <button
-            onClick={clearAccess}
+            onClick={logout}
             className="flex-shrink-0 flex items-center gap-2 px-4 py-2 rounded-xl glass border border-border/30 text-muted-foreground font-heading font-semibold text-xs hover:border-destructive/40 hover:text-destructive transition-all mt-1"
             title="Remove access code"
           >

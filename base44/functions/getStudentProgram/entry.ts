@@ -1,31 +1,43 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.31';
 
-// Known valid access codes — prevents arbitrary DB queries
+// New secure member codes
 const MEMBER_CODES = new Set([
-  'HENRY173','HAEJUN142','ANDREAS189','TANUSH157','RYAN128','JULIAN194',
-  'MACK136','MARCUS181','ALISTAIR149','JAYDEN165','LUKE121','GAON176',
-  'SEAN138','DANIEL192','MATHEW154','HAYDEN167','HUGO144','CEDRICK185','LENNON184',
-  'BTCALI999', // admin
+  'HENRY-X7K91P',
+  'HAEJUN-M4R82Q',
+  'ANDEAS-T9V61L',
+  'TANUSH-P3N74X',
+  'RYAN-K8Q52M',
+  'JULIAN-W6H93R',
+  'MACK-F2T81Z',
+  'MARCUS-L7P64N',
+  'ALISTAIR-D5X29K',
+  'JAYDEN-R8M41V',
+  'LUKE-B9Q73T',
+  'GAON-H4K86P',
+  'SEAN-Z2N58L',
+  'DANIEL-Y7R34M',
+  'MATHEW-C8P61Q',
+  'HAYDEN-J5V92T',
+  'HUGO-N4T87X',
+  'CEDRICK-Q6L53R',
+  'LENNON-X9M72K',
+  'BTCALI-ADMIN-84X7P',
 ]);
 
-Deno.serve(async (req) => {
-  // CORS for live site
-  const origin = req.headers.get('origin') || '';
-  const corsHeaders = {
-    'Access-Control-Allow-Origin': '*',
-    'Access-Control-Allow-Methods': 'POST, OPTIONS',
-    'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-  };
+const corsHeaders = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Methods': 'POST, OPTIONS',
+  'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+};
 
+Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') {
     return new Response(null, { status: 204, headers: corsHeaders });
   }
 
   try {
     let body;
-    try {
-      body = await req.json();
-    } catch {
+    try { body = await req.json(); } catch {
       return Response.json({ error: 'Invalid JSON body' }, { status: 400, headers: corsHeaders });
     }
 
@@ -41,7 +53,6 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'Invalid access code', program: null }, { status: 200, headers: corsHeaders });
     }
 
-    // Use service role (bypasses RLS — admin-only restriction on StudentProgram)
     const base44 = createClientFromRequest(req);
     const results = await base44.asServiceRole.entities.StudentProgram.filter({ access_code: code });
     const program = results[0] || null;

@@ -1,0 +1,57 @@
+{
+  "name": "MemberAccount",
+  "type": "object",
+  "properties": {
+    "access_code": {
+      "type": "string",
+      "description": "The BTCALI access code used to activate this account"
+    },
+    "user_email": {
+      "type": "string",
+      "description": "Email of the activated Base44 user"
+    },
+    "student_name": {
+      "type": "string"
+    },
+    "activated": {
+      "type": "boolean",
+      "default": false
+    },
+    "activated_at": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "access_code",
+    "user_email"
+  ],
+  "rls": {
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "read": {
+      "$or": [
+        {
+          "user_email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}
