@@ -1,28 +1,35 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.31';
 
-// Valid access codes — new secure codes
-const VALID_CODES = new Set([
-  'HENRY-X7K91P',
-  'HAEJUN-M4R82Q',
-  'ANDEAS-T9V61L',
-  'TANUSH-P3N74X',
-  'RYAN-K8Q52M',
-  'JULIAN-W6H93R',
-  'MACK-F2T81Z',
-  'MARCUS-L7P64N',
-  'ALISTAIR-D5X29K',
-  'JAYDEN-R8M41V',
-  'LUKE-B9Q73T',
-  'GAON-H4K86P',
-  'SEAN-Z2N58L',
-  'DANIEL-Y7R34M',
-  'MATHEW-C8P61Q',
-  'HAYDEN-J5V92T',
-  'HUGO-N4T87X',
-  'CEDRICK-Q6L53R',
-  'LENNON-X9M72K',
-  'BTCALI-ADMIN-84X7P',
-]);
+// All valid codes live ONLY in backend — never exposed to frontend
+const ADMIN_CODE = 'BTCALI-ADMIN-P7X92M';
+
+const VALID_CODES = {
+  'HENRY-Q8M47Z':    'Henry',
+  'HAEJUN-L3X92V':   'Haejun',
+  'ANDEAS-P6T81K':   'Andeas',
+  'TANUSH-V9R24M':   'Tanush',
+  'RYAN-N5C73Q':     'Ryan',
+  'JULIAN-K2W68P':   'Julian',
+  'MACK-Z7H31L':     'Mack',
+  'MARCUS-T4N95X':   'Marcus',
+  'ALISTAIR-B8Q52R': 'Alistair',
+  'JAYDEN-X6P19V':   'Jayden',
+  'LUKE-M3Z84K':     'Luke',
+  'GAON-R7L26T':     'Gaon',
+  'SEAN-W9C45N':     'Sean',
+  'DANIEL-H2V68Q':   'Daniel',
+  'MATHEW-K5X93L':   'Mathew',
+  'HAYDEN-P8M41Z':   'Hayden',
+  'HUGO-C6T72R':     'Hugo',
+  'CEDRICK-L9N35V':  'Cedrick',
+  'LENNON-Z4Q86P':   'Lennon',
+  // Test codes
+  'TEST-PAGE-1': 'Test User 1',
+  'TEST-PAGE-2': 'Test User 2',
+  'TEST-PAGE-3': 'Test User 3',
+  'TEST-PAGE-4': 'Test User 4',
+  'TEST-PAGE-5': 'Test User 5',
+};
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -49,20 +56,21 @@ Deno.serve(async (req) => {
     if (!access_code) return Response.json({ error: 'access_code required' }, { status: 400, headers: corsHeaders });
 
     const code = access_code.trim().toUpperCase();
+    const isAdmin = code === ADMIN_CODE;
+    const studentName = VALID_CODES[code];
 
-    if (!VALID_CODES.has(code)) {
+    if (!isAdmin && !studentName) {
       return Response.json({ error: 'Invalid access code. Please check and try again.' }, { status: 200, headers: corsHeaders });
     }
 
-    // Check if this code has already been activated
+    // Check if this code has already been activated by someone else
     const existing = await base44.asServiceRole.entities.MemberAccount.filter({ access_code: code });
     if (existing.length > 0) {
       const acct = existing[0];
       if (acct.user_email !== user.email) {
         return Response.json({ error: 'This access code has already been activated by another account.' }, { status: 200, headers: corsHeaders });
       }
-      // Same user re-activating — just return success
-      return Response.json({ success: true, access_code: code, already_activated: true }, { status: 200, headers: corsHeaders });
+      return Response.json({ success: true, already_activated: true, student_name: acct.student_name }, { status: 200, headers: corsHeaders });
     }
 
     // Check if this user already has a linked account
@@ -71,20 +79,22 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'Your account is already linked to an access code.' }, { status: 200, headers: corsHeaders });
     }
 
-    // Find the student program to get the student name
-    const programs = await base44.asServiceRole.entities.StudentProgram.filter({ access_code: code });
-    const studentName = programs[0]?.student_name || '';
+    // For students: find the student program to get the name
+    let resolvedName = studentName || 'Admin';
+    if (!isAdmin) {
+      const programs = await base44.asServiceRole.entities.StudentProgram.filter({ access_code: code });
+      if (programs[0]?.student_name) resolvedName = programs[0].student_name;
+    }
 
-    // Create the account link
     await base44.asServiceRole.entities.MemberAccount.create({
       access_code: code,
       user_email: user.email,
-      student_name: studentName,
+      student_name: resolvedName,
       activated: true,
       activated_at: new Date().toISOString(),
     });
 
-    return Response.json({ success: true, access_code: code, student_name: studentName }, { status: 200, headers: corsHeaders });
+    return Response.json({ success: true, student_name: resolvedName }, { status: 200, headers: corsHeaders });
   } catch (error) {
     console.error('activateMemberAccount error:', error.message);
     return Response.json({ error: error.message }, { status: 500, headers: corsHeaders });

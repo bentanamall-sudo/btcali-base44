@@ -1,6 +1,7 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.31';
 
-const MEMBER_CODES = new Set([
+// Valid codes list — backend only, never exposed to frontend
+const VALID_CODES = new Set([
   'HENRY-Q8M47Z',
   'HAEJUN-L3X92V',
   'ANDEAS-P6T81K',
@@ -21,6 +22,11 @@ const MEMBER_CODES = new Set([
   'CEDRICK-L9N35V',
   'LENNON-Z4Q86P',
   'BTCALI-ADMIN-P7X92M',
+  'TEST-PAGE-1',
+  'TEST-PAGE-2',
+  'TEST-PAGE-3',
+  'TEST-PAGE-4',
+  'TEST-PAGE-5',
 ]);
 
 const corsHeaders = {
@@ -48,7 +54,7 @@ Deno.serve(async (req) => {
 
     const code = access_code.trim().toUpperCase();
 
-    if (!MEMBER_CODES.has(code)) {
+    if (!VALID_CODES.has(code)) {
       return Response.json({ error: 'Invalid access code', program: null }, { status: 200, headers: corsHeaders });
     }
 

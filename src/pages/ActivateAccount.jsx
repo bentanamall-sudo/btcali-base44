@@ -1,10 +1,11 @@
 /**
- * ActivateAccount — pure access code entry page.
- * No email/password. Enter code → validated instantly → redirect to /my-program.
+ * ActivateAccount — access code entry page.
+ * Sends code to backend for validation — no codes in frontend.
+ * Mobile-friendly: stacked layout, keyboard-safe submit button.
  */
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Lock, ArrowRight, AlertCircle } from 'lucide-react';
+import { Lock, ArrowRight, AlertCircle, Loader2 } from 'lucide-react';
 import { useMember } from '@/lib/MemberContext';
 import { Link, useNavigate } from 'react-router-dom';
 import { NavbarLogo } from '@/components/Logo';
@@ -12,13 +13,18 @@ import { NavbarLogo } from '@/components/Logo';
 export default function ActivateAccount() {
   const [code, setCode] = useState('');
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
   const { login } = useMember();
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    const trimmed = code.trim().toUpperCase();
+    if (!trimmed) { setError('Please enter your access code.'); return; }
     setError('');
-    const result = login(code.trim().toUpperCase());
+    setLoading(true);
+    const result = await login(trimmed);
+    setLoading(false);
     if (result.valid) {
       navigate('/my-program', { replace: true });
     } else {
@@ -48,32 +54,40 @@ export default function ActivateAccount() {
           Enter your BTCALI access code to open your personalised program.
         </p>
 
-        <form onSubmit={handleSubmit} className="w-full">
-          <div className={`flex gap-2 rounded-xl overflow-hidden mb-3 ring-1 ${error ? 'ring-destructive/60' : 'ring-border/40'}`}>
-            <input
-              type="text"
-              value={code}
-              onChange={e => { setCode(e.target.value.toUpperCase()); setError(''); }}
-              placeholder="e.g. BTCALI123"
-              autoCapitalize="characters"
-              autoCorrect="off"
-              spellCheck={false}
-              className="flex-1 bg-transparent text-foreground font-body text-sm px-4 py-3.5 outline-none placeholder:text-muted-foreground/40 uppercase tracking-widest"
-            />
-            <button
-              type="submit"
-              className="gradient-bg-strong px-5 font-heading font-bold text-sm text-primary-foreground whitespace-nowrap flex items-center gap-1.5"
-            >
-              Enter <ArrowRight className="w-4 h-4" />
-            </button>
-          </div>
+        <form onSubmit={handleSubmit} className="w-full flex flex-col gap-3">
+          {/* Stacked layout on mobile — no clipping */}
+          <input
+            type="text"
+            value={code}
+            onChange={e => { setCode(e.target.value.toUpperCase()); setError(''); }}
+            placeholder="e.g. BTCALI123"
+            autoCapitalize="characters"
+            autoCorrect="off"
+            autoComplete="off"
+            spellCheck={false}
+            inputMode="text"
+            className={`w-full bg-transparent text-foreground font-body text-sm px-4 py-4 rounded-xl outline-none placeholder:text-muted-foreground/40 uppercase tracking-widest border ${error ? 'border-destructive/60' : 'border-border/40'} focus:border-primary/60 transition-colors`}
+            style={{ WebkitAppearance: 'none', fontSize: '16px' }}
+          />
+
+          <button
+            type="submit"
+            disabled={loading}
+            className="w-full gradient-bg-strong py-4 rounded-xl font-heading font-bold text-sm text-primary-foreground flex items-center justify-center gap-2 disabled:opacity-60 transition-opacity"
+          >
+            {loading ? (
+              <><Loader2 className="w-4 h-4 animate-spin" /> Verifying…</>
+            ) : (
+              <>Enter <ArrowRight className="w-4 h-4" /></>
+            )}
+          </button>
         </form>
 
         {error && (
           <motion.div
             initial={{ opacity: 0, y: -4 }}
             animate={{ opacity: 1, y: 0 }}
-            className="flex items-start gap-2 px-4 py-3 rounded-xl mb-2"
+            className="flex items-start gap-2 px-4 py-3 rounded-xl mt-3"
             style={{ background: 'rgba(248,113,113,0.08)', border: '1px solid rgba(248,113,113,0.25)' }}
           >
             <AlertCircle className="w-4 h-4 text-destructive flex-shrink-0 mt-0.5" />
