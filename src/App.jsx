@@ -29,7 +29,6 @@ import SkillLibraryCategory from './pages/SkillLibraryCategory';
 import PlanchePrograms from './pages/programs/PlanchePrograms';
 import FrontLeverPrograms from './pages/programs/FrontLeverPrograms';
 import BrandIdentity from './pages/BrandIdentity';
-import Members from './pages/Members.jsx';
 import SkillLibrarySection from './pages/SkillLibrarySection';
 import MyProgram from './pages/MyProgram';
 import AdminPrograms from './pages/AdminPrograms';
@@ -75,8 +74,6 @@ const AuthenticatedApp = () => {
           <Route path="/admin/payments" element={<AdminPayments />} />
           <Route path="/coach/programs" element={<ProgramBuilder />} />
           <Route path="/diagnostic" element={<AthleteDiagnostic />} />
-          <Route path="/members" element={<Members />} />
-          <Route path="/btcali-members" element={<Members />} />
           <Route path="/skills" element={<SkillLibrary />} />
           <Route path="/skills/free" element={<SkillLibrarySection sectionId="free" />} />
           <Route path="/skills/premium" element={<SkillLibrarySection sectionId="premium" />} />

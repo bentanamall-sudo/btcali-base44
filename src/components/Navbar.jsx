@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, Zap, BookOpen, Trophy, Users, ScanLine, Crown } from 'lucide-react';
+import { Menu, X, Zap, BookOpen, Trophy, Users, ScanLine } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { NavbarLogo } from './Logo';
 import { cn } from '@/lib/utils';
@@ -11,7 +11,6 @@ const NAV_LINKS = [
   { to: '/results', label: 'Results', icon: Trophy },
   { to: '/skills', label: 'Skill Library', icon: BookOpen },
   { to: '/diagnostic', label: 'Athlete Scan', icon: ScanLine },
-  { to: '/members', label: 'Members', icon: Crown },
 ];
 
 export default function Navbar() {
