@@ -1,34 +1,28 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.31';
 
-// All valid codes live ONLY in backend — never exposed to frontend
-const ADMIN_CODE = 'BTCALI-ADMIN-P7X92M';
+// ── SECURITY RESET v5 — 2026-06-24 ──
+const ADMIN_CODE = 'BTCALI-ADMIN-V5-8KX3M9PQZR';
 
 const VALID_CODES = {
-  'HENRY-Q8M47Z':    'Henry',
-  'HAEJUN-L3X92V':   'Haejun',
-  'ANDEAS-P6T81K':   'Andeas',
-  'TANUSH-V9R24M':   'Tanush',
-  'RYAN-N5C73Q':     'Ryan',
-  'JULIAN-K2W68P':   'Julian',
-  'MACK-Z7H31L':     'Mack',
-  'MARCUS-T4N95X':   'Marcus',
-  'ALISTAIR-B8Q52R': 'Alistair',
-  'JAYDEN-X6P19V':   'Jayden',
-  'LUKE-M3Z84K':     'Luke',
-  'GAON-R7L26T':     'Gaon',
-  'SEAN-W9C45N':     'Sean',
-  'DANIEL-H2V68Q':   'Daniel',
-  'MATHEW-K5X93L':   'Mathew',
-  'HAYDEN-P8M41Z':   'Hayden',
-  'HUGO-C6T72R':     'Hugo',
-  'CEDRICK-L9N35V':  'Cedrick',
-  'LENNON-Z4Q86P':   'Lennon',
-  // Test codes
-  'TEST-PAGE-1': 'Test User 1',
-  'TEST-PAGE-2': 'Test User 2',
-  'TEST-PAGE-3': 'Test User 3',
-  'TEST-PAGE-4': 'Test User 4',
-  'TEST-PAGE-5': 'Test User 5',
+  'H7X-4KQ2-9RNVJW': 'Henry',
+  'A3M-8PF5-2WKXTZ': 'Haejun',
+  'B9T-6LN1-5MQVRX': 'Andeas',
+  'C2R-7VK4-8PJFNW': 'Tanush',
+  'D5N-3WM9-6TXKQR': 'Ryan',
+  'E8K-2PV7-4RNLFX': 'Julian',
+  'F4J-9TX3-7WMNKR': 'Mack',
+  'G6W-5KN8-3PVJXT': 'Marcus',
+  'J1P-4MX6-9TNWKR': 'Alistair',
+  'K3V-8RN2-5XJWMQ': 'Jayden',
+  'L9X-7KT5-2NRWPJ': 'Luke',
+  'M2N-3PW8-6XKVRT': 'Gaon',
+  'N5T-6XM1-4WJKRP': 'Sean',
+  'P7R-2NV4-9KMWXT': 'Daniel',
+  'Q4K-9WX7-3TNRJM': 'Mathew',
+  'R6M-5JN3-8VXKTW': 'Hayden',
+  'S8W-1KP6-4XMNJR': 'Hugo',
+  'T3X-7NR2-9JWKMV': 'Cedrick',
+  'U1J-4MK8-6RVXNW': 'Lennon',
 };
 
 const corsHeaders = {
@@ -73,13 +67,13 @@ Deno.serve(async (req) => {
       return Response.json({ success: true, already_activated: true, student_name: acct.student_name }, { status: 200, headers: corsHeaders });
     }
 
-    // Check if this user already has a linked account
+    // Check if this user already has a linked account (with a v5 code)
     const userExisting = await base44.asServiceRole.entities.MemberAccount.filter({ user_email: user.email });
     if (userExisting.length > 0) {
       return Response.json({ error: 'Your account is already linked to an access code.' }, { status: 200, headers: corsHeaders });
     }
 
-    // For students: find the student program to get the name
+    // Resolve name from StudentProgram if available
     let resolvedName = studentName || 'Admin';
     if (!isAdmin) {
       const programs = await base44.asServiceRole.entities.StudentProgram.filter({ access_code: code });

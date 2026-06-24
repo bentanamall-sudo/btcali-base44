@@ -1,49 +1,58 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.31';
 
-// All valid codes live ONLY here — never exposed to frontend
-const ADMIN_CODE = 'BTCALI-ADMIN-P7X92M';
+// ── SECURITY RESET v5 — 2026-06-24 ──
+// All previous codes (v1–v4) are permanently disabled below.
+// Only the new v5 codes are valid.
+
+const ADMIN_CODE = 'BTCALI-ADMIN-V5-8KX3M9PQZR';
 
 const VALID_CODES = {
-  'HENRY-Q8M47Z':    'Henry',
-  'HAEJUN-L3X92V':   'Haejun',
-  'ANDEAS-P6T81K':   'Andeas',
-  'TANUSH-V9R24M':   'Tanush',
-  'RYAN-N5C73Q':     'Ryan',
-  'JULIAN-K2W68P':   'Julian',
-  'MACK-Z7H31L':     'Mack',
-  'MARCUS-T4N95X':   'Marcus',
-  'ALISTAIR-B8Q52R': 'Alistair',
-  'JAYDEN-X6P19V':   'Jayden',
-  'LUKE-M3Z84K':     'Luke',
-  'GAON-R7L26T':     'Gaon',
-  'SEAN-W9C45N':     'Sean',
-  'DANIEL-H2V68Q':   'Daniel',
-  'MATHEW-K5X93L':   'Mathew',
-  'HAYDEN-P8M41Z':   'Hayden',
-  'HUGO-C6T72R':     'Hugo',
-  'CEDRICK-L9N35V':  'Cedrick',
-  'LENNON-Z4Q86P':   'Lennon',
-  // Test codes
-  'TEST-PAGE-1': 'Test User 1',
-  'TEST-PAGE-2': 'Test User 2',
-  'TEST-PAGE-3': 'Test User 3',
-  'TEST-PAGE-4': 'Test User 4',
-  'TEST-PAGE-5': 'Test User 5',
+  'H7X-4KQ2-9RNVJW': 'Henry',
+  'A3M-8PF5-2WKXTZ': 'Haejun',
+  'B9T-6LN1-5MQVRX': 'Andeas',
+  'C2R-7VK4-8PJFNW': 'Tanush',
+  'D5N-3WM9-6TXKQR': 'Ryan',
+  'E8K-2PV7-4RNLFX': 'Julian',
+  'F4J-9TX3-7WMNKR': 'Mack',
+  'G6W-5KN8-3PVJXT': 'Marcus',
+  'J1P-4MX6-9TNWKR': 'Alistair',
+  'K3V-8RN2-5XJWMQ': 'Jayden',
+  'L9X-7KT5-2NRWPJ': 'Luke',
+  'M2N-3PW8-6XKVRT': 'Gaon',
+  'N5T-6XM1-4WJKRP': 'Sean',
+  'P7R-2NV4-9KMWXT': 'Daniel',
+  'Q4K-9WX7-3TNRJM': 'Mathew',
+  'R6M-5JN3-8VXKTW': 'Hayden',
+  'S8W-1KP6-4XMNJR': 'Hugo',
+  'T3X-7NR2-9JWKMV': 'Cedrick',
+  'U1J-4MK8-6RVXNW': 'Lennon',
 };
 
-// All permanently disabled codes — checked first
+// ALL previously issued codes — permanently revoked
 const DISABLED_CODES = new Set([
+  // v1 original codes
   'HENRY173','HAEJUN142','ANDREAS189','TANUSH157','RYAN128',
   'JULIAN194','MACK136','MARCUS181','ALISTAIR149','JAYDEN165',
   'LUKE121','GAON176','SEAN138','DANIEL192','MATHEW154',
   'HAYDEN167','HUGO144','CEDRICK185','LENNON184','BTCALI999',
-  'RYAN-K8Q52M',
+  // v2 codes
   'HENRY-X7K91P','HAEJUN-M4R82Q','ANDEAS-T9V61L','TANUSH-P3N74X',
   'RYAN-V5J38W','JULIAN-W6H93R','MACK-F2T81Z','MARCUS-L7P64N',
   'ALISTAIR-D5X29K','JAYDEN-R8M41V','LUKE-B9Q73T','GAON-H4K86P',
   'SEAN-Z2N58L','DANIEL-Y7R34M','MATHEW-C8P61Q','HAYDEN-J5V92T',
   'HUGO-N4T87X','CEDRICK-Q6L53R','LENNON-X9M72K',
   'BTCALI-ADMIN-84X7P',
+  // v3 codes
+  'RYAN-K8Q52M',
+  // v4 codes — REVOKED in this reset
+  'HENRY-Q8M47Z','HAEJUN-L3X92V','ANDEAS-P6T81K','TANUSH-V9R24M',
+  'RYAN-N5C73Q','JULIAN-K2W68P','MACK-Z7H31L','MARCUS-T4N95X',
+  'ALISTAIR-B8Q52R','JAYDEN-X6P19V','LUKE-M3Z84K','GAON-R7L26T',
+  'SEAN-W9C45N','DANIEL-H2V68Q','MATHEW-K5X93L','HAYDEN-P8M41Z',
+  'HUGO-C6T72R','CEDRICK-L9N35V','LENNON-Z4Q86P',
+  'BTCALI-ADMIN-P7X92M',
+  // v4 test codes
+  'TEST-PAGE-1','TEST-PAGE-2','TEST-PAGE-3','TEST-PAGE-4','TEST-PAGE-5',
 ]);
 
 const corsHeaders = {
@@ -60,7 +69,7 @@ Deno.serve(async (req) => {
   try {
     let body;
     try { body = await req.json(); } catch {
-      return Response.json({ error: 'Invalid JSON body' }, { status: 400, headers: corsHeaders });
+      return Response.json({ valid: false, error: 'Invalid JSON body' }, { status: 400, headers: corsHeaders });
     }
 
     const { access_code } = body;
@@ -74,8 +83,12 @@ Deno.serve(async (req) => {
       return Response.json({ valid: false, error: 'Please enter your access code.' }, { status: 200, headers: corsHeaders });
     }
 
+    // Revoked codes get a clear message
     if (DISABLED_CODES.has(code)) {
-      return Response.json({ valid: false, error: 'This code is no longer valid. Contact BTCALI for your new code.' }, { status: 200, headers: corsHeaders });
+      return Response.json({
+        valid: false,
+        error: 'This code has been revoked as part of a security reset. Contact BTCALI to receive your new access code.',
+      }, { status: 200, headers: corsHeaders });
     }
 
     if (code === ADMIN_CODE) {

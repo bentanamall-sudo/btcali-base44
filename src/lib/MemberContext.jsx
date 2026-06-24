@@ -9,14 +9,14 @@ import { createContext, useContext, useState, useEffect } from 'react';
 import { base44 } from '@/api/base44Client';
 
 const MemberContext = createContext(null);
-const STORAGE_KEY = 'btcali_code_v4';
+const STORAGE_KEY = 'btcali_code_v5';
 
 function clearLegacyKeys() {
   try {
     [
       'btcali_access_code','btcali_member','accessCode','member_access',
       'btcali_code','access_code','student_code','btcali_access',
-      'btcali_code_v2','btcali_code_v3',
+      'btcali_code_v2','btcali_code_v3','btcali_code_v4',
     ].forEach(k => { localStorage.removeItem(k); sessionStorage.removeItem(k); });
     sessionStorage.removeItem('btcali-pending-code');
     sessionStorage.removeItem('btcali_access');
