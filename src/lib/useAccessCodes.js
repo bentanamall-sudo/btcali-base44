@@ -1,2 +1,11 @@
-// Re-export from the global AccessContext so all components share the same state
-export { useAccessCodes } from './AccessContext';
+/**
+ * useAccessCodes — stub. Always returns non-member, non-admin state.
+ * Authentication has been removed.
+ */
+export function useAccessCodes() {
+  return {
+    isAdmin: false,
+    isMember: false,
+    unlockCode: () => false,
+  };
+}

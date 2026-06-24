@@ -1,11 +1,9 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Crown, Shield, Dumbbell, Layers, ShoppingBag, ExternalLink, Lock, ChevronRight, ChevronLeft, ChevronDown, CheckCircle, Send, CreditCard, LogOut, ClipboardList } from 'lucide-react';
+import { Crown, Shield, Dumbbell, Layers, ShoppingBag, ExternalLink, Lock, ChevronRight, ChevronDown, CheckCircle, Send, CreditCard } from 'lucide-react';
 import HomeButton from '@/components/HomeButton';
-import { useMember } from '@/lib/MemberContext';
 import { PageHeaderLogo } from '@/components/Logo';
 import { Link } from 'react-router-dom';
-
 
 const EQUIPMENT = [
   { name: 'P-bars (Parallettes)', url: 'https://www.amazon.com.au/BRITOR-Parallettes-Gymnastics-Bodybuilding-Non-Slip-Durable-1/dp/B08CMZMFCS' },
@@ -61,16 +59,10 @@ const CONSENT_CHECKBOXES = [
 function AccordionSection({ icon: Icon, title, children }) {
   const [open, setOpen] = useState(false);
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 16 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      className="glass rounded-2xl border border-border/30 mb-4 overflow-hidden"
-    >
-      <button
-        onClick={() => setOpen(o => !o)}
-        className="w-full flex items-center justify-between gap-3 p-6 text-left hover:bg-muted/5 transition-colors"
-      >
+    <motion.div initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
+      className="glass rounded-2xl border border-border/30 mb-4 overflow-hidden">
+      <button onClick={() => setOpen(o => !o)}
+        className="w-full flex items-center justify-between gap-3 p-6 text-left hover:bg-muted/5 transition-colors">
         <div className="flex items-center gap-3">
           <div className="w-9 h-9 rounded-xl gradient-bg-strong flex items-center justify-center flex-shrink-0">
             <Icon className="w-4 h-4 text-primary-foreground" />
@@ -83,16 +75,9 @@ function AccordionSection({ icon: Icon, title, children }) {
       </button>
       <AnimatePresence initial={false}>
         {open && (
-          <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: 'auto', opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.28, ease: 'easeInOut' }}
-            className="overflow-hidden"
-          >
-            <div className="px-6 pb-6 border-t border-border/30 pt-5">
-              {children}
-            </div>
+          <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.28, ease: 'easeInOut' }} className="overflow-hidden">
+            <div className="px-6 pb-6 border-t border-border/30 pt-5">{children}</div>
           </motion.div>
         )}
       </AnimatePresence>
@@ -121,7 +106,6 @@ function ConsentForm() {
   const [submitted, setSubmitted] = useState(false);
 
   const allChecked = checked.every(Boolean) && name.trim() && email.trim();
-
   const toggle = (i) => setChecked(prev => prev.map((v, idx) => idx === i ? !v : v));
 
   const handleSubmit = () => {
@@ -129,18 +113,7 @@ function ConsentForm() {
     const checklist = CONSENT_CHECKBOXES.map((c, i) => `[${checked[i] ? '✓' : '✗'}] ${c}`).join('\n');
     const subject = encodeURIComponent('BTCALI Terms & Conditions Agreement — ' + name);
     const body = encodeURIComponent(
-`BTCALI Coaching Terms & Conditions Agreement
-
-Athlete Name: ${name}
-Athlete Email: ${email}
-Instagram: ${instagram || 'N/A'}
-Submitted: ${now} (Sydney)
-
---- AGREED TERMS ---
-${checklist}
-
---- CONFIRMATION ---
-This athlete has read, understood, and accepted all BTCALI Coaching Terms & Conditions and Training Rules.`
+`BTCALI Coaching Terms & Conditions Agreement\n\nAthlete Name: ${name}\nAthlete Email: ${email}\nInstagram: ${instagram || 'N/A'}\nSubmitted: ${now} (Sydney)\n\n--- AGREED TERMS ---\n${checklist}`
     );
     const a = document.createElement('a');
     a.href = `mailto:btcalisw@gmail.com?subject=${subject}&body=${body}`;
@@ -165,9 +138,7 @@ This athlete has read, understood, and accepted all BTCALI Coaching Terms & Cond
     <div className="space-y-4">
       <div className="glass rounded-xl p-4 border border-primary/20 mb-4">
         <p className="font-heading font-semibold text-primary text-xs uppercase tracking-wider mb-1">Step 2 — Complete the Agreement</p>
-        <p className="text-sm font-body text-muted-foreground leading-relaxed">
-          Read every item carefully. Tick each box to confirm you understand and agree, then enter your details and submit.
-        </p>
+        <p className="text-sm font-body text-muted-foreground leading-relaxed">Read every item carefully. Tick each box to confirm you understand and agree, then enter your details and submit.</p>
       </div>
       <div className="grid sm:grid-cols-2 gap-3 mb-2">
         <div>
@@ -197,49 +168,12 @@ This athlete has read, understood, and accepted all BTCALI Coaching Terms & Cond
           </div>
         ))}
       </div>
-      <motion.button
-        whileHover={{ scale: allChecked ? 1.02 : 1 }}
-        whileTap={{ scale: allChecked ? 0.97 : 1 }}
-        onClick={handleSubmit}
-        disabled={!allChecked}
-        className="w-full py-4 rounded-xl gradient-bg-strong text-primary-foreground font-heading font-bold text-base glow-primary disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center gap-2 mt-2"
-      >
+      <motion.button whileHover={{ scale: allChecked ? 1.02 : 1 }} whileTap={{ scale: allChecked ? 0.97 : 1 }}
+        onClick={handleSubmit} disabled={!allChecked}
+        className="w-full py-4 rounded-xl gradient-bg-strong text-primary-foreground font-heading font-bold text-base glow-primary disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center gap-2 mt-2">
         <Send className="w-5 h-5" /> Send Terms & Conditions Report
       </motion.button>
-      {!allChecked && (
-        <p className="text-xs text-center font-body text-muted-foreground">Tick all boxes and fill in your name and email to continue.</p>
-      )}
-    </div>
-  );
-}
-
-function AccessGate() {
-  return (
-    <div className="min-h-screen flex items-center justify-center px-4">
-      <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }}
-        className="glass-strong rounded-2xl p-8 sm:p-12 border border-primary/30 max-w-md w-full text-center glow-border">
-        <div className="w-16 h-16 rounded-2xl gradient-bg-strong glow-primary flex items-center justify-center mx-auto mb-6">
-          <Lock className="w-7 h-7 text-primary-foreground" />
-        </div>
-        <h1 className="font-heading font-bold text-2xl sm:text-3xl text-foreground mb-2">
-          BTCALI <span className="gradient-text">Members</span>
-        </h1>
-        <p className="text-sm font-body text-muted-foreground mb-8 leading-relaxed">
-          This area is exclusive to BTCALI coaching members. Log in or activate your account with your access code.
-        </p>
-        <div className="flex flex-col gap-3">
-          <Link to="/activate">
-            <motion.button whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}
-              className="w-full py-3.5 rounded-xl gradient-bg-strong text-primary-foreground font-heading font-bold text-sm">
-              Enter Access Code
-            </motion.button>
-          </Link>
-        </div>
-        <p className="text-xs text-muted-foreground font-body mt-6">
-          Not a BTCALI member?{' '}
-          <Link to="/1-on-1-coaching" className="text-primary font-semibold hover:underline">Apply for coaching →</Link>
-        </p>
-      </motion.div>
+      {!allChecked && <p className="text-xs text-center font-body text-muted-foreground">Tick all boxes and fill in your name and email to continue.</p>}
     </div>
   );
 }
@@ -248,19 +182,13 @@ function PaymentMethods() {
   return (
     <div className="space-y-4">
       <p className="text-sm font-body text-muted-foreground mb-2">Use any of the following methods to pay for your BTCALI coaching.</p>
-
-      {/* PayPal */}
       <div className="glass rounded-2xl border border-border/30 overflow-hidden">
         <div className="px-5 py-4 border-b border-border/20 flex items-center gap-3">
           <span className="text-xl">💳</span>
           <p className="font-heading font-bold text-foreground text-sm">PayPal</p>
         </div>
-        <div className="p-5">
-          <p className="text-sm font-body text-foreground/80">d.lo128@yahoo.com.au</p>
-        </div>
+        <div className="p-5"><p className="text-sm font-body text-foreground/80">d.lo128@yahoo.com.au</p></div>
       </div>
-
-      {/* Bank Transfer */}
       <div className="glass rounded-2xl border border-border/30 overflow-hidden">
         <div className="px-5 py-4 border-b border-border/20 flex items-center gap-3">
           <span className="text-xl">🏦</span>
@@ -277,238 +205,12 @@ function PaymentMethods() {
           </div>
         </div>
       </div>
-
-      {/* PayID */}
       <div className="glass rounded-2xl border border-border/30 overflow-hidden">
         <div className="px-5 py-4 border-b border-border/20 flex items-center gap-3">
           <span className="text-xl">📱</span>
           <p className="font-heading font-bold text-foreground text-sm">PayID</p>
         </div>
-        <div className="p-5">
-          <p className="text-sm font-body text-foreground/80">61493172114</p>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-// ── Main Members page — two-slide onboarding flow ──────────────────────────
-export default function Members() {
-  const { isMember, logout } = useMember();
-  const [slide, setSlide] = useState(0); // 0 = coaching dashboard, 1 = agreement form, 2 = payment methods
-
-  if (!isMember) return <AccessGate />;
-
-  return (
-    <div className="min-h-screen py-12 px-4 sm:px-6 max-w-3xl mx-auto">
-      {/* Header */}
-      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-8">
-        <div className="flex items-center justify-between mb-6">
-          <PageHeaderLogo />
-          <HomeButton />
-        </div>
-        <div className="inline-flex items-center gap-2 glass px-4 py-2 rounded-full mb-4 border border-primary/30">
-          <Crown className="w-4 h-4 text-primary" />
-          <span className="text-sm font-heading font-semibold gradient-text">BTCALI Members Area</span>
-        </div>
-        <div className="flex items-start justify-between gap-4">
-          <div>
-            <h1 className="font-heading font-bold text-3xl sm:text-4xl text-foreground mb-2">
-              Welcome, <span className="gradient-text">BTCALI Athlete</span>
-            </h1>
-            <p className="text-muted-foreground font-body text-base">
-              Your exclusive coaching resources, training rules, and member content.
-            </p>
-            <Link to="/my-program">
-              <motion.button
-                whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}
-                className="mt-4 inline-flex items-center gap-2.5 px-6 py-3.5 rounded-xl gradient-bg-strong text-primary-foreground font-heading font-bold text-sm glow-primary"
-                style={{ boxShadow: '0 0 24px rgba(79,157,255,0.3)' }}
-              >
-                <ClipboardList className="w-4 h-4" /> Open My Training Program →
-              </motion.button>
-            </Link>
-          </div>
-          <button
-            onClick={logout}
-            className="flex-shrink-0 flex items-center gap-2 px-4 py-2 rounded-xl glass border border-border/30 text-muted-foreground font-heading font-semibold text-xs hover:border-destructive/40 hover:text-destructive transition-all mt-1"
-            title="Remove access code"
-          >
-            <LogOut className="w-3.5 h-3.5" /> Change Code
-          </button>
-        </div>
-      </motion.div>
-
-      {/* Tab navigation */}
-      <div className="flex gap-2 mb-6 flex-wrap">
-        {[
-          { id: 0, label: 'Coaching Resources' },
-          { id: 1, label: 'T&C Agreement' },
-          { id: 2, label: 'Payment Methods', TabIcon: CreditCard },
-        ].map(tab => (
-          <button
-            key={tab.id}
-            onClick={() => setSlide(tab.id)}
-            className={`flex items-center gap-1.5 px-4 py-2 rounded-xl font-heading font-semibold text-sm transition-all border ${
-              slide === tab.id
-                ? 'gradient-bg-strong text-primary-foreground border-primary/40'
-                : 'glass border-border/30 text-muted-foreground hover:border-primary/30 hover:text-foreground'
-            }`}
-          >
-            {tab.TabIcon && <tab.TabIcon className="w-3.5 h-3.5" />}
-            {tab.label}
-          </button>
-        ))}
-      </div>
-
-      {/* Slide container */}
-      <div className="relative overflow-hidden">
-        <AnimatePresence mode="wait">
-          {slide === 0 ? (
-            <motion.div
-              key="dashboard"
-              initial={{ opacity: 0, x: -30 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -30 }}
-              transition={{ duration: 0.3, ease: 'easeInOut' }}
-            >
-              {/* BTCALI Coaching Terms & Conditions */}
-              <AccordionSection icon={Shield} title="BTCALI Coaching Terms & Conditions">
-                <BulletList items={TERMS_ITEMS} />
-                <motion.button
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.97 }}
-                  onClick={() => setSlide(1)}
-                  className="mt-6 w-full py-3.5 rounded-xl glass border border-primary/30 text-primary font-heading font-bold text-sm flex items-center justify-center gap-2 hover:border-primary/60 transition-all"
-                >
-                  <CheckCircle className="w-4 h-4" /> Go to T&C Agreement
-                  <ChevronRight className="w-4 h-4" />
-                </motion.button>
-              </AccordionSection>
-
-              {/* General Training Rules */}
-              <AccordionSection icon={Dumbbell} title="General Training Rules">
-                <div className="space-y-4">
-                  <BulletList items={TRAINING_RULES} />
-                  <div className="glass rounded-xl p-4 border border-primary/20 mt-4">
-                    <p className="text-sm font-heading font-semibold text-foreground mb-2">Wrist Warm-Up Video</p>
-                    <a href="https://youtube.com/shorts/A1YPZdLyXPI?si=NTII3TIGbomjKChN" target="_blank" rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 text-sm font-body text-primary hover:underline">
-                      <ExternalLink className="w-3.5 h-3.5" /> Watch Wrist Warm-Up Tutorial
-                    </a>
-                  </div>
-                </div>
-              </AccordionSection>
-
-              {/* Supersetting */}
-              <AccordionSection icon={Layers} title="How Supersetting Works">
-                <div className="space-y-4 text-sm font-body text-foreground/80 leading-relaxed">
-                  <p>
-                    Supersetting means alternating two exercises that use different muscle groups. For example, you can perform a push exercise followed immediately by a pull exercise, then rest 3–5 minutes before repeating.
-                  </p>
-                  <SupersetExample />
-                </div>
-              </AccordionSection>
-
-              {/* Equipment */}
-              <AccordionSection icon={ShoppingBag} title="Essential Equipment">
-                <p className="text-sm font-body text-muted-foreground mb-5 leading-relaxed">
-                  Recommended gear for your BTCALI training.
-                </p>
-                <div className="space-y-3">
-                  {EQUIPMENT.map((item) => (
-                    <a key={item.name} href={item.url} target="_blank" rel="noopener noreferrer"
-                      className="flex items-center justify-between gap-3 glass rounded-xl px-4 py-3.5 border border-border/30 hover:border-primary/40 transition-all group">
-                      <span className="font-heading font-semibold text-sm text-foreground group-hover:text-primary transition-colors">{item.name}</span>
-                      <ExternalLink className="w-4 h-4 text-muted-foreground group-hover:text-primary flex-shrink-0 transition-colors" />
-                    </a>
-                  ))}
-                </div>
-              </AccordionSection>
-
-              {/* My Program CTA */}
-              <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
-                className="glass rounded-2xl p-6 border border-primary/20 text-center mb-4">
-                <ClipboardList className="w-8 h-8 text-primary mx-auto mb-3" />
-                <h3 className="font-heading font-bold text-lg text-foreground mb-2">Your Personalised Program</h3>
-                <p className="text-sm font-body text-muted-foreground mb-5">
-                  View your BTCALI training program, log workouts, and track goals.
-                </p>
-                <Link to="/my-program">
-                  <motion.button whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}
-                    className="inline-flex items-center gap-2 px-7 py-3.5 rounded-xl gradient-bg-strong text-primary-foreground font-heading font-bold text-sm glow-primary">
-                    <ClipboardList className="w-4 h-4" /> View My Program
-                  </motion.button>
-                </Link>
-              </motion.div>
-
-              {/* Skill Library CTA */}
-              <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
-                className="glass rounded-2xl p-6 border border-primary/20 text-center mb-6">
-                <Crown className="w-8 h-8 text-primary mx-auto mb-3" />
-                <h3 className="font-heading font-bold text-lg text-foreground mb-2">Access Member Skill Libraries</h3>
-                <p className="text-sm font-body text-muted-foreground mb-5">
-                  Your member access unlocks premium skill tutorials in the Skill Library.
-                </p>
-                <Link to="/skills">
-                  <motion.button whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}
-                    className="inline-flex items-center gap-2 px-7 py-3.5 rounded-xl gradient-bg-strong text-primary-foreground font-heading font-bold text-sm glow-primary">
-                    <Crown className="w-4 h-4" /> Go to Skill Library
-                  </motion.button>
-                </Link>
-              </motion.div>
-
-
-            </motion.div>
-          ) : slide === 1 ? (
-            <motion.div
-              key="agreement"
-              initial={{ opacity: 0, x: 30 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: 30 }}
-              transition={{ duration: 0.3, ease: 'easeInOut' }}
-            >
-              <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}
-                className="glass rounded-2xl border border-primary/30 mb-6 overflow-hidden">
-                <div className="flex items-center gap-3 p-6 border-b border-border/30">
-                  <div className="w-9 h-9 rounded-xl gradient-bg-strong flex items-center justify-center flex-shrink-0">
-                    <CheckCircle className="w-4 h-4 text-primary-foreground" />
-                  </div>
-                  <div>
-                    <h2 className="font-heading font-bold text-base sm:text-lg text-foreground">Terms & Conditions Agreement</h2>
-                    <p className="text-xs font-body text-muted-foreground mt-0.5">Step 2 of your BTCALI coaching onboarding</p>
-                  </div>
-                </div>
-                <div className="px-6 pb-6 pt-5">
-                  <ConsentForm />
-                </div>
-              </motion.div>
-            </motion.div>
-          ) : (
-            <motion.div
-              key="payments"
-              initial={{ opacity: 0, x: 30 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: 30 }}
-              transition={{ duration: 0.3, ease: 'easeInOut' }}
-            >
-              <div className="glass rounded-2xl border border-primary/20 overflow-hidden mb-6">
-                <div className="flex items-center gap-3 p-6 border-b border-border/30">
-                  <div className="w-9 h-9 rounded-xl gradient-bg-strong flex items-center justify-center flex-shrink-0">
-                    <CreditCard className="w-4 h-4 text-primary-foreground" />
-                  </div>
-                  <div>
-                    <h2 className="font-heading font-bold text-base sm:text-lg text-foreground">Payment Methods</h2>
-                    <p className="text-xs font-body text-muted-foreground mt-0.5">BTCALI Members only</p>
-                  </div>
-                </div>
-                <div className="px-6 pb-6 pt-5">
-                  <PaymentMethods />
-                </div>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
+        <div className="p-5"><p className="text-sm font-body text-foreground/80">61493172114</p></div>
       </div>
     </div>
   );
@@ -533,13 +235,145 @@ function SupersetExample() {
               <p>12:00 → Complete a push set.</p>
               <p>12:00:30 → Start your pull set.</p>
               <p>12:01 → Finish your pull set.</p>
-              <p>12:01–12:04 or 12:06 → Rest for 3–5 minutes depending on your required rest time.</p>
+              <p>12:01–12:04 or 12:06 → Rest for 3–5 minutes.</p>
               <p>12:04–12:06 → Begin your next push set.</p>
               <p className="text-muted-foreground pt-1">Repeat the process for all working sets.</p>
             </div>
           </motion.div>
         )}
       </AnimatePresence>
+    </div>
+  );
+}
+
+export default function Members() {
+  const [slide, setSlide] = useState(0);
+
+  return (
+    <div className="min-h-screen py-12 px-4 sm:px-6 max-w-3xl mx-auto">
+      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-8">
+        <div className="flex items-center justify-between mb-6">
+          <PageHeaderLogo />
+          <HomeButton />
+        </div>
+        <div className="inline-flex items-center gap-2 glass px-4 py-2 rounded-full mb-4 border border-primary/30">
+          <Crown className="w-4 h-4 text-primary" />
+          <span className="text-sm font-heading font-semibold gradient-text">BTCALI Members Area</span>
+        </div>
+        <div>
+          <h1 className="font-heading font-bold text-3xl sm:text-4xl text-foreground mb-2">
+            Welcome, <span className="gradient-text">BTCALI Athlete</span>
+          </h1>
+          <p className="text-muted-foreground font-body text-base">
+            Your exclusive coaching resources, training rules, and member content.
+          </p>
+        </div>
+      </motion.div>
+
+      <div className="flex gap-2 mb-6 flex-wrap">
+        {[
+          { id: 0, label: 'Coaching Resources' },
+          { id: 1, label: 'T&C Agreement' },
+          { id: 2, label: 'Payment Methods', TabIcon: CreditCard },
+        ].map(tab => (
+          <button key={tab.id} onClick={() => setSlide(tab.id)}
+            className={`flex items-center gap-1.5 px-4 py-2 rounded-xl font-heading font-semibold text-sm transition-all border ${
+              slide === tab.id ? 'gradient-bg-strong text-primary-foreground border-primary/40' : 'glass border-border/30 text-muted-foreground hover:border-primary/30 hover:text-foreground'
+            }`}>
+            {tab.TabIcon && <tab.TabIcon className="w-3.5 h-3.5" />}
+            {tab.label}
+          </button>
+        ))}
+      </div>
+
+      <div className="relative overflow-hidden">
+        <AnimatePresence mode="wait">
+          {slide === 0 ? (
+            <motion.div key="dashboard" initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -30 }} transition={{ duration: 0.3, ease: 'easeInOut' }}>
+              <AccordionSection icon={Shield} title="BTCALI Coaching Terms & Conditions">
+                <BulletList items={TERMS_ITEMS} />
+                <motion.button whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.97 }} onClick={() => setSlide(1)}
+                  className="mt-6 w-full py-3.5 rounded-xl glass border border-primary/30 text-primary font-heading font-bold text-sm flex items-center justify-center gap-2 hover:border-primary/60 transition-all">
+                  <CheckCircle className="w-4 h-4" /> Go to T&C Agreement <ChevronRight className="w-4 h-4" />
+                </motion.button>
+              </AccordionSection>
+              <AccordionSection icon={Dumbbell} title="General Training Rules">
+                <div className="space-y-4">
+                  <BulletList items={TRAINING_RULES} />
+                  <div className="glass rounded-xl p-4 border border-primary/20 mt-4">
+                    <p className="text-sm font-heading font-semibold text-foreground mb-2">Wrist Warm-Up Video</p>
+                    <a href="https://youtube.com/shorts/A1YPZdLyXPI?si=NTII3TIGbomjKChN" target="_blank" rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 text-sm font-body text-primary hover:underline">
+                      <ExternalLink className="w-3.5 h-3.5" /> Watch Wrist Warm-Up Tutorial
+                    </a>
+                  </div>
+                </div>
+              </AccordionSection>
+              <AccordionSection icon={Layers} title="How Supersetting Works">
+                <div className="space-y-4 text-sm font-body text-foreground/80 leading-relaxed">
+                  <p>Supersetting means alternating two exercises that use different muscle groups. For example, you can perform a push exercise followed immediately by a pull exercise, then rest 3–5 minutes before repeating.</p>
+                  <SupersetExample />
+                </div>
+              </AccordionSection>
+              <AccordionSection icon={ShoppingBag} title="Essential Equipment">
+                <p className="text-sm font-body text-muted-foreground mb-5 leading-relaxed">Recommended gear for your BTCALI training.</p>
+                <div className="space-y-3">
+                  {EQUIPMENT.map((item) => (
+                    <a key={item.name} href={item.url} target="_blank" rel="noopener noreferrer"
+                      className="flex items-center justify-between gap-3 glass rounded-xl px-4 py-3.5 border border-border/30 hover:border-primary/40 transition-all group">
+                      <span className="font-heading font-semibold text-sm text-foreground group-hover:text-primary transition-colors">{item.name}</span>
+                      <ExternalLink className="w-4 h-4 text-muted-foreground group-hover:text-primary flex-shrink-0 transition-colors" />
+                    </a>
+                  ))}
+                </div>
+              </AccordionSection>
+              <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
+                className="glass rounded-2xl p-6 border border-primary/20 text-center mb-6">
+                <Crown className="w-8 h-8 text-primary mx-auto mb-3" />
+                <h3 className="font-heading font-bold text-lg text-foreground mb-2">Access Member Skill Libraries</h3>
+                <p className="text-sm font-body text-muted-foreground mb-5">Access premium skill tutorials in the Skill Library.</p>
+                <Link to="/skills">
+                  <motion.button whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}
+                    className="inline-flex items-center gap-2 px-7 py-3.5 rounded-xl gradient-bg-strong text-primary-foreground font-heading font-bold text-sm glow-primary">
+                    <Crown className="w-4 h-4" /> Go to Skill Library
+                  </motion.button>
+                </Link>
+              </motion.div>
+            </motion.div>
+          ) : slide === 1 ? (
+            <motion.div key="agreement" initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 30 }} transition={{ duration: 0.3, ease: 'easeInOut' }}>
+              <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}
+                className="glass rounded-2xl border border-primary/30 mb-6 overflow-hidden">
+                <div className="flex items-center gap-3 p-6 border-b border-border/30">
+                  <div className="w-9 h-9 rounded-xl gradient-bg-strong flex items-center justify-center flex-shrink-0">
+                    <CheckCircle className="w-4 h-4 text-primary-foreground" />
+                  </div>
+                  <div>
+                    <h2 className="font-heading font-bold text-base sm:text-lg text-foreground">Terms & Conditions Agreement</h2>
+                    <p className="text-xs font-body text-muted-foreground mt-0.5">Step 2 of your BTCALI coaching onboarding</p>
+                  </div>
+                </div>
+                <div className="px-6 pb-6 pt-5"><ConsentForm /></div>
+              </motion.div>
+            </motion.div>
+          ) : (
+            <motion.div key="payments" initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 30 }} transition={{ duration: 0.3, ease: 'easeInOut' }}>
+              <div className="glass rounded-2xl border border-primary/20 overflow-hidden mb-6">
+                <div className="flex items-center gap-3 p-6 border-b border-border/30">
+                  <div className="w-9 h-9 rounded-xl gradient-bg-strong flex items-center justify-center flex-shrink-0">
+                    <CreditCard className="w-4 h-4 text-primary-foreground" />
+                  </div>
+                  <div>
+                    <h2 className="font-heading font-bold text-base sm:text-lg text-foreground">Payment Methods</h2>
+                    <p className="text-xs font-body text-muted-foreground mt-0.5">BTCALI Coaching Clients</p>
+                  </div>
+                </div>
+                <div className="px-6 pb-6 pt-5"><PaymentMethods /></div>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
     </div>
   );
 }

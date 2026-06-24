@@ -10,7 +10,6 @@ import { MemberProvider } from '@/lib/MemberContext';
 import UserNotRegisteredError from '@/components/UserNotRegisteredError';
 import Layout from './components/Layout';
 import Home from './pages/Home';
-import AthleteScan from './pages/AthleteScan';
 import Tutorials from './pages/Tutorials';
 import TutorialDetail from './pages/TutorialDetail';
 import SkillLibrary from './pages/SkillLibrary.jsx';
@@ -34,10 +33,6 @@ import Members from './pages/Members.jsx';
 import SkillLibrarySection from './pages/SkillLibrarySection';
 import MyProgram from './pages/MyProgram';
 import AdminPrograms from './pages/AdminPrograms';
-import ActivateAccount from './pages/ActivateAccount.jsx';
-import Login from './pages/Login.jsx';
-import Signup from './pages/Signup.jsx';
-import AuthGuard from './components/AuthGuard.jsx';
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -88,14 +83,10 @@ const AuthenticatedApp = () => {
           <Route path="/skills/:categoryId" element={<SkillLibraryCategory />} />
           <Route path="/admin/diagnostics" element={<AdminDiagnostics />} />
           <Route path="/brand" element={<BrandIdentity />} />
-          <Route path="/my-program" element={
-            <AuthGuard requireAuth requireMember>
-              <MyProgram />
-            </AuthGuard>
-          } />
-          <Route path="/activate" element={<ActivateAccount />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
+          <Route path="/my-program" element={<MyProgram />} />
+          <Route path="/activate" element={<MyProgram />} />
+          <Route path="/login" element={<MyProgram />} />
+          <Route path="/signup" element={<MyProgram />} />
           <Route path="/admin/programs" element={<AdminPrograms />} />
           <Route path="*" element={<PageNotFound />} />
         </Route>
