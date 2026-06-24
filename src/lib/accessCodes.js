@@ -1,27 +1,25 @@
-// New secure access codes — used for initial account activation only
-// After activation, students log in with email/password
-export const ADMIN_CODE = 'BTCALI-ADMIN-84X7P';
+export const ADMIN_CODE = 'BTCALI-ADMIN-P7X92M';
 
 export const MEMBER_CODES = [
-  'HENRY-X7K91P',
-  'HAEJUN-M4R82Q',
-  'ANDEAS-T9V61L',
-  'TANUSH-P3N74X',
-  'RYAN-V5J38W',
-  'JULIAN-W6H93R',
-  'MACK-F2T81Z',
-  'MARCUS-L7P64N',
-  'ALISTAIR-D5X29K',
-  'JAYDEN-R8M41V',
-  'LUKE-B9Q73T',
-  'GAON-H4K86P',
-  'SEAN-Z2N58L',
-  'DANIEL-Y7R34M',
-  'MATHEW-C8P61Q',
-  'HAYDEN-J5V92T',
-  'HUGO-N4T87X',
-  'CEDRICK-Q6L53R',
-  'LENNON-X9M72K',
+  'HENRY-Q8M47Z',
+  'HAEJUN-L3X92V',
+  'ANDEAS-P6T81K',
+  'TANUSH-V9R24M',
+  'RYAN-N5C73Q',
+  'JULIAN-K2W68P',
+  'MACK-Z7H31L',
+  'MARCUS-T4N95X',
+  'ALISTAIR-B8Q52R',
+  'JAYDEN-X6P19V',
+  'LUKE-M3Z84K',
+  'GAON-R7L26T',
+  'SEAN-W9C45N',
+  'DANIEL-H2V68Q',
+  'MATHEW-K5X93L',
+  'HAYDEN-P8M41Z',
+  'HUGO-C6T72R',
+  'CEDRICK-L9N35V',
+  'LENNON-Z4Q86P',
 ];
 
 export const ALL_PROGRAM_IDS = [

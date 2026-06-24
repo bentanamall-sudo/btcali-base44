@@ -6,41 +6,49 @@ import { createContext, useContext, useState, useEffect } from 'react';
 
 const MemberContext = createContext(null);
 
-// Storage key bumped to v3 — forces everyone to re-enter their code
-const STORAGE_KEY = 'btcali_code_v3';
-const ADMIN_CODE = 'BTCALI-ADMIN-84X7P';
+// Storage key bumped to v4 — forces everyone to re-enter their code
+const STORAGE_KEY = 'btcali_code_v4';
+const ADMIN_CODE = 'BTCALI-ADMIN-P7X92M';
 
 // All valid student access codes → student name
 const VALID_CODES = {
-  'HENRY-X7K91P':    'Henry',
-  'HAEJUN-M4R82Q':   'Haejun',
-  'ANDEAS-T9V61L':   'Andeas',
-  'TANUSH-P3N74X':   'Tanush',
-  'RYAN-V5J38W':     'Ryan',
-  'JULIAN-W6H93R':   'Julian',
-  'MACK-F2T81Z':     'Mack',
-  'MARCUS-L7P64N':   'Marcus',
-  'ALISTAIR-D5X29K': 'Alistair',
-  'JAYDEN-R8M41V':   'Jayden',
-  'LUKE-B9Q73T':     'Luke',
-  'GAON-H4K86P':     'Gaon',
-  'SEAN-Z2N58L':     'Sean',
-  'DANIEL-Y7R34M':   'Daniel',
-  'MATHEW-C8P61Q':   'Mathew',
-  'HAYDEN-J5V92T':   'Hayden',
-  'HUGO-N4T87X':     'Hugo',
-  'CEDRICK-Q6L53R':  'Cedrick',
-  'LENNON-X9M72K':   'Lennon',
+  'HENRY-Q8M47Z':     'Henry',
+  'HAEJUN-L3X92V':    'Haejun',
+  'ANDEAS-P6T81K':    'Andeas',
+  'TANUSH-V9R24M':    'Tanush',
+  'RYAN-N5C73Q':      'Ryan',
+  'JULIAN-K2W68P':    'Julian',
+  'MACK-Z7H31L':      'Mack',
+  'MARCUS-T4N95X':    'Marcus',
+  'ALISTAIR-B8Q52R':  'Alistair',
+  'JAYDEN-X6P19V':    'Jayden',
+  'LUKE-M3Z84K':      'Luke',
+  'GAON-R7L26T':      'Gaon',
+  'SEAN-W9C45N':      'Sean',
+  'DANIEL-H2V68Q':    'Daniel',
+  'MATHEW-K5X93L':    'Mathew',
+  'HAYDEN-P8M41Z':    'Hayden',
+  'HUGO-C6T72R':      'Hugo',
+  'CEDRICK-L9N35V':   'Cedrick',
+  'LENNON-Z4Q86P':    'Lennon',
 };
 
-// Old/disabled codes — permanently blocked
+// All permanently disabled/compromised codes
 const OLD_CODES = new Set([
+  // Generation 1 — original codes
   'HENRY173','HAEJUN142','ANDREAS189','TANUSH157','RYAN128',
   'JULIAN194','MACK136','MARCUS181','ALISTAIR149','JAYDEN165',
   'LUKE121','GAON176','SEAN138','DANIEL192','MATHEW154',
   'HAYDEN167','HUGO144','CEDRICK185','LENNON184','BTCALI999',
-  // Compromised — permanently disabled
+  // Generation 2 — compromised batch 1
   'RYAN-K8Q52M',
+  // Generation 3 — compromised batch 2 (publicly leaked)
+  'HENRY-X7K91P','HAEJUN-M4R82Q','ANDEAS-T9V61L','TANUSH-P3N74X',
+  'RYAN-V5J38W','JULIAN-W6H93R','MACK-F2T81Z','MARCUS-L7P64N',
+  'ALISTAIR-D5X29K','JAYDEN-R8M41V','LUKE-B9Q73T','GAON-H4K86P',
+  'SEAN-Z2N58L','DANIEL-Y7R34M','MATHEW-C8P61Q','HAYDEN-J5V92T',
+  'HUGO-N4T87X','CEDRICK-Q6L53R','LENNON-X9M72K',
+  'BTCALI-ADMIN-84X7P',
 ]);
 
 export function validateCode(code) {
@@ -57,8 +65,7 @@ function clearAllLegacyKeys() {
     const legacyKeys = [
       'btcali_access_code','btcali_member','accessCode','member_access',
       'btcali_code','access_code','student_code','btcali_access',
-      // v2 key — force re-login after security reset
-      'btcali_code_v2',
+      'btcali_code_v2','btcali_code_v3',
     ];
     legacyKeys.forEach(k => { localStorage.removeItem(k); sessionStorage.removeItem(k); });
     sessionStorage.removeItem('btcali-pending-code');
