@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { callFunction } from '@/lib/callFunction';
 import { useMember } from '@/lib/MemberContext';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { base44 } from '@/api/base44Client';
 import { Bell, BookOpen, Target, ClipboardList, Lock } from 'lucide-react';
 import ProgramTable from '@/components/program/ProgramTable';

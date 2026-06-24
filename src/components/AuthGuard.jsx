@@ -1,10 +1,7 @@
 /**
- * AuthGuard — route protection wrapper.
- *
- * requireAuth=true  → unauthenticated users → /login
- * requireMember=true → authenticated but no access code → /activate
- *
- * While MemberContext is still loading, shows a spinner (avoids flash redirects).
+ * AuthGuard — route protection.
+ * requireAuth=true  → unauthenticated → platform login (returns to /activate)
+ * requireMember=true → authenticated but no code → /activate
  */
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -17,20 +14,23 @@ export default function AuthGuard({ children, requireAuth = false, requireMember
   const { isMember, isAdmin, loading: memberLoading } = useMember();
   const navigate = useNavigate();
 
+  const stillLoading = isLoadingAuth || memberLoading;
+
   useEffect(() => {
-    if (isLoadingAuth || memberLoading) return;
+    if (stillLoading) return;
 
     if (requireAuth && !isAuthenticated) {
-      base44.auth.redirectToLogin(window.location.origin + '/#/my-program');
+      // Return to /activate after login — activate auto-skips to /my-program if already linked
+      base44.auth.redirectToLogin(window.location.origin + '/#/activate');
       return;
     }
 
     if (requireMember && isAuthenticated && !isMember && !isAdmin) {
       navigate('/activate', { replace: true });
     }
-  }, [isLoadingAuth, memberLoading, isAuthenticated, isMember, isAdmin, requireAuth, requireMember]);
+  }, [stillLoading, isAuthenticated, isMember, isAdmin]);
 
-  if (isLoadingAuth || memberLoading) {
+  if (stillLoading) {
     return (
       <div className="fixed inset-0 flex items-center justify-center">
         <div className="w-8 h-8 border-2 border-primary/30 border-t-primary rounded-full animate-spin" />
@@ -38,7 +38,6 @@ export default function AuthGuard({ children, requireAuth = false, requireMember
     );
   }
 
-  // While redirecting, render nothing
   if (requireAuth && !isAuthenticated) return null;
   if (requireMember && isAuthenticated && !isMember && !isAdmin) return null;
 

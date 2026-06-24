@@ -1,8 +1,8 @@
 /**
- * ActivateAccount — access code entry page.
- * - Validates code via backend (validateAccessCode)
- * - If user is logged in, permanently links code to their account (activateMemberAccount)
- * - Redirects to /my-program on success
+ * ActivateAccount — runs after login/signup.
+ * 1. If user is not authenticated → redirect to platform login.
+ * 2. If user is already activated (has MemberAccount) → skip to /my-program.
+ * 3. Otherwise → show access code form.
  */
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
@@ -17,14 +17,24 @@ export default function ActivateAccount() {
   const [code, setCode] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  const { login, isMember } = useMember();
-  const { isAuthenticated } = useAuth();
+  const { login, isMember, loading: memberLoading } = useMember();
+  const { isAuthenticated, isLoadingAuth } = useAuth();
   const navigate = useNavigate();
 
-  // If already activated, skip straight to program
   useEffect(() => {
-    if (isMember) navigate('/my-program', { replace: true });
-  }, [isMember]);
+    if (isLoadingAuth || memberLoading) return;
+
+    // Not logged in → go to platform login, return here after
+    if (!isAuthenticated) {
+      base44.auth.redirectToLogin(window.location.origin + '/#/activate');
+      return;
+    }
+
+    // Already activated → go straight to program
+    if (isMember) {
+      navigate('/my-program', { replace: true });
+    }
+  }, [isAuthenticated, isLoadingAuth, isMember, memberLoading]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -33,7 +43,7 @@ export default function ActivateAccount() {
     setError('');
     setLoading(true);
 
-    // 1. Validate code on backend
+    // Validate code via MemberContext (calls backend)
     const result = await login(trimmed);
     if (!result.valid) {
       setLoading(false);
@@ -41,19 +51,34 @@ export default function ActivateAccount() {
       return;
     }
 
-    // 2. If logged in, permanently link this code to the account
+    // Permanently link code to authenticated account
     try {
-      const isAuthed = await base44.auth.isAuthenticated();
-      if (isAuthed) {
-        await base44.functions.invoke('activateMemberAccount', { access_code: trimmed });
+      const res = await base44.functions.invoke('activateMemberAccount', { access_code: trimmed });
+      const data = res?.data;
+      if (data?.error && !data?.already_activated) {
+        setLoading(false);
+        setError(data.error);
+        return;
       }
     } catch {
-      // Non-fatal — code is valid, session is already set
+      // Non-fatal — code is valid, session already set
     }
 
     setLoading(false);
     navigate('/my-program', { replace: true });
   };
+
+  // Spinner while auth/member state resolves
+  if (isLoadingAuth || memberLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="w-8 h-8 border-2 border-primary/30 border-t-primary rounded-full animate-spin" />
+      </div>
+    );
+  }
+
+  // Render nothing while redirecting
+  if (!isAuthenticated || isMember) return null;
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center px-4 py-12">
@@ -74,7 +99,7 @@ export default function ActivateAccount() {
           Enter Your <span className="gradient-text">Access Code</span>
         </h1>
         <p className="text-sm font-body text-muted-foreground mb-8 leading-relaxed">
-          Enter your BTCALI access code to open your personalised program.
+          Enter your BTCALI access code to unlock your personalised program.
         </p>
 
         <form onSubmit={handleSubmit} className="w-full flex flex-col gap-3">
@@ -82,7 +107,7 @@ export default function ActivateAccount() {
             type="text"
             value={code}
             onChange={e => { setCode(e.target.value.toUpperCase()); setError(''); }}
-            placeholder="e.g. BTCALI123"
+            placeholder="e.g. H7X-4KQ2-9RNVJW"
             autoCapitalize="characters"
             autoCorrect="off"
             autoComplete="off"

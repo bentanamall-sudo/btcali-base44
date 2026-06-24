@@ -35,8 +35,8 @@ import SkillLibrarySection from './pages/SkillLibrarySection';
 import MyProgram from './pages/MyProgram';
 import AdminPrograms from './pages/AdminPrograms';
 import ActivateAccount from './pages/ActivateAccount.jsx';
-import Login from './pages/Login';
-import AuthGuard from './components/AuthGuard';
+import Login from './pages/Login.jsx';
+import AuthGuard from './components/AuthGuard.jsx';
 
 function ScrollToTop() {
   const { pathname } = useLocation();
