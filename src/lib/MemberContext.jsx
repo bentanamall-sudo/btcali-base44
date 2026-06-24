@@ -6,7 +6,8 @@ import { createContext, useContext, useState, useEffect } from 'react';
 
 const MemberContext = createContext(null);
 
-const STORAGE_KEY = 'btcali_code_v2';
+// Storage key bumped to v3 — forces everyone to re-enter their code
+const STORAGE_KEY = 'btcali_code_v3';
 const ADMIN_CODE = 'BTCALI-ADMIN-84X7P';
 
 // All valid student access codes → student name
@@ -15,7 +16,7 @@ const VALID_CODES = {
   'HAEJUN-M4R82Q':   'Haejun',
   'ANDEAS-T9V61L':   'Andeas',
   'TANUSH-P3N74X':   'Tanush',
-  'RYAN-K8Q52M':     'Ryan',
+  'RYAN-V5J38W':     'Ryan',
   'JULIAN-W6H93R':   'Julian',
   'MACK-F2T81Z':     'Mack',
   'MARCUS-L7P64N':   'Marcus',
@@ -32,12 +33,14 @@ const VALID_CODES = {
   'LENNON-X9M72K':   'Lennon',
 };
 
-// Old codes that are permanently disabled
+// Old/disabled codes — permanently blocked
 const OLD_CODES = new Set([
   'HENRY173','HAEJUN142','ANDREAS189','TANUSH157','RYAN128',
   'JULIAN194','MACK136','MARCUS181','ALISTAIR149','JAYDEN165',
   'LUKE121','GAON176','SEAN138','DANIEL192','MATHEW154',
   'HAYDEN167','HUGO144','CEDRICK185','LENNON184','BTCALI999',
+  // Compromised — permanently disabled
+  'RYAN-K8Q52M',
 ]);
 
 export function validateCode(code) {
@@ -54,6 +57,8 @@ function clearAllLegacyKeys() {
     const legacyKeys = [
       'btcali_access_code','btcali_member','accessCode','member_access',
       'btcali_code','access_code','student_code','btcali_access',
+      // v2 key — force re-login after security reset
+      'btcali_code_v2',
     ];
     legacyKeys.forEach(k => { localStorage.removeItem(k); sessionStorage.removeItem(k); });
     sessionStorage.removeItem('btcali-pending-code');

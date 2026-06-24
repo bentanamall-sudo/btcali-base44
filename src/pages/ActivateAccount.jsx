@@ -54,7 +54,7 @@ export default function ActivateAccount() {
               type="text"
               value={code}
               onChange={e => { setCode(e.target.value.toUpperCase()); setError(''); }}
-              placeholder="e.g. RYAN-K8Q52M"
+              placeholder="e.g. BTCALI123"
               autoCapitalize="characters"
               autoCorrect="off"
               spellCheck={false}
