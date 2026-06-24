@@ -1,8 +1,12 @@
 /**
- * ActivateAccount — runs after login/signup.
- * 1. If user is not authenticated → redirect to platform login.
- * 2. If user is already activated (has MemberAccount) → skip to /my-program.
- * 3. Otherwise → show access code form.
+ * /activate — post-login activation gate.
+ *
+ * Flow:
+ * 1. Not authenticated → redirect to platform login (returns here after)
+ * 2. Authenticated + already has MemberAccount → skip to /my-program
+ * 3. Authenticated + no MemberAccount → show access code input
+ *
+ * CRITICAL: return URL after platform login is /#/activate, NOT /#/login
  */
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
@@ -16,60 +20,63 @@ import { base44 } from '@/api/base44Client';
 export default function ActivateAccount() {
   const [code, setCode] = useState('');
   const [error, setError] = useState('');
-  const [loading, setLoading] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
   const { login, isMember, loading: memberLoading } = useMember();
   const { isAuthenticated, isLoadingAuth } = useAuth();
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (isLoadingAuth || memberLoading) return;
+  const stillLoading = isLoadingAuth || memberLoading;
 
-    // Not logged in → go to platform login, return here after
+  useEffect(() => {
+    if (stillLoading) return;
+
+    // Not logged in → send to platform login, return here after
     if (!isAuthenticated) {
-      base44.auth.redirectToLogin(window.location.origin + '/#/activate');
+      const returnUrl = window.location.origin + '/#/activate';
+      base44.auth.redirectToLogin(returnUrl);
       return;
     }
 
-    // Already activated → go straight to program
+    // Already activated → skip to program
     if (isMember) {
       navigate('/my-program', { replace: true });
     }
-  }, [isAuthenticated, isLoadingAuth, isMember, memberLoading]);
+  }, [isAuthenticated, isMember, stillLoading]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const trimmed = code.trim().toUpperCase();
     if (!trimmed) { setError('Please enter your access code.'); return; }
     setError('');
-    setLoading(true);
+    setSubmitting(true);
 
-    // Validate code via MemberContext (calls backend)
+    // Step 1: validate the code format via backend
     const result = await login(trimmed);
     if (!result.valid) {
-      setLoading(false);
-      setError(result.error);
+      setSubmitting(false);
+      setError(result.error || 'Invalid access code.');
       return;
     }
 
-    // Permanently link code to authenticated account
+    // Step 2: permanently link code to this authenticated account
     try {
       const res = await base44.functions.invoke('activateMemberAccount', { access_code: trimmed });
       const data = res?.data;
       if (data?.error && !data?.already_activated) {
-        setLoading(false);
+        setSubmitting(false);
         setError(data.error);
         return;
       }
     } catch {
-      // Non-fatal — code is valid, session already set
+      // Non-fatal — code validated, session set, proceed anyway
     }
 
-    setLoading(false);
+    setSubmitting(false);
     navigate('/my-program', { replace: true });
   };
 
-  // Spinner while auth/member state resolves
-  if (isLoadingAuth || memberLoading) {
+  // Show spinner while loading
+  if (stillLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="w-8 h-8 border-2 border-primary/30 border-t-primary rounded-full animate-spin" />
@@ -77,7 +84,7 @@ export default function ActivateAccount() {
     );
   }
 
-  // Render nothing while redirecting
+  // Render nothing while redirect is in progress
   if (!isAuthenticated || isMember) return null;
 
   return (
@@ -99,7 +106,7 @@ export default function ActivateAccount() {
           Enter Your <span className="gradient-text">Access Code</span>
         </h1>
         <p className="text-sm font-body text-muted-foreground mb-8 leading-relaxed">
-          Enter your BTCALI access code to unlock your personalised program.
+          Enter your BTCALI access code to unlock your personalised training program. You only need to do this once.
         </p>
 
         <form onSubmit={handleSubmit} className="w-full flex flex-col gap-3">
@@ -107,7 +114,7 @@ export default function ActivateAccount() {
             type="text"
             value={code}
             onChange={e => { setCode(e.target.value.toUpperCase()); setError(''); }}
-            placeholder="e.g. H7X-4KQ2-9RNVJW"
+            placeholder="XXXX-XXXX-XXXX-XXXX"
             autoCapitalize="characters"
             autoCorrect="off"
             autoComplete="off"
@@ -119,10 +126,10 @@ export default function ActivateAccount() {
 
           <button
             type="submit"
-            disabled={loading}
+            disabled={submitting}
             className="w-full gradient-bg-strong py-4 rounded-xl font-heading font-bold text-sm text-primary-foreground flex items-center justify-center gap-2 disabled:opacity-60 transition-opacity"
           >
-            {loading ? (
+            {submitting ? (
               <><Loader2 className="w-4 h-4 animate-spin" /> Verifying…</>
             ) : (
               <>Activate Access <ArrowRight className="w-4 h-4" /></>

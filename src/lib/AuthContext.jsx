@@ -128,8 +128,9 @@ export const AuthProvider = ({ children }) => {
   };
 
   const navigateToLogin = () => {
-    // Use the SDK's redirectToLogin method
-    base44.auth.redirectToLogin(window.location.href);
+    // Always return to /activate after login — NEVER /login (causes infinite loop)
+    const returnUrl = window.location.origin + '/#/activate';
+    base44.auth.redirectToLogin(returnUrl);
   };
 
   return (

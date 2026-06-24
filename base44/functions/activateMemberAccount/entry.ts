@@ -1,28 +1,28 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.31';
 
-// ── SECURITY RESET v5 — 2026-06-24 ──
-const ADMIN_CODE = 'BTCALI-ADMIN-V5-8KX3M9PQZR';
+// ── SECURITY RESET v6 — 2026-06-24 ──
+const ADMIN_CODE = 'BTCALI-ADMIN-V6-QX9M3RKPTZ';
 
 const VALID_CODES = {
-  'H7X-4KQ2-9RNVJW': 'Henry',
-  'A3M-8PF5-2WKXTZ': 'Haejun',
-  'B9T-6LN1-5MQVRX': 'Andeas',
-  'C2R-7VK4-8PJFNW': 'Tanush',
-  'D5N-3WM9-6TXKQR': 'Ryan',
-  'E8K-2PV7-4RNLFX': 'Julian',
-  'F4J-9TX3-7WMNKR': 'Mack',
-  'G6W-5KN8-3PVJXT': 'Marcus',
-  'J1P-4MX6-9TNWKR': 'Alistair',
-  'K3V-8RN2-5XJWMQ': 'Jayden',
-  'L9X-7KT5-2NRWPJ': 'Luke',
-  'M2N-3PW8-6XKVRT': 'Gaon',
-  'N5T-6XM1-4WJKRP': 'Sean',
-  'P7R-2NV4-9KMWXT': 'Daniel',
-  'Q4K-9WX7-3TNRJM': 'Mathew',
-  'R6M-5JN3-8VXKTW': 'Hayden',
-  'S8W-1KP6-4XMNJR': 'Hugo',
-  'T3X-7NR2-9JWKMV': 'Cedrick',
-  'U1J-4MK8-6RVXNW': 'Lennon',
+  'Q7MX-9TWP-K2VR-H8NC': 'Henry',
+  'R4ZD-W8KY-M7QP-T2XF': 'Haejun',
+  'N9VC-H3TR-P8KM-W6QJ': 'Andeas',
+  'T5BW-X2NR-G9KH-P4MV': 'Tanush',
+  'K8HN-M4VQ-W3XR-B7TZ': 'Ryan',
+  'W2PZ-T6BN-H9MX-C5KR': 'Julian',
+  'X4KR-N8WZ-T3VH-M6PB': 'Mack',
+  'B6TH-P3MX-N7KW-R9VZ': 'Marcus',
+  'C9WV-K5TR-B2NX-H8MQ': 'Alistair',
+  'H3MZ-B7NV-P4KT-W6XR': 'Jayden',
+  'P5XN-W9KZ-R6BM-T3VH': 'Luke',
+  'V7KT-R2MH-X5NB-P9WZ': 'Gaon',
+  'M4NR-H8VX-B6KZ-W2PT': 'Sean',
+  'Z6BW-P4NK-M9XH-T7RV': 'Daniel',
+  'G8VX-T5RN-K3WB-H6MZ': 'Mathew',
+  'F3KH-W7MV-N2XR-B5TZ': 'Hayden',
+  'J9MT-B4WX-P7KN-R3VH': 'Hugo',
+  'L2XR-N6TH-W8VM-K4BZ': 'Cedrick',
+  'Y7WB-K3XN-T9VH-M5RZ': 'Lennon',
 };
 
 const corsHeaders = {
@@ -38,6 +38,8 @@ Deno.serve(async (req) => {
 
   try {
     const base44 = createClientFromRequest(req);
+
+    // Must be authenticated
     const user = await base44.auth.me();
     if (!user) return Response.json({ error: 'Unauthorized' }, { status: 401, headers: corsHeaders });
 
@@ -64,10 +66,11 @@ Deno.serve(async (req) => {
       if (acct.user_email !== user.email) {
         return Response.json({ error: 'This access code has already been activated by another account.' }, { status: 200, headers: corsHeaders });
       }
+      // Already linked to THIS user — success
       return Response.json({ success: true, already_activated: true, student_name: acct.student_name }, { status: 200, headers: corsHeaders });
     }
 
-    // Check if this user already has a linked account (with a v5 code)
+    // Check if this user already has a linked account
     const userExisting = await base44.asServiceRole.entities.MemberAccount.filter({ user_email: user.email });
     if (userExisting.length > 0) {
       return Response.json({ error: 'Your account is already linked to an access code.' }, { status: 200, headers: corsHeaders });
@@ -89,6 +92,7 @@ Deno.serve(async (req) => {
     });
 
     return Response.json({ success: true, student_name: resolvedName }, { status: 200, headers: corsHeaders });
+
   } catch (error) {
     console.error('activateMemberAccount error:', error.message);
     return Response.json({ error: error.message }, { status: 500, headers: corsHeaders });

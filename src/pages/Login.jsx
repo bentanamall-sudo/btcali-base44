@@ -1,6 +1,8 @@
 /**
- * /login — redirects to Base44 platform auth.
- * If already logged in, sends to /activate (which auto-skips to /my-program if already activated).
+ * /login — entry point for unauthenticated users.
+ * Redirects to Base44 platform auth with /activate as the return URL.
+ * If already authenticated, skips straight to /activate (which skips to /my-program if already linked).
+ * CRITICAL: never pass /login as the return URL — that causes an infinite loop.
  */
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -16,11 +18,14 @@ export default function Login() {
     if (isLoadingAuth) return;
 
     if (isAuthenticated) {
+      // Already logged in — check activation status via /activate
       navigate('/activate', { replace: true });
       return;
     }
 
-    base44.auth.redirectToLogin(window.location.origin + '/#/activate');
+    // Not logged in — send to platform auth, return to /activate (NOT /login)
+    const returnUrl = window.location.origin + '/#/activate';
+    base44.auth.redirectToLogin(returnUrl);
   }, [isAuthenticated, isLoadingAuth]);
 
   return (
