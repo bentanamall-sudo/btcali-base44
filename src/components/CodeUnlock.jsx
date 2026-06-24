@@ -100,7 +100,7 @@ export default function CodeUnlock() {
   // Not logged in — simple Login button
   return (
     <button
-      onClick={() => base44.auth.redirectToLogin('/#/my-program')}
+      onClick={() => base44.auth.redirectToLogin(window.location.origin + '/#/activate')}
       className="flex items-center gap-1.5 glass px-4 py-1.5 rounded-full text-sm font-heading font-semibold text-foreground/80 hover:text-foreground hover:border-primary/30 transition-all"
       style={{ border: '1px solid rgba(255,255,255,0.1)' }}
     >

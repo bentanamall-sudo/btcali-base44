@@ -36,6 +36,7 @@ import MyProgram from './pages/MyProgram';
 import AdminPrograms from './pages/AdminPrograms';
 import ActivateAccount from './pages/ActivateAccount.jsx';
 import Login from './pages/Login.jsx';
+import Signup from './pages/Signup.jsx';
 import AuthGuard from './components/AuthGuard.jsx';
 
 function ScrollToTop() {
@@ -94,7 +95,7 @@ const AuthenticatedApp = () => {
           } />
           <Route path="/activate" element={<ActivateAccount />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
           <Route path="/admin/programs" element={<AdminPrograms />} />
           <Route path="*" element={<PageNotFound />} />
         </Route>

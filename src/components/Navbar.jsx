@@ -169,7 +169,8 @@ export default function Navbar() {
   };
 
   const handleLogin = () => {
-    base44.auth.redirectToLogin(window.location.origin + '/#/my-program');
+    // Always return to /activate after login — it routes to /my-program if already activated
+    base44.auth.redirectToLogin(window.location.origin + '/#/activate');
   };
 
   const navLinks = isMember || isAdmin
