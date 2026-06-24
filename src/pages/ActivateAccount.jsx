@@ -1,7 +1,8 @@
 /**
  * ActivateAccount — access code entry page.
- * Sends code to backend for validation — no codes in frontend.
- * Mobile-friendly: stacked layout, keyboard-safe submit button.
+ * - Validates code via backend (validateAccessCode)
+ * - If user is logged in, permanently links code to their account (activateMemberAccount)
+ * - Redirects to /my-program on success
  */
 import { useState } from 'react';
 import { motion } from 'framer-motion';
@@ -9,6 +10,7 @@ import { Lock, ArrowRight, AlertCircle, Loader2 } from 'lucide-react';
 import { useMember } from '@/lib/MemberContext';
 import { Link, useNavigate } from 'react-router-dom';
 import { NavbarLogo } from '@/components/Logo';
+import { base44 } from '@/api/base44Client';
 
 export default function ActivateAccount() {
   const [code, setCode] = useState('');
@@ -23,13 +25,27 @@ export default function ActivateAccount() {
     if (!trimmed) { setError('Please enter your access code.'); return; }
     setError('');
     setLoading(true);
+
+    // 1. Validate code on backend
     const result = await login(trimmed);
-    setLoading(false);
-    if (result.valid) {
-      navigate('/my-program', { replace: true });
-    } else {
+    if (!result.valid) {
+      setLoading(false);
       setError(result.error);
+      return;
     }
+
+    // 2. If logged in, permanently link this code to the account
+    try {
+      const isAuthed = await base44.auth.isAuthenticated();
+      if (isAuthed) {
+        await base44.functions.invoke('activateMemberAccount', { access_code: trimmed });
+      }
+    } catch {
+      // Non-fatal — code is valid, session is already set
+    }
+
+    setLoading(false);
+    navigate('/my-program', { replace: true });
   };
 
   return (
@@ -55,7 +71,6 @@ export default function ActivateAccount() {
         </p>
 
         <form onSubmit={handleSubmit} className="w-full flex flex-col gap-3">
-          {/* Stacked layout on mobile — no clipping */}
           <input
             type="text"
             value={code}
@@ -78,7 +93,7 @@ export default function ActivateAccount() {
             {loading ? (
               <><Loader2 className="w-4 h-4 animate-spin" /> Verifying…</>
             ) : (
-              <>Enter <ArrowRight className="w-4 h-4" /></>
+              <>Activate Access <ArrowRight className="w-4 h-4" /></>
             )}
           </button>
         </form>

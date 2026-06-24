@@ -34,7 +34,7 @@ import Members from './pages/Members.jsx';
 import SkillLibrarySection from './pages/SkillLibrarySection';
 import MyProgram from './pages/MyProgram';
 import AdminPrograms from './pages/AdminPrograms';
-import ActivateAccount from './pages/ActivateAccount';
+import ActivateAccount from './pages/ActivateAccount.jsx';
 
 function ScrollToTop() {
   const { pathname } = useLocation();

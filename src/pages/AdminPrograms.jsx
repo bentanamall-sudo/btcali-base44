@@ -110,7 +110,7 @@ export default function AdminPrograms() {
     setLoading(true);
     try {
       const data = await Promise.race([
-        callFunction('getStudentPrograms', { admin_code: 'BTCALI-ADMIN-84X7P' }),
+        callFunction('getStudentPrograms', {}),
         new Promise((_, rej) => setTimeout(() => rej(new Error('timeout after 8s')), 8000)),
       ]);
       setStudents(data?.students || []);

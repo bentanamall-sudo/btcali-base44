@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { NavbarLogo } from './Logo';
 import CodeUnlock from './CodeUnlock';
 import { cn } from '@/lib/utils';
-import { useAccessCodes } from '@/lib/useAccessCodes';
+import { useMember } from '@/lib/MemberContext';
 
 const BASE_NAV = [
   { to: '/', label: 'Home', icon: Zap },
@@ -88,7 +88,7 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
   const location = useLocation();
-  const { isMember, isAdmin } = useAccessCodes();
+  const { isMember, isAdmin } = useMember();
 
   useEffect(() => { setMobileOpen(false); }, [location.pathname]);
 

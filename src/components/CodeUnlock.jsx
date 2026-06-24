@@ -1,35 +1,36 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { KeyRound, ChevronRight, X, ShieldCheck, Crown, LogOut } from 'lucide-react';
-import { useAccessCodes } from '@/lib/useAccessCodes';
+import { useMember } from '@/lib/MemberContext';
 import { useNavigate } from 'react-router-dom';
 
 export default function CodeUnlock() {
   const [open, setOpen] = useState(false);
   const [code, setCode] = useState('');
   const [status, setStatus] = useState(null);
-  const { isAdmin, isMember, accessCode, unlockCode, clearAccess } = useAccessCodes();
+  const { isAdmin, isMember, accessCode, login, logout } = useMember();
   const navigate = useNavigate();
 
-  const handleUnlock = () => {
+  const handleUnlock = async () => {
     if (!code.trim()) return;
-    const result = unlockCode(code);
-    if (result === 'admin') {
+    setStatus('loading');
+    const result = await login(code.trim());
+    if (result.valid && result.isAdmin) {
       setStatus('success-admin');
       setCode('');
       setTimeout(() => { setOpen(false); setStatus(null); navigate('/members'); }, 1200);
-    } else if (result === 'member') {
+    } else if (result.valid) {
       setStatus('success-member');
       setCode('');
       setTimeout(() => { setOpen(false); setStatus(null); navigate('/my-program'); }, 1200);
     } else {
       setStatus('error');
-      setTimeout(() => setStatus(null), 2000);
+      setTimeout(() => setStatus(null), 2500);
     }
   };
 
   const handleClear = () => {
-    clearAccess();
+    logout();
     setOpen(false);
     setCode('');
     setStatus(null);
@@ -95,11 +96,6 @@ export default function CodeUnlock() {
                   <X className="w-4 h-4" />
                 </button>
               </div>
-              {accessCode && (
-                <p className="text-xs font-body text-muted-foreground mb-3">
-                  Code: <span className="font-mono text-primary font-bold">{accessCode}</span>
-                </p>
-              )}
               <div className="flex gap-2">
                 <button onClick={() => { navigate('/my-program'); setOpen(false); }}
                   className="flex-1 px-3 py-2 rounded-xl text-xs font-heading font-semibold gradient-bg-strong text-primary-foreground">
@@ -162,13 +158,16 @@ export default function CodeUnlock() {
                 onChange={(e) => { setCode(e.target.value.toUpperCase()); setStatus(null); }}
                 onKeyDown={(e) => e.key === 'Enter' && handleUnlock()}
                 placeholder="e.g. BTCALI123"
+                autoComplete="off"
+                autoCorrect="off"
                 className="flex-1 bg-transparent text-foreground text-sm font-body px-3 py-2.5 outline-none placeholder:text-muted-foreground/50 uppercase tracking-widest"
               />
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={handleUnlock}
-                className="gradient-bg-strong px-3 flex items-center justify-center"
+                disabled={status === 'loading'}
+                className="gradient-bg-strong px-3 flex items-center justify-center disabled:opacity-60"
               >
                 <ChevronRight className="w-4 h-4 text-primary-foreground" />
               </motion.button>
