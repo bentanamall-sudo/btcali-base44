@@ -253,14 +253,7 @@ export default function Navbar() {
                 </Link>
               </div>
               <div className="pt-1 px-1">
-                {!isMember && !isAdmin ? (
-                  <div className="rounded-xl p-3" style={{ background: 'rgba(79,157,255,0.06)', border: '1px solid rgba(79,157,255,0.15)' }}>
-                    <p className="text-xs font-heading font-bold text-primary/70 mb-2">BTCALI Member?</p>
-                    <CodeUnlock />
-                  </div>
-                ) : (
-                  <CodeUnlock />
-                )}
+                <CodeUnlock />
               </div>
             </div>
           </motion.div>
