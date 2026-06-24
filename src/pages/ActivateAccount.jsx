@@ -4,10 +4,11 @@
  * - If user is logged in, permanently links code to their account (activateMemberAccount)
  * - Redirects to /my-program on success
  */
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Lock, ArrowRight, AlertCircle, Loader2 } from 'lucide-react';
 import { useMember } from '@/lib/MemberContext';
+import { useAuth } from '@/lib/AuthContext';
 import { Link, useNavigate } from 'react-router-dom';
 import { NavbarLogo } from '@/components/Logo';
 import { base44 } from '@/api/base44Client';
@@ -16,8 +17,14 @@ export default function ActivateAccount() {
   const [code, setCode] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  const { login } = useMember();
+  const { login, isMember } = useMember();
+  const { isAuthenticated } = useAuth();
   const navigate = useNavigate();
+
+  // If already activated, skip straight to program
+  useEffect(() => {
+    if (isMember) navigate('/my-program', { replace: true });
+  }, [isMember]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();

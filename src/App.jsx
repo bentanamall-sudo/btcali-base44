@@ -35,6 +35,8 @@ import SkillLibrarySection from './pages/SkillLibrarySection';
 import MyProgram from './pages/MyProgram';
 import AdminPrograms from './pages/AdminPrograms';
 import ActivateAccount from './pages/ActivateAccount.jsx';
+import Login from './pages/Login';
+import AuthGuard from './components/AuthGuard';
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -85,8 +87,14 @@ const AuthenticatedApp = () => {
           <Route path="/skills/:categoryId" element={<SkillLibraryCategory />} />
           <Route path="/admin/diagnostics" element={<AdminDiagnostics />} />
           <Route path="/brand" element={<BrandIdentity />} />
-          <Route path="/my-program" element={<MyProgram />} />
+          <Route path="/my-program" element={
+            <AuthGuard requireAuth requireMember>
+              <MyProgram />
+            </AuthGuard>
+          } />
           <Route path="/activate" element={<ActivateAccount />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Login />} />
           <Route path="/admin/programs" element={<AdminPrograms />} />
           <Route path="*" element={<PageNotFound />} />
         </Route>

@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { callFunction } from '@/lib/callFunction';
 import { useMember } from '@/lib/MemberContext';
 import { Link, useNavigate } from 'react-router-dom';
+import { base44 } from '@/api/base44Client';
 import { Bell, BookOpen, Target, ClipboardList, Lock } from 'lucide-react';
 import ProgramTable from '@/components/program/ProgramTable';
 import GoalsTab from '@/components/program/GoalsTab';
@@ -40,7 +41,8 @@ function AccessGate() {
 }
 
 export default function MyProgram() {
-  const { isMember, isAdmin, accessCode, loading: memberLoading, studentName: memberStudentName, logout } = useMember();
+  const { isMember, isAdmin, accessCode, loading: memberLoading, studentName: memberStudentName, logout: memberLogout } = useMember();
+  const logout = async () => { memberLogout(); await base44.auth.logout('/'); };
   const [program, setProgram] = useState(null);
   const [loading, setLoading] = useState(true);
   const [loadError, setLoadError] = useState(null);
