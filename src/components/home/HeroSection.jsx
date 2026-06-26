@@ -1,7 +1,7 @@
 import { useRef } from 'react';
 import { motion, useMotionValue, useSpring } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { ScanLine, Trophy } from 'lucide-react';
+import { BookOpen, Users } from 'lucide-react';
 import VideoCollage from './VideoCollage';
 
 export default function HeroSection() {
@@ -136,36 +136,14 @@ export default function HeroSection() {
               ))}
             </motion.div>
 
-            {/* Trust badges */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 1.0 }}
-              className="flex flex-wrap gap-4 mb-10"
-            >
-              {['1-ON-1 COACHING', 'VIDEO ANALYSIS', 'PROVEN RESULTS', 'SKILL MASTERY'].map((badge, i) => (
-                <motion.span
-                  key={badge}
-                  initial={{ opacity: 0, scale: 0.85 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ delay: 1.05 + i * 0.07 }}
-                  className="flex items-center gap-1.5 text-[10px] font-heading font-bold tracking-[0.15em]"
-                  style={{ color: 'rgba(166,212,255,0.7)' }}
-                >
-                  <span className="w-1 h-1 rounded-full bg-primary" />
-                  {badge}
-                </motion.span>
-              ))}
-            </motion.div>
-
             {/* CTAs */}
             <motion.div
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.9, duration: 0.4 }}
-              className="flex flex-wrap gap-3 mb-10"
+              className="flex flex-wrap gap-3"
             >
-              <Link to="/diagnostic">
+              <Link to="/skills">
                 <motion.button
                   whileHover={{ scale: 1.05, y: -3, boxShadow: '0 0 50px rgba(79,157,255,0.5), 0 8px 30px rgba(79,157,255,0.25)' }}
                   whileTap={{ scale: 0.97 }}
@@ -173,13 +151,13 @@ export default function HeroSection() {
                   className="flex items-center gap-2.5 px-7 py-4 rounded-xl font-heading font-bold text-base gradient-bg-strong btn-shine relative overflow-hidden"
                   style={{ color: 'white', boxShadow: '0 0 28px rgba(79,157,255,0.35), 0 4px 20px rgba(79,157,255,0.18)' }}
                 >
-                  <ScanLine className="w-5 h-5 relative z-10" />
-                  <span className="relative z-10">Start Athlete Scan</span>
+                  <BookOpen className="w-5 h-5 relative z-10" />
+                  <span className="relative z-10">Free Tutorials</span>
                   <span className="relative z-10 text-sm opacity-70">→</span>
                 </motion.button>
               </Link>
 
-              <Link to="/results">
+              <Link to="/apply">
                 <motion.button
                   whileHover={{ scale: 1.04, y: -2 }}
                   whileTap={{ scale: 0.97 }}
@@ -191,32 +169,10 @@ export default function HeroSection() {
                     color: '#BFC9D9',
                   }}
                 >
-                  <Trophy className="w-4 h-4 flex-shrink-0" style={{ color: '#4F9DFF' }} />
-                  View Results
+                  <Users className="w-4 h-4 flex-shrink-0" style={{ color: '#4F9DFF' }} />
+                  Apply for 1-on-1 Coaching
                 </motion.button>
               </Link>
-            </motion.div>
-
-            {/* Stats */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 1.1 }}
-              className="flex items-center gap-8 flex-wrap"
-            >
-              {[
-                { value: '50+', label: 'Athletes Coached' },
-                { value: '$40/wk', label: 'Starting From' },
-              ].map((stat, i) => (
-                <motion.div
-                  key={i}
-                  whileHover={{ scale: 1.08, y: -2 }}
-                  className="flex flex-col cursor-default"
-                >
-                  <span className="font-heading font-black text-2xl" style={{ color: '#4F9DFF', textShadow: '0 0 20px rgba(79,157,255,0.5)' }}>{stat.value}</span>
-                  <span className="text-xs font-body" style={{ color: 'rgba(191,201,217,0.5)' }}>{stat.label}</span>
-                </motion.div>
-              ))}
             </motion.div>
           </div>
 
