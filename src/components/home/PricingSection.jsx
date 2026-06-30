@@ -15,30 +15,21 @@ const INCLUDED = [
 
 const TIERS = [
   {
-    id: 'starter',
-    name: 'Starter',
-    price: '$50',
-    unit: '/week',
-    desc: 'No minimum commitment. Start and cancel anytime.',
-    highlight: false,
-    color: '#7BB8FF',
-  },
-  {
-    id: 'professional',
-    name: 'Professional',
-    price: '$40',
-    unit: '/week',
-    desc: 'Minimum 1 month commitment. Best flexibility.',
+    id: 'monthly',
+    name: 'Monthly',
+    price: '$160',
+    unit: '/month',
+    desc: '4 weeks of personalised coaching. Renews monthly.',
     highlight: true,
     badge: 'Most Popular',
     color: '#4F9DFF',
   },
   {
-    id: 'elite',
-    name: 'Elite',
-    price: '$150',
-    unit: '/month',
-    desc: 'Paid upfront monthly. Maximum savings.',
+    id: 'quarterly',
+    name: 'Quarterly',
+    price: '$450',
+    unit: '/3 months',
+    desc: '12 weeks of coaching paid upfront. Maximum savings.',
     highlight: false,
     badge: 'Best Value',
     color: '#5EEBFF',
@@ -137,7 +128,7 @@ export default function PricingSection() {
             Invest In Faster<br /><span className="gradient-text">Progress</span>
           </h2>
           <p className="text-base mt-4 max-w-md mx-auto" style={{ color: '#BFC9D9' }}>
-            Significantly less than most coaches charging $500+/month for similar results.
+            Significantly less than most coaches charging $500+/month for similar results. $160/month or $450 for 3 months.
           </p>
 
           {/* Spots badge */}
@@ -158,7 +149,7 @@ export default function PricingSection() {
         </motion.div>
 
         {/* Pricing cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-10">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-10 max-w-2xl mx-auto w-full">
           {TIERS.map((tier, i) => (
             <PricingCard key={tier.id} tier={tier} delay={i * 0.1} />
           ))}

@@ -6,31 +6,22 @@ import GlowButton from '../GlowButton';
 
 const plans = [
   {
-    name: 'Free',
-    price: '$0',
-    period: '/forever',
-    features: ['Athlete Scan', 'Free Tutorials', 'Skill Library Preview', 'Progress Tracking'],
-    cta: 'Start Free',
-    to: '/scan',
-    featured: false,
-  },
-  {
-    name: 'Pro Athlete',
-    price: '$49',
+    name: 'Monthly',
+    price: '$160',
     period: '/month',
-    features: ['Full Skill Roadmaps', 'AI Diagnostics', 'Custom Programs', 'Video Feedback', 'Weekly Check-ins', 'Priority Support'],
+    features: ['Personalised training program', 'Video form analysis', 'Voice note feedback', 'Direct messaging support', 'Routine adjustments', 'Skill-specific programming'],
     cta: 'Apply Now',
-    to: '/pricing',
-    featured: true,
+    to: '/apply',
+    featured: false,
   },
   {
-    name: 'Elite 1-on-1',
-    price: '$149',
-    period: '/month',
-    features: ['Everything in Pro', 'Direct Coach Access', 'Daily Feedback', 'Competition Prep', 'Nutrition Guidance', 'VIP Community'],
-    cta: 'Apply for Elite',
-    to: '/pricing',
-    featured: false,
+    name: '3 Months',
+    price: '$450',
+    period: '/3 months',
+    features: ['Everything in Monthly', '12 weeks of coaching', 'Paid upfront — best value', 'Video form analysis', 'Direct messaging support', 'Routine adjustments'],
+    cta: 'Apply Now',
+    to: '/apply',
+    featured: true,
   },
 ];
 

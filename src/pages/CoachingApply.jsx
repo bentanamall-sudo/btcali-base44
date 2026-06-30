@@ -100,7 +100,7 @@ export default function CoachingApply() {
         <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-5"
           style={{ background: 'rgba(79,157,255,0.08)', border: '1px solid rgba(79,157,255,0.18)' }}>
           <Crown className="w-4 h-4 text-primary" />
-          <span className="text-sm font-body" style={{ color: 'rgba(191,201,217,0.7)' }}>$150/month · $40/week · $50/week</span>
+          <span className="text-sm font-body" style={{ color: 'rgba(191,201,217,0.7)' }}>$160/month · $450/3 months</span>
         </div>
         <p className="text-xs font-heading font-semibold uppercase tracking-[0.3em] mb-3" style={{ color: 'rgba(79,157,255,0.5)' }}>Pricing</p>
         <h1 className="font-heading font-black text-4xl sm:text-5xl mb-3 leading-tight">
@@ -117,9 +117,8 @@ export default function CoachingApply() {
           style={{ background: 'linear-gradient(90deg, transparent, rgba(79,157,255,0.5), transparent)' }} />
         <div className="flex flex-col gap-4">
           {[
-            { price: '$150', unit: 'AUD/month', desc: 'Paid upfront monthly', badge: 'Best Value' },
-            { price: '$40',  unit: 'AUD/week',  desc: 'Minimum 1 month commitment' },
-            { price: '$50',  unit: 'AUD/week',  desc: 'No minimum commitment', muted: true },
+            { price: '$160', unit: 'AUD/month', desc: '4 weeks · renews monthly', badge: 'Most Popular' },
+            { price: '$450', unit: 'AUD/3 months', desc: '12 weeks paid upfront', badge: 'Best Value' },
           ].map((tier, i) => (
             <div key={i}>
               {i > 0 && <div className="h-px mb-3" style={{ background: 'rgba(255,255,255,0.06)' }} />}
@@ -265,7 +264,7 @@ export default function CoachingApply() {
                     One thing that's important to me is that BTCALI Coaching was never created purely to make money. I started BTCALI because I know exactly how frustrating it feels to train hard, stay consistent and still feel stuck. I've experienced the plateaus. I've dealt with injuries. I've spent months focusing on the wrong things. I've wasted time on advice that simply didn't apply to me. That's why one of my biggest goals is helping athletes avoid those same mistakes and progress faster.
                   </p>
                   <p className="font-body text-sm text-foreground/80 leading-relaxed">
-                    My coaching is currently only $150 per month, which is significantly lower than many coaches who charge $500+ per month for similar services. The goal isn't to be the most expensive coach. The goal is to help as many athletes as possible achieve skills they once thought were impossible.
+                    My coaching is currently only $160 per month (or $450 for 3 months), which is significantly lower than many coaches who charge $500+ per month for similar services. The goal isn't to be the most expensive coach. The goal is to help as many athletes as possible achieve skills they once thought were impossible.
                   </p>
                   <p className="font-body text-sm text-foreground/80 leading-relaxed">
                     Whether your goal is your first pull-up, first handstand, muscle-up, front lever, planche, handstand push-up, bent arm press or something completely different, every part of your coaching experience is built specifically around helping you reach that goal. You'll receive a personalised training program, detailed technique feedback, ongoing support and routine adjustments based on your progress so you always know exactly what to focus on next.
