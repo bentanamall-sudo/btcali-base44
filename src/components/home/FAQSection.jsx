@@ -6,7 +6,7 @@ const FAQS = [
   { q: 'How long until I see results?', a: 'Most athletes start seeing visible progress within 2–4 weeks. Skills like handstand and front lever can take longer — but with the right structure, stalled athletes typically start moving again within the first month.' },
   { q: 'Is coaching beginner friendly?', a: 'Yes. I coach athletes from complete beginners working towards their first push-up progressions, all the way to advanced athletes chasing the full planche. Your programme is built entirely around your current level.' },
   { q: 'What equipment do I need?', a: 'Most BTCALI athletes train with parallettes (p-bars) and a pull-up bar. I build your programme around whatever you have available — home setup, gym, or both.' },
-  { q: 'Can I cancel?', a: 'There is a minimum 1-month commitment. After that, you are free to pause or cancel. No lock-in contracts beyond the first month.' },
+  { q: 'Can I cancel?', a: 'Monthly coaching ($160/month) has a minimum 1-month commitment. After that, you are free to pause or cancel. The 3-month plan ($450) is paid upfront for 12 weeks. No long-term lock-in contracts.' },
   { q: 'What if I train at a gym?', a: 'Gym training works perfectly. I structure your programme around the equipment you have access to.' },
   { q: 'What if I train at home?', a: 'Home training is fully supported. Most BTCALI athletes train at home with basic equipment.' },
   { q: 'How does messaging support work?', a: 'You send your working sets via video and I reply with detailed feedback — text, voice notes, or screen recordings. My main availability is weekdays 4–6 PM NSW time. I aim to respond before your next session whenever possible.' },

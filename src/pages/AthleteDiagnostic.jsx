@@ -240,9 +240,8 @@ export default function AthleteDiagnostic() {
         <Label>Which coaching option would you realistically consider?</Label>
         <div className="grid grid-cols-1 gap-2">
           {[
-            'AUD $150/month (paid upfront — best value)',
-            'AUD $40/week (minimum 1 month)',
-            'AUD $50/week (no minimum commitment)',
+            'AUD $160/month (4 weeks · renews monthly)',
+            'AUD $450/3 months (12 weeks · paid upfront — best value)',
             'I would like more information first',
             'I am not interested in coaching',
           ].map(v => (
@@ -543,15 +542,11 @@ export default function AthleteDiagnostic() {
             <p className="font-heading font-semibold text-primary text-xs uppercase tracking-wider mb-1">BTCALI Coaching Pricing</p>
             <div className="flex items-center gap-2">
               <div className="w-2 h-2 rounded-full bg-primary flex-shrink-0" />
-              <span className="font-heading font-bold text-foreground text-sm">AUD $150/month <span className="text-muted-foreground font-normal">(paid upfront — best value)</span></span>
+              <span className="font-heading font-bold text-foreground text-sm">AUD $160/month <span className="text-muted-foreground font-normal">(4 weeks · renews monthly)</span></span>
             </div>
             <div className="flex items-center gap-2">
               <div className="w-2 h-2 rounded-full bg-primary flex-shrink-0" />
-              <span className="font-heading font-bold text-foreground text-sm">AUD $40/week <span className="text-muted-foreground font-normal">(minimum 1 month commitment)</span></span>
-            </div>
-            <div className="flex items-center gap-2">
-              <div className="w-2 h-2 rounded-full bg-muted-foreground/50 flex-shrink-0" />
-              <span className="font-heading font-semibold text-foreground/70 text-sm">AUD $50/week <span className="text-muted-foreground font-normal">(no minimum commitment)</span></span>
+              <span className="font-heading font-bold text-foreground text-sm">AUD $450/3 months <span className="text-muted-foreground font-normal">(12 weeks · paid upfront — best value)</span></span>
             </div>
           </div>
           <div className="flex flex-col gap-3">
