@@ -1,52 +1,52 @@
-import HeroSection from '../components/home/HeroSection';
-import WhyAthletesFail from '../components/home/WhyAthletesFail';
-import SocialProofCounter from '../components/home/SocialProofCounter';
-import ResultsTeaser from '../components/home/ResultsTeaser';
-import WhoThisIsFor from '../components/home/WhoThisIsFor';
-import MyStory from '../components/home/MyStory';
-import BeforeAfterOutcomes from '../components/home/BeforeAfterOutcomes';
-import HowCoachingWorks from '../components/home/HowCoachingWorks';
-import PricingSection from '../components/home/PricingSection';
-import FAQSection from '../components/home/FAQSection';
-import FreeTutorialsBanner from '../components/home/FreeTutorialsBanner';
-import FooterSection from '../components/home/FooterSection';
-import Floating3DWords from '../components/home/Floating3DWords';
-
-function Divider() {
-  return (
-    <div className="px-4 my-2">
-      <div className="section-divider" />
-    </div>
-  );
-}
+import CinemaHero from '@/components/cinema/CinemaHero';
+import ProofSection from '@/components/cinema/ProofSection';
+import StickyStory from '@/components/cinema/StickyStory';
+import ProblemSolution from '@/components/cinema/ProblemSolution';
+import SkillJourney from '@/components/cinema/SkillJourney';
+import ResultsGallery from '@/components/cinema/ResultsGallery';
+import StackingCards from '@/components/cinema/StackingCards';
+import CoachingAnalysis from '@/components/cinema/CoachingAnalysis';
+import HowCoachingWorks from '@/components/cinema/HowCoachingWorks';
+import WhoCoachingIsFor from '@/components/cinema/WhoCoachingIsFor';
+import CoachingBenefits from '@/components/cinema/CoachingBenefits';
+import CinemaPricing from '@/components/cinema/CinemaPricing';
+import EditorialFAQ from '@/components/cinema/EditorialFAQ';
+import FinalCTA from '@/components/cinema/FinalCTA';
+import CinemaFooter from '@/components/cinema/CinemaFooter';
 
 export default function Home() {
   return (
-    <div>
-      <Floating3DWords>
-        <HeroSection />
-      </Floating3DWords>
-      <Divider />
-      <SocialProofCounter />
-      <Divider />
-      <WhyAthletesFail />
-      <Divider />
-      <ResultsTeaser />
-      <Divider />
-      <WhoThisIsFor />
-      <Divider />
-      <MyStory />
-      <Divider />
-      <BeforeAfterOutcomes />
-      <Divider />
+    <div className="relative">
+      {/* Chapter: Intro */}
+      <CinemaHero />
+
+      {/* Chapter: Proof */}
+      <ProofSection />
+
+      {/* Chapter: Journey */}
+      <StickyStory />
+
+      {/* Chapter: Method */}
+      <ProblemSolution />
+      <SkillJourney />
+      <CoachingAnalysis />
+
+      {/* Chapter: Results */}
+      <ResultsGallery />
+      <StackingCards />
+
+      {/* Chapter: Coaching */}
       <HowCoachingWorks />
-      <Divider />
-      <PricingSection />
-      <Divider />
-      <FAQSection />
-      <Divider />
-      <FreeTutorialsBanner />
-      <FooterSection />
+      <WhoCoachingIsFor />
+      <CoachingBenefits />
+
+      {/* Chapter: Apply */}
+      <CinemaPricing />
+      <EditorialFAQ />
+      <FinalCTA />
+
+      {/* Footer */}
+      <CinemaFooter />
     </div>
   );
 }

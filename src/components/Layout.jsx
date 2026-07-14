@@ -1,18 +1,23 @@
 import { Outlet } from 'react-router-dom';
-import Navbar from './Navbar';
+import CinemaNavbar from '@/components/cinema/CinemaNavbar';
 import ErrorBoundary from './ErrorBoundary';
-import ScrollIndicator from './ScrollIndicator';
+import ScrollProgress from '@/lib/motion/ScrollProgress';
+import SmoothScroll from '@/lib/motion/SmoothScroll';
+import CustomCursor from '@/lib/motion/CustomCursor';
 
 export default function Layout() {
   return (
-    <div className="min-h-screen bg-background">
-      <Navbar />
-      <ScrollIndicator />
-      <main className="pt-16">
-        <ErrorBoundary>
-          <Outlet />
-        </ErrorBoundary>
-      </main>
-    </div>
+    <SmoothScroll>
+      <div className="min-h-screen bg-background">
+        <CustomCursor />
+        <ScrollProgress />
+        <CinemaNavbar />
+        <main>
+          <ErrorBoundary>
+            <Outlet />
+          </ErrorBoundary>
+        </main>
+      </div>
+    </SmoothScroll>
   );
 }
