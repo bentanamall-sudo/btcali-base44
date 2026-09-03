@@ -7,9 +7,6 @@ import HomeButton from '../components/HomeButton';
 const FREE_SECTION = {
   title: 'Free Tutorials',
   subtitle: 'Open to everyone — no code required',
-  accentColor: '#22c55e',
-  badge: 'Free',
-  badgeClass: 'bg-emerald-500/15 text-emerald-400 border-emerald-500/25',
   description: 'Build strong foundations in calisthenics with beginner and intermediate tutorials covering basics, handstand development, and planche conditioning.',
   includes: [
     'Master The Basics',
@@ -22,9 +19,6 @@ const FREE_SECTION = {
 const PREMIUM_SECTION = {
   title: 'BTCALI Premium Tutorials',
   subtitle: 'BTCALI Members Only',
-  accentColor: '#D4AF37',
-  badge: 'Members Only',
-  badgeClass: 'bg-amber-500/15 text-amber-400 border-amber-500/25',
   description: 'Access tutorials covering all major calisthenics skills — including planche, front lever, front lever pull-ups, muscle-up, handstand, handstand push-up, L-sit to handstand, bent arm press, strength foundations, mobility, and much more.',
   includes: [
     'Planche',
@@ -47,59 +41,53 @@ function SectionCard({ section, onClick }) {
     <motion.div
       whileHover={{ y: -4, transition: { duration: 0.2 } }}
       onClick={onClick}
-      className="cursor-pointer group rounded-2xl overflow-hidden relative flex flex-col h-full"
+      className="cursor-pointer group flex flex-col h-full"
       style={{
-        background: isPremium
-          ? 'linear-gradient(145deg, hsl(var(--card)), hsl(42 78% 8%))'
-          : 'linear-gradient(145deg, hsl(var(--card)), hsl(var(--surface-2)))',
-        border: isPremium
-          ? '1.5px solid hsl(var(--primary)/0.35)'
-          : '1px solid hsl(var(--border)/0.4)',
+        background: isPremium ? '#1A1A1A' : '#F4F4F2',
+        color: isPremium ? '#F4F4F2' : '#1A1A1A',
+        border: isPremium ? '2px solid #FF4D00' : '1px solid #D1D1CB',
       }}
+      data-view-cursor
     >
-      {/* Top accent line */}
-      <div className="h-0.5 w-full"
-        style={{ background: `linear-gradient(90deg, transparent, ${section.accentColor}, transparent)`, opacity: isPremium ? 0.6 : 0.35 }} />
-
       <div className="p-7 sm:p-8 flex flex-col flex-1">
         {/* Badge */}
-        <div className="flex justify-end mb-5">
-          <span className={`text-xs font-heading font-bold px-3 py-1.5 rounded-full border ${section.badgeClass}`}>
-            {section.badge}
+        <div className="flex justify-end mb-6">
+          <span className="eyebrow px-3 py-1.5" style={{
+            background: isPremium ? '#FF4D00' : '#1A1A1A',
+            color: '#F4F4F2',
+          }}>
+            {isPremium ? 'Members Only' : 'Free'}
           </span>
         </div>
 
         {/* Title */}
-        <h2 className="font-heading font-bold text-2xl sm:text-3xl mb-1.5"
-          style={{ color: isPremium ? 'hsl(var(--primary))' : undefined }}>
-          {isPremium ? <span className="gradient-text">{section.title}</span> : section.title}
+        <h2 className="display-lg mb-2" style={{ fontSize: 'clamp(1.75rem, 3vw, 2.5rem)', color: isPremium ? '#FF4D00' : '#1A1A1A' }}>
+          {section.title}
         </h2>
-        <p className="font-heading font-semibold text-xs uppercase tracking-widest mb-4"
-          style={{ color: isPremium ? 'hsl(var(--primary)/0.65)' : 'hsl(var(--muted-foreground))' }}>
+        <p className="eyebrow mb-5" style={{ color: isPremium ? 'rgba(244,244,242,0.5)' : 'rgba(26,26,26,0.5)' }}>
           {section.subtitle}
         </p>
-        <p className="font-body text-sm text-muted-foreground leading-relaxed mb-5">
+        <p className="font-body leading-relaxed mb-6" style={{ color: isPremium ? 'rgba(244,244,242,0.7)' : 'rgba(26,26,26,0.65)', fontSize: '18px' }}>
           {section.description}
         </p>
 
         {/* Includes list */}
-        <div className="space-y-2 mb-7 flex-1">
+        <div className="space-y-2.5 mb-8 flex-1">
           {section.includes.map(item => (
             <div key={item} className="flex items-center gap-2.5">
-              <div className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: section.accentColor }} />
-              <span className="text-sm font-body text-foreground/75">{item}</span>
+              <div className="w-1.5 h-1.5 flex-shrink-0" style={{ background: isPremium ? '#FF4D00' : '#1A1A1A' }} />
+              <span className="font-body" style={{ color: isPremium ? 'rgba(244,244,242,0.75)' : 'rgba(26,26,26,0.75)', fontSize: '18px' }}>{item}</span>
             </div>
           ))}
         </div>
 
-        {/* CTA — always at bottom */}
+        {/* CTA */}
         {isPremium ? (
-          <div className="w-full py-3.5 rounded-xl flex items-center justify-center gap-2 font-heading font-bold text-base gradient-bg-strong text-primary-foreground transition-all duration-200"
-            style={{ boxShadow: '0 0 16px hsl(var(--glow-primary)/0.15)' }}>
+          <div className="b-cta w-full py-3.5 flex items-center justify-center gap-2 text-sm">
             <Crown className="w-4 h-4" /> Explore Premium Tutorials
           </div>
         ) : (
-          <div className="w-full py-3.5 rounded-xl flex items-center justify-center gap-2 font-heading font-bold text-base border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/10 transition-all duration-200">
+          <div className="b-cta-outline w-full py-3.5 flex items-center justify-center gap-2 text-sm">
             <Zap className="w-4 h-4" /> Explore Free Tutorials
           </div>
         )}
@@ -112,29 +100,27 @@ export default function SkillLibrary() {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen py-12 px-4 sm:px-6 max-w-4xl mx-auto">
+    <div className="min-h-screen py-16 px-4 sm:px-6 max-w-5xl mx-auto">
       {/* Header */}
-      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-10 text-center">
-        <div className="flex justify-center mb-4">
+      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-12">
+        <div className="flex items-center justify-between mb-8">
           <PageHeaderLogo />
-        </div>
-        <div className="flex justify-center mb-4">
           <HomeButton />
         </div>
-        <div className="inline-flex items-center gap-2 glass px-4 py-2 rounded-full mb-4 border border-border/30">
-          <BookOpen className="w-4 h-4 text-primary" />
-          <span className="text-xs font-heading font-semibold text-muted-foreground uppercase tracking-widest">BTCALI Skill Library</span>
+        <div className="flex items-center gap-3 mb-4">
+          <span className="w-8 h-px" style={{ background: '#FF4D00' }} />
+          <span className="eyebrow text-foreground/50">BTCALI Skill Library</span>
         </div>
-        <h1 className="font-heading font-bold text-4xl sm:text-5xl mb-3 leading-tight">
-          The <span className="gradient-text">Skill Library</span>
+        <h1 className="display-xl text-foreground mb-4" style={{ fontSize: 'clamp(2.5rem, 6vw, 5rem)' }}>
+          The Skill Library
         </h1>
-        <p className="font-body text-muted-foreground text-sm max-w-md mx-auto">
+        <p className="font-body text-foreground/60 max-w-lg" style={{ fontSize: '18px', lineHeight: 1.6 }}>
           Choose your path — free tutorials to build foundations, or premium member content for advanced skills.
         </p>
       </motion.div>
 
-      {/* Two section cards — equal height */}
-      <div className="grid sm:grid-cols-2 gap-5 items-stretch">
+      {/* Two section cards */}
+      <div className="grid sm:grid-cols-2 gap-px items-stretch mb-8" style={{ background: '#D1D1CB' }}>
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.08 }} className="flex">
           <SectionCard section={FREE_SECTION} onClick={() => navigate('/skills/free')} />
         </motion.div>
@@ -145,29 +131,29 @@ export default function SkillLibrary() {
 
       {/* Coaching pitch */}
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }}
-        className="mt-8 glass rounded-2xl p-7 border border-border/30 text-center">
-        <p className="font-body text-sm text-foreground/80 leading-relaxed mb-2">
+        className="p-8 text-center" style={{ background: '#F4F4F2', border: '1px solid #D1D1CB' }}>
+        <p className="font-body text-foreground/80 leading-relaxed mb-3" style={{ fontSize: '18px' }}>
           I coach athletes through skills such as Planche, Front Lever, Handstand, Handstand Push-Ups, Muscle-Ups, L-Sit to Handstand, Bent Arm Press and many more.
         </p>
-        <p className="font-body text-sm text-muted-foreground leading-relaxed mb-6">
+        <p className="font-body text-foreground/55 leading-relaxed mb-6" style={{ fontSize: '18px' }}>
           Whether you're learning your first pike push-up, trying to unlock a muscle-up, building towards a front lever or working towards a full planche, BTCALI coaching is built around your current level and goals.
         </p>
         <button
           onClick={() => navigate('/results')}
-          className="inline-flex items-center gap-2.5 px-7 py-3.5 rounded-xl gradient-bg-strong text-primary-foreground font-heading font-bold text-sm glow-primary mb-3"
+          className="b-cta inline-flex items-center gap-2.5 px-7 py-3.5 text-sm"
         >
           <Trophy className="w-4 h-4" /> See What BTCALI Athletes Have Achieved
         </button>
-        <p className="text-xs font-body text-muted-foreground/60">
+        <p className="font-body text-foreground/40 mt-4" style={{ fontSize: '14px' }}>
           This is what can be achieved through personalised BTCALI coaching.
         </p>
       </motion.div>
 
       {/* Bottom note */}
       <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.4 }} className="mt-4 text-center">
-        <div className="inline-flex items-center gap-2 glass px-5 py-3 rounded-xl border border-border/25">
-          <Lock className="w-3.5 h-3.5 text-muted-foreground/40" />
-          <p className="text-xs font-body text-muted-foreground">Premium tutorials require a BTCALI member access code or active coaching enrolment.</p>
+        <div className="inline-flex items-center gap-2 px-5 py-3" style={{ border: '1px solid #D1D1CB' }}>
+          <Lock className="w-3.5 h-3.5 text-foreground/40" />
+          <p className="font-body text-foreground/55" style={{ fontSize: '14px' }}>Premium tutorials require a BTCALI member access code or active coaching enrolment.</p>
         </div>
       </motion.div>
     </div>

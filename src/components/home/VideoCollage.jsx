@@ -38,16 +38,15 @@ function CollageTile({ src, thumb, delay, x, y, w, h }) {
 
   return (
     <motion.div
-      initial={{ opacity: 0, scale: 0.9 }}
+      initial={{ opacity: 0, scale: 0.92 }}
       animate={{ opacity: 1, scale: 1 }}
-      transition={{ delay, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+      transition={{ delay, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
       className="absolute overflow-hidden"
       style={{
         left: `${x}%`, top: `${y}%`,
         width: `${w}%`, height: `${h}%`,
-        borderRadius: 12,
-        border: '1px solid rgba(79,157,255,0.2)',
-        boxShadow: '0 4px 20px rgba(0,0,0,0.5)',
+        borderRadius: 0,
+        border: '1px solid #D1D1CB',
       }}
     >
       <img
@@ -61,12 +60,7 @@ function CollageTile({ src, thumb, delay, x, y, w, h }) {
         loop
         playsInline
         className="absolute inset-0 w-full h-full object-cover"
-        style={{ transition: 'opacity 0.4s ease' }}
       />
-      {/* subtle overlay */}
-      <div className="absolute inset-0" style={{
-        background: 'linear-gradient(to bottom, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.25) 100%)',
-      }} />
     </motion.div>
   );
 }
@@ -76,12 +70,6 @@ export default function VideoCollage() {
 
   return (
     <div className="relative w-full" style={{ paddingBottom: '135%' }}>
-      {/* Ambient glow behind the collage */}
-      <div className="absolute inset-0 pointer-events-none" style={{
-        background: 'radial-gradient(ellipse 80% 60% at 50% 50%, rgba(79,157,255,0.08) 0%, transparent 70%)',
-        filter: 'blur(30px)',
-      }} />
-
       {videos.map((v, i) => (
         <CollageTile
           key={i}
@@ -92,18 +80,17 @@ export default function VideoCollage() {
         />
       ))}
 
-      {/* Floating label */}
+      {/* Label — brutalist caption */}
       <motion.div
         initial={{ opacity: 0, y: 8 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 1.2 }}
-        className="absolute bottom-0 left-1/2 -translate-x-1/2 px-4 py-2 rounded-full text-xs font-heading font-bold tracking-[0.15em] uppercase"
+        transition={{ delay: 1 }}
+        className="absolute bottom-0 left-1/2 -translate-x-1/2 px-4 py-2 eyebrow"
         style={{
-          background: 'rgba(0,8,24,0.8)',
-          backdropFilter: 'blur(12px)',
-          border: '1px solid rgba(79,157,255,0.25)',
-          color: '#A6D4FF',
+          background: '#1A1A1A',
+          color: '#F4F4F2',
           whiteSpace: 'nowrap',
+          zIndex: 5,
         }}
       >
         Real Athletes · Real Results

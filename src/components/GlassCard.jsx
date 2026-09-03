@@ -4,12 +4,12 @@ import { cn } from '@/lib/utils';
 export default function GlassCard({ children, className, glow, hover = true, ...props }) {
   return (
     <motion.div
-      whileHover={hover ? { scale: 1.02, y: -2 } : undefined}
+      whileHover={hover ? { y: -2 } : undefined}
       transition={{ duration: 0.2 }}
       className={cn(
-        'rounded-xl glass p-6',
-        glow && 'glow-border',
-        hover && 'cursor-pointer transition-all duration-300',
+        'p-6 b-card',
+        glow && 'b-card-accent',
+        hover && 'cursor-pointer',
         className
       )}
       {...props}

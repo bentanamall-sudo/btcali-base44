@@ -11,7 +11,7 @@ const PLATFORM_LINKS = [
 
 const COACHING_LINKS = [
   { to: '/pricing', label: '1-on-1 Coaching' },
-  { to: '/members', label: 'BTCALI Members' },
+  { to: '/apply', label: 'Apply Now' },
 ];
 
 const SOCIAL = [
@@ -22,14 +22,8 @@ const SOCIAL = [
 
 export default function FooterSection() {
   return (
-    <footer className="relative pt-16 pb-10 px-4 sm:px-6 overflow-hidden"
-      style={{ borderTop: '1px solid rgba(255,255,255,0.06)' }}>
-      <div className="absolute top-0 left-0 right-0 h-px"
-        style={{ background: 'linear-gradient(90deg, transparent 10%, rgba(79,157,255,0.2) 50%, transparent 90%)' }} />
-      <div className="absolute inset-0 pointer-events-none"
-        style={{ background: 'radial-gradient(ellipse 60% 40% at 50% 0%, rgba(79,157,255,0.03), transparent 65%)' }} />
-
-      <div className="max-w-5xl mx-auto relative">
+    <footer className="pt-16 pb-10 px-4 sm:px-6" style={{ borderTop: '1px solid #D1D1CB' }}>
+      <div className="max-w-[1600px] mx-auto">
         <div className="grid sm:grid-cols-3 gap-10 mb-12">
           <motion.div
             initial={{ opacity: 0, y: 16 }}
@@ -37,8 +31,7 @@ export default function FooterSection() {
             viewport={{ once: true }}
           >
             <Logo size="default" />
-            <p className="text-sm font-body mt-4 leading-relaxed max-w-[200px]"
-              style={{ color: 'rgba(191,201,217,0.45)' }}>
+            <p className="font-body mt-4 leading-relaxed max-w-[220px] text-foreground/50" style={{ fontSize: '18px' }}>
               The elite calisthenics coaching platform. Master your bodyweight.
             </p>
           </motion.div>
@@ -49,17 +42,12 @@ export default function FooterSection() {
             viewport={{ once: true }}
             transition={{ delay: 0.08 }}
           >
-            <h4 className="font-heading font-bold text-white text-xs uppercase tracking-[0.2em] mb-4">Platform</h4>
-            <ul className="space-y-2.5">
+            <h4 className="eyebrow text-foreground mb-5">Platform</h4>
+            <ul className="space-y-3">
               {PLATFORM_LINKS.map((link) => (
                 <li key={link.to}>
-                  <Link to={link.to}
-                    className="text-sm font-body flex items-center gap-1.5 group transition-colors duration-200"
-                    style={{ color: 'rgba(191,201,217,0.45)' }}
-                    onMouseEnter={e => e.currentTarget.style.color = '#4F9DFF'}
-                    onMouseLeave={e => e.currentTarget.style.color = 'rgba(191,201,217,0.45)'}
-                  >
-                    <span className="w-1 h-1 rounded-full bg-primary/30 group-hover:bg-primary transition-colors" />
+                  <Link to={link.to} className="font-body plumb-underline magnetic inline-flex items-center gap-2 text-foreground/55 hover:text-foreground transition-colors" style={{ fontSize: '18px' }}>
+                    <span className="w-1.5 h-1.5 flex-shrink-0" style={{ background: '#FF4D00' }} />
                     {link.label}
                   </Link>
                 </li>
@@ -73,17 +61,12 @@ export default function FooterSection() {
             viewport={{ once: true }}
             transition={{ delay: 0.16 }}
           >
-            <h4 className="font-heading font-bold text-white text-xs uppercase tracking-[0.2em] mb-4">Coaching</h4>
-            <ul className="space-y-2.5">
+            <h4 className="eyebrow text-foreground mb-5">Coaching</h4>
+            <ul className="space-y-3">
               {COACHING_LINKS.map((link) => (
                 <li key={link.to}>
-                  <Link to={link.to}
-                    className="text-sm font-body flex items-center gap-1.5 group transition-colors duration-200"
-                    style={{ color: 'rgba(191,201,217,0.45)' }}
-                    onMouseEnter={e => e.currentTarget.style.color = '#4F9DFF'}
-                    onMouseLeave={e => e.currentTarget.style.color = 'rgba(191,201,217,0.45)'}
-                  >
-                    <span className="w-1 h-1 rounded-full bg-primary/30 group-hover:bg-primary transition-colors" />
+                  <Link to={link.to} className="font-body plumb-underline magnetic inline-flex items-center gap-2 text-foreground/55 hover:text-foreground transition-colors" style={{ fontSize: '18px' }}>
+                    <span className="w-1.5 h-1.5 flex-shrink-0" style={{ background: '#FF4D00' }} />
                     {link.label}
                   </Link>
                 </li>
@@ -92,17 +75,13 @@ export default function FooterSection() {
           </motion.div>
         </div>
 
-        <div className="pt-8 flex flex-col items-center gap-6" style={{ borderTop: '1px solid rgba(255,255,255,0.05)' }}>
+        <div className="pt-8 flex flex-col items-center gap-6" style={{ borderTop: '1px solid #D1D1CB' }}>
           <div className="flex flex-wrap justify-center gap-6">
             {SOCIAL.map((s) => (
               <a key={s.label} href={s.href} target="_blank" rel="noopener noreferrer"
-                className="text-sm font-body flex items-center gap-1.5 transition-colors duration-200"
-                style={{ color: 'rgba(191,201,217,0.4)' }}
-                onMouseEnter={e => e.currentTarget.style.color = '#4F9DFF'}
-                onMouseLeave={e => e.currentTarget.style.color = 'rgba(191,201,217,0.4)'}
-              >
+                className="font-body flex items-center gap-1.5 text-foreground/45 hover:text-foreground transition-colors" style={{ fontSize: '18px' }}>
                 <ExternalLink className="w-3 h-3" />
-                <span className="font-semibold">{s.label}</span>
+                <span className="font-heading font-semibold uppercase text-sm tracking-wider">{s.label}</span>
                 <span>{s.handle}</span>
               </a>
             ))}
@@ -110,16 +89,15 @@ export default function FooterSection() {
 
           <Link to="/diagnostic">
             <motion.div
-              whileHover={{ scale: 1.04, y: -2 }}
-              whileTap={{ scale: 0.97 }}
-              className="inline-flex items-center gap-2 px-7 py-3 rounded-xl gradient-bg-strong text-white font-heading font-bold text-sm btn-shine cursor-pointer"
-              style={{ boxShadow: '0 0 20px rgba(79,157,255,0.2)' }}
+              whileHover={{ scale: 1.03, y: -2 }}
+              whileTap={{ scale: 0.98 }}
+              className="b-cta btn-shine inline-flex items-center gap-2 px-7 py-3.5 text-sm cursor-pointer"
             >
               <ScanLine className="w-4 h-4" /> Start Athlete Scan
             </motion.div>
           </Link>
 
-          <p className="text-xs font-body text-center" style={{ color: 'rgba(191,201,217,0.2)' }}>
+          <p className="font-body text-center text-foreground/30" style={{ fontSize: '14px' }}>
             © {new Date().getFullYear()} BTCALI. All rights reserved. Built for elite athletes.
           </p>
         </div>

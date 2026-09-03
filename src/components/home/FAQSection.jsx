@@ -20,23 +20,24 @@ function FAQItem({ q, a, index }) {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ delay: index * 0.04, duration: 0.35 }}
-      className="rounded-xl overflow-hidden transition-all duration-200"
+      className="transition-all duration-200"
       style={{
-        background: open ? 'rgba(79,157,255,0.05)' : 'rgba(255,255,255,0.02)',
-        border: open ? '1px solid rgba(79,157,255,0.2)' : '1px solid rgba(255,255,255,0.06)',
+        background: open ? '#1A1A1A' : 'transparent',
+        color: open ? '#F4F4F2' : '#1A1A1A',
+        borderBottom: '1px solid #D1D1CB',
       }}
     >
       <button
         onClick={() => setOpen(o => !o)}
-        className="w-full flex items-center justify-between gap-3 text-left px-5 py-4"
+        className="w-full flex items-center justify-between gap-4 text-left px-2 py-6"
       >
-        <span className="font-heading font-semibold text-sm text-white">{q}</span>
+        <span className="font-heading font-bold text-base uppercase tracking-tight" style={{ color: open ? '#F4F4F2' : '#1A1A1A' }}>{q}</span>
         <motion.span
           animate={{ rotate: open ? 180 : 0 }}
           transition={{ duration: 0.22 }}
           className="flex-shrink-0"
         >
-          <ChevronDown className="w-4 h-4" style={{ color: open ? '#4F9DFF' : 'rgba(255,255,255,0.3)' }} />
+          <ChevronDown className="w-5 h-5" style={{ color: open ? '#FF4D00' : '#1A1A1A' }} />
         </motion.span>
       </button>
 
@@ -49,9 +50,8 @@ function FAQItem({ q, a, index }) {
             transition={{ duration: 0.28, ease: [0.25, 0.46, 0.45, 0.94] }}
             className="overflow-hidden"
           >
-            <div className="px-5 pb-5">
-              <div className="h-px mb-3" style={{ background: 'rgba(79,157,255,0.15)' }} />
-              <p className="text-sm font-body leading-relaxed" style={{ color: 'rgba(191,201,217,0.7)' }}>{a}</p>
+            <div className="px-2 pb-6">
+              <p className="font-body" style={{ color: 'rgba(244,244,242,0.7)', fontSize: '18px', lineHeight: 1.6 }}>{a}</p>
             </div>
           </motion.div>
         )}
@@ -62,22 +62,24 @@ function FAQItem({ q, a, index }) {
 
 export default function FAQSection() {
   return (
-    <section className="py-16 px-4 sm:px-6">
-      <div className="max-w-2xl mx-auto">
+    <section className="py-24 px-4 sm:px-6">
+      <div className="max-w-3xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-center mb-10"
+          className="mb-12"
         >
-          <p className="text-xs font-heading font-semibold uppercase tracking-[0.3em] mb-3"
-            style={{ color: 'rgba(79,157,255,0.5)' }}>Common Questions</p>
-          <h2 className="font-heading font-black text-3xl sm:text-4xl text-white">
-            Frequently Asked<br /><span className="gradient-text">Questions</span>
+          <div className="flex items-center gap-3 mb-4">
+            <span className="w-8 h-px" style={{ background: '#FF4D00' }} />
+            <span className="eyebrow text-foreground/50">Common Questions</span>
+          </div>
+          <h2 className="display-lg text-foreground" style={{ fontSize: 'clamp(2.5rem, 5vw, 4rem)' }}>
+            Frequently Asked<br />Questions
           </h2>
         </motion.div>
 
-        <div className="space-y-2">
+        <div>
           {FAQS.map((faq, i) => <FAQItem key={i} q={faq.q} a={faq.a} index={i} />)}
         </div>
       </div>

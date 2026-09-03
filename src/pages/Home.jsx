@@ -13,11 +13,7 @@ import FooterSection from '../components/home/FooterSection';
 import Floating3DWords from '../components/home/Floating3DWords';
 
 function Divider() {
-  return (
-    <div className="px-4 my-2">
-      <div className="section-divider" />
-    </div>
-  );
+  return <div className="section-rule" />;
 }
 
 export default function Home() {

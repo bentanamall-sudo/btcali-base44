@@ -1,8 +1,6 @@
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { Check, Crown, Zap } from 'lucide-react';
-import GlassCard from '../GlassCard';
-import GlowButton from '../GlowButton';
+import { Check, Crown } from 'lucide-react';
 
 const plans = [
   {
@@ -27,20 +25,24 @@ const plans = [
 
 export default function PricingPreview() {
   return (
-    <section className="py-20 px-4 sm:px-6 max-w-7xl mx-auto">
+    <section className="py-24 px-4 sm:px-6 max-w-5xl mx-auto">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
-        className="text-center mb-16"
+        className="mb-16"
       >
-        <h2 className="font-heading font-bold text-3xl sm:text-4xl md:text-5xl mb-4">
-          Choose Your <span className="gradient-text">Path</span>
+        <div className="flex items-center gap-3 mb-4">
+          <span className="w-8 h-px" style={{ background: '#FF4D00' }} />
+          <span className="eyebrow text-foreground/50">Pricing</span>
+        </div>
+        <h2 className="display-lg text-foreground" style={{ fontSize: 'clamp(2.5rem, 5vw, 4rem)' }}>
+          Choose Your Path
         </h2>
-        <p className="text-muted-foreground font-body text-lg">Invest in your athletic potential.</p>
+        <p className="font-body text-foreground/60 mt-4" style={{ fontSize: '18px' }}>Invest in your athletic potential.</p>
       </motion.div>
 
-      <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+      <div className="grid md:grid-cols-2 gap-px max-w-3xl mx-auto" style={{ background: '#D1D1CB' }}>
         {plans.map((plan, i) => (
           <motion.div
             key={plan.name}
@@ -48,43 +50,40 @@ export default function PricingPreview() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: i * 0.15 }}
+            className="p-8 relative"
+            style={{
+              background: '#F4F4F2',
+              border: plan.featured ? '2px solid #FF4D00' : '1px solid #D1D1CB',
+            }}
+            data-view-cursor
           >
-            <GlassCard
-              glow={plan.featured}
-              hover={false}
-              className={plan.featured ? 'relative ring-1 ring-primary/50 scale-105' : ''}
-            >
-              {plan.featured && (
-                <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                  <div className="flex items-center gap-1 gradient-bg-strong text-primary-foreground px-3 py-1 rounded-full text-xs font-heading font-semibold">
-                    <Crown className="w-3 h-3" /> Most Popular
-                  </div>
-                </div>
-              )}
-              <div className="text-center mb-6">
-                <h3 className="font-heading font-semibold text-lg mb-2 text-foreground">{plan.name}</h3>
-                <div className="font-heading font-bold text-4xl gradient-text">
-                  {plan.price}
-                  <span className="text-sm text-muted-foreground font-body font-normal">{plan.period}</span>
+            {plan.featured && (
+              <div className="absolute -top-px left-0">
+                <div className="flex items-center gap-1 px-3 py-1.5 eyebrow" style={{ background: '#FF4D00', color: '#F4F4F2' }}>
+                  <Crown className="w-3 h-3" /> Most Popular
                 </div>
               </div>
-              <ul className="space-y-3 mb-6">
-                {plan.features.map((f) => (
-                  <li key={f} className="flex items-center gap-2 text-sm font-body text-foreground/80">
-                    <Check className="w-4 h-4 text-primary flex-shrink-0" />
-                    {f}
-                  </li>
-                ))}
-              </ul>
-              <Link to={plan.to}>
-                <GlowButton
-                  variant={plan.featured ? 'primary' : 'secondary'}
-                  className="w-full"
-                >
-                  {plan.cta}
-                </GlowButton>
-              </Link>
-            </GlassCard>
+            )}
+            <div className="mb-6 pt-4">
+              <h3 className="eyebrow text-foreground/50 mb-3">{plan.name}</h3>
+              <div className="display-lg text-foreground" style={{ fontSize: '3.5rem' }}>
+                {plan.price}
+                <span className="font-body text-foreground/50 text-base" style={{ textTransform: 'none' }}>{plan.period}</span>
+              </div>
+            </div>
+            <ul className="space-y-3 mb-8">
+              {plan.features.map((f) => (
+                <li key={f} className="flex items-start gap-2.5 font-body text-foreground/75" style={{ fontSize: '18px' }}>
+                  <Check className="w-4 h-4 flex-shrink-0 mt-1" style={{ color: '#FF4D00' }} />
+                  {f}
+                </li>
+              ))}
+            </ul>
+            <Link to={plan.to}>
+              <button className={plan.featured ? 'b-cta w-full py-4 text-sm' : 'b-cta-outline w-full py-4 text-sm'}>
+                {plan.cta}
+              </button>
+            </Link>
           </motion.div>
         ))}
       </div>

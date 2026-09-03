@@ -1,7 +1,6 @@
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { CheckCircle, Zap, ArrowRight } from 'lucide-react';
-import use3DHover from '@/hooks/use3DHover';
 
 const INCLUDED = [
   'Personalised training programme',
@@ -22,7 +21,6 @@ const TIERS = [
     desc: '4 weeks of personalised coaching. Renews monthly.',
     highlight: true,
     badge: 'Most Popular',
-    color: '#4F9DFF',
   },
   {
     id: 'quarterly',
@@ -32,78 +30,53 @@ const TIERS = [
     desc: '12 weeks of coaching paid upfront. Maximum savings.',
     highlight: false,
     badge: 'Best Value',
-    color: '#5EEBFF',
   },
 ];
 
 function PricingCard({ tier, delay }) {
-  const tilt = use3DHover({ intensity: 6, scale: tier.highlight ? 1.02 : 1.03 });
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20, scale: 0.97 }}
-      whileInView={{ opacity: 1, y: 0, scale: 1 }}
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ delay, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-      ref={tilt.ref}
-      onMouseMove={tilt.onMouseMove}
-      onMouseLeave={tilt.onMouseLeave}
+      className="p-8 relative"
       style={{
-        ...tilt.style,
-        background: tier.highlight
-          ? 'linear-gradient(145deg, rgba(79,157,255,0.12) 0%, rgba(94,235,255,0.07) 100%)'
-          : 'rgba(255,255,255,0.03)',
-        border: tier.highlight
-          ? '1px solid rgba(79,157,255,0.35)'
-          : '1px solid rgba(255,255,255,0.07)',
-        boxShadow: tier.highlight
-          ? `0 0 40px rgba(79,157,255,0.12), inset 0 1px 0 rgba(255,255,255,0.06), ${tilt.style.boxShadow || ''}`
-          : tilt.style.boxShadow,
+        background: '#F4F4F2',
+        border: tier.highlight ? '2px solid #FF4D00' : '1px solid #D1D1CB',
       }}
-      className="rounded-2xl p-6 relative overflow-hidden cursor-default"
+      data-view-cursor
     >
-      {tier.highlight && (
-        <div className="absolute top-0 left-0 right-0 h-px"
-          style={{ background: 'linear-gradient(90deg, transparent, rgba(79,157,255,0.7), transparent)' }} />
-      )}
-
       {tier.badge && (
-        <div className="flex mb-4">
-          <span className="text-xs font-heading font-bold px-3 py-1 rounded-full"
+        <div className="flex mb-6">
+          <span
+            className="eyebrow px-3 py-1.5"
             style={{
-              background: tier.highlight ? 'rgba(79,157,255,0.2)' : 'rgba(94,235,255,0.12)',
-              color: tier.color,
-              border: `1px solid ${tier.color}35`,
-            }}>
+              background: tier.highlight ? '#FF4D00' : '#1A1A1A',
+              color: '#F4F4F2',
+            }}
+          >
             {tier.badge}
           </span>
         </div>
       )}
 
-      <p className="font-heading font-bold text-sm mb-4" style={{ color: tier.color }}>{tier.name}</p>
+      <p className="eyebrow text-foreground/50 mb-4">{tier.name}</p>
 
-      <div className="flex items-end gap-1 mb-2">
-        <span className="font-heading font-black text-4xl" style={{ color: tier.highlight ? '#fff' : 'rgba(255,255,255,0.85)' }}>
+      <div className="flex items-end gap-1 mb-3">
+        <span className="display-lg text-foreground" style={{ fontSize: '3.5rem' }}>
           {tier.price}
         </span>
-        <span className="text-sm font-body pb-1" style={{ color: 'rgba(191,201,217,0.5)' }}>{tier.unit}</span>
+        <span className="font-body text-foreground/50 pb-2">{tier.unit}</span>
       </div>
 
-      <p className="text-sm font-body mb-6 leading-relaxed" style={{ color: 'rgba(191,201,217,0.55)' }}>{tier.desc}</p>
+      <p className="font-body text-foreground/60 mb-8" style={{ fontSize: '18px', lineHeight: 1.6 }}>{tier.desc}</p>
 
       <Link to="/diagnostic">
         <motion.button
-          whileHover={{ scale: 1.02 }}
-          whileTap={{ scale: 0.98 }}
-          className="w-full py-3 rounded-xl font-heading font-semibold text-sm flex items-center justify-center gap-2 transition-all duration-200"
-          style={tier.highlight ? {
-            background: 'linear-gradient(135deg, #4F9DFF, #3B7DD8)',
-            color: 'white',
-            boxShadow: '0 0 20px rgba(79,157,255,0.3)',
-          } : {
-            background: 'rgba(255,255,255,0.04)',
-            border: `1px solid ${tier.color}25`,
-            color: tier.color,
-          }}
+          whileHover={{ scale: 1.01 }}
+          whileTap={{ scale: 0.99 }}
+          className={tier.highlight ? 'b-cta btn-shine w-full py-4 text-sm flex items-center justify-center gap-2' : 'b-cta-outline w-full py-4 text-sm flex items-center justify-center gap-2'}
         >
           Start Athlete Scan <ArrowRight className="w-3.5 h-3.5" />
         </motion.button>
@@ -114,42 +87,34 @@ function PricingCard({ tier, delay }) {
 
 export default function PricingSection() {
   return (
-    <section className="py-20 px-4 sm:px-6">
-      <div className="max-w-4xl mx-auto">
+    <section className="py-24 px-4 sm:px-6">
+      <div className="max-w-5xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-center mb-12"
+          className="mb-16"
         >
-          <p className="text-xs font-heading font-semibold uppercase tracking-[0.3em] mb-3"
-            style={{ color: 'rgba(79,157,255,0.5)' }}>Pricing</p>
-          <h2 className="font-heading font-black text-3xl sm:text-4xl lg:text-5xl text-white leading-tight">
-            Invest In Faster<br /><span className="gradient-text">Progress</span>
+          <div className="flex items-center gap-3 mb-4">
+            <span className="w-8 h-px" style={{ background: '#FF4D00' }} />
+            <span className="eyebrow text-foreground/50">Pricing</span>
+          </div>
+          <h2 className="display-lg text-foreground mb-4" style={{ fontSize: 'clamp(2.5rem, 5vw, 4.5rem)' }}>
+            Invest In Faster<br />Progress
           </h2>
-          <p className="text-base mt-4 max-w-md mx-auto" style={{ color: '#BFC9D9' }}>
+          <p className="font-body text-foreground/60 max-w-xl" style={{ fontSize: '18px', lineHeight: 1.6 }}>
             Significantly less than most coaches charging $500+/month for similar results. $160/month or $450 for 3 months.
           </p>
 
-          {/* Spots badge */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            className="inline-flex items-center gap-2 mt-6 px-4 py-2 rounded-full"
-            style={{
-              background: 'rgba(79,157,255,0.08)',
-              border: '1px solid rgba(79,157,255,0.2)',
-            }}
-          >
-            <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
-            <span className="text-xs font-heading font-semibold text-white">Currently Accepting New Athletes</span>
-            <span className="text-xs font-body" style={{ color: 'rgba(191,201,217,0.5)' }}>— 8 spots</span>
-          </motion.div>
+          <div className="flex items-center gap-3 mt-6">
+            <span className="w-2 h-2" style={{ background: '#FF4D00' }} />
+            <span className="eyebrow text-foreground">Currently Accepting New Athletes</span>
+            <span className="font-body text-foreground/40 text-sm">— 8 spots</span>
+          </div>
         </motion.div>
 
         {/* Pricing cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-10 max-w-2xl mx-auto w-full">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-px mb-12 max-w-3xl mx-auto w-full" style={{ background: '#D1D1CB' }}>
           {TIERS.map((tier, i) => (
             <PricingCard key={tier.id} tier={tier} delay={i * 0.1} />
           ))}
@@ -160,25 +125,22 @@ export default function PricingSection() {
           initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="rounded-2xl p-6 relative overflow-hidden"
-          style={{
-            background: 'rgba(255,255,255,0.02)',
-            border: '1px solid rgba(255,255,255,0.06)',
-          }}
+          className="p-8"
+          style={{ background: '#1A1A1A', color: '#F4F4F2' }}
         >
-          <div className="flex items-center gap-2 mb-5">
-            <Zap className="w-4 h-4 text-primary" />
-            <p className="font-heading font-bold text-sm text-white">Everything Included — All Plans</p>
+          <div className="flex items-center gap-2 mb-6">
+            <Zap className="w-4 h-4" style={{ color: '#FF4D00' }} />
+            <p className="eyebrow" style={{ color: '#F4F4F2' }}>Everything Included — All Plans</p>
           </div>
-          <div className="grid sm:grid-cols-2 gap-2.5">
+          <div className="grid sm:grid-cols-2 gap-4">
             {INCLUDED.map((item, i) => (
-              <div key={i} className="flex items-center gap-2.5">
-                <CheckCircle className="w-3.5 h-3.5 text-primary flex-shrink-0" />
-                <span className="text-sm font-body" style={{ color: 'rgba(191,201,217,0.75)' }}>{item}</span>
+              <div key={i} className="flex items-center gap-3">
+                <CheckCircle className="w-4 h-4 flex-shrink-0" style={{ color: '#FF4D00' }} />
+                <span className="font-body" style={{ color: 'rgba(244,244,242,0.75)', fontSize: '18px' }}>{item}</span>
               </div>
             ))}
           </div>
-          <p className="text-xs font-body mt-5 pt-4 border-t" style={{ color: 'rgba(191,201,217,0.3)', borderColor: 'rgba(255,255,255,0.06)' }}>
+          <p className="font-body mt-6 pt-5 text-sm" style={{ color: 'rgba(244,244,242,0.35)', borderTop: '1px solid rgba(244,244,242,0.1)' }}>
             Support availability: Weekdays 4–6 PM NSW time.
           </p>
         </motion.div>

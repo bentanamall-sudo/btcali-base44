@@ -45,8 +45,9 @@ function CategoryCard({ cat, onClick, isPremium, isFree, locked }) {
       <motion.div whileHover={{ y: -2, transition: { duration: 0.2 } }} onClick={onClick}
         className="cursor-pointer group rounded-2xl overflow-hidden relative flex items-stretch"
         style={{
-          background: cat.featured ? 'linear-gradient(135deg, hsl(var(--card)), hsl(42 78% 12%))' : 'linear-gradient(135deg, hsl(var(--card)), hsl(var(--surface-2)))',
-          border: cat.featured ? '1.5px solid hsl(var(--primary)/0.4)' : '1px solid hsl(var(--border)/0.5)',
+          background: cat.featured ? '#1A1A1A' : '#F4F4F2',
+          color: cat.featured ? '#F4F4F2' : '#1A1A1A',
+          border: cat.featured ? '2px solid #FF4D00' : '1px solid #D1D1CB',
           minHeight: '140px',
         }}
       >
@@ -84,8 +85,8 @@ function CategoryCard({ cat, onClick, isPremium, isFree, locked }) {
   if (locked) {
     return (
       <div className="rounded-2xl overflow-hidden relative"
-        style={{ background: 'linear-gradient(145deg, hsl(var(--card)), hsl(42 78% 10%))', border: '1px solid hsl(var(--primary)/0.35)' }}>
-        <div className="h-px w-full opacity-40" style={{ background: 'linear-gradient(90deg, transparent, #D4AF37, transparent)' }} />
+        style={{ background: '#F4F4F2', border: '2px solid #FF4D00' }}>
+        <div className="h-px w-full opacity-40" style={{ background: 'linear-gradient(90deg, transparent, #FF4D00, transparent)' }} />
         <div className="p-6">
           <div className="flex items-start justify-between mb-4">
             <div className="w-11 h-11 rounded-xl flex items-center justify-center text-xl"
@@ -108,9 +109,9 @@ function CategoryCard({ cat, onClick, isPremium, isFree, locked }) {
   return (
     <motion.div whileHover={{ y: -4, transition: { duration: 0.2 } }} onClick={onClick}
       className="cursor-pointer group rounded-2xl overflow-hidden relative"
-      style={{ background: 'linear-gradient(145deg, hsl(var(--card)), hsl(42 78% 10%))', border: '1px solid hsl(var(--primary)/0.35)' }}>
+      style={{ background: '#F4F4F2', border: '1px solid #FF4D00' }}>
       <div className="h-px w-full opacity-40 group-hover:opacity-80 transition-opacity"
-        style={{ background: 'linear-gradient(90deg, transparent, #D4AF37, transparent)' }} />
+        style={{ background: 'linear-gradient(90deg, transparent, #FF4D00, transparent)' }} />
       <div className="p-6">
         <div className="flex items-start justify-between mb-4">
           <div className="w-11 h-11 rounded-xl flex items-center justify-center text-xl"

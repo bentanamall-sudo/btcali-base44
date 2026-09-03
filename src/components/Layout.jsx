@@ -1,13 +1,15 @@
 import { Outlet } from 'react-router-dom';
 import Navbar from './Navbar';
 import ErrorBoundary from './ErrorBoundary';
-import ScrollIndicator from './ScrollIndicator';
+import ScrollProgress from './ScrollProgress';
+import ViewCursor from './ViewCursor';
 
 export default function Layout() {
   return (
     <div className="min-h-screen bg-background">
+      <ScrollProgress />
+      <ViewCursor />
       <Navbar />
-      <ScrollIndicator />
       <main className="pt-16">
         <ErrorBoundary>
           <Outlet />
