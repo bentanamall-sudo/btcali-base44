@@ -22,7 +22,7 @@ function Card({ item, delay }) {
       data-view-cursor
     >
       <div className="flex items-center gap-2 mb-4">
-        <span className="w-2 h-2 flex-shrink-0" style={{ background: '#FF4D00' }} />
+        <span className="w-2 h-2 flex-shrink-0" style={{ background: '#CCFF00' }} />
         <h3 className="eyebrow text-foreground">{item.title}</h3>
       </div>
       <p className="font-body text-foreground/65" style={{ fontSize: '18px', lineHeight: 1.6 }}>{item.desc}</p>
@@ -41,7 +41,7 @@ export default function WhoThisIsFor() {
           className="mb-16"
         >
           <div className="flex items-center gap-3 mb-4">
-            <span className="w-8 h-px" style={{ background: '#FF4D00' }} />
+            <span className="w-8 h-px" style={{ background: '#CCFF00' }} />
             <span className="eyebrow text-foreground/50">All Levels Welcome</span>
           </div>
           <h2 className="display-lg text-foreground max-w-2xl" style={{ fontSize: 'clamp(2.5rem, 5vw, 4.5rem)' }}>

@@ -1,52 +1,76 @@
 import { useEffect, useRef } from 'react';
 
 /**
- * Trailing circular "View" badge cursor.
- * Appears over elements with the `data-view-cursor` attribute.
- * Desktop pointer only — disabled on touch devices.
+ * Precision reticle cursor — a volt dot that tracks the pointer 1:1
+ * and a larger carbon ring that lags behind with eased lerp motion.
+ * The ring expands and turns volt over interactive elements.
+ * Disabled on touch / coarse-pointer devices.
  */
 export default function ViewCursor() {
-  const cursorRef = useRef(null);
+  const dotRef = useRef(null);
+  const ringRef = useRef(null);
 
   useEffect(() => {
-    // Skip on touch / small screens
-    if (window.matchMedia('(hover: none)').matches) return;
+    if (window.matchMedia('(pointer: coarse)').matches) return;
 
-    const cursor = cursorRef.current;
-    if (!cursor) return;
+    const dot = dotRef.current;
+    const ring = ringRef.current;
+    if (!dot || !ring) return;
 
-    let raf = 0;
-    let tx = 0, ty = 0, cx = 0, cy = 0;
+    let mx = window.innerWidth / 2;
+    let my = window.innerHeight / 2;
+    let rx = mx;
+    let ry = my;
+    let raf;
+    let visible = false;
+
+    const render = () => {
+      rx += (mx - rx) * 0.18;
+      ry += (my - ry) * 0.18;
+      ring.style.transform = `translate3d(${rx}px, ${ry}px, 0) translate(-50%, -50%)`;
+      dot.style.transform = `translate3d(${mx}px, ${my}px, 0) translate(-50%, -50%)`;
+      raf = requestAnimationFrame(render);
+    };
+    render();
 
     const onMove = (e) => {
-      tx = e.clientX;
-      ty = e.clientY;
-      const el = e.target.closest('[data-view-cursor]');
-      if (el && !cursor.classList.contains('active')) {
-        cursor.classList.add('active');
-      } else if (!el && cursor.classList.contains('active')) {
-        cursor.classList.remove('active');
+      mx = e.clientX;
+      my = e.clientY;
+      if (!visible) {
+        visible = true;
+        dot.classList.add('visible');
+        ring.classList.add('visible');
+      }
+      const el = e.target.closest('a, button, [data-view-cursor], [role="button"]');
+      if (el) {
+        ring.classList.add('is-hover');
+        dot.classList.add('is-hover');
+      } else {
+        ring.classList.remove('is-hover');
+        dot.classList.remove('is-hover');
       }
     };
 
-    const loop = () => {
-      cx += (tx - cx) * 0.18;
-      cy += (ty - cy) * 0.18;
-      cursor.style.transform = `translate(${cx}px, ${cy}px)`;
-      raf = requestAnimationFrame(loop);
+    const onLeave = () => {
+      visible = false;
+      dot.classList.remove('visible');
+      ring.classList.remove('visible');
     };
-    loop();
 
-    window.addEventListener('mousemove', onMove);
+    window.addEventListener('mousemove', onMove, { passive: true });
+    document.addEventListener('mouseleave', onLeave);
+
     return () => {
-      window.removeEventListener('mousemove', onMove);
       cancelAnimationFrame(raf);
+      window.removeEventListener('mousemove', onMove);
+      document.removeEventListener('mouseleave', onLeave);
     };
   }, []);
 
   return (
-    <div ref={cursorRef} className="view-cursor" aria-hidden="true">
-      View
-    </div>
+    <>
+      <div ref={ringRef} className="cursor-ring" aria-hidden="true" />
+      <div ref={dotRef} className="cursor-dot" aria-hidden="true" />
+    </>
   );
 }

@@ -33,7 +33,7 @@ export default function PricingPreview() {
         className="mb-16"
       >
         <div className="flex items-center gap-3 mb-4">
-          <span className="w-8 h-px" style={{ background: '#FF4D00' }} />
+          <span className="w-8 h-px" style={{ background: '#CCFF00' }} />
           <span className="eyebrow text-foreground/50">Pricing</span>
         </div>
         <h2 className="display-lg text-foreground" style={{ fontSize: 'clamp(2.5rem, 5vw, 4rem)' }}>
@@ -53,13 +53,13 @@ export default function PricingPreview() {
             className="p-8 relative"
             style={{
               background: '#F4F4F2',
-              border: plan.featured ? '2px solid #FF4D00' : '1px solid #D1D1CB',
+              border: plan.featured ? '2px solid #CCFF00' : '1px solid #D1D1CB',
             }}
             data-view-cursor
           >
             {plan.featured && (
               <div className="absolute -top-px left-0">
-                <div className="flex items-center gap-1 px-3 py-1.5 eyebrow" style={{ background: '#FF4D00', color: '#F4F4F2' }}>
+                <div className="flex items-center gap-1 px-3 py-1.5 eyebrow" style={{ background: '#CCFF00', color: '#F4F4F2' }}>
                   <Crown className="w-3 h-3" /> Most Popular
                 </div>
               </div>
@@ -74,7 +74,7 @@ export default function PricingPreview() {
             <ul className="space-y-3 mb-8">
               {plan.features.map((f) => (
                 <li key={f} className="flex items-start gap-2.5 font-body text-foreground/75" style={{ fontSize: '18px' }}>
-                  <Check className="w-4 h-4 flex-shrink-0 mt-1" style={{ color: '#FF4D00' }} />
+                  <Check className="w-4 h-4 flex-shrink-0 mt-1" style={{ color: '#CCFF00' }} />
                   {f}
                 </li>
               ))}

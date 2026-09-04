@@ -41,7 +41,7 @@ function StepNode({ step, index }) {
       {/* Content */}
       <div className="flex-1 pb-8 px-5 py-5 mb-2 b-card group" data-view-cursor>
         <div className="flex items-center gap-2 mb-2">
-          <span className="eyebrow" style={{ color: '#FF4D00' }}>Step {step.num}</span>
+          <span className="eyebrow" style={{ color: '#CCFF00' }}>Step {step.num}</span>
         </div>
         <h3 className="font-heading font-bold text-lg text-foreground mb-2" style={{ textTransform: 'uppercase' }}>{step.title}</h3>
         <p className="font-body text-foreground/60" style={{ fontSize: '18px', lineHeight: 1.6 }}>{step.body}</p>
@@ -61,7 +61,7 @@ export default function HowCoachingWorks() {
           className="mb-14"
         >
           <div className="flex items-center gap-3 mb-4">
-            <span className="w-8 h-px" style={{ background: '#FF4D00' }} />
+            <span className="w-8 h-px" style={{ background: '#CCFF00' }} />
             <span className="eyebrow text-foreground/50">The Process</span>
           </div>
           <h2 className="display-lg text-foreground" style={{ fontSize: 'clamp(2.5rem, 5vw, 4.5rem)' }}>

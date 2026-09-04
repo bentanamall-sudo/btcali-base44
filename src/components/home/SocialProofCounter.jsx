@@ -60,7 +60,7 @@ function AchievementBlock({ delay }) {
         Helped my students unlock
       </p>
       <div className="min-h-[3rem] flex items-center">
-        <span className="display-lg" style={{ color: '#FF4D00', fontSize: 'clamp(1.5rem, 3vw, 2.5rem)' }}>
+        <span className="display-lg" style={{ color: '#CCFF00', fontSize: 'clamp(1.5rem, 3vw, 2.5rem)' }}>
           {displayText}
           <span
             className="inline-block w-1 h-6 ml-1 align-middle"

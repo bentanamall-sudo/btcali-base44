@@ -57,12 +57,12 @@ function TimelineNode({ milestone, index }) {
           style={{
             background: milestone.highlight ? '#1A1A1A' : '#F4F4F2',
             color: milestone.highlight ? '#F4F4F2' : '#1A1A1A',
-            border: milestone.highlight ? '2px solid #FF4D00' : '1px solid #D1D1CB',
+            border: milestone.highlight ? '2px solid #CCFF00' : '1px solid #D1D1CB',
           }}
         >
           <div className="flex items-center gap-2 mb-3" style={{ justifyContent: isRight ? 'flex-start' : 'flex-end' }}>
             <span className="eyebrow px-2 py-1" style={{
-              background: milestone.highlight ? '#FF4D00' : '#1A1A1A',
+              background: milestone.highlight ? '#CCFF00' : '#1A1A1A',
               color: milestone.highlight ? '#F4F4F2' : '#F4F4F2',
             }}>
               {milestone.year}
@@ -83,8 +83,8 @@ function TimelineNode({ milestone, index }) {
           transition={{ duration: 0.5 }}
           className="w-4 h-4"
           style={{
-            background: milestone.highlight ? '#FF4D00' : '#F4F4F2',
-            border: `2px solid ${milestone.highlight ? '#FF4D00' : '#1A1A1A'}`,
+            background: milestone.highlight ? '#CCFF00' : '#F4F4F2',
+            border: `2px solid ${milestone.highlight ? '#CCFF00' : '#1A1A1A'}`,
           }}
         />
       </div>
@@ -105,7 +105,7 @@ export default function MyStory() {
           className="mb-16"
         >
           <div className="flex items-center gap-3 mb-4">
-            <span className="w-8 h-px" style={{ background: '#FF4D00' }} />
+            <span className="w-8 h-px" style={{ background: '#CCFF00' }} />
             <span className="eyebrow text-foreground/50">Behind BTCALI</span>
           </div>
           <h2 className="display-lg text-foreground" style={{ fontSize: 'clamp(2.5rem, 5vw, 4.5rem)' }}>

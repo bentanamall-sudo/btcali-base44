@@ -24,7 +24,7 @@ export default function HeroSection() {
               transition={{ delay: 0.1, duration: 0.5 }}
               className="flex items-center gap-3 mb-8"
             >
-              <span className="w-8 h-px" style={{ background: '#FF4D00' }} />
+              <span className="w-8 h-px" style={{ background: '#CCFF00' }} />
               <span className="eyebrow text-foreground/60">
                 Elite 1-on-1 Calisthenics Coaching
               </span>
@@ -40,7 +40,7 @@ export default function HeroSection() {
             >
               Master<br />
               Calisthenics<br />
-              <span style={{ color: '#FF4D00' }}>Skills</span>
+              <span style={{ color: '#CCFF00' }}>Skills</span>
             </motion.h1>
 
             <motion.p

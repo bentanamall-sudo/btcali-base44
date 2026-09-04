@@ -69,9 +69,9 @@ export default function ResultsTeaser() {
           viewport={{ once: true }}
           className="flex items-center gap-3 mb-4"
         >
-          <span className="w-8 h-px" style={{ background: '#FF4D00' }} />
+          <span className="w-8 h-px" style={{ background: '#CCFF00' }} />
           <span className="eyebrow text-foreground/50">Real Athletes · Real Progress</span>
-          <span className="w-8 h-px" style={{ background: '#FF4D00' }} />
+          <span className="w-8 h-px" style={{ background: '#CCFF00' }} />
         </motion.div>
 
         <motion.h2

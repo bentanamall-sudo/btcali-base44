@@ -19,7 +19,7 @@ export default function FreeTutorialsBanner() {
               <BookOpen className="w-6 h-6" />
             </div>
             <div className="flex-1">
-              <div className="eyebrow inline-block px-3 py-1.5 mb-3" style={{ background: '#FF4D00', color: '#F4F4F2' }}>
+              <div className="eyebrow inline-block px-3 py-1.5 mb-3" style={{ background: '#CCFF00', color: '#F4F4F2' }}>
                 100% Free — No Credit Card
               </div>
               <h3 className="font-heading font-bold text-2xl text-foreground mb-1" style={{ textTransform: 'uppercase' }}>Start Training. No Cost.</h3>

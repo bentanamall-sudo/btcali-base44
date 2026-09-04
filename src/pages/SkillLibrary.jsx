@@ -45,7 +45,7 @@ function SectionCard({ section, onClick }) {
       style={{
         background: isPremium ? '#1A1A1A' : '#F4F4F2',
         color: isPremium ? '#F4F4F2' : '#1A1A1A',
-        border: isPremium ? '2px solid #FF4D00' : '1px solid #D1D1CB',
+        border: isPremium ? '2px solid #CCFF00' : '1px solid #D1D1CB',
       }}
       data-view-cursor
     >
@@ -53,7 +53,7 @@ function SectionCard({ section, onClick }) {
         {/* Badge */}
         <div className="flex justify-end mb-6">
           <span className="eyebrow px-3 py-1.5" style={{
-            background: isPremium ? '#FF4D00' : '#1A1A1A',
+            background: isPremium ? '#CCFF00' : '#1A1A1A',
             color: '#F4F4F2',
           }}>
             {isPremium ? 'Members Only' : 'Free'}
@@ -61,7 +61,7 @@ function SectionCard({ section, onClick }) {
         </div>
 
         {/* Title */}
-        <h2 className="display-lg mb-2" style={{ fontSize: 'clamp(1.75rem, 3vw, 2.5rem)', color: isPremium ? '#FF4D00' : '#1A1A1A' }}>
+        <h2 className="display-lg mb-2" style={{ fontSize: 'clamp(1.75rem, 3vw, 2.5rem)', color: isPremium ? '#CCFF00' : '#1A1A1A' }}>
           {section.title}
         </h2>
         <p className="eyebrow mb-5" style={{ color: isPremium ? 'rgba(244,244,242,0.5)' : 'rgba(26,26,26,0.5)' }}>
@@ -75,7 +75,7 @@ function SectionCard({ section, onClick }) {
         <div className="space-y-2.5 mb-8 flex-1">
           {section.includes.map(item => (
             <div key={item} className="flex items-center gap-2.5">
-              <div className="w-1.5 h-1.5 flex-shrink-0" style={{ background: isPremium ? '#FF4D00' : '#1A1A1A' }} />
+              <div className="w-1.5 h-1.5 flex-shrink-0" style={{ background: isPremium ? '#CCFF00' : '#1A1A1A' }} />
               <span className="font-body" style={{ color: isPremium ? 'rgba(244,244,242,0.75)' : 'rgba(26,26,26,0.75)', fontSize: '18px' }}>{item}</span>
             </div>
           ))}
@@ -108,7 +108,7 @@ export default function SkillLibrary() {
           <HomeButton />
         </div>
         <div className="flex items-center gap-3 mb-4">
-          <span className="w-8 h-px" style={{ background: '#FF4D00' }} />
+          <span className="w-8 h-px" style={{ background: '#CCFF00' }} />
           <span className="eyebrow text-foreground/50">BTCALI Skill Library</span>
         </div>
         <h1 className="display-xl text-foreground mb-4" style={{ fontSize: 'clamp(2.5rem, 6vw, 5rem)' }}>

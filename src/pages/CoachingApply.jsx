@@ -82,17 +82,17 @@ export default function CoachingApply() {
       {/* Header */}
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-12">
         <div className="flex items-center gap-3 mb-4">
-          <span className="w-8 h-px" style={{ background: '#FF4D00' }} />
+          <span className="w-8 h-px" style={{ background: '#CCFF00' }} />
           <span className="eyebrow text-foreground/50">Pricing</span>
         </div>
         <div className="flex items-center gap-3 mb-5">
-          <Crown className="w-4 h-4" style={{ color: '#FF4D00' }} />
+          <Crown className="w-4 h-4" style={{ color: '#CCFF00' }} />
           <span className="font-body text-foreground/70" style={{ fontSize: '18px' }}>$160/month · $450/3 months</span>
         </div>
         <h1 className="display-xl text-foreground mb-4" style={{ fontSize: 'clamp(2.5rem, 6vw, 5rem)' }}>
           1-on-1 Coaching
         </h1>
-        <p className="eyebrow" style={{ color: '#FF4D00' }}>Currently Accepting New Athletes</p>
+        <p className="eyebrow" style={{ color: '#CCFF00' }}>Currently Accepting New Athletes</p>
       </motion.div>
 
       {/* 1. Pricing */}
@@ -114,7 +114,7 @@ export default function CoachingApply() {
                 </div>
                 {tier.badge && (
                   <span className="eyebrow px-3 py-1.5" style={{
-                    background: tier.highlight ? '#FF4D00' : '#1A1A1A',
+                    background: tier.highlight ? '#CCFF00' : '#1A1A1A',
                     color: '#F4F4F2',
                   }}>
                     {tier.badge}
@@ -165,11 +165,11 @@ export default function CoachingApply() {
               </p>
 
               <div className="p-5" style={{ background: '#1A1A1A', color: '#F4F4F2' }}>
-                <p className="eyebrow mb-3" style={{ color: '#FF4D00' }}>What I analyse</p>
+                <p className="eyebrow mb-3" style={{ color: '#CCFF00' }}>What I analyse</p>
                 <div className="grid grid-cols-2 gap-2.5">
                   {WHAT_I_ANALYZE.map(item => (
                     <div key={item} className="flex items-center gap-2">
-                      <div className="w-1.5 h-1.5 flex-shrink-0" style={{ background: '#FF4D00' }} />
+                      <div className="w-1.5 h-1.5 flex-shrink-0" style={{ background: '#CCFF00' }} />
                       <span className="font-body" style={{ color: 'rgba(244,244,242,0.8)', fontSize: '18px' }}>{item}</span>
                     </div>
                   ))}
@@ -223,7 +223,7 @@ export default function CoachingApply() {
               </div>
 
               <div className="p-5 space-y-3" style={{ background: '#1A1A1A', color: '#F4F4F2' }}>
-                <p className="font-heading font-bold text-base" style={{ color: '#FF4D00', textTransform: 'uppercase' }}>Why BTCALI Coaching?</p>
+                <p className="font-heading font-bold text-base" style={{ color: '#CCFF00', textTransform: 'uppercase' }}>Why BTCALI Coaching?</p>
                 <p className="font-body leading-relaxed" style={{ color: 'rgba(244,244,242,0.75)', fontSize: '18px' }}>
                   Throughout coaching you'll receive direct support, personalised guidance and clear explanations so you always know exactly what to focus on next.
                 </p>
