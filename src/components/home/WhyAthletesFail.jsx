@@ -30,7 +30,7 @@ export default function WhyAthletesFail() {
           className="mb-16"
         >
           <div className="flex items-center gap-3 mb-4">
-            <span className="w-8 h-px" style={{ background: '#CCFF00' }} />
+            <span className="w-8 h-px" style={{ background: '#FF4D00' }} />
             <span className="eyebrow text-foreground/50">The Problem</span>
           </div>
           <h2 className="display-lg text-foreground" style={{ fontSize: 'clamp(2.5rem, 5vw, 4.5rem)' }}>
@@ -80,8 +80,8 @@ export default function WhyAthletesFail() {
             className="p-8 lg:p-10"
             style={{ background: '#1A1A1A', color: '#F4F4F2' }}
           >
-            <p className="eyebrow mb-2 flex items-center gap-2" style={{ color: '#CCFF00' }}>
-              <span className="w-4 h-px" style={{ background: '#CCFF00' }} />
+            <p className="eyebrow mb-2 flex items-center gap-2" style={{ color: '#FF4D00' }}>
+              <span className="w-4 h-px" style={{ background: '#FF4D00' }} />
               With BTCALI Coaching
             </p>
 
@@ -96,7 +96,7 @@ export default function WhyAthletesFail() {
                   className="flex items-start gap-3 py-3"
                   style={{ borderBottom: '1px solid rgba(244,244,242,0.12)' }}
                 >
-                  <CheckCircle className="w-4 h-4 flex-shrink-0 mt-1" style={{ color: '#CCFF00' }} />
+                  <CheckCircle className="w-4 h-4 flex-shrink-0 mt-1" style={{ color: '#FF4D00' }} />
                   <span className="font-body" style={{ color: 'rgba(244,244,242,0.85)', fontSize: '18px', lineHeight: 1.6 }}>{sol}</span>
                 </motion.div>
               ))}

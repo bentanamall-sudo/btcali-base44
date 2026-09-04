@@ -13,9 +13,9 @@ export default function BeforeAfterOutcomes() {
           transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
         >
           <div className="flex items-center justify-center gap-3 mb-4">
-            <span className="w-8 h-px" style={{ background: '#CCFF00' }} />
+            <span className="w-8 h-px" style={{ background: '#FF4D00' }} />
             <span className="eyebrow text-foreground/50">Real Athletes. Real Progress.</span>
-            <span className="w-8 h-px" style={{ background: '#CCFF00' }} />
+            <span className="w-8 h-px" style={{ background: '#FF4D00' }} />
           </div>
           <h2 className="display-lg text-foreground mb-5" style={{ fontSize: 'clamp(2.5rem, 5vw, 4.5rem)' }}>
             See What Athletes<br />Actually Achieve

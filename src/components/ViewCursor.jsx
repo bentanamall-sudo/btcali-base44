@@ -1,76 +1,80 @@
 import { useEffect, useRef } from 'react';
 
 /**
- * Precision reticle cursor — a volt dot that tracks the pointer 1:1
- * and a larger carbon ring that lags behind with eased lerp motion.
- * The ring expands and turns volt over interactive elements.
+ * Trail cursor — a tapering, fading orange ribbon drawn on a full-screen
+ * canvas that follows the pointer, with a glowing head dot.
  * Disabled on touch / coarse-pointer devices.
  */
 export default function ViewCursor() {
-  const dotRef = useRef(null);
-  const ringRef = useRef(null);
+  const canvasRef = useRef(null);
 
   useEffect(() => {
     if (window.matchMedia('(pointer: coarse)').matches) return;
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
 
-    const dot = dotRef.current;
-    const ring = ringRef.current;
-    if (!dot || !ring) return;
-
-    let mx = window.innerWidth / 2;
-    let my = window.innerHeight / 2;
-    let rx = mx;
-    let ry = my;
-    let raf;
-    let visible = false;
-
-    const render = () => {
-      rx += (mx - rx) * 0.18;
-      ry += (my - ry) * 0.18;
-      ring.style.transform = `translate3d(${rx}px, ${ry}px, 0) translate(-50%, -50%)`;
-      dot.style.transform = `translate3d(${mx}px, ${my}px, 0) translate(-50%, -50%)`;
-      raf = requestAnimationFrame(render);
+    let w = (canvas.width = window.innerWidth);
+    let h = (canvas.height = window.innerHeight);
+    const onResize = () => {
+      w = canvas.width = window.innerWidth;
+      h = canvas.height = window.innerHeight;
     };
-    render();
+    window.addEventListener('resize', onResize);
+
+    const points = [];
+    const MAX = 28;
+    let mx = w / 2;
+    let my = h / 2;
+    let raf;
 
     const onMove = (e) => {
       mx = e.clientX;
       my = e.clientY;
-      if (!visible) {
-        visible = true;
-        dot.classList.add('visible');
-        ring.classList.add('visible');
-      }
-      const el = e.target.closest('a, button, [data-view-cursor], [role="button"]');
-      if (el) {
-        ring.classList.add('is-hover');
-        dot.classList.add('is-hover');
-      } else {
-        ring.classList.remove('is-hover');
-        dot.classList.remove('is-hover');
-      }
     };
-
-    const onLeave = () => {
-      visible = false;
-      dot.classList.remove('visible');
-      ring.classList.remove('visible');
-    };
-
     window.addEventListener('mousemove', onMove, { passive: true });
-    document.addEventListener('mouseleave', onLeave);
+
+    const render = () => {
+      ctx.clearRect(0, 0, w, h);
+      points.push({ x: mx, y: my });
+      if (points.length > MAX) points.shift();
+
+      // tapering ribbon — thin/faint at the tail, thick/bright at the head
+      for (let i = 1; i < points.length; i++) {
+        const p = points[i];
+        const prev = points[i - 1];
+        const t = i / points.length;
+        ctx.beginPath();
+        ctx.strokeStyle = `rgba(255, 77, 0, ${t * 0.85})`;
+        ctx.lineWidth = t * 5;
+        ctx.lineCap = 'round';
+        ctx.lineJoin = 'round';
+        ctx.moveTo(prev.x, prev.y);
+        ctx.lineTo(p.x, p.y);
+        ctx.stroke();
+      }
+
+      // glowing head
+      if (points.length) {
+        const head = points[points.length - 1];
+        ctx.beginPath();
+        ctx.fillStyle = '#FF4D00';
+        ctx.shadowColor = '#FF4D00';
+        ctx.shadowBlur = 14;
+        ctx.arc(head.x, head.y, 3.5, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.shadowBlur = 0;
+      }
+      raf = requestAnimationFrame(render);
+    };
+    render();
 
     return () => {
       cancelAnimationFrame(raf);
+      window.removeEventListener('resize', onResize);
       window.removeEventListener('mousemove', onMove);
-      document.removeEventListener('mouseleave', onLeave);
     };
   }, []);
 
-  return (
-    <>
-      <div ref={ringRef} className="cursor-ring" aria-hidden="true" />
-      <div ref={dotRef} className="cursor-dot" aria-hidden="true" />
-    </>
-  );
+  return <canvas ref={canvasRef} className="cursor-trail" aria-hidden="true" />;
 }

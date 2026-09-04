@@ -37,7 +37,7 @@ function FAQItem({ q, a, index }) {
           transition={{ duration: 0.22 }}
           className="flex-shrink-0"
         >
-          <ChevronDown className="w-5 h-5" style={{ color: open ? '#CCFF00' : '#1A1A1A' }} />
+          <ChevronDown className="w-5 h-5" style={{ color: open ? '#FF4D00' : '#1A1A1A' }} />
         </motion.span>
       </button>
 
@@ -71,7 +71,7 @@ export default function FAQSection() {
           className="mb-12"
         >
           <div className="flex items-center gap-3 mb-4">
-            <span className="w-8 h-px" style={{ background: '#CCFF00' }} />
+            <span className="w-8 h-px" style={{ background: '#FF4D00' }} />
             <span className="eyebrow text-foreground/50">Common Questions</span>
           </div>
           <h2 className="display-lg text-foreground" style={{ fontSize: 'clamp(2.5rem, 5vw, 4rem)' }}>

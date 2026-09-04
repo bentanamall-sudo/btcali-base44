@@ -43,7 +43,7 @@ function PricingCard({ tier, delay }) {
       className="p-8 relative"
       style={{
         background: '#F4F4F2',
-        border: tier.highlight ? '2px solid #CCFF00' : '1px solid #D1D1CB',
+        border: tier.highlight ? '2px solid #FF4D00' : '1px solid #D1D1CB',
       }}
       data-view-cursor
     >
@@ -52,7 +52,7 @@ function PricingCard({ tier, delay }) {
           <span
             className="eyebrow px-3 py-1.5"
             style={{
-              background: tier.highlight ? '#CCFF00' : '#1A1A1A',
+              background: tier.highlight ? '#FF4D00' : '#1A1A1A',
               color: '#F4F4F2',
             }}
           >
@@ -96,7 +96,7 @@ export default function PricingSection() {
           className="mb-16"
         >
           <div className="flex items-center gap-3 mb-4">
-            <span className="w-8 h-px" style={{ background: '#CCFF00' }} />
+            <span className="w-8 h-px" style={{ background: '#FF4D00' }} />
             <span className="eyebrow text-foreground/50">Pricing</span>
           </div>
           <h2 className="display-lg text-foreground mb-4" style={{ fontSize: 'clamp(2.5rem, 5vw, 4.5rem)' }}>
@@ -107,7 +107,7 @@ export default function PricingSection() {
           </p>
 
           <div className="flex items-center gap-3 mt-6">
-            <span className="w-2 h-2" style={{ background: '#CCFF00' }} />
+            <span className="w-2 h-2" style={{ background: '#FF4D00' }} />
             <span className="eyebrow text-foreground">Currently Accepting New Athletes</span>
             <span className="font-body text-foreground/40 text-sm">— 8 spots</span>
           </div>
@@ -129,13 +129,13 @@ export default function PricingSection() {
           style={{ background: '#1A1A1A', color: '#F4F4F2' }}
         >
           <div className="flex items-center gap-2 mb-6">
-            <Zap className="w-4 h-4" style={{ color: '#CCFF00' }} />
+            <Zap className="w-4 h-4" style={{ color: '#FF4D00' }} />
             <p className="eyebrow" style={{ color: '#F4F4F2' }}>Everything Included — All Plans</p>
           </div>
           <div className="grid sm:grid-cols-2 gap-4">
             {INCLUDED.map((item, i) => (
               <div key={i} className="flex items-center gap-3">
-                <CheckCircle className="w-4 h-4 flex-shrink-0" style={{ color: '#CCFF00' }} />
+                <CheckCircle className="w-4 h-4 flex-shrink-0" style={{ color: '#FF4D00' }} />
                 <span className="font-body" style={{ color: 'rgba(244,244,242,0.75)', fontSize: '18px' }}>{item}</span>
               </div>
             ))}

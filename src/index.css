@@ -18,19 +18,19 @@
     --popover-foreground: 0 0% 10%;
 
     /* KINETIC ORANGE — CTAs / locks / critical highlights only */
-    --primary: 72 100% 50%;             /* #CCFF00 */
-    --primary-foreground: 0 0% 10%;
+    --primary: 18 100% 50%;             /* #FF4D00 */
+    --primary-foreground: 60 10% 95%;
     --secondary: 60 6% 90%;
     --secondary-foreground: 0 0% 10%;
     --muted: 60 6% 90%;
     --muted-foreground: 0 0% 35%;
-    --accent: 72 100% 50%;
-    --accent-foreground: 0 0% 10%;
+    --accent: 18 100% 50%;
+    --accent-foreground: 60 10% 95%;
     --destructive: 0 72% 45%;
     --destructive-foreground: 60 10% 95%;
     --border: 60 3% 81%;                 /* #D1D1CB Raw Concrete */
     --input: 60 3% 81%;
-    --ring: 72 100% 50%;
+    --ring: 18 100% 50%;
     --radius: 0px;
 
     /* surfaces */
@@ -40,7 +40,7 @@
     --concrete: 60 3% 81%;              /* raw concrete */
     --concrete-tint: 60 3% 81% / 0.30;
 
-    --chart-1: 72 100% 50%;
+    --chart-1: 18 100% 50%;
     --chart-2: 0 0% 10%;
     --chart-3: 60 3% 60%;
     --chart-4: 60 6% 90%;
@@ -48,12 +48,12 @@
 
     --sidebar-background: 60 10% 95%;
     --sidebar-foreground: 0 0% 10%;
-    --sidebar-primary: 72 100% 50%;
-    --sidebar-primary-foreground: 0 0% 10%;
+    --sidebar-primary: 18 100% 50%;
+    --sidebar-primary-foreground: 60 10% 95%;
     --sidebar-accent: 60 6% 90%;
     --sidebar-accent-foreground: 0 0% 10%;
     --sidebar-border: 60 3% 81%;
-    --sidebar-ring: 72 100% 50%;
+    --sidebar-ring: 18 100% 50%;
   }
 }
 
@@ -116,7 +116,7 @@
 
 /* Card with orange accent border */
 .b-card-accent {
-  border: 1px solid #CCFF00;
+  border: 1px solid #FF4D00;
   border-radius: 0;
   background: #F4F4F2;
 }
@@ -130,8 +130,8 @@
 
 /* ── KINETIC ORANGE CTA ── */
 .b-cta {
-  background: #CCFF00;
-  color: #1A1A1A;
+  background: #FF4D00;
+  color: #F4F4F2;
   border-radius: 0;
   font-family: var(--font-heading);
   font-weight: 700;
@@ -142,7 +142,7 @@
   overflow: hidden;
 }
 .b-cta:hover {
-  background: #B8E600;
+  background: #E84500;
   transform: translateY(-1px);
 }
 .b-cta:active {
@@ -185,7 +185,7 @@
   left: 0;
   width: 0;
   height: 1px;
-  background: #CCFF00;
+  background: #FF4D00;
   transition: width 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 .plumb-underline:hover::after { width: 100%; }
@@ -219,51 +219,19 @@
   top: 0;
   left: 0;
   height: 2px;
-  background: #CCFF00;
+  background: #FF4D00;
   pointer-events: none;
   z-index: 100;
   transition: width 0.08s linear;
 }
 
-/* ── CUSTOM RETICLE CURSOR ── */
-.cursor-dot,
-.cursor-ring {
+/* ── TRAIL CURSOR ── */
+.cursor-trail {
   position: fixed;
   top: 0;
   left: 0;
   pointer-events: none;
   z-index: 9999;
-  border-radius: 50%;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  will-change: transform;
-}
-.cursor-dot {
-  width: 8px;
-  height: 8px;
-  background: #CCFF00;
-  box-shadow: 0 0 14px rgba(204, 255, 0, 0.65);
-  transition: opacity 0.3s ease, width 0.18s ease, height 0.18s ease, background 0.18s ease, box-shadow 0.18s ease;
-}
-.cursor-ring {
-  width: 38px;
-  height: 38px;
-  border: 1.5px solid #1A1A1A;
-  transition: opacity 0.3s ease, width 0.22s cubic-bezier(0.25, 0.46, 0.45, 0.94), height 0.22s cubic-bezier(0.25, 0.46, 0.45, 0.94), border-color 0.2s ease, background 0.2s ease;
-}
-.cursor-dot.visible,
-.cursor-ring.visible { opacity: 1; }
-.cursor-ring.is-hover {
-  width: 66px;
-  height: 66px;
-  border-color: #CCFF00;
-  background: rgba(204, 255, 0, 0.06);
-}
-.cursor-dot.is-hover {
-  width: 5px;
-  height: 5px;
-  background: #1A1A1A;
-  box-shadow: none;
 }
 @media (hover: hover) and (pointer: fine) {
   body { cursor: none; }
@@ -368,18 +336,18 @@
 }
 .glow-primary {
   box-shadow: none;
-  border: 1px solid #CCFF00;
+  border: 1px solid #FF4D00;
 }
 .glow-primary-strong {
   box-shadow: none;
-  border: 2px solid #CCFF00;
+  border: 2px solid #FF4D00;
 }
 .glow-border {
-  border: 1px solid #CCFF00;
+  border: 1px solid #FF4D00;
   box-shadow: none;
 }
 .gradient-bg-strong {
-  background: #CCFF00;
+  background: #FF4D00;
   position: relative;
   overflow: hidden;
   border-radius: 0;
@@ -409,7 +377,7 @@
   text-shadow: none;
 }
 .progress-glow {
-  background: #CCFF00;
+  background: #FF4D00;
   box-shadow: none;
 }
 .card-3d {

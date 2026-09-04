@@ -47,7 +47,7 @@ export default function FooterSection() {
               {PLATFORM_LINKS.map((link) => (
                 <li key={link.to}>
                   <Link to={link.to} className="font-body plumb-underline magnetic inline-flex items-center gap-2 text-foreground/55 hover:text-foreground transition-colors" style={{ fontSize: '18px' }}>
-                    <span className="w-1.5 h-1.5 flex-shrink-0" style={{ background: '#CCFF00' }} />
+                    <span className="w-1.5 h-1.5 flex-shrink-0" style={{ background: '#FF4D00' }} />
                     {link.label}
                   </Link>
                 </li>
@@ -66,7 +66,7 @@ export default function FooterSection() {
               {COACHING_LINKS.map((link) => (
                 <li key={link.to}>
                   <Link to={link.to} className="font-body plumb-underline magnetic inline-flex items-center gap-2 text-foreground/55 hover:text-foreground transition-colors" style={{ fontSize: '18px' }}>
-                    <span className="w-1.5 h-1.5 flex-shrink-0" style={{ background: '#CCFF00' }} />
+                    <span className="w-1.5 h-1.5 flex-shrink-0" style={{ background: '#FF4D00' }} />
                     {link.label}
                   </Link>
                 </li>
