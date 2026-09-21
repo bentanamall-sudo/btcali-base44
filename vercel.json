@@ -1,9 +1,6 @@
 {
   "redirects": [
-    {
-      "source": "/:path*",
-      "destination": "https://btcali-elite-form.base44.app/:path*",
-      "permanent": false
-    }
+    { "source": "/", "destination": "https://btcali-elite-form.base44.app/", "permanent": false },
+    { "source": "/:path+", "destination": "https://btcali-elite-form.base44.app/:path+", "permanent": false }
   ]
 }
