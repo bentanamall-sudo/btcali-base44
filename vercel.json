@@ -1,6 +1,5 @@
 {
-  "rewrites": [
-    { "source": "/", "destination": "https://btcali-elite-form.base44.app/" },
-    { "source": "/:path+", "destination": "https://btcali-elite-form.base44.app/:path+" }
+  "routes": [
+    { "src": "/(.*)", "dest": "https://btcali-elite-form.base44.app/$1" }
   ]
 }
